@@ -1,4 +1,4 @@
-package main.webapp.application;
+package main.java.application;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
