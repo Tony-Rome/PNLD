@@ -17,7 +17,6 @@ public class FileController {
 
     @GetMapping(value = "/")
     public String index(Model model) {
-
         return "index";
     }
 
