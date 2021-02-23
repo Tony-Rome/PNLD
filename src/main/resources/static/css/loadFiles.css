@@ -5,7 +5,6 @@ body{
     display: flex;
     width: 100%;
     margin-top: 2vw;
-
 }
 
 .title {
@@ -16,13 +15,12 @@ body{
 }
 
 .logo_mineduc {
-    /*border: 1px solid black*/;
     border-radius: 25px;
     width: 15vw;
     height: 12vw;
     margin-left: 2vw;
 }
-
+/* == DESDE AQUI ESTILOS PARA LA TABLA CON ARCHIVOS CARGADOS == */
 .files_table_container {
     margin-left: 25%;
     margin-bottom: 2%;
@@ -31,24 +29,14 @@ body{
 
 .files_table_header {
     display: flex;
+    margin-bottom: 2%;
 }
 
-table{
-    /*border-collapse: separate !important;*/
-    border-collapse: collapse;
-    /*border-spacing: 0;
-    border: 1px solid #ccc;*/
-    /*border-radius: 10px;*/
-}
 
-th, td {
+table, th, td {
+  border-collapse: collapse;
   border: 1px solid black;
   padding: 10px;
-}
-
-.files_table_title {
-    font-size: 25px;
-    margin-bottom: 10px;
 }
 
 .pagination {
@@ -61,14 +49,12 @@ th, td {
   color: black;
   padding: 8px 16px;
   text-decoration: none;
-  transition: background-color .3s;
+  font-size: 15px;
+  /*transition: background-color .3s;*/
 }
 
 
 /* ===  DESDE AQUI ESTILOS PARA EL FORMULARIO CARGA DE ARCHIVO ===*/
-
-/* Style inputs, select elements and textareas */
-
 
 input[type=text], select{
   width: 100%;
@@ -80,13 +66,11 @@ input[type=text], select{
 
 }
 
-/* Style the label to display next to the inputs */
 label {
   padding: 12px 12px 12px 0;
   display: inline-block;
 }
 
-/* Style the submit button */
 input[type=submit] {
   background-color: #4CAF50;
   color: white;
@@ -99,22 +83,19 @@ input[type=submit] {
   margin-top: 2%;
 }
 
-/* Style the container */
 .form_container {
   margin-right: 20%;
   margin-left: 20%;
   border-radius: 5px;
-  padding: 20px;
+  padding: 10px;
 }
 
-/* Floating column for labels: 25% width */
 .col-25 {
   float: left;
   width: 25%;
   margin-top: 6px;
 }
 
-/* Floating column for inputs: 75% width */
 .col-75 {
     float: left;
     width: 75%;
@@ -130,18 +111,31 @@ input[type=submit] {
     padding-top: 25%;
 }
 
+/* RESPONSIVE CUANDO ES MENOR A 800PX*/
+@media screen and (max-width: 800px) {
 
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 600px) {
-  .col-25, .col-75, input[type=submit] {
+  .col-25, .col-75 {
     width: 100%;
     margin-top: 0;
+  }
+
+  input[type=submit]{
+    margin-left: 25%;
+  }
+
+  .files_table_container {
+      margin-left: 12.5%;
+  }
+
+  .files_table_header {
+      margin-top: 5%;
+  }
+
+  .pagination {
+    margin-top: 4%;
+  }
+
+  .pagination a {
+    padding: 8px 4px;
   }
 }
