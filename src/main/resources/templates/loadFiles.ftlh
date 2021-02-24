@@ -62,7 +62,7 @@
     </div>
 
     <div class="formContainer">
-      <form id="drag_drop_form" action="/scheduleLoadFilePost" method="post" enctype="multipart/form-data">
+      <form action="/scheduleLoadFilePost" method="post" enctype="multipart/form-data">
 
         <div class="row">
 
@@ -106,7 +106,7 @@
           <div class="col-75" >
             <div id="dropZone">
                 <span>Suelta un archivo o haz click para cargar uno</span>
-                <input type="file" name="uploadFile" >
+                <input id="uploadFile" type="file" name="uploadFile" >
             </div>
           </div>
 
@@ -125,29 +125,16 @@
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
     <script>
 
-        (function (document, window, index) {
+
 
             var fileName = document.getElementById("fileName");
             var fileType = document.getElementById("selectedType");
+            var dropFile = document.getElementById("dropZone");
             var uploadFile = document.getElementById("uploadFile");
-            var droppedFile = document.getElementById("dragDrop");
-            var buttonSubmit = document.getElementById("btSubmit");
+            var btSubmit = document.getElementById("btSubmit");
 
-            var dropZone = document.getElementById("dropZone");
-            var dropZoneInput = document.getElementById("dropZoneInput");
 
-            dropZone.addEventListener("click", e => {
-                dropZoneInput.click();
-            });
 
-            var form = document.getElementById("drag_drop_form");
-
-            console.log(fileName);
-            console.log(fileType);
-            console.log(uploadFile);
-            console.log(droppedFile);
-            console.log(form);
-            console.log(buttonSubmit);
 
             fileName.oninput = function(){
                 if(fileName.value === ""){
@@ -162,9 +149,24 @@
                 console.log(fileType.value);
             }
 
+            dropFile.addEventListener("dragover", e => {
+                e.preventDefault();
+            });
+
+            dropFile.addEventListener("drop", e => {
+                e.preventDefault();
+                console.log(e);
+            });
+
+            dropFile.addEventListener("click", e => {
+                uploadFile.click();
+            });
 
 
-        }(document, window, 0));
+
+
+
+
 
 
     </script>

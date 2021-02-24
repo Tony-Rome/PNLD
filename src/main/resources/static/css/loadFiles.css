@@ -99,6 +99,7 @@ label {
     border-style: dashed;
     text-align: center;
     padding-top: 25%;
+    cursor: pointer;
 }
 
 input[type=file] {
