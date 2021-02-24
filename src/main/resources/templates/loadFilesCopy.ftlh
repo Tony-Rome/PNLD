@@ -5,6 +5,51 @@
     <title>Archivos</title>
     <meta charset="UTF-8">
     <link href="css/style.css" rel="stylesheet"/>
+    <script>
+
+        var dropFile;
+
+        function allowDrop(ev) {
+          ev.preventDefault();
+          console.log("function allowDrop");
+        }
+
+        function drag(ev) {
+          ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+          ev.preventDefault();
+          console.log(ev.dataTransfer);
+          if(ev.dataTransfer.items){
+            console.log("Entro a dataTransfer.items");
+            console.log(ev.dataTransfer.items);
+            for(var i = 0; i < ev.dataTransfer.items.length; i++){
+                var file = ev.dataTransfer.items[i].getAsFile();
+                console.log('... file[' + i + '].name = ' + file.name);
+                var fd = new FormData();
+                fd.append('csvFile', file);
+                console.log("Este es fd");
+                $.ajax({
+                    type: 'POST',
+                    url: '/scheduleLoadFilePost',
+                    contentType: false,
+                    processData: false,
+                    data: fd,
+                    success: function(response){
+                        alert(response);
+                    }
+                })
+            }
+          }
+          else{
+            for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+                  console.log('... file[' + i + '].name = ' + ev.dataTransfer.files[i].name);
+                }
+          }
+        }
+
+        </script>
 </head>
 <body>
     <div class="banner">

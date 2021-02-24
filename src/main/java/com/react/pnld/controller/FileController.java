@@ -29,7 +29,9 @@ public class FileController {
     public String scheduleLoadFilePost(CsvFile csvFile, Model model, @RequestParam("uploadFile") MultipartFile uploadFile) {
 
         model.addAttribute("csvFile", csvFile);
-        System.out.println(csvFile);
+        System.out.println("csvFile: "+csvFile);
+        System.out.println("Model: "+model);
+        System.out.println("uploadFile: "+ uploadFile);
 
         if(uploadFile.isEmpty()){
             return "File is empty";

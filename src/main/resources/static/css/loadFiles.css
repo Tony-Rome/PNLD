@@ -1,10 +1,17 @@
 body{
     margin: 0;
 }
-.banner {
+.header {
     display: flex;
     width: 100%;
     margin-top: 2vw;
+}
+
+.logoMineduc {
+    border-radius: 25px;
+    width: 15vw;
+    height: 12vw;
+    margin-left: 2vw;
 }
 
 .title {
@@ -14,20 +21,14 @@ body{
     margin-left: 25%;
 }
 
-.logo_mineduc {
-    border-radius: 25px;
-    width: 15vw;
-    height: 12vw;
-    margin-left: 2vw;
-}
 /* == DESDE AQUI ESTILOS PARA LA TABLA CON ARCHIVOS CARGADOS == */
-.files_table_container {
+.filesTableContainer {
     margin-left: 25%;
     margin-bottom: 2%;
     margin-top: 2%;
 }
 
-.files_table_header {
+.filesTableHeader {
     display: flex;
     margin-bottom: 2%;
 }
@@ -56,6 +57,13 @@ table, th, td {
 
 /* ===  DESDE AQUI ESTILOS PARA EL FORMULARIO CARGA DE ARCHIVO ===*/
 
+.formContainer {
+  margin-right: 20%;
+  margin-left: 20%;
+  border-radius: 5px;
+  padding: 10px;
+}
+
 input[type=text], select{
   width: 100%;
   padding: 12px;
@@ -71,25 +79,6 @@ label {
   display: inline-block;
 }
 
-input[type=submit] {
-  background-color: #4CAF50;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  float: left;
-  margin-left: 50%;
-  margin-top: 2%;
-}
-
-.form_container {
-  margin-right: 20%;
-  margin-left: 20%;
-  border-radius: 5px;
-  padding: 10px;
-}
-
 .col-25 {
   float: left;
   width: 25%;
@@ -102,13 +91,31 @@ input[type=submit] {
     margin-top: 6px;
 }
 
-.drag_drop {
+#dropZone {
     height:200px;
+    width: 100%;
     border: 2px solid #ccc;
     border-radius: 4px;
     border-style: dashed;
     text-align: center;
     padding-top: 25%;
+}
+
+input[type=file] {
+    display: none;
+}
+
+input[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: left;
+  margin-left: 50%;
+  margin-top: 2%;
+  margin-bottom: 4%;
 }
 
 /* RESPONSIVE CUANDO ES MENOR A 800PX*/
@@ -123,11 +130,11 @@ input[type=submit] {
     margin-left: 25%;
   }
 
-  .files_table_container {
+  .filesTableContainer {
       margin-left: 12.5%;
   }
 
-  .files_table_header {
+  .filesTableHeader {
       margin-top: 5%;
   }
 
