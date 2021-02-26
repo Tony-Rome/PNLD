@@ -19,12 +19,17 @@
         <br><br>
         Tipo:<br>
         <select name="selectedType" id="selectedType">
-            <option value="diag">diagnostico</option>
-            <option value="pre-cap">pre-capacitacion</option>
-            <option value="post-cap">post-capacitacion</option>
-            <option value="pc-1">PC 1 a 4 año</option>
-            <option value="pc-2">PC 5 a 8 año</option>
-            <option value="pc-3">PC docentes</option>
+            <option value="teacher-roster">code org - teacher roster</option>
+            <option value="teacher-opt-in">code org - teacher opt</option>
+            <option value="student-level">code org - student level</option>
+            <option value="signin-per-course">code org - sign in per course</option>
+            <option value="sign-ins">code org - sign ins</option>
+            <option value="diagnostico">diagnostico</option>
+            <option value="pre-capacita">pre-capacitacion</option>
+            <option value="post-capacita">post-capacitacion</option>
+            <option value="test-pc-1">test PC (1 - 4 año)</option>
+            <option value="test-pc-2">test PC (5 - 8 año)</option>
+            <option value="test-pc-3">Test PC docentes</option>
             <option value="salida">salida</option>
             <option value="satis">satisfaccion</option>
         </select>

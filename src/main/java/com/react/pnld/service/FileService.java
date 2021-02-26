@@ -1,7 +1,10 @@
 package com.react.pnld.service;
 
+import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.model.CsvFile;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -10,20 +13,22 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class FileService {
 
-    @Value( "${copy.path.files}" )
+    @Value("${copy.path.files}")
     private String FILE_PATH;
 
-    @Value( "${csv.headers.teacher-roster}" )
-    private String[] teacherRosterHeaders;
+    @Autowired
+    private CSVHeadersProperties csvHeadersProperties;
 
     public boolean scheduleLoad(CsvFile csvFile){
 
         if(! this.isValidCsvHeader(csvFile)){
+            System.out.println("invalid headers, will not queue load");
             return false;
         }
 
@@ -40,29 +45,97 @@ public class FileService {
 
     public boolean isValidCsvHeader(CsvFile csvFile) {
 
-        //System.out.println(teacherRosterHeaders[0]);
-
         List<String> csvFileHeaders = new ArrayList<>();
-        //TODO get headers;
-        InputStreamReader isr = null;
+        String firstLine = "";
         try {
-            isr = new InputStreamReader(csvFile.getUploadFile().getInputStream(), StandardCharsets.UTF_8);
+            InputStreamReader isr = new InputStreamReader(csvFile.getUploadFile().getInputStream(), StandardCharsets.UTF_8);
             BufferedReader br = new BufferedReader(isr);
-            System.out.println(br.readLine());
+            firstLine = br.readLine();
         } catch (IOException ioException) {
             ioException.printStackTrace();
+            return false;
         }
 
-        //TODO clean headers
+        //clean headers
+        String cleanHeaders = removeSymbols(firstLine);
+        String[] headersFromFile = cleanHeaders.split(",");
+        String[] selectedHeadersArray = this.selectedHeadersArray(csvFile.getSelectedType());
 
+        return isStringArraysEquals(headersFromFile, selectedHeadersArray);
+    }
 
-        //TODO finish validation
-        return true;
+    public String removeSymbols(String strToClean){
+        String strCleaned = strToClean.replaceAll("[^a-zA-Z0-9,]", "");
+        return strCleaned.toLowerCase();
+    }
+
+    public String[] selectedHeadersArray(String selectedType){
+
+        switch (selectedType){
+
+            case "teacher-roster":
+                return csvHeadersProperties.getTeacherRoster();
+
+            case "teacher-opt-in":
+                return csvHeadersProperties.getTeacherOptIn();
+
+            case "student-level":
+                return csvHeadersProperties.getStudentLevel();
+
+            case "signin-per-course":
+                return csvHeadersProperties.getSigninPerCourse();
+
+            case "sign-ins":
+                return csvHeadersProperties.getSignIns();
+
+            case "diag":
+
+                return new String[1];
+
+            case "pre-cap":
+
+                return new String[1];
+
+            case "post-cap":
+
+                return new String[1];
+
+            case "pc-1":
+
+                return new String[1];
+
+            case "pc-2":
+
+                return new String[1];
+
+            case "pc-3":
+
+                return new String[1];
+
+            case "salida":
+
+                return new String[1];
+
+            case "satis":
+                return new String[1];
+
+            default:
+                return null;
+        }
+    }
+
+    public boolean isStringArraysEquals(String[] firstArray, String[] secondArray){
+        String[] firstArraySorted = firstArray;
+        String[] secondArraySorted = secondArray;
+
+        Arrays.sort(firstArraySorted);
+        Arrays.sort(secondArraySorted);
+        return Arrays.equals(firstArraySorted, secondArraySorted);
+
     }
 
     public boolean copyAtFileSystem(CsvFile csvFile){
 
-        //TODO finish copy
         String fileName = csvFile.getUploadFile().getOriginalFilename();
         System.out.println("The name of the uploaded file is:" + fileName);
         String path = FILE_PATH + fileName;
@@ -81,7 +154,15 @@ public class FileService {
 
     public boolean queueLoad(CsvFile csvFile){
 
-        //TODO finish queue load csv file
+        try{
+            //TODO finish queue load csv file using @Scheduled annotation
+            System.out.println("processing queue load ...");
+            Thread.sleep(10000);
+            System.out.println("processing queue load finish");
+
+        } catch (InterruptedException ie) {
+            System.out.println("interrupted exception");
+        }
 
         return true;
     }

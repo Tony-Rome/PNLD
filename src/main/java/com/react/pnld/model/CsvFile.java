@@ -10,7 +10,16 @@ public class CsvFile {
 
     private MultipartFile uploadFile;
 
-    //TODO define File attribute;
+    public CsvFile(){
+        super();
+    }
+
+    public CsvFile(String name, String selectedType, MultipartFile multipartFile){
+        super();
+        this.name = name;
+        this.selectedType = selectedType;
+        this.uploadFile = multipartFile;
+    }
 
     public String getName() {
         return name;
