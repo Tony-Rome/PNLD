@@ -85,5 +85,61 @@
         <input type="submit" value="Iniciar Carga">
     </form>
 </#if>
+
+    <script>
+        var fileName = document.getElementById("fileName");
+                    var fileType = document.getElementById("selectedType");
+                    var dropFile = document.getElementById("dropZone");
+                    var uploadFile = document.getElementById("uploadFile");
+                    var btSubmit = document.getElementById("btSubmit");
+
+                    var status = false;
+
+                    let errors = {
+                        fileNmae: true,
+                        fileType: true,
+                        dropFile: true,
+                        uploadFile: true,
+                    }
+
+                    fileName.oninput = function(){
+                        if(fileName.value === ""){
+                            alert("No puede estar vacío campo nombre");
+                        }
+                        console.log(fileName.value);
+                        status = true;
+
+                    }
+
+                    fileType.onchange = function(){
+                        console.log(fileType.value);
+                        submitController();
+                    }
+
+                    dropFile.addEventListener("dragover", e => {
+                        e.preventDefault();
+                    });
+
+                    dropFile.addEventListener("drop", e => {
+                        e.preventDefault();
+                        console.log(e);
+
+                        if(e.dataTransfer.files.length === 1){
+                            uploadFile.files == e.dataTransfer.files
+                        }
+                        else{
+                            console.log("Debe haber un archivo cargado!");
+                        }
+                    });
+
+                    dropFile.addEventListener("click", e => {
+                        uploadFile.click();
+                        console.log(uploadFile.files);
+                    });
+
+                    submitController = () => {
+                        console.log(errors);
+                    };
+    </script>
 </body>
 </html>

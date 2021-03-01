@@ -8,7 +8,6 @@ body{
 }
 
 .logoMineduc {
-    border-radius: 25px;
     width: 15vw;
     height: 12vw;
     margin-left: 2vw;
@@ -102,21 +101,118 @@ label {
     cursor: pointer;
 }
 
-input[type=file] {
+#uploadedFileName{
+    width: 100%;
+    padding: 12px;
+    resize: vertical;
+    color: #088A68;
+    font-style: italic;
+}
+
+.displayNone {
     display: none;
 }
 
+#btSubmitForm{
+  float: left;
+  margin-left: 50%;
+}
+
 input[type=submit] {
-  background-color: #4CAF50;
   color: white;
   padding: 12px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  float: left;
-  margin-left: 50%;
   margin-top: 2%;
   margin-bottom: 4%;
+}
+
+.enabled{
+    background-color: #4CAF50;
+}
+
+.disabled {
+    background-color: #767575;
+}
+
+.popup {
+    background-color: rgba(0,0,0,0.6);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.popupContent {
+    height: 250px;
+    width: 450px;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 5px;
+    position: relative;
+    overflow: auto;
+
+}
+
+.popupHead {
+    display:flex;
+    border-bottom: 2px solid black;
+    justify-content: center;
+    padding-bottom: 5px;
+    margin: 5px 0;
+}
+
+.popupDetail {
+    margin: 20px 100px 2px;
+}
+
+.popupRow {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.popupRowDetail{
+    margin-left: 10px;
+}
+
+#popupFile {
+    color: #088A68;
+    font-style: italic;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.buttonsContainer {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 20px;
+    padding: 0 60px 0;
+
+}
+
+.popupMsg {
+    text-align: -webkit-auto;
+    margin: 40px 40px 10px;
+}
+
+#btSubmitYes {
+  background-color: #4CAF50;
+}
+
+
+
+#btSubmitNo{
+  background-color: red;
+}
+
+#btSubmitOk {
+    background-color: #58ACFA;
+    display: flex;
+    margin: 40px auto 10px;
 }
 
 /* RESPONSIVE CUANDO ES MENOR A 800PX*/
