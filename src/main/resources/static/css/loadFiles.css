@@ -92,8 +92,8 @@ label {
 
 #dropZone {
     height:200px;
-    width: 100%;
-    border: 2px solid #ccc;
+    border: 2px;
+    border-color: #ccc;
     border-radius: 4px;
     border-style: dashed;
     text-align: center;
@@ -104,9 +104,13 @@ label {
 #uploadedFileName{
     width: 100%;
     padding: 12px;
-    resize: vertical;
     color: #088A68;
     font-style: italic;
+}
+
+#span {
+    font-size: 30px;
+    padding: 10px;
 }
 
 .displayNone {
