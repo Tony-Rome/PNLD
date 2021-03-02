@@ -8,6 +8,7 @@
 
 </head>
 <body>
+<<<<<<< HEAD
     <div class="header">
         <img src="img/logo_mineduc.jpg" class="logoMineduc" alt="logo_mineduc">
         <div class="title">Archivos</div>

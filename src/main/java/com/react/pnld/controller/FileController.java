@@ -17,6 +17,7 @@ public class FileController {
 
     @GetMapping(value = "/")
     public String index(Model model) {
+
         return "index";
     }
 
@@ -37,7 +38,9 @@ public class FileController {
             return "File is empty";
         }
         csvFile.setUploadFile(uploadFile);
-        fileService.scheduleLoad(csvFile);
+        boolean responseScheduleLoad = fileService.scheduleLoad(csvFile);
+        System.out.println("responseScheduleLoad: " + responseScheduleLoad);
+
         return "loadFiles";
     }
 }
