@@ -131,38 +131,33 @@ public class FileService {
         Arrays.sort(firstArraySorted);
         Arrays.sort(secondArraySorted);
         return Arrays.equals(firstArraySorted, secondArraySorted);
-
     }
 
     public boolean copyAtFileSystem(CsvFile csvFile){
 
-        String fileName = csvFile.getUploadFile().getOriginalFilename();
-        System.out.println("The name of the uploaded file is:" + fileName);
-        String path = FILE_PATH + fileName;
         try {
+            String fileName = csvFile.getUploadFile().getOriginalFilename();
+            System.out.println("The name of the uploaded file is:" + fileName);
+            String path = FILE_PATH + fileName;
+
             File dest = new File(path); //Check if the directory exists
+
             if(!dest.getParentFile().exists()){
                 dest.getParentFile().mkdirs();
             }
+
             csvFile.getUploadFile().transferTo(dest);
+
+            return true;
         } catch (IOException ioException){
             ioException.getStackTrace();
+            return false;
         }
-
-        return true;
     }
 
     public boolean queueLoad(CsvFile csvFile){
 
-        try{
-            //TODO finish queue load csv file using @Scheduled annotation
-            System.out.println("processing queue load ...");
-            Thread.sleep(10000);
-            System.out.println("processing queue load finish");
-
-        } catch (InterruptedException ie) {
-            System.out.println("interrupted exception");
-        }
+        //TODO insert record Archivo schedule load file
 
         return true;
     }
