@@ -131,6 +131,8 @@ const btSubmitOk = document.getElementById("btSubmitOk");
             form.reset();
             deactivateFileName();
             formDataValid.name = false;
+            dropFile.style.borderColor = "#ccc";
+            dropFile.style.borderStyle = "dashed";
             submitController();
         });
 

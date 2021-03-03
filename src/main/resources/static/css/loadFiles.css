@@ -4,7 +4,7 @@ body{
 .header {
     display: flex;
     width: 100%;
-    margin-top: 2vw;
+    margin-top: 10px;
 }
 
 .logoMineduc {
@@ -144,7 +144,7 @@ input[type=submit] {
     background-color: rgba(0,0,0,0.6);
     width: 100%;
     height: 100%;
-    position: absolute;
+    position: fixed;
     top: 0;
     display: none;
     justify-content: center;
