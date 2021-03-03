@@ -2,10 +2,10 @@ package com.react.pnld.service;
 
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.model.CsvFile;
+import com.react.pnld.model.ProcesaArchivoDTO;
 import com.react.pnld.repo.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -161,9 +161,19 @@ public class FileService {
 
     public boolean queueLoad(CsvFile csvFile){
 
-        //TODO insert record Archivo schedule load file
-        // Example for database connection
-        System.out.println("estado archivo:" + fileRepository.getEstadoArchivo(2));
+        //Example for database connection
+        //System.out.println("estado archivo:" + fileRepository.getFileState(2));
+
+        ProcesaArchivoDTO procesaArchivoDTO = new ProcesaArchivoDTO();
+        procesaArchivoDTO.setNombreArchivo(csvFile.getName());
+        procesaArchivoDTO.setTipoArchivo(csvFile.getSelectedType());
+        //TODO identify idPersona with csvFile.getLoadedBy()
+
+        int responseInsert = fileRepository.insertProcessFile(procesaArchivoDTO);
+
+        if(responseInsert == 0){
+            return false;
+        }
         return true;
     }
 }

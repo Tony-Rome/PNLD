@@ -5,20 +5,20 @@ import org.springframework.web.multipart.MultipartFile;
 public class CsvFile {
 
     private String name;
-
     private String selectedType;
-
     private MultipartFile uploadFile;
+    private String loadedBy;
 
-    public CsvFile(){
+    public CsvFile() {
         super();
     }
 
-    public CsvFile(String name, String selectedType, MultipartFile multipartFile){
+    public CsvFile(String name, String selectedType, MultipartFile uploadFile, String loadedBy) {
         super();
         this.name = name;
         this.selectedType = selectedType;
-        this.uploadFile = multipartFile;
+        this.uploadFile = uploadFile;
+        this.loadedBy = loadedBy;
     }
 
     public String getName() {
@@ -45,12 +45,21 @@ public class CsvFile {
         this.uploadFile = uploadFile;
     }
 
+    public String getLoadedBy() {
+        return loadedBy;
+    }
+
+    public void setLoadedBy(String loadedBy) {
+        this.loadedBy = loadedBy;
+    }
+
     @Override
     public String toString() {
         return "CsvFile{" +
                 "name='" + name + '\'' +
                 ", selectedType='" + selectedType + '\'' +
                 ", uploadFile=" + uploadFile +
+                ", loadedBy='" + loadedBy + '\'' +
                 '}';
     }
 }
