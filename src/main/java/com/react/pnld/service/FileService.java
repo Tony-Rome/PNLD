@@ -6,6 +6,7 @@ import com.react.pnld.model.ProcesaArchivoDTO;
 import com.react.pnld.repo.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -13,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -176,4 +178,14 @@ public class FileService {
         }
         return true;
     }
+
+    @Scheduled(cron = "${cron.process-loadscheduled}", zone = "UTC")
+    public void executeScheduledLoadFile(){
+        //System.out.println("Time instant UTC: "+Instant.now());
+        //TODO validate load records
+        //TODO insert records
+        //TODO resume load
+        //TODO update load
+    }
+
 }

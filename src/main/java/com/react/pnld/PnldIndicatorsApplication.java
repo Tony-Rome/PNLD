@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -16,6 +17,7 @@ import javax.sql.DataSource;
 @SpringBootApplication
 @ConfigurationPropertiesScan("com.react.pnld.model")
 @MapperScan("com.react.pnld.mappers")
+@EnableScheduling
 public class PnldIndicatorsApplication {
 
     @Bean
