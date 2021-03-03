@@ -2,6 +2,7 @@ package com.react.pnld.service;
 
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.model.CsvFile;
+import com.react.pnld.repo.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -24,6 +25,9 @@ public class FileService {
 
     @Autowired
     private CSVHeadersProperties csvHeadersProperties;
+
+    @Autowired
+    private FileRepository fileRepository;
 
     public boolean scheduleLoad(CsvFile csvFile){
 
@@ -158,7 +162,8 @@ public class FileService {
     public boolean queueLoad(CsvFile csvFile){
 
         //TODO insert record Archivo schedule load file
-
+        // Example for database connection
+        System.out.println("estado archivo:" + fileRepository.getEstadoArchivo(2));
         return true;
     }
 }

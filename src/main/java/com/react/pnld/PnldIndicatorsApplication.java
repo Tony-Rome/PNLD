@@ -18,21 +18,12 @@ import javax.sql.DataSource;
 @MapperScan("com.react.pnld.mappers")
 public class PnldIndicatorsApplication {
 
-    @Autowired
-    EstadoArchivoMapper estadoArchivoMapper;
-
     @Bean
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
         return (SqlSessionFactory) sqlSessionFactoryBean.getObject();
     }
-
-    @PostConstruct
-    public void init() {
-        System.out.println(estadoArchivoMapper.getEstadoArchivo(2));
-    }
-
 
     public static void main(String[] args) {
         SpringApplication.run(PnldIndicatorsApplication.class, args);
