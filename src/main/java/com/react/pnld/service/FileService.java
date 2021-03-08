@@ -182,10 +182,12 @@ public class FileService {
     @Scheduled(cron = "${cron.process-loadscheduled}", zone = "UTC")
     public void executeScheduledLoadFile(){
         //System.out.println("Time instant UTC: "+Instant.now());
-        //TODO validate load records
-        //TODO insert records
-        //TODO resume load
-        //TODO update load
+        //TODO select scheduled files
+        //TODO read file's content
+        //TODO validate load records by file's type
+            //TODO insert records if not exist
+        //TODO resume load file
+        //TODO update record load filex
     }
 
 }
