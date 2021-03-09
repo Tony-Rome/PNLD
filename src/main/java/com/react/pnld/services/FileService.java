@@ -1,9 +1,12 @@
-package com.react.pnld.service;
+package com.react.pnld.services;
 
+import com.react.pnld.controller.FileController;
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.model.CsvFile;
 import com.react.pnld.model.ProcesaArchivoDTO;
 import com.react.pnld.repo.FileRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,13 +17,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class FileService {
+
+    private static final Logger logger = LoggerFactory.getLogger(FileService.class);
 
     @Value("${copy.path.files}")
     private String FILE_PATH;
@@ -34,22 +38,27 @@ public class FileService {
     public boolean scheduleLoad(CsvFile csvFile){
 
         if(! this.isValidCsvHeader(csvFile)){
-            System.out.println("invalid headers, will not queue load");
+            logger.info("scheduleLoad. headers invalid");
             return false;
         }
 
         if(!this.copyAtFileSystem(csvFile)){
+            logger.info("scheduleLoad. copy at file system is not complete");
             return false;
         }
 
         if(!this.queueLoad(csvFile)){
+            logger.info("scheduleLoad. queue load not succesfull");
             return false;
         }
 
+        logger.info("scheduleLoad. finished");
         return true;
     }
 
     public boolean isValidCsvHeader(CsvFile csvFile) {
+
+        logger.info("isValidCsvHeader. csvFile={}", csvFile);
 
         List<String> csvFileHeaders = new ArrayList<>();
         String firstLine = "";
@@ -66,8 +75,10 @@ public class FileService {
         String cleanHeaders = removeSymbols(firstLine);
         String[] headersFromFile = cleanHeaders.split(",");
         String[] selectedHeadersArray = this.selectedHeadersArray(csvFile.getSelectedType());
+        boolean isHeadersEquals = isStringArraysEquals(headersFromFile, selectedHeadersArray);
 
-        return isStringArraysEquals(headersFromFile, selectedHeadersArray);
+        logger.info("isValidCsvHeader. isHeadersEquals={}", isHeadersEquals);
+        return isHeadersEquals;
     }
 
     public String removeSymbols(String strToClean){
@@ -131,6 +142,8 @@ public class FileService {
     }
 
     public boolean isStringArraysEquals(String[] firstArray, String[] secondArray){
+        logger.info("isStringArraysEquals. firstArray={}, secondArray={}", firstArray, secondArray);
+
         String[] firstArraySorted = firstArray;
         String[] secondArraySorted = secondArray;
 
