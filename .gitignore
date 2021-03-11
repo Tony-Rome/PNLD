@@ -1,6 +1,6 @@
 # Ignore Mac system files
 .DS_store
-
-
-target
+Thumbs.db
+target/
 .idea/
+*.iml
