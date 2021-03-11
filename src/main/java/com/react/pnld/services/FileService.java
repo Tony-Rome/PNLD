@@ -105,44 +105,38 @@ public class FileService {
             case "sign-ins":
                 return csvHeadersProperties.getSignIns();
 
-            case "diag":
-
+            case "diagnostico":
                 return csvHeadersProperties.getDiagnostico();
 
-            case "pre-cap":
-
+            case "pre-capacita":
                 return csvHeadersProperties.getPreCapacita();
 
-            case "post-cap":
-
+            case "post-capacita":
                 return csvHeadersProperties.getPostCapacita();
 
-            case "pc-1":
-
+            case "test-pc-1":
                 return csvHeadersProperties.getTestPc1();
 
-            case "pc-2":
-
+            case "test-pc-2":
                 return csvHeadersProperties.getTestPc2();
 
-            case "pc-3":
-
+            case "test-pc-3":
                 return csvHeadersProperties.getTestPc3();
 
             case "salida":
-
                 return csvHeadersProperties.getSalida();
 
             case "satis":
                 return csvHeadersProperties.getSatis();
 
             default:
-                return null;
+                return new String[1];
         }
     }
 
     public boolean isStringArraysEquals(String[] firstArray, String[] secondArray){
-        logger.info("isStringArraysEquals. firstArray={}, secondArray={}", firstArray, secondArray);
+        logger.info("isStringArraysEquals. firstArray={}", firstArray);
+        logger.info("isStringArraysEquals. secondArray={}", secondArray);
 
         String[] firstArraySorted = firstArray;
         String[] secondArraySorted = secondArray;

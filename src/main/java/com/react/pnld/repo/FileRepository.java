@@ -22,7 +22,7 @@ public class FileRepository {
     public int insertProcessFile(ProcesaArchivoDTO procesaArchivoDTO){
 
         procesaArchivoDTO.setFechaCarga(OffsetDateTime.now(ZoneId.of("UTC")));
-        procesaArchivoDTO.setIdPersona(0);
+        procesaArchivoDTO.setIdPersona(1); //TODO set by logged user
         procesaArchivoDTO.setIdEstado(1); //TODO set EstadosProcesa
         procesaArchivoDTO.setFechaProcesado(null);
         procesaArchivoDTO.setRegistrosTotales(0);
