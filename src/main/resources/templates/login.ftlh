@@ -28,8 +28,8 @@
                         </div>
                     </div>
                     <br>
-                    <form role="form" id="form" method=post action="login" accept-charset="UTF-8">
-
+                    <form role="form" id="form" method=post action="/login">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <div class="row">
                             <div class="col-xs-10 col-xs-offset-1">
                                 <label for="form_name">Nombre de Usuario:</label>
