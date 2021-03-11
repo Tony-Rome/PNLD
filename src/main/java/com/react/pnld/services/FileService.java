@@ -107,34 +107,34 @@ public class FileService {
 
             case "diag":
 
-                return new String[1];
+                return csvHeadersProperties.getDiagnostico();
 
             case "pre-cap":
 
-                return new String[1];
+                return csvHeadersProperties.getPreCapacita();
 
             case "post-cap":
 
-                return new String[1];
+                return csvHeadersProperties.getPostCapacita();
 
             case "pc-1":
 
-                return new String[1];
+                return csvHeadersProperties.getTestPc1();
 
             case "pc-2":
 
-                return new String[1];
+                return csvHeadersProperties.getTestPc2();
 
             case "pc-3":
 
-                return new String[1];
+                return csvHeadersProperties.getTestPc3();
 
             case "salida":
 
-                return new String[1];
+                return csvHeadersProperties.getSalida();
 
             case "satis":
-                return new String[1];
+                return csvHeadersProperties.getSatis();
 
             default:
                 return null;
