@@ -1,6 +1,7 @@
 package com.react.pnld;
 
 import com.react.pnld.services.FileService;
+import com.react.pnld.services.FileUtilService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,10 +12,10 @@ import java.util.Arrays;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
-public class FileServiceTest {
+public class FileUtilServiceTest {
 
     @Autowired
-    private FileService fileService;
+    private FileUtilService fileUtilService;
 
     private String teacherRosterHeaderString = "firstname,prefname,lastname,email,schoolname,schoolcity,grade,coursename,studentsincourse,highestunitstudents,onlinecsfcourse,onlinecsfhighestunit,index";
     private String teacherOptInHeaderString = "firstname,prefname,lastname,email,altemail,gender,schoolname,schoolcity,subjectstaught,agetaught,csrescources,roboticsrescources,workshoporganizer,workshopdate,workshopfacilitator,index";
@@ -24,20 +25,20 @@ public class FileServiceTest {
 
     @Test
     void contextLoads() {
-        assertThat(fileService).isNotNull();
+        assertThat(fileUtilService).isNotNull();
     }
 
     @Test
     void removeSymbols(){
         String input = "First Name,Pref Name, # Students in Course,Highest Unit (Students),Online CSF  Course";
         String expected = "firstname,prefname,studentsincourse,highestunitstudents,onlinecsfcourse";
-        Assert.assertEquals(fileService.removeSymbols(input), expected);
+        Assert.assertEquals(fileUtilService.removeSymbols(input), expected);
     }
 
     @Test
     void selectedHeadersTeacherRoster(){
         String[] teacherRosterHeadersMock = teacherRosterHeaderString.split(",");
-        String[] teacherRosterHeaders = fileService.selectedHeadersArray("teacher-roster");
+        String[] teacherRosterHeaders = fileUtilService.selectedHeadersArray("teacher-roster");
 
         Arrays.sort(teacherRosterHeaders);
         Arrays.sort(teacherRosterHeadersMock);
@@ -47,7 +48,7 @@ public class FileServiceTest {
     @Test
     void selectedHeadersTeacherOptIn(){
         String[] teacherOptInHeadersMock = teacherOptInHeaderString.split(",");
-        String[] teacherOptInHeaders = fileService.selectedHeadersArray("teacher-opt-in");
+        String[] teacherOptInHeaders = fileUtilService.selectedHeadersArray("teacher-opt-in");
 
         Arrays.sort(teacherOptInHeaders);
         Arrays.sort(teacherOptInHeadersMock);
@@ -57,7 +58,7 @@ public class FileServiceTest {
     @Test
     void select_studentLevelHeaders(){
         String[] studentLevelHeadersMock = studentLevelHeaderString.split(",");
-        String[] studentLevelHeaders = fileService.selectedHeadersArray("student-level");
+        String[] studentLevelHeaders = fileUtilService.selectedHeadersArray("student-level");
 
         Arrays.sort(studentLevelHeaders);
         Arrays.sort(studentLevelHeadersMock);
@@ -67,7 +68,7 @@ public class FileServiceTest {
     @Test
     void select_signInPerCourseHeaders(){
         String[] signInPerCourseHeadersMock = signInPerCourseHeaderString.split(",");
-        String[] signInPerCourseHeaders = fileService.selectedHeadersArray("signin-per-course");
+        String[] signInPerCourseHeaders = fileUtilService.selectedHeadersArray("signin-per-course");
 
         Arrays.sort(signInPerCourseHeaders);
         Arrays.sort(signInPerCourseHeadersMock);
@@ -77,7 +78,7 @@ public class FileServiceTest {
     @Test
     void select_signInsHeaders(){
         String[] signInsHeadersMock = signInsHeaderString.split(",");
-        String[] signInsHeaders = fileService.selectedHeadersArray("sign-ins");
+        String[] signInsHeaders = fileUtilService.selectedHeadersArray("sign-ins");
 
         Arrays.sort(signInsHeaders);
         Arrays.sort(signInsHeadersMock);
@@ -86,26 +87,26 @@ public class FileServiceTest {
 
     @Test
     void select_Not_Found_Headers(){
-        String[] fooBarHeaders = fileService.selectedHeadersArray("foo-bar");
+        String[] fooBarHeaders = fileUtilService.selectedHeadersArray("foo-bar");
         Assert.assertEquals(fooBarHeaders.length, 1);
     }
 
     @Test
     void is_stringArrays_Not_Equals(){
-        String[] first = fileService.selectedHeadersArray("signin-per-course");
-        String[] second = fileService.selectedHeadersArray("sign-ins");
-        Assert.assertFalse(fileService.isStringArraysEquals(first, second));
+        String[] first = fileUtilService.selectedHeadersArray("signin-per-course");
+        String[] second = fileUtilService.selectedHeadersArray("sign-ins");
+        Assert.assertFalse(fileUtilService.isStringArraysEquals(first, second));
     }
 
     @Test
     void get_csv_extension_file(){
         String fileCsvName = "test.csv";
-        Assert.assertEquals(fileService.getFileExtension(fileCsvName),".csv");
+        Assert.assertEquals(fileUtilService.getFileExtension(fileCsvName),".csv");
     }
 
     @Test
     void get_pdf_extension_file(){
         String filePdfName = "test.pdf";
-        Assert.assertEquals(fileService.getFileExtension(filePdfName),".pdf");
+        Assert.assertEquals(fileUtilService.getFileExtension(filePdfName),".pdf");
     }
 }
