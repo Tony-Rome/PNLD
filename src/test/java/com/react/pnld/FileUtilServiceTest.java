@@ -36,7 +36,7 @@ public class FileUtilServiceTest {
     }
 
     @Test
-    void selectedHeadersTeacherRoster(){
+    void selectedHeaders_Equals_TeacherRosterType(){
         String[] teacherRosterHeadersMock = teacherRosterHeaderString.split(",");
         String[] teacherRosterHeaders = fileUtilService.selectedHeadersArray("teacher-roster");
 
@@ -46,7 +46,7 @@ public class FileUtilServiceTest {
     }
 
     @Test
-    void selectedHeadersTeacherOptIn(){
+    void selectedHeaders_Equals_TeacherOptInType(){
         String[] teacherOptInHeadersMock = teacherOptInHeaderString.split(",");
         String[] teacherOptInHeaders = fileUtilService.selectedHeadersArray("teacher-opt-in");
 
@@ -56,7 +56,7 @@ public class FileUtilServiceTest {
     }
 
     @Test
-    void select_studentLevelHeaders(){
+    void selectedHeaders_Equals_StudentLevelType(){
         String[] studentLevelHeadersMock = studentLevelHeaderString.split(",");
         String[] studentLevelHeaders = fileUtilService.selectedHeadersArray("student-level");
 
@@ -66,7 +66,7 @@ public class FileUtilServiceTest {
     }
 
     @Test
-    void select_signInPerCourseHeaders(){
+    void selectedHeaders_Equals_SignInPerCourseType(){
         String[] signInPerCourseHeadersMock = signInPerCourseHeaderString.split(",");
         String[] signInPerCourseHeaders = fileUtilService.selectedHeadersArray("signin-per-course");
 
@@ -76,7 +76,7 @@ public class FileUtilServiceTest {
     }
 
     @Test
-    void select_signInsHeaders(){
+    void selectedHeaders_Equals_SignInsHeadersType(){
         String[] signInsHeadersMock = signInsHeaderString.split(",");
         String[] signInsHeaders = fileUtilService.selectedHeadersArray("sign-ins");
 
@@ -86,26 +86,26 @@ public class FileUtilServiceTest {
     }
 
     @Test
-    void select_Not_Found_Headers(){
+    void selectHeaders_Equals_NotDefined(){
         String[] fooBarHeaders = fileUtilService.selectedHeadersArray("foo-bar");
         Assert.assertEquals(fooBarHeaders.length, 1);
     }
 
     @Test
-    void is_stringArrays_Not_Equals(){
+    void isStringArraysEquals_WhenFalse(){
         String[] first = fileUtilService.selectedHeadersArray("signin-per-course");
         String[] second = fileUtilService.selectedHeadersArray("sign-ins");
         Assert.assertFalse(fileUtilService.isStringArraysEquals(first, second));
     }
 
     @Test
-    void get_csv_extension_file(){
+    void getFileExtension_When_CsvFile(){
         String fileCsvName = "test.csv";
         Assert.assertEquals(fileUtilService.getFileExtension(fileCsvName),".csv");
     }
 
     @Test
-    void get_pdf_extension_file(){
+    void getFileExtension_When_PdfFile(){
         String filePdfName = "test.pdf";
         Assert.assertEquals(fileUtilService.getFileExtension(filePdfName),".pdf");
     }
