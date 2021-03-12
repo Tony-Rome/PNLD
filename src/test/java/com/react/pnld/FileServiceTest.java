@@ -22,7 +22,6 @@ public class FileServiceTest {
     private String signInPerCourseHeaderString = "weekofsigninat,coursename,distinctcountofuseridcsfstarted";
     private String signInsHeaderString = "weekofsigninat,distinctcountofuserid,differenceindistinctcountofuserid";
 
-
     @Test
     void contextLoads() {
         assertThat(fileService).isNotNull();
@@ -97,5 +96,17 @@ public class FileServiceTest {
         String[] first = fileService.selectedHeadersArray("signin-per-course");
         String[] second = fileService.selectedHeadersArray("sign-ins");
         Assert.assertFalse(fileService.isStringArraysEquals(first, second));
+    }
+
+    @Test
+    void get_csv_extension_file(){
+        String fileCsvName = "test.csv";
+        Assert.assertEquals(fileService.getFileExtension(fileCsvName),".csv");
+    }
+
+    @Test
+    void get_pdf_extension_file(){
+        String filePdfName = "test.pdf";
+        Assert.assertEquals(fileService.getFileExtension(filePdfName),".pdf");
     }
 }

@@ -146,15 +146,24 @@ public class FileService {
         return Arrays.equals(firstArraySorted, secondArraySorted);
     }
 
+    public String getFileExtension(String filename){
+        int indexExtensionStart = filename.indexOf(".");
+        String fileExtensionName = filename.substring(indexExtensionStart,filename.length());
+        return fileExtensionName;
+    }
+
+
     public boolean copyAtFileSystem(CsvFile csvFile){
 
         try {
-            String fileName = csvFile.getUploadFile().getOriginalFilename();
-            System.out.println("The name of the uploaded file is:" + fileName);
-            String path = FILE_PATH + fileName;
+            String originalFilename = csvFile.getUploadFile().getOriginalFilename();
+            logger.info("copyAtFileSystem. originalFilename={}", originalFilename);
+            logger.info("copyAtFileSystem. user name csvFile.getName={}", csvFile.getName());
+            String finalName = FILE_PATH + csvFile.getName();
 
-            File dest = new File(path); //Check if the directory exists
+            File dest = new File(finalName);
 
+            //Check if the directory exists
             if(!dest.getParentFile().exists()){
                 dest.getParentFile().mkdirs();
             }
@@ -163,6 +172,7 @@ public class FileService {
 
             return true;
         } catch (IOException ioException){
+            logger.error("copyAtFileSystem. ioException.getMessage()={}", ioException.getMessage());
             ioException.getStackTrace();
             return false;
         }
