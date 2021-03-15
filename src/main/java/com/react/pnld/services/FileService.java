@@ -4,6 +4,7 @@ import com.react.pnld.controller.FileController;
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.model.CsvFile;
 import com.react.pnld.model.ProcesaArchivoDTO;
+import com.react.pnld.model.ScheduleFileLoadResponse;
 import com.react.pnld.repo.FileRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,25 +36,29 @@ public class FileService {
     @Autowired
     private FileRepository fileRepository;
 
-    public boolean scheduleLoad(CsvFile csvFile){
+    public ScheduleFileLoadResponse scheduleLoad(CsvFile csvFile){
+
+        ScheduleFileLoadResponse scheduleFileLoadResponse =
+                new ScheduleFileLoadResponse("OK", "finish schedule file load");
 
         if(! this.isValidCsvHeader(csvFile)){
             logger.info("scheduleLoad. headers invalid");
-            return false;
+            scheduleFileLoadResponse.setResponse("NOK");
+            scheduleFileLoadResponse.setDescription("headers invalid");
         }
 
         if(!this.copyAtFileSystem(csvFile)){
             logger.info("scheduleLoad. copy at file system is not complete");
-            return false;
+            scheduleFileLoadResponse.setResponse("NOK");
+            scheduleFileLoadResponse.setDescription("copy at file system is not complete");
         }
 
         if(!this.queueLoad(csvFile)){
-            logger.info("scheduleLoad. queue load not succesfull");
-            return false;
+            logger.info("scheduleLoad. queue load is not succesfull");
+            scheduleFileLoadResponse.setResponse("NOK");
+            scheduleFileLoadResponse.setDescription("queue load is not succesfull");
         }
-
-        logger.info("scheduleLoad. finished");
-        return true;
+        return scheduleFileLoadResponse;
     }
 
     public boolean isValidCsvHeader(CsvFile csvFile) {
@@ -82,8 +87,10 @@ public class FileService {
         try {
             String originalFilename = csvFile.getUploadFile().getOriginalFilename();
             logger.info("copyAtFileSystem. originalFilename={}", originalFilename);
-            logger.info("copyAtFileSystem. user name csvFile.getName={}", csvFile.getName());
-            String finalName = FILE_PATH + csvFile.getName();
+            String extensionFile = fileUtilService.getFileExtension(originalFilename);
+            logger.info("copyAtFileSystem. extensionFile={}", extensionFile);
+            logger.info("copyAtFileSystem. filename entered by user, csvFile.getName={}", csvFile.getName());
+            String finalName = FILE_PATH + csvFile.getName() + extensionFile;
 
             File dest = new File(finalName);
 
