@@ -81,9 +81,9 @@ public class FileUtilService {
         return Arrays.equals(firstArraySorted, secondArraySorted);
     }
 
-    public String getFileExtension(String filename){
-        int indexExtensionStart = filename.indexOf(".");
-        String fileExtensionName = filename.substring(indexExtensionStart,filename.length());
+    public String getExtension(String extension){
+        int indexExtensionStart = extension.indexOf(".");
+        String fileExtensionName = extension.substring(indexExtensionStart,extension.length());
         return fileExtensionName;
     }
 

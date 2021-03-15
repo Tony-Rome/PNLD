@@ -2,23 +2,28 @@ package com.react.pnld.model;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.OffsetDateTime;
+
 public class ScheduleFileLoadDTO {
 
     private String name;
     private String selectedType;
     private MultipartFile uploadFile;
     private String loadedBy;
+    private OffsetDateTime loadedOnDateTime;
 
     public ScheduleFileLoadDTO() {
         super();
     }
 
-    public ScheduleFileLoadDTO(String name, String selectedType, MultipartFile uploadFile, String loadedBy) {
+    public ScheduleFileLoadDTO(String name, String selectedType, MultipartFile uploadFile, String loadedBy,
+                               OffsetDateTime loadedOnDateTime) {
         super();
         this.name = name;
         this.selectedType = selectedType;
         this.uploadFile = uploadFile;
         this.loadedBy = loadedBy;
+        this.loadedOnDateTime = loadedOnDateTime;
     }
 
     public String getName() {
@@ -53,13 +58,22 @@ public class ScheduleFileLoadDTO {
         this.loadedBy = loadedBy;
     }
 
+    public OffsetDateTime getLoadedOnDateTime() {
+        return loadedOnDateTime;
+    }
+
+    public void setLoadedOnDateTime(OffsetDateTime loadedOnDateTime) {
+        this.loadedOnDateTime = loadedOnDateTime;
+    }
+
     @Override
     public String toString() {
-        return "CsvFile{" +
+        return "ScheduleFileLoadDTO{" +
                 "name='" + name + '\'' +
                 ", selectedType='" + selectedType + '\'' +
                 ", uploadFile=" + uploadFile +
                 ", loadedBy='" + loadedBy + '\'' +
+                ", loadedOnDateTime=" + loadedOnDateTime +
                 '}';
     }
 }

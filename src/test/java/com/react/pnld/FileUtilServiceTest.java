@@ -1,6 +1,5 @@
 package com.react.pnld;
 
-import com.react.pnld.services.FileService;
 import com.react.pnld.services.FileUtilService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,12 +100,12 @@ public class FileUtilServiceTest {
     @Test
     void getFileExtension_When_CsvFile(){
         String fileCsvName = "test.csv";
-        Assert.assertEquals(fileUtilService.getFileExtension(fileCsvName),".csv");
+        Assert.assertEquals(fileUtilService.getExtension(fileCsvName),".csv");
     }
 
     @Test
     void getFileExtension_When_PdfFile(){
         String filePdfName = "test.pdf";
-        Assert.assertEquals(fileUtilService.getFileExtension(filePdfName),".pdf");
+        Assert.assertEquals(fileUtilService.getExtension(filePdfName),".pdf");
     }
 }

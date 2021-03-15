@@ -32,9 +32,8 @@ public class FileController {
     @PostMapping("/scheduleFileLoadPost")
     public String scheduleFileLoadPost(ScheduleFileLoadDTO scheduleFileLoadDTO, Model model) {
         model.addAttribute("scheduleFileLoadDTO", scheduleFileLoadDTO);
-
-        scheduleFileLoadDTO.setLoadedBy("1");//TODO remove this line when user logged is identified
         logger.info("scheduleFileLoadPost. scheduleFileLoadDTO={}", scheduleFileLoadDTO);
+
         ScheduleFileLoadResponse scheduleFileLoadResponse = fileService.scheduleLoad(scheduleFileLoadDTO);
         logger.info("scheduleLoadFilePost. scheduleFileLoadResponse={}", scheduleFileLoadResponse);
 

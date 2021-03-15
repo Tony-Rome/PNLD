@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
 @Service
 public class FileService {
@@ -32,6 +34,9 @@ public class FileService {
     private FileRepository fileRepository;
 
     public ScheduleFileLoadResponse scheduleLoad(ScheduleFileLoadDTO scheduleFileLoadDTO){
+
+        scheduleFileLoadDTO.setLoadedBy("1");//TODO remove this line when user logged is identified
+        scheduleFileLoadDTO.setLoadedOnDateTime(OffsetDateTime.now(ZoneId.of("UTC")));
 
         ScheduleFileLoadResponse scheduleFileLoadResponse =
                 new ScheduleFileLoadResponse("OK", "finish schedule file load");
@@ -82,12 +87,16 @@ public class FileService {
         try {
             String originalFilename = scheduleFileLoadDTO.getUploadFile().getOriginalFilename();
             logger.info("copyAtFileSystem. originalFilename={}", originalFilename);
-            String extensionFile = fileUtilService.getFileExtension(originalFilename);
+            String extensionFile = fileUtilService.getExtension(originalFilename);
             logger.info("copyAtFileSystem. extensionFile={}", extensionFile);
-            logger.info("copyAtFileSystem. filename entered by user, csvFile.getName={}", scheduleFileLoadDTO.getName());
-            String finalName = FILE_PATH + scheduleFileLoadDTO.getName() + extensionFile;
 
-            File dest = new File(finalName);
+            String loadedDateTimeLikeString = scheduleFileLoadDTO.getLoadedOnDateTime().toString().replace(":","-");
+            String loadedDateFormated = loadedDateTimeLikeString.replace(fileUtilService.getExtension(loadedDateTimeLikeString),"");
+            String finalFileName =  scheduleFileLoadDTO.getName() + loadedDateFormated + extensionFile;
+            logger.info("copyAtFileSystem. finalFileName={}", finalFileName);
+
+            String finalPath = FILE_PATH + finalFileName;
+            File dest = new File(finalPath);
 
             //Check if the directory exists
             if(!dest.getParentFile().exists()){
@@ -109,7 +118,9 @@ public class FileService {
         ProcesaArchivoDTO procesaArchivoDTO = new ProcesaArchivoDTO();
         procesaArchivoDTO.setNombreArchivo(scheduleFileLoadDTO.getName());
         procesaArchivoDTO.setTipoArchivo(scheduleFileLoadDTO.getSelectedType());
+        procesaArchivoDTO.setFechaCarga(scheduleFileLoadDTO.getLoadedOnDateTime());
         //TODO identify idPersona with csvFile.getLoadedBy()
+        procesaArchivoDTO.setIdPersona(1); //TODO set by logged user
 
         int responseInsert = fileRepository.insertProcessFile(procesaArchivoDTO);
 
