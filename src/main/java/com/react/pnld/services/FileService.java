@@ -1,8 +1,6 @@
 package com.react.pnld.services;
 
-import com.react.pnld.controller.FileController;
-import com.react.pnld.model.CSVHeadersProperties;
-import com.react.pnld.model.CsvFile;
+import com.react.pnld.model.ScheduleFileLoadDTO;
 import com.react.pnld.model.ProcesaArchivoDTO;
 import com.react.pnld.model.ScheduleFileLoadResponse;
 import com.react.pnld.repo.FileRepository;
@@ -18,9 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Service
 public class FileService {
@@ -36,24 +31,24 @@ public class FileService {
     @Autowired
     private FileRepository fileRepository;
 
-    public ScheduleFileLoadResponse scheduleLoad(CsvFile csvFile){
+    public ScheduleFileLoadResponse scheduleLoad(ScheduleFileLoadDTO scheduleFileLoadDTO){
 
         ScheduleFileLoadResponse scheduleFileLoadResponse =
                 new ScheduleFileLoadResponse("OK", "finish schedule file load");
 
-        if(! this.isValidCsvHeader(csvFile)){
+        if(! this.isValidCsvHeader(scheduleFileLoadDTO)){
             logger.info("scheduleLoad. headers invalid");
             scheduleFileLoadResponse.setResponse("NOK");
             scheduleFileLoadResponse.setDescription("headers invalid");
         }
 
-        if(!this.copyAtFileSystem(csvFile)){
+        if(!this.copyAtFileSystem(scheduleFileLoadDTO)){
             logger.info("scheduleLoad. copy at file system is not complete");
             scheduleFileLoadResponse.setResponse("NOK");
             scheduleFileLoadResponse.setDescription("copy at file system is not complete");
         }
 
-        if(!this.queueLoad(csvFile)){
+        if(!this.queueLoad(scheduleFileLoadDTO)){
             logger.info("scheduleLoad. queue load is not succesfull");
             scheduleFileLoadResponse.setResponse("NOK");
             scheduleFileLoadResponse.setDescription("queue load is not succesfull");
@@ -61,11 +56,11 @@ public class FileService {
         return scheduleFileLoadResponse;
     }
 
-    public boolean isValidCsvHeader(CsvFile csvFile) {
-        logger.info("isValidCsvHeader. csvFile={}", csvFile);
+    public boolean isValidCsvHeader(ScheduleFileLoadDTO scheduleFileLoadDTO) {
+        logger.info("isValidCsvHeader. csvFile={}", scheduleFileLoadDTO);
         String firstLine = "";
         try {
-            InputStreamReader isr = new InputStreamReader(csvFile.getUploadFile().getInputStream(), StandardCharsets.UTF_8);
+            InputStreamReader isr = new InputStreamReader(scheduleFileLoadDTO.getUploadFile().getInputStream(), StandardCharsets.UTF_8);
             BufferedReader br = new BufferedReader(isr);
             firstLine = br.readLine();
         } catch (IOException ioException) {
@@ -75,22 +70,22 @@ public class FileService {
 
         String cleanHeaders = fileUtilService.removeSymbols(firstLine);
         String[] headersFromFile = cleanHeaders.split(",");
-        String[] selectedHeadersArray = fileUtilService.selectedHeadersArray(csvFile.getSelectedType());
+        String[] selectedHeadersArray = fileUtilService.selectedHeadersArray(scheduleFileLoadDTO.getSelectedType());
         boolean isHeadersEquals = fileUtilService.isStringArraysEquals(headersFromFile, selectedHeadersArray);
 
         logger.info("isValidCsvHeader. isHeadersEquals={}", isHeadersEquals);
         return isHeadersEquals;
     }
 
-    public boolean copyAtFileSystem(CsvFile csvFile){
+    public boolean copyAtFileSystem(ScheduleFileLoadDTO scheduleFileLoadDTO){
 
         try {
-            String originalFilename = csvFile.getUploadFile().getOriginalFilename();
+            String originalFilename = scheduleFileLoadDTO.getUploadFile().getOriginalFilename();
             logger.info("copyAtFileSystem. originalFilename={}", originalFilename);
             String extensionFile = fileUtilService.getFileExtension(originalFilename);
             logger.info("copyAtFileSystem. extensionFile={}", extensionFile);
-            logger.info("copyAtFileSystem. filename entered by user, csvFile.getName={}", csvFile.getName());
-            String finalName = FILE_PATH + csvFile.getName() + extensionFile;
+            logger.info("copyAtFileSystem. filename entered by user, csvFile.getName={}", scheduleFileLoadDTO.getName());
+            String finalName = FILE_PATH + scheduleFileLoadDTO.getName() + extensionFile;
 
             File dest = new File(finalName);
 
@@ -99,7 +94,7 @@ public class FileService {
                 dest.getParentFile().mkdirs();
             }
 
-            csvFile.getUploadFile().transferTo(dest);
+            scheduleFileLoadDTO.getUploadFile().transferTo(dest);
 
             return true;
         } catch (IOException ioException){
@@ -109,14 +104,11 @@ public class FileService {
         }
     }
 
-    public boolean queueLoad(CsvFile csvFile){
-
-        //Example for database connection
-        //System.out.println("estado archivo:" + fileRepository.getFileState(2));
+    public boolean queueLoad(ScheduleFileLoadDTO scheduleFileLoadDTO){
 
         ProcesaArchivoDTO procesaArchivoDTO = new ProcesaArchivoDTO();
-        procesaArchivoDTO.setNombreArchivo(csvFile.getName());
-        procesaArchivoDTO.setTipoArchivo(csvFile.getSelectedType());
+        procesaArchivoDTO.setNombreArchivo(scheduleFileLoadDTO.getName());
+        procesaArchivoDTO.setTipoArchivo(scheduleFileLoadDTO.getSelectedType());
         //TODO identify idPersona with csvFile.getLoadedBy()
 
         int responseInsert = fileRepository.insertProcessFile(procesaArchivoDTO);

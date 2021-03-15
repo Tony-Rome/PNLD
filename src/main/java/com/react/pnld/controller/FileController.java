@@ -1,6 +1,6 @@
 package com.react.pnld.controller;
 
-import com.react.pnld.model.CsvFile;
+import com.react.pnld.model.ScheduleFileLoadDTO;
 import com.react.pnld.model.ScheduleFileLoadResponse;
 import com.react.pnld.services.FileService;
 import org.slf4j.Logger;
@@ -10,8 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class FileController {
@@ -32,13 +30,13 @@ public class FileController {
     }
 
     @PostMapping("/scheduleFileLoadPost")
-    public String scheduleFileLoadPost(CsvFile csvFile, Model model, @RequestParam("uploadFile") MultipartFile uploadFile) {
-        logger.info("scheduleFileLoadPost. csvFile={}, model={}, uploadFile={}", csvFile, model, uploadFile);
+    public String scheduleFileLoadPost(ScheduleFileLoadDTO scheduleFileLoadDTO, Model model) {
+        logger.info("scheduleFileLoadPost. scheduleFileLoadDTO={}, model={}", scheduleFileLoadDTO, model);
 
-        model.addAttribute("csvFile", csvFile);
+        model.addAttribute("csvFile", scheduleFileLoadDTO);
 
-        csvFile.setUploadFile(uploadFile);
-        ScheduleFileLoadResponse scheduleFileLoadResponse = fileService.scheduleLoad(csvFile);
+        scheduleFileLoadDTO.setLoadedBy("1");//TODO remove this line when user logged is identified
+        ScheduleFileLoadResponse scheduleFileLoadResponse = fileService.scheduleLoad(scheduleFileLoadDTO);
         logger.info("scheduleLoadFilePost. scheduleFileLoadResponse={}", scheduleFileLoadResponse);
 
         //TODO in else change to error page

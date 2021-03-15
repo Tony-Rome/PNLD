@@ -2,18 +2,18 @@ package com.react.pnld.model;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class CsvFile {
+public class ScheduleFileLoadDTO {
 
     private String name;
     private String selectedType;
     private MultipartFile uploadFile;
     private String loadedBy;
 
-    public CsvFile() {
+    public ScheduleFileLoadDTO() {
         super();
     }
 
-    public CsvFile(String name, String selectedType, MultipartFile uploadFile, String loadedBy) {
+    public ScheduleFileLoadDTO(String name, String selectedType, MultipartFile uploadFile, String loadedBy) {
         super();
         this.name = name;
         this.selectedType = selectedType;
