@@ -19,6 +19,8 @@ public class FileRepository {
         return estadoArchivoMapper.getEstadoArchivo(idFileState);
     }
 
+
+
     public int insertProcessFile(ProcesaArchivoDTO procesaArchivoDTO){
 
         procesaArchivoDTO.setIdEstado(1); //TODO set EstadosProcesa
