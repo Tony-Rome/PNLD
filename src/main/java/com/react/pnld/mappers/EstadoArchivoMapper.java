@@ -12,5 +12,4 @@ public interface EstadoArchivoMapper {
             "VALUES(#{fechaCarga},#{nombreArchivo},#{tipoArchivo},#{idPersona},#{idEstado},#{fechaProcesado}," +
             "#{registrosTotales},#{registrosNuevos},#{registrosDuplicados});")
     int insertProcessFile(ProcesaArchivoDTO procesaArchivoDTO);
-
 }
