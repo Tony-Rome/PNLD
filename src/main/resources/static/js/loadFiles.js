@@ -108,7 +108,7 @@ const btSubmitOk = document.getElementById("btSubmitOk");
         popupYes.addEventListener("click", ()=> {
             let formData = new FormData(form);
             var xmlhttp = new XMLHttpRequest();
-            var url = "/scheduleLoadFilePost";
+            var url = "/scheduleFileLoadPost";
             xmlhttp.open("POST", url);
             xmlhttp.send(formData);
             xmlhttp.onload = () => console.log(xmlhttp.status);

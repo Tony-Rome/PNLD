@@ -1,46 +1,44 @@
 package com.react.pnld.controller;
 
-import com.react.pnld.model.CsvFile;
-import com.react.pnld.service.FileService;
+import com.react.pnld.model.dto.ScheduleFileLoadDTO;
+import com.react.pnld.model.ScheduleFileLoadResponse;
+import com.react.pnld.services.FileService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class FileController {
+    private static final Logger logger = LoggerFactory.getLogger(FileController.class);
+
     @Autowired
     private FileService fileService;
 
     @GetMapping(value = "/")
     public String index(Model model) {
-
         return "index";
     }
 
-    @GetMapping(value = "/scheduleLoadFilePost")
-    public String scheduleLoadFileGet(Model model) {
+    @GetMapping(value = "/scheduleFileLoadPost")
+    public String scheduleFileLoadGet(Model model) {
+        logger.debug("scheduleFileLoadGet. form load file is loaded");
         return "loadFiles";
     }
 
-    @PostMapping("/scheduleLoadFilePost")
-    public String scheduleLoadFilePost(CsvFile csvFile, Model model, @RequestParam("uploadFile") MultipartFile uploadFile) {
+    @PostMapping("/scheduleFileLoadPost")
+    public String scheduleFileLoadPost(ScheduleFileLoadDTO scheduleFileLoadDTO, Model model) {
+        model.addAttribute("scheduleFileLoadDTO", scheduleFileLoadDTO);
+        logger.info("scheduleFileLoadPost. scheduleFileLoadDTO={}", scheduleFileLoadDTO);
 
-        model.addAttribute("csvFile", csvFile);
-        System.out.println("csvFile: "+csvFile);
-        System.out.println("Model: "+model);
-        System.out.println("uploadFile: "+ uploadFile);
+        ScheduleFileLoadResponse scheduleFileLoadResponse = fileService.scheduleLoad(scheduleFileLoadDTO);
+        logger.info("scheduleLoadFilePost. scheduleFileLoadResponse={}", scheduleFileLoadResponse);
 
-        if(uploadFile.isEmpty()){
-            return "File is empty";
-        }
-        csvFile.setUploadFile(uploadFile);
-        boolean responseScheduleLoad = fileService.scheduleLoad(csvFile);
-        System.out.println("responseScheduleLoad: " + responseScheduleLoad);
-
-        return "loadFiles";
+        //TODO in else change to error page
+        String response = (scheduleFileLoadResponse.getResponse().equals("OK"))? "loadFiles" : "loadFiles";
+        return response;
     }
 }
