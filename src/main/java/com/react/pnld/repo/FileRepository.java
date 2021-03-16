@@ -15,12 +15,6 @@ public class FileRepository {
     @Autowired
     EstadoArchivoMapper estadoArchivoMapper;
 
-    public EstadoArchivoDTO getFileState(int idFileState){
-        return estadoArchivoMapper.getEstadoArchivo(idFileState);
-    }
-
-
-
     public int insertProcessFile(ProcesaArchivoDTO procesaArchivoDTO){
 
         procesaArchivoDTO.setIdEstado(1); //TODO set EstadosProcesa
