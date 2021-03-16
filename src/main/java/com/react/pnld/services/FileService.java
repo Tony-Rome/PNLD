@@ -91,8 +91,8 @@ public class FileService {
             logger.info("copyAtFileSystem. extensionFile={}", extensionFile);
 
             String loadedDateTimeLikeString = scheduleFileLoadDTO.getLoadedOnDateTime().toString().replace(":","-");
-            String loadedDateFormated = loadedDateTimeLikeString.replace(fileUtilService.getExtension(loadedDateTimeLikeString),"");
-            String finalFileName =  scheduleFileLoadDTO.getName() + loadedDateFormated + extensionFile;
+            String loadedDateFormatted = loadedDateTimeLikeString.replace(fileUtilService.getExtension(loadedDateTimeLikeString),"");
+            String finalFileName =   loadedDateFormatted + "-" + scheduleFileLoadDTO.getName() + extensionFile;
             logger.info("copyAtFileSystem. finalFileName={}", finalFileName);
 
             String finalPath = FILE_PATH + finalFileName;
