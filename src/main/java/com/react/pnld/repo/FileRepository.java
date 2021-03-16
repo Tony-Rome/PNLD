@@ -1,13 +1,9 @@
 package com.react.pnld.repo;
 
 import com.react.pnld.mappers.EstadoArchivoMapper;
-import com.react.pnld.model.EstadoArchivoDTO;
-import com.react.pnld.model.ProcesaArchivoDTO;
+import com.react.pnld.model.dto.ProcesaArchivoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
 
 @Repository
 public class FileRepository {

@@ -1,4 +1,4 @@
-package com.react.pnld.model;
+package com.react.pnld.model.dto;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;

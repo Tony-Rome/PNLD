@@ -1,4 +1,4 @@
-package com.react.pnld.model;
+package com.react.pnld.model.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 

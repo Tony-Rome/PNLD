@@ -1,9 +1,7 @@
 package com.react.pnld.mappers;
 
-import com.react.pnld.model.EstadoArchivoDTO;
-import com.react.pnld.model.ProcesaArchivoDTO;
+import com.react.pnld.model.dto.ProcesaArchivoDTO;
 import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
 
 public interface EstadoArchivoMapper {
 
