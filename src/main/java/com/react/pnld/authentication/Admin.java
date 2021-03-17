@@ -13,6 +13,7 @@ public class Admin {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.role = "ROLE_ADMIN";
     }
 
     public void setId(Long id){

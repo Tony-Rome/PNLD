@@ -3,6 +3,7 @@ package com.react.pnld.controller;
 import com.react.pnld.model.CsvFile;
 import com.react.pnld.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,8 @@ public class FileController {
 
     @GetMapping(value = "/scheduleLoadFilePost")
     public String scheduleLoadFileGet(Model model) {
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal()
+        );
         return "loadFiles";
     }
 

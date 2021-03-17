@@ -1,5 +1,6 @@
 package com.react.pnld;
 
+import com.react.pnld.authentication.LDAPAuthProvider;
 import com.react.pnld.authentication.UserDetailsImpl;
 import com.react.pnld.authentication.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
 
 @EnableWebSecurity
 public class PnldIndicatorsAppSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -23,16 +25,22 @@ public class PnldIndicatorsAppSecurityConfig extends WebSecurityConfigurerAdapte
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
+    @Bean
+    public LDAPAuthProvider ldapAuthProvider(){
+        LDAPAuthProvider ldapAuthProvider = new LDAPAuthProvider();
+        return ldapAuthProvider;
+    }
+
    @Bean
    public PasswordEncoder passwordEncoder(){ return new BCryptPasswordEncoder(); }
+
+
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/scheduleLoadFilePost","index","/css/*","/js/*").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -42,14 +50,29 @@ public class PnldIndicatorsAppSecurityConfig extends WebSecurityConfigurerAdapte
                     .passwordParameter("txtClave")
                 .defaultSuccessUrl("/scheduleLoadFilePost",true)
                 .and()
-                .logout().permitAll();
+                .logout()
+                .permitAll();
     }
 
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-       auth.userDetailsService(userDetailsService)
-               .passwordEncoder(passwordEncoder());
+
+        auth.authenticationProvider(ldapAuthProvider());
+        /*auth
+                .ldapAuthentication()
+                .userDnPatterns("uid={0},ou=people")
+                .groupRoleAttribute("cn")
+                .rolePrefix("ROLE_")
+                .contextSource()
+                .url("ldap://localhost:8389/dc=springframework,dc=org")
+                .and()
+                .passwordCompare()
+                .passwordEncoder(new BCryptPasswordEncoder())
+                .passwordAttribute("userPassword");*/
+
+       /*auth.userDetailsService(userDetailsService)
+               .passwordEncoder(passwordEncoder());*/
 
         /*auth.inMemoryAuthentication()
                 .withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN");*/
