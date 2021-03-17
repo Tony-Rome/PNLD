@@ -31,7 +31,7 @@ public class FileController {
 
     @PostMapping("/scheduleLoadFilePost")
     public String scheduleLoadFilePost(CsvFile csvFile, Model model, @RequestParam("uploadFile") MultipartFile uploadFile) {
-
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         model.addAttribute("csvFile", csvFile);
         System.out.println("csvFile: "+csvFile);
         System.out.println("Model: "+model);

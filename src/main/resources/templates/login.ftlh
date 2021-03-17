@@ -3,7 +3,6 @@
     <head>
         <title>Archivos</title>
         <meta charset="UTF-8">
-        <link href="css/loadFiles.css" rel="stylesheet"/>
         <!-- Estas funcionan pero tienen problemas también con CORS-->
         <!-- Las demás hojas no funcionan -->
         <link href="https://staticv2.mineduc.cl/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -29,7 +28,7 @@
                     </div>
                     <br>
                     <form role="form" id="form" method=post action="/login">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
                         <div class="row">
                             <div class="col-xs-10 col-xs-offset-1">
                                 <label for="form_name">Nombre de Usuario:</label>
