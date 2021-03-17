@@ -1,7 +1,7 @@
 package com.react.pnld.services;
 
+import com.react.pnld.model.LoadedFile;
 import com.react.pnld.model.dto.ScheduleFileLoadDTO;
-import com.react.pnld.model.dto.ProcesaArchivoDTO;
 import com.react.pnld.model.ScheduleFileLoadResponse;
 import com.react.pnld.repo.FileRepository;
 import org.slf4j.Logger;
@@ -117,14 +117,14 @@ public class FileService {
 
     public boolean queueLoad(ScheduleFileLoadDTO scheduleFileLoadDTO){
 
-        ProcesaArchivoDTO procesaArchivoDTO = new ProcesaArchivoDTO();
-        procesaArchivoDTO.setNombreArchivo(scheduleFileLoadDTO.getName());
-        procesaArchivoDTO.setTipoArchivo(scheduleFileLoadDTO.getSelectedType());
-        procesaArchivoDTO.setFechaCarga(scheduleFileLoadDTO.getLoadedOnDateTime());
+        LoadedFile loadedFile = new LoadedFile();
+        loadedFile.setFileName(scheduleFileLoadDTO.getName());
+        loadedFile.setFileType(scheduleFileLoadDTO.getSelectedType());
+        loadedFile.setLoadedDate(scheduleFileLoadDTO.getLoadedOnDateTime());
         //TODO identify idPersona with csvFile.getLoadedBy()
-        procesaArchivoDTO.setIdPersona(1); //TODO set by logged user
+        loadedFile.setLoadedByUserId(1); //TODO set by logged user
 
-        int responseInsert = fileRepository.insertProcessFile(procesaArchivoDTO);
+        int responseInsert = fileRepository.insertProcessFile(loadedFile);
 
         if(responseInsert == 0){
             return false;
@@ -139,7 +139,7 @@ public class FileService {
 
         //select scheduled files
         final int scheduledState = 1;
-        List<ProcesaArchivoDTO> filesToPersist = fileRepository.getFilesProcess(scheduledState);
+        List<LoadedFile> filesToPersist = fileRepository.getLoadedFilesByState(scheduledState);
         logger.info("executeFileLoadScheduled. filesToPersist={}", filesToPersist);
 
 

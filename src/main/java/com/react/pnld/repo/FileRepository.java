@@ -1,8 +1,8 @@
 package com.react.pnld.repo;
 
 import com.react.pnld.mappers.EstadoArchivoMapper;
+import com.react.pnld.model.LoadedFile;
 import com.react.pnld.model.dto.EstadoArchivoDTO;
-import com.react.pnld.model.dto.ProcesaArchivoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -14,19 +14,19 @@ public class FileRepository {
     @Autowired
     EstadoArchivoMapper estadoArchivoMapper;
 
-    public int insertProcessFile(ProcesaArchivoDTO procesaArchivoDTO){
+    public int insertProcessFile(LoadedFile loadedFile){
 
-        procesaArchivoDTO.setIdEstado(1); //TODO set EstadosProcesa
-        procesaArchivoDTO.setFechaProcesado(null);
-        procesaArchivoDTO.setRegistrosTotales(0);
-        procesaArchivoDTO.setRegistrosDuplicados(0);
-        procesaArchivoDTO.setRegistrosNuevos(0);
+        loadedFile.setStateId(1); //TODO set EstadosProcesa
+        loadedFile.setProcessDate(null);
+        loadedFile.setTotalRecords(0);
+        loadedFile.setDuplicateRecords(0);
+        loadedFile.setNewRecords(0);
 
-        return estadoArchivoMapper.insertProcessFile(procesaArchivoDTO);
+        return estadoArchivoMapper.insertProcessFile(loadedFile);
     }
 
-    public List<ProcesaArchivoDTO> getFilesProcess(int scheduledState){
-        return estadoArchivoMapper.getProcessFilesScheduled(scheduledState);
+    public List<LoadedFile> getLoadedFilesByState(int scheduledState){
+        return estadoArchivoMapper.getLoadedFilesByState(scheduledState);
     }
 
     public List<EstadoArchivoDTO> getEstadoArchivoList(){
