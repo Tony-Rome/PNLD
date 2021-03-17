@@ -15,13 +15,6 @@ public class FileRepository {
     EstadoArchivoMapper estadoArchivoMapper;
 
     public int insertProcessFile(LoadedFile loadedFile){
-
-        loadedFile.setStateId(1); //TODO set EstadosProcesa
-        loadedFile.setProcessDate(null);
-        loadedFile.setTotalRecords(0);
-        loadedFile.setDuplicateRecords(0);
-        loadedFile.setNewRecords(0);
-
         return estadoArchivoMapper.insertProcessFile(loadedFile);
     }
 

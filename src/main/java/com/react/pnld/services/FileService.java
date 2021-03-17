@@ -25,7 +25,7 @@ import java.util.List;
 public class FileService {
 
     private static final Logger logger = LoggerFactory.getLogger(FileService.class);
-
+    private final int FILE_STATE_SCHEDULED = 1;
     @Value("${copy.path.files}")
     private String FILE_PATH;
 
@@ -121,9 +121,13 @@ public class FileService {
         loadedFile.setFileName(scheduleFileLoadDTO.getName());
         loadedFile.setFileType(scheduleFileLoadDTO.getSelectedType());
         loadedFile.setLoadedDate(scheduleFileLoadDTO.getLoadedOnDateTime());
-        //TODO identify idPersona with csvFile.getLoadedBy()
-        loadedFile.setLoadedByUserId(1); //TODO set by logged user
-
+        //TODO identify loadedByUserId with csvFile.getLoadedBy(), logged user
+        loadedFile.setLoadedByUserId(1);
+        loadedFile.setStateId(FILE_STATE_SCHEDULED);
+        loadedFile.setProcessDate(null);
+        loadedFile.setTotalRecords(0);
+        loadedFile.setDuplicateRecords(0);
+        loadedFile.setNewRecords(0);
         int responseInsert = fileRepository.insertProcessFile(loadedFile);
 
         if(responseInsert == 0){
@@ -138,10 +142,8 @@ public class FileService {
         logger.info("executeFileLoadScheduled. now={}", now);
 
         //select scheduled files
-        final int scheduledState = 1;
-        List<LoadedFile> filesToPersist = fileRepository.getLoadedFilesByState(scheduledState);
+        List<LoadedFile> filesToPersist = fileRepository.getLoadedFilesByState(FILE_STATE_SCHEDULED);
         logger.info("executeFileLoadScheduled. filesToPersist={}", filesToPersist);
-
 
 
         //TODO read file's content
