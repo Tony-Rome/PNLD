@@ -41,4 +41,11 @@ public class FileController {
         String response = (scheduleFileLoadResponse.getResponse().equals("OK"))? "loadFiles" : "loadFiles";
         return response;
     }
+
+    @GetMapping("/executeLoadScheduled")
+    public String executeLoadScheduled(){
+        logger.info("executeLoadScheduled. init");
+        fileService.executeFileLoadScheduled();
+        return "finish";
+    }
 }

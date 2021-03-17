@@ -1,9 +1,12 @@
 package com.react.pnld.repo;
 
 import com.react.pnld.mappers.EstadoArchivoMapper;
+import com.react.pnld.model.dto.EstadoArchivoDTO;
 import com.react.pnld.model.dto.ProcesaArchivoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class FileRepository {
@@ -22,5 +25,12 @@ public class FileRepository {
         return estadoArchivoMapper.insertProcessFile(procesaArchivoDTO);
     }
 
+    public List<ProcesaArchivoDTO> getFilesProcess(int scheduledState){
+        return estadoArchivoMapper.getProcessFilesScheduled(scheduledState);
+    }
+
+    public List<EstadoArchivoDTO> getEstadoArchivoList(){
+        return estadoArchivoMapper.getEstadoArchivoList();
+    }
 
 }

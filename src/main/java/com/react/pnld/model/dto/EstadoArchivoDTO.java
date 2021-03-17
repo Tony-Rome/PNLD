@@ -1,14 +1,14 @@
 package com.react.pnld.model.dto;
 
 public class EstadoArchivoDTO {
-    private Integer idEstado;
+    private int idEstado;
     private String descripcion;
 
-    public Integer getIdEstado() {
+    public int getIdEstado() {
         return idEstado;
     }
 
-    public void setIdEstado(Integer idEstado) {
+    public void setIdEstado(int idEstado) {
         this.idEstado = idEstado;
     }
 

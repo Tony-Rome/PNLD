@@ -24,7 +24,7 @@ public class PnldIndicatorsApplication {
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
-        return (SqlSessionFactory) sqlSessionFactoryBean.getObject();
+        return sqlSessionFactoryBean.getObject();
     }
 
     public static void main(String[] args) {

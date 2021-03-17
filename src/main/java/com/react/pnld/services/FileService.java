@@ -16,8 +16,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 @Service
 public class FileService {
@@ -131,14 +133,22 @@ public class FileService {
     }
 
     @Scheduled(cron = "${cron.process-loadscheduled}", zone = "UTC")
-    public void executeScheduledLoadFile(){
-        //System.out.println("Time instant UTC: "+Instant.now());
-        //TODO select scheduled files
+    public void executeFileLoadScheduled(){
+        Instant now = Instant.now();
+        logger.info("executeFileLoadScheduled. now={}", now);
+
+        //select scheduled files
+        final int scheduledState = 1;
+        List<ProcesaArchivoDTO> filesToPersist = fileRepository.getFilesProcess(scheduledState);
+        logger.info("executeFileLoadScheduled. filesToPersist={}", filesToPersist);
+
+
+
         //TODO read file's content
         //TODO validate load records by file's type
             //TODO insert records if not exist
         //TODO resume load file
-        //TODO update record load filex
+        //TODO update record load file
     }
 
 }
