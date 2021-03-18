@@ -24,25 +24,13 @@ public class FileController {
 
     @GetMapping(value = "/scheduleLoadFilePost")
     public String scheduleLoadFileGet(Model model) {
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal()
-        );
+       
         return "loadFiles";
     }
 
     @PostMapping("/scheduleLoadFilePost")
     public String scheduleLoadFilePost(CsvFile csvFile, Model model, @RequestParam("uploadFile") MultipartFile uploadFile) {
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        model.addAttribute("csvFile", csvFile);
-        System.out.println("csvFile: "+csvFile);
-        System.out.println("Model: "+model);
-        System.out.println("uploadFile: "+ uploadFile);
 
-        if(uploadFile.isEmpty()){
-            return "File is empty";
-        }
-        csvFile.setUploadFile(uploadFile);
-        boolean responseScheduleLoad = fileService.scheduleLoad(csvFile);
-        System.out.println("responseScheduleLoad: " + responseScheduleLoad);
 
         return "loadFiles";
     }
