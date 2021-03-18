@@ -6,6 +6,7 @@ import com.react.pnld.model.dto.EstadoArchivoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -18,8 +19,8 @@ public class FileRepository {
         return estadoArchivoMapper.insertProcessFile(loadedFile);
     }
 
-    public List<LoadedFile> getLoadedFilesByState(int scheduledState){
-        return estadoArchivoMapper.getLoadedFilesByState(scheduledState);
+    public List<LoadedFile> getLoadedFilesByState(int scheduledState, Timestamp initTime, Timestamp endTime){
+        return estadoArchivoMapper.getLoadedFilesByState(scheduledState, initTime, endTime);
     }
 
     public List<EstadoArchivoDTO> getEstadoArchivoList(){

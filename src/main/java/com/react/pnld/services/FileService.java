@@ -16,7 +16,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -138,10 +140,15 @@ public class FileService {
 
     @Scheduled(cron = "${cron.process-loadscheduled}", zone = "UTC")
     public void executeFileLoadScheduled(){
-        Instant now = Instant.now();
-        logger.info("executeFileLoadScheduled. now={}", now);
+
+        LocalDateTime endDateTime = LocalDateTime.now(ZoneId.of("UTC"));
+        logger.info("executeFileLoadScheduled. endDateTime={}", endDateTime);
+        LocalDateTime startDateTime = endDateTime.minusDays(1L);
+        logger.info("executeFileLoadScheduled. startDateTime={}", startDateTime);
+
         //select scheduled files
-        List<LoadedFile> filesLoadedScheduled = fileRepository.getLoadedFilesByState(FILE_STATE_SCHEDULED);
+        List<LoadedFile> filesLoadedScheduled = fileRepository.getLoadedFilesByState(FILE_STATE_SCHEDULED,
+                Timestamp.valueOf(startDateTime), Timestamp.valueOf(endDateTime));
         logger.info("executeFileLoadScheduled. filesLoadedScheduled={}", filesLoadedScheduled);
 
 

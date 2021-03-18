@@ -19,7 +19,7 @@ public interface EstadoArchivoMapper {
     int insertProcessFile(LoadedFile loadedFile);
 
     @Select("select * from pnld.archivo_cargado " +
-            "where id_estado = #{idEstado} AND fecha_carga = #{initTime} AND fecha_carga = #{endTime}")
+            "where id_estado = #{idEstado} AND fecha_carga >= #{initTime} AND fecha_carga < #{endTime}")
     @Results({
             @Result(property = "idLoadedFile", column = "id_archivo"),
             @Result(property = "loadedDate", column = "fecha_carga"),
