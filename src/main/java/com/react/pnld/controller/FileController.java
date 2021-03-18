@@ -22,13 +22,13 @@ public class FileController {
         return "index";
     }
 
-    @GetMapping(value = "/scheduleLoadFilePost")
+    @GetMapping(value = "/scheduleFileLoadPost")
     public String scheduleLoadFileGet(Model model) {
-       
+
         return "loadFiles";
     }
 
-    @PostMapping("/scheduleLoadFilePost")
+    @PostMapping("/scheduleFileLoadPost")
     public String scheduleLoadFilePost(CsvFile csvFile, Model model, @RequestParam("uploadFile") MultipartFile uploadFile) {
 
 

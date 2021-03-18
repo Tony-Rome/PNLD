@@ -49,7 +49,7 @@ public class PnldIndicatorsAppSecurityConfig extends WebSecurityConfigurerAdapte
                     .loginPage("/login")
                     .usernameParameter("txtUsuario")
                     .passwordParameter("txtClave")
-                .defaultSuccessUrl("/scheduleLoadFilePost",true)
+                .defaultSuccessUrl("/scheduleFileLoadPost",true)
                 .and()
                 .logout()
                 .permitAll();
