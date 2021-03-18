@@ -111,7 +111,7 @@ const btSubmitError = document.getElementById("btSubmitError");
             let formResponse;
             let formData = new FormData(form);
             var xmlhttp = new XMLHttpRequest();
-            var url = "/scheduleLoadFilePost";
+            var url = "/scheduleFileLoadPost";
             xmlhttp.open("POST", url);
             xmlhttp.send(formData);
             xmlhttp.onload = ()=>{

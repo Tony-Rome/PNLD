@@ -18,7 +18,7 @@
     <@ft.filesTable/>
 
     <div class="formContainer">
-      <form name="fileForm" id="fileForm" action="/scheduleLoadFilePost" method="post" enctype="multipart/form-data">
+      <form name="fileForm" id="fileForm" action="/scheduleFileLoadPost" method="post" enctype="multipart/form-data">
 
             <div class="row">
 

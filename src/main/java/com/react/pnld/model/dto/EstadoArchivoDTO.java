@@ -1,4 +1,4 @@
-package com.react.pnld.model;
+package com.react.pnld.model.dto;
 
 public class EstadoArchivoDTO {
     private Integer idEstado;
