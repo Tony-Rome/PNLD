@@ -88,7 +88,7 @@
                 Resumen archivo de carga
             </div>
             <div class="displayNone" id="popupBodyMsgOk">
-                <div class="popupMsg">El archivo se ha subido a la plataforma y se comenzará con su procesamiento. Una vez finalizada la carga se informará a su correo.</div>
+                <div class="popupMsg">La carga de archivo se ha planificado. Se procesará a las 00:00 UTC.</div>
                 <input type="submit" id="btSubmitOk" value="Entendido">
             </div>
             <div class="displayNone" id="popupBodyMsgError">
