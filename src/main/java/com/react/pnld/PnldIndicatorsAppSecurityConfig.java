@@ -34,9 +34,6 @@ public class PnldIndicatorsAppSecurityConfig extends WebSecurityConfigurerAdapte
    @Bean
    public PasswordEncoder passwordEncoder(){ return new BCryptPasswordEncoder(); }
 
-
-
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -59,23 +56,18 @@ public class PnldIndicatorsAppSecurityConfig extends WebSecurityConfigurerAdapte
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
+    /**
+     *
+     * username: admin
+     * password: admin
+     *
+     * */
+
         auth.authenticationProvider(ldapAuthProvider());
-        /*auth
-                .ldapAuthentication()
-                .userDnPatterns("uid={0},ou=people")
-                .groupRoleAttribute("cn")
-                .rolePrefix("ROLE_")
-                .contextSource()
-                .url("ldap://localhost:8389/dc=springframework,dc=org")
-                .and()
-                .passwordCompare()
-                .passwordEncoder(new BCryptPasswordEncoder())
-                .passwordAttribute("userPassword");*/
 
        /*auth.userDetailsService(userDetailsService)
                .passwordEncoder(passwordEncoder());*/
 
-        /*auth.inMemoryAuthentication()
-                .withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN");*/
+
     }
 }

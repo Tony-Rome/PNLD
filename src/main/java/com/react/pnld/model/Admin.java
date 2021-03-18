@@ -1,35 +1,35 @@
-package com.react.pnld.authentication;
+package com.react.pnld.model;
 
 public class Admin {
-    private Long id;
-    private String username;
+    private Long idAdmin;
+    private String nombre;
     private String email;
-    private String password;
+    private String clave;
     private String role;
 
     public Admin(){}
 
-    public Admin(String username, String email, String password){
-        this.username = username;
+    public Admin(String nombre, String email, String clave){
+        this.nombre = nombre;
         this.email = email;
-        this.password = password;
+        this.clave = clave;
         this.role = "ROLE_ADMIN";
     }
 
-    public void setId(Long id){
-        this.id = id;
+    public void setId(Long idAdmin){
+        this.idAdmin = idAdmin;
     }
 
     public Long getId() {
-        return id;
+        return idAdmin;
     }
 
     public void setUsername(String username){
-        this.username = username;
+        this.nombre = nombre;
     }
 
     public String getUsername(){
-        return username;
+        return nombre;
     }
 
     public void setEmail(String email){
@@ -38,12 +38,12 @@ public class Admin {
 
     public String getEmail(){ return email;}
 
-    public void setPassword(String password){
-        this.password = password;
+    public void setPassword(String clave){
+        this.clave = clave;
     }
 
     public String getPassword(){
-        return password;
+        return clave;
     }
 
     public void setRole(String role){

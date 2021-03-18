@@ -25,13 +25,14 @@ public class FileController {
     }
 
     @GetMapping(value = "/scheduleFileLoadPost")
-    public String scheduleFileLoadGet(Model model) {
-        logger.debug("scheduleFileLoadGet. form load file is loaded");
-        return "loadFiles";
-    }
+    public String scheduleFileLoadGet(Model model) { return "loadFiles"; }
 
     @PostMapping("/scheduleFileLoadPost")
     public String scheduleFileLoadPost(ScheduleFileLoadDTO scheduleFileLoadDTO, Model model) {
+
+        /** Nombre usuario autenticado que carga archivo */
+        String loadedBy = SecurityContextHolder.getContext().getAuthentication().getName();
+
         model.addAttribute("scheduleFileLoadDTO", scheduleFileLoadDTO);
         logger.info("scheduleFileLoadPost. scheduleFileLoadDTO={}", scheduleFileLoadDTO);
 

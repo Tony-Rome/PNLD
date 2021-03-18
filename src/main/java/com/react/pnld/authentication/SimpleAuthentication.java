@@ -8,19 +8,18 @@ import java.util.List;
 
 public class SimpleAuthentication implements Authentication {
 
-    private static final long serialVersionUID = -7899424530535881138L;
     private String principal;
     private List<GrantedAuthority> authorities;
     private Object detail;
     private boolean authenticated;
     private String credential;
 
-    public SimpleAuthentication(String p, List<GrantedAuthority> auths, Object d, String password){
-        this.principal = p;
-        this.authorities = auths;
-        this.detail = d;
+    public SimpleAuthentication(String principal, List<GrantedAuthority> authorities, Object detail, String clave){
+        this.principal = principal;
+        this.authorities = authorities;
+        this.detail = detail;
         this.authenticated = true;
-        this.credential = password;
+        this.credential = clave;
     }
 
     @Override
@@ -49,8 +48,8 @@ public class SimpleAuthentication implements Authentication {
     }
 
     @Override
-    public void setAuthenticated(boolean b) throws IllegalArgumentException {
-        authenticated = b;
+    public void setAuthenticated(boolean authenticated) throws IllegalArgumentException {
+        this.authenticated = authenticated;
     }
 
     @Override

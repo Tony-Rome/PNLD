@@ -1,7 +1,6 @@
 package com.react.pnld.mappers;
 
-import com.react.pnld.authentication.Admin;
-import com.react.pnld.model.EstadoArchivoDTO;
+import com.react.pnld.model.Admin;
 import org.apache.ibatis.annotations.Select;
 
 public interface AdminMapper {
@@ -18,6 +17,6 @@ public interface AdminMapper {
      *
      *  valor del campo role debe ser ROLE_ADMIN
      * */
-    @Select("SELECT * FROM pnld.pnld.admin WHERE username = #{username}")
-    Admin findByUsername(String username);
+    @Select("SELECT * FROM pnld.pnld.admin WHERE nombre = #{nombre}")
+    Admin findByUsername(String nombre);
 }

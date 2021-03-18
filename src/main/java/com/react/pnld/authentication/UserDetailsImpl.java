@@ -1,5 +1,6 @@
 package com.react.pnld.authentication;
 
+import com.react.pnld.model.Admin;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,24 +10,22 @@ import java.util.Collection;
 
 public class UserDetailsImpl implements UserDetails {
 
-    private static final long serialVersionUID = 1L;
-
     private Long id;
 
-    private String username;
+    private String nombre;
 
     private String email;
 
-    private String password;
+    private String clave;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Long id, String username, String email, String password,
+    public UserDetailsImpl(Long id, String nombre, String email, String clave,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
-        this.username = username;
+        this.nombre = nombre;
         this.email = email;
-        this.password = password;
+        this.clave = clave;
         this.authorities = authorities;
     }
 
@@ -51,12 +50,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return clave;
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return nombre;
     }
 
     @Override

@@ -1,14 +1,12 @@
 package com.react.pnld.authentication;
 
-import com.unboundid.ldap.sdk.LDAPException;
+import com.react.pnld.model.Admin;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.naming.NamingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,24 +17,22 @@ public class LDAPAuthProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-        List<GrantedAuthority> authorities = null;
+        List<GrantedAuthority> authorities;
         Object detail;
-        String username,password;
-        //String[] roles = null;
+        String nombre, clave;
 
-        username = String.valueOf(authentication.getPrincipal());
-        password = String.valueOf(authentication.getCredentials());
+        nombre = String.valueOf(authentication.getPrincipal());
+        clave = String.valueOf(authentication.getCredentials());
         authorities = new ArrayList<GrantedAuthority>(1);
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
-        if(!ldapServices.loginUser(username, password)){
+        if(!ldapServices.loginUser(nombre, clave)){
             return null;
         }
 
+        detail = new Admin(nombre, "admin@email.com", clave);
 
-        detail = new Admin(username, "admin@email.com", password);
-
-        return new SimpleAuthentication(username,authorities, detail, password);
+        return new SimpleAuthentication(nombre,authorities, detail, clave);
     }
 
     @Override
