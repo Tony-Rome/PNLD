@@ -12,8 +12,10 @@ const popupName = document.getElementById("popupName");
 const popupType = document.getElementById("popupType");
 const popupFile = document.getElementById("popupFile");
 const popupBodyFile = document.getElementById("popupBodyFile");
-const popupBodyMsg = document.getElementById("popupBodyMsg");
+const popupBodyMsgOk = document.getElementById("popupBodyMsgOk");
+const popupBodyMsgError = document.getElementById("popupBodyMsgError");
 const btSubmitOk = document.getElementById("btSubmitOk");
+const btSubmitError = document.getElementById("btSubmitError");
 
 
         let formDataValid = {
@@ -106,30 +108,32 @@ const btSubmitOk = document.getElementById("btSubmitOk");
         });
 
         popupYes.addEventListener("click", ()=> {
+            let formResponse;
             let formData = new FormData(form);
             var xmlhttp = new XMLHttpRequest();
             var url = "/scheduleLoadFilePost";
             xmlhttp.open("POST", url);
             xmlhttp.send(formData);
-            xmlhttp.onload = () => console.log(xmlhttp.status);
+            xmlhttp.onload = ()=>{
 
+                if(xmlhttp.status === 200){
 
-
-            formDataValid.name = false;
-
-
-
-            popupBodyFile.classList.add("displayNone");
-            popupBodyMsg.classList.remove("displayNone");
-
+                    popupBodyFile.classList.add("displayNone");
+                    popupBodyMsgOk.classList.remove("displayNone");
+                }
+                else{
+                    popupBodyFile.classList.add("displayNone");
+                    popupBodyMsgError.classList.remove("displayNone");
+                }
+            };
 
         });
 
         popupNo.addEventListener("click", ()=> {
 
             popup.style.display = "none";
-            form.reset();
             deactivateFileName();
+            form.reset();
             formDataValid.name = false;
             dropFile.style.borderColor = "#ccc";
             dropFile.style.borderStyle = "dashed";
@@ -138,12 +142,23 @@ const btSubmitOk = document.getElementById("btSubmitOk");
 
         btSubmitOk.addEventListener("click", ()=> {
             form.reset();
+            formDataValid.name = false;
             deactivateFileName();
             popup.style.display = "none";
             popupBodyFile.classList.remove("displayNone");
-            popupBodyMsg.classList.add("displayNone");
+            popupBodyMsgOk.classList.add("displayNone");
             dropFile.style.borderColor = "#ccc";
             dropFile.style.borderStyle = "dashed";
             submitController();
 
+        });
+
+        btSubmitError.addEventListener("click",()=> {
+            popup.style.display = "none";
+            popupBodyFile.classList.remove("displayNone");
+            popupBodyMsgError.classList.add("displayNone");
+            dropFile.style.borderColor = "#ccc";
+            dropFile.style.borderStyle = "dashed";
+            deactivateFileName();
+            submitController();
         });

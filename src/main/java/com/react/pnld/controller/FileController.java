@@ -23,6 +23,7 @@ public class FileController {
 
     @GetMapping(value = "/scheduleLoadFilePost")
     public String scheduleLoadFileGet(Model model) {
+
         return "loadFiles";
     }
 
@@ -32,7 +33,7 @@ public class FileController {
         model.addAttribute("csvFile", csvFile);
         System.out.println("csvFile: "+csvFile);
         System.out.println("Model: "+model);
-        System.out.println("uploadFile: "+ uploadFile);
+        System.out.println("uploadFile: "+ uploadFile.getOriginalFilename());
 
         if(uploadFile.isEmpty()){
             return "File is empty";

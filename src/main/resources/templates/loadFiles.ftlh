@@ -87,9 +87,13 @@
             <div class="popupHead">
                 Resumen archivo de carga
             </div>
-            <div class="displayNone" id="popupBodyMsg">
+            <div class="displayNone" id="popupBodyMsgOk">
                 <div class="popupMsg">El archivo se ha subido a la plataforma y se comenzará con su procesamiento. Una vez finalizada la carga se informará a su correo.</div>
                 <input type="submit" id="btSubmitOk" value="Entendido">
+            </div>
+            <div class="displayNone" id="popupBodyMsgError">
+                <div class="popupMsg">No se pudo planificar carga del archivo.<br/>Sugerencia: validar archivo a cargar y tipo seleccionado</div>
+                <input type="submit" id="btSubmitError" value="Entendido">
             </div>
             <div id="popupBodyFile">
                 <div class="popupDetail">

@@ -102,8 +102,7 @@ label {
 }
 
 #uploadedFileName{
-    width: 100%;
-    padding: 12px;
+    padding: 12px 0;
     color: #088A68;
     font-style: italic;
 }
@@ -120,6 +119,7 @@ label {
 #btSubmitForm{
   float: left;
   margin-left: 50%;
+  color: black;
 }
 
 input[type=submit] {
@@ -205,18 +205,28 @@ input[type=submit] {
 
 #btSubmitYes {
   background-color: #4CAF50;
+  color: black;
 }
 
 
 
 #btSubmitNo{
   background-color: red;
+  color: black;
 }
 
 #btSubmitOk {
     background-color: #58ACFA;
     display: flex;
     margin: 40px auto 10px;
+    color: black;
+}
+
+#btSubmitError {
+    background-color: #F7D358;
+    display: flex;
+    margin: 40px auto 10px;
+    color: black;
 }
 
 /* RESPONSIVE CUANDO ES MENOR A 800PX*/
