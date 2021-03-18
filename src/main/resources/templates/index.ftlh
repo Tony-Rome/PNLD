@@ -8,7 +8,7 @@
 </head>
 
 <body>
-<a href="/scheduleLoadFilePost">Archivos</a>
+<a href="/scheduleFileLoadPost">Archivos</a>
 </body>
 
 </html>
