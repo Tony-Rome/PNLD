@@ -17,9 +17,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
@@ -146,13 +144,13 @@ public class FileService {
         LocalDateTime startDateTime = endDateTime.minusDays(1L);
         logger.info("executeFileLoadScheduled. startDateTime={}", startDateTime);
 
-        //select scheduled files
-        List<LoadedFile> filesLoadedScheduled = fileRepository.getLoadedFilesByState(FILE_STATE_SCHEDULED,
+        List<LoadedFile> filesLoadedScheduled = fileRepository.getLoadedFilesByStateAndTimestamps(FILE_STATE_SCHEDULED,
                 Timestamp.valueOf(startDateTime), Timestamp.valueOf(endDateTime));
         logger.info("executeFileLoadScheduled. filesLoadedScheduled={}", filesLoadedScheduled);
 
-
         //TODO read file's content
+
+
         //TODO validate load records by file's type
             //TODO insert records if not exist
         //TODO resume load file

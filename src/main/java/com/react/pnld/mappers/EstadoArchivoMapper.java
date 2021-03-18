@@ -32,7 +32,7 @@ public interface EstadoArchivoMapper {
             @Result(property = "newRecords", column = "registros_nuevos"),
             @Result(property = "duplicateRecords", column = "registros_duplicados")
     })
-    List<LoadedFile> getLoadedFilesByState(int idEstado, Timestamp initTime, Timestamp endTime);
+    List<LoadedFile> getLoadedFilesByStateAndTimestamps(int idEstado, Timestamp initTime, Timestamp endTime);
 
     @Select("select * from pnld.estado_archivo;")
     @Results({
