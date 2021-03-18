@@ -40,7 +40,7 @@ public class FileService {
     public ScheduleFileLoadResponse scheduleLoad(ScheduleFileLoadDTO scheduleFileLoadDTO){
 
         scheduleFileLoadDTO.setLoadedBy("1");//TODO remove this line when user logged is identified
-        scheduleFileLoadDTO.setLoadedOnDateTime(OffsetDateTime.now(ZoneId.of("UTC")));
+        scheduleFileLoadDTO.setLoadedOnDateTime(LocalDateTime.now(ZoneId.of("UTC")));
 
         ScheduleFileLoadResponse scheduleFileLoadResponse =
                 new ScheduleFileLoadResponse("OK", "finish schedule file load");

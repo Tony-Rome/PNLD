@@ -1,16 +1,16 @@
 package com.react.pnld.model;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 public class LoadedFile {
 
     private int idLoadedFile;
-    private OffsetDateTime loadedDate;
+    private LocalDateTime loadedDate;
     private String fileName;
     private String fileType;
     private int loadedByUserId;
     private int stateId;
-    private OffsetDateTime processDate;
+    private LocalDateTime processDate;
     private int totalRecords;
     private int newRecords;
     private int duplicateRecords;
@@ -19,7 +19,8 @@ public class LoadedFile {
         super();
     }
 
-    public LoadedFile(int idLoadedFile, OffsetDateTime loadedDate, String fileName, String fileType, int loadedByUserId, int stateId, OffsetDateTime processDate, int totalRecords, int newRecords, int duplicateRecords) {
+    public LoadedFile(int idLoadedFile, LocalDateTime loadedDate, String fileName, String fileType, int loadedByUserId,
+                      int stateId, LocalDateTime processDate, int totalRecords, int newRecords, int duplicateRecords) {
         super();
         this.idLoadedFile = idLoadedFile;
         this.loadedDate = loadedDate;
@@ -41,11 +42,11 @@ public class LoadedFile {
         this.idLoadedFile = idLoadedFile;
     }
 
-    public OffsetDateTime getLoadedDate() {
+    public LocalDateTime getLoadedDate() {
         return loadedDate;
     }
 
-    public void setLoadedDate(OffsetDateTime loadedDate) {
+    public void setLoadedDate(LocalDateTime loadedDate) {
         this.loadedDate = loadedDate;
     }
 
@@ -81,11 +82,11 @@ public class LoadedFile {
         this.stateId = stateId;
     }
 
-    public OffsetDateTime getProcessDate() {
+    public LocalDateTime getProcessDate() {
         return processDate;
     }
 
-    public void setProcessDate(OffsetDateTime processDate) {
+    public void setProcessDate(LocalDateTime processDate) {
         this.processDate = processDate;
     }
 

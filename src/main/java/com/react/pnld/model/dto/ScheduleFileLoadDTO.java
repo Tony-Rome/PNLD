@@ -2,7 +2,7 @@ package com.react.pnld.model.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 public class ScheduleFileLoadDTO {
 
@@ -10,14 +10,14 @@ public class ScheduleFileLoadDTO {
     private String selectedType;
     private MultipartFile uploadFile;
     private String loadedBy;
-    private OffsetDateTime loadedOnDateTime;
+    private LocalDateTime loadedOnDateTime;
 
     public ScheduleFileLoadDTO() {
         super();
     }
 
     public ScheduleFileLoadDTO(String name, String selectedType, MultipartFile uploadFile, String loadedBy,
-                               OffsetDateTime loadedOnDateTime) {
+                               LocalDateTime loadedOnDateTime) {
         super();
         this.name = name;
         this.selectedType = selectedType;
@@ -58,11 +58,11 @@ public class ScheduleFileLoadDTO {
         this.loadedBy = loadedBy;
     }
 
-    public OffsetDateTime getLoadedOnDateTime() {
+    public LocalDateTime getLoadedOnDateTime() {
         return loadedOnDateTime;
     }
 
-    public void setLoadedOnDateTime(OffsetDateTime loadedOnDateTime) {
+    public void setLoadedOnDateTime(LocalDateTime loadedOnDateTime) {
         this.loadedOnDateTime = loadedOnDateTime;
     }
 
