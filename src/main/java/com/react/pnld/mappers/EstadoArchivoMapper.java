@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface EstadoArchivoMapper {
@@ -17,7 +18,8 @@ public interface EstadoArchivoMapper {
             "#{newRecords},#{duplicateRecords});")
     int insertProcessFile(LoadedFile loadedFile);
 
-    @Select("select * from pnld.archivo_cargado where id_estado = #{idEstado};")
+    @Select("select * from pnld.archivo_cargado " +
+            "where id_estado = #{idEstado} AND fecha_carga = #{initTime} AND fecha_carga = #{endTime}")
     @Results({
             @Result(property = "idLoadedFile", column = "id_archivo"),
             @Result(property = "loadedDate", column = "fecha_carga"),
@@ -30,7 +32,7 @@ public interface EstadoArchivoMapper {
             @Result(property = "newRecords", column = "registros_nuevos"),
             @Result(property = "duplicateRecords", column = "registros_duplicados")
     })
-    List<LoadedFile> getLoadedFilesByState(int idEstado);
+    List<LoadedFile> getLoadedFilesByState(int idEstado, Timestamp initTime, Timestamp endTime);
 
     @Select("select * from pnld.estado_archivo;")
     @Results({

@@ -140,10 +140,9 @@ public class FileService {
     public void executeFileLoadScheduled(){
         Instant now = Instant.now();
         logger.info("executeFileLoadScheduled. now={}", now);
-
         //select scheduled files
-        List<LoadedFile> filesToPersist = fileRepository.getLoadedFilesByState(FILE_STATE_SCHEDULED);
-        logger.info("executeFileLoadScheduled. filesToPersist={}", filesToPersist);
+        List<LoadedFile> filesLoadedScheduled = fileRepository.getLoadedFilesByState(FILE_STATE_SCHEDULED);
+        logger.info("executeFileLoadScheduled. filesLoadedScheduled={}", filesLoadedScheduled);
 
 
         //TODO read file's content
