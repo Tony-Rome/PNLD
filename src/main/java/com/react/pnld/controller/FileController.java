@@ -31,7 +31,7 @@ public class FileController {
     public String scheduleFileLoadPost(ScheduleFileLoadDTO scheduleFileLoadDTO, Model model) {
 
         String loadedBy = SecurityContextHolder.getContext().getAuthentication().getName();
-        logger.info("String loadedBy: "+loadedBy);
+        logger.info("SecurityContextHolder.getContext().getAuthentication().getName() loadedBy={}",loadedBy);
 
         model.addAttribute("scheduleFileLoadDTO", scheduleFileLoadDTO);
         logger.info("scheduleFileLoadPost. scheduleFileLoadDTO={}", scheduleFileLoadDTO);

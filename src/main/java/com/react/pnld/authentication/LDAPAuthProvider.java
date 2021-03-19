@@ -1,6 +1,7 @@
 package com.react.pnld.authentication;
 
 import com.react.pnld.model.Admin;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -12,7 +13,8 @@ import java.util.List;
 
 public class LDAPAuthProvider implements AuthenticationProvider {
 
-    private LDAPServices ldapServices = new LDAPServices();
+    @Autowired
+    private LDAPServices ldapServices;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
