@@ -20,7 +20,7 @@ public class LDAPServices {
 
     public void setProviderUrl(String providerUrl){ this.providerUrl = providerUrl; }
 
-    public boolean loginUser(String nombre, String clave) {
+    public boolean loginUser(String username, String password) {
 
         InitialDirContext dir = null;
         Hashtable<String, String> env = new Hashtable<String, String>();
@@ -29,8 +29,8 @@ public class LDAPServices {
         env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
         env.put(Context.PROVIDER_URL, providerUrl);
         env.put(Context.SECURITY_AUTHENTICATION, "simple");
-        env.put(Context.SECURITY_PRINCIPAL, String.format("uid=%s,ou=people,dc=springframework,dc=org",nombre));
-        env.put(Context.SECURITY_CREDENTIALS, clave);
+        env.put(Context.SECURITY_PRINCIPAL, String.format("uid=%s,ou=people,dc=springframework,dc=org",username));
+        env.put(Context.SECURITY_CREDENTIALS, password);
 
         try {
             dir = new InitialDirContext(env);

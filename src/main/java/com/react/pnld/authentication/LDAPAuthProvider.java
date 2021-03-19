@@ -19,20 +19,20 @@ public class LDAPAuthProvider implements AuthenticationProvider {
 
         List<GrantedAuthority> authorities;
         Object detail;
-        String nombre, clave;
+        String username, password;
 
-        nombre = String.valueOf(authentication.getPrincipal());
-        clave = String.valueOf(authentication.getCredentials());
+        username = String.valueOf(authentication.getPrincipal());
+        password = String.valueOf(authentication.getCredentials());
         authorities = new ArrayList<GrantedAuthority>(1);
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
-        if(!ldapServices.loginUser(nombre, clave)){
+        if(!ldapServices.loginUser(username, password)){
             return null;
         }
 
-        detail = new Admin(nombre, "admin@email.com", clave);
+        detail = new Admin(username, "admin@email.com", password);
 
-        return new SimpleAuthentication(nombre,authorities, detail, clave);
+        return new SimpleAuthentication(username,authorities, detail, password);
     }
 
     @Override

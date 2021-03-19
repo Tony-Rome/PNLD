@@ -2,17 +2,17 @@ package com.react.pnld.model;
 
 public class Admin {
     private Long idAdmin;
-    private String nombre;
+    private String username;
     private String email;
-    private String clave;
+    private String password;
     private String role;
 
     public Admin(){}
 
-    public Admin(String nombre, String email, String clave){
-        this.nombre = nombre;
+    public Admin(String username, String email, String password){
+        this.username = username;
         this.email = email;
-        this.clave = clave;
+        this.password = password;
         this.role = "ROLE_ADMIN";
     }
 
@@ -24,13 +24,9 @@ public class Admin {
         return idAdmin;
     }
 
-    public void setUsername(String username){
-        this.nombre = nombre;
-    }
+    public void setUsername(String username){this.username = username;}
 
-    public String getUsername(){
-        return nombre;
-    }
+    public String getUsername(){return username;}
 
     public void setEmail(String email){
         this.email = email;
@@ -38,20 +34,17 @@ public class Admin {
 
     public String getEmail(){ return email;}
 
-    public void setPassword(String clave){
-        this.clave = clave;
-    }
+    public void setPassword(String password){this.password = password;}
 
-    public String getPassword(){
-        return clave;
-    }
+    public String getPassword(){return password;}
 
-    public void setRole(String role){
-        this.role = role;
-    }
+    public void setRole(String role){ this.role = role;}
 
     public String getRole(){return role;}
 
-
+    @Override
+    public String toString(){
+        return "Id: "+getId().toString()+" Nombre: "+getUsername()+" Email: "+getEmail();
+    }
 
 }

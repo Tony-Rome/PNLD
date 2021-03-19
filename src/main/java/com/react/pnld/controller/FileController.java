@@ -30,8 +30,8 @@ public class FileController {
     @PostMapping("/scheduleFileLoadPost")
     public String scheduleFileLoadPost(ScheduleFileLoadDTO scheduleFileLoadDTO, Model model) {
 
-        /** Nombre usuario autenticado que carga archivo */
         String loadedBy = SecurityContextHolder.getContext().getAuthentication().getName();
+        logger.info("String loadedBy: "+loadedBy);
 
         model.addAttribute("scheduleFileLoadDTO", scheduleFileLoadDTO);
         logger.info("scheduleFileLoadPost. scheduleFileLoadDTO={}", scheduleFileLoadDTO);

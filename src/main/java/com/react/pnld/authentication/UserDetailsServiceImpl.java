@@ -15,9 +15,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     AdminMapper adminMapper;
 
     @Override
-    public UserDetails loadUserByUsername(String nombre) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Admin admin = adminMapper.findByUsername(nombre);
+        Admin admin = adminMapper.findByUsername(username);
+
+        System.out.println(admin.toString());
 
         if(admin == null)
             throw new UsernameNotFoundException("Credenciales erróneas");
