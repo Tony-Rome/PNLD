@@ -1,9 +1,12 @@
 package com.react.pnld.services;
 
 import com.react.pnld.model.LoadedFile;
+import com.react.pnld.model.dto.ParsedFileDTO;
+import com.react.pnld.model.dto.ProcessedParsedFileResumeDTO;
 import com.react.pnld.model.dto.ScheduleFileLoadDTO;
 import com.react.pnld.model.ScheduleFileLoadResponse;
 import com.react.pnld.repo.FileRepository;
+import com.univocity.parsers.common.processor.RowListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import org.slf4j.Logger;
@@ -18,7 +21,9 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FileService {
@@ -152,24 +157,16 @@ public class FileService {
 
         for(LoadedFile loadedFile : filesLoadedScheduled){
             String pathName = FILE_PATH + loadedFile.getFileName();
+            ParsedFileDTO parsedFileDTO = fileUtilService.getParsedFile(pathName);
+            parsedFileDTO.setFileType(loadedFile.getFileType());
+            ProcessedParsedFileResumeDTO resume = fileUtilService.processParsedFile(parsedFileDTO);
 
-            try (Reader inputReader = new InputStreamReader(new FileInputStream(
-                    new File(pathName)), "UTF-8")) {
-                CsvParser parser = new CsvParser(new CsvParserSettings());
-                List<String[]> parsedRows = parser.parseAll(inputReader);
-                logger.info("executeFileLoadScheduled. parsedRows={}",parsedRows);
-            } catch (IOException ioe) {
-                logger.error(ioe.getMessage(), ioe);
-            }
-
+            //TODO resume load file
+            //TODO update record load file
         }
 
 
 
-        //TODO validate load records by file's type
-            //TODO insert records if not exist
-        //TODO resume load file
-        //TODO update record load file
     }
 
 }
