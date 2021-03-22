@@ -27,8 +27,6 @@ public class PnldIndicatorsApplication {
         return (SqlSessionFactory) sqlSessionFactoryBean.getObject();
     }
 
-    public static void main(String[] args) {
-        SpringApplication.run(PnldIndicatorsApplication.class, args);
-    }
+    public static void main(String[] args) { SpringApplication.run(PnldIndicatorsApplication.class, args); }
 
 }

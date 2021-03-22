@@ -6,6 +6,7 @@ import com.react.pnld.services.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,13 +25,14 @@ public class FileController {
     }
 
     @GetMapping(value = "/scheduleFileLoadPost")
-    public String scheduleFileLoadGet(Model model) {
-        logger.debug("scheduleFileLoadGet. form load file is loaded");
-        return "loadFiles";
-    }
+    public String scheduleFileLoadGet(Model model) { return "loadFiles"; }
 
     @PostMapping("/scheduleFileLoadPost")
     public String scheduleFileLoadPost(ScheduleFileLoadDTO scheduleFileLoadDTO, Model model) {
+
+        String loadedBy = SecurityContextHolder.getContext().getAuthentication().getName();
+        logger.info("scheduleFileLoadPost. loadedBy={}",loadedBy);
+
         model.addAttribute("scheduleFileLoadDTO", scheduleFileLoadDTO);
         logger.info("scheduleFileLoadPost. scheduleFileLoadDTO={}", scheduleFileLoadDTO);
 
