@@ -11,6 +11,7 @@ public class ScheduleFileLoadDTO {
     private MultipartFile uploadFile;
     private String loadedBy;
     private LocalDateTime loadedOnDateTime;
+    private String nameInFileSystem;
 
     public ScheduleFileLoadDTO() {
         super();
@@ -66,6 +67,14 @@ public class ScheduleFileLoadDTO {
         this.loadedOnDateTime = loadedOnDateTime;
     }
 
+    public String getNameInFileSystem() {
+        return nameInFileSystem;
+    }
+
+    public void setNameInFileSystem(String nameInFileSystem) {
+        this.nameInFileSystem = nameInFileSystem;
+    }
+
     @Override
     public String toString() {
         return "ScheduleFileLoadDTO{" +
@@ -74,6 +83,7 @@ public class ScheduleFileLoadDTO {
                 ", uploadFile=" + uploadFile +
                 ", loadedBy='" + loadedBy + '\'' +
                 ", loadedOnDateTime=" + loadedOnDateTime +
+                ", nameInFileSystem='" + nameInFileSystem + '\'' +
                 '}';
     }
 }

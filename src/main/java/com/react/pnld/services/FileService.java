@@ -4,6 +4,8 @@ import com.react.pnld.model.LoadedFile;
 import com.react.pnld.model.dto.ScheduleFileLoadDTO;
 import com.react.pnld.model.ScheduleFileLoadResponse;
 import com.react.pnld.repo.FileRepository;
+import com.univocity.parsers.csv.CsvParser;
+import com.univocity.parsers.csv.CsvParserSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -97,8 +96,10 @@ public class FileService {
             String finalFileName =   loadedDateFormatted + "-" + scheduleFileLoadDTO.getName() + extensionFile;
             logger.info("copyAtFileSystem. finalFileName={}", finalFileName);
 
-            String finalPath = FILE_PATH + finalFileName;
-            File dest = new File(finalPath);
+            scheduleFileLoadDTO.setNameInFileSystem(finalFileName);
+
+            String nameWithPath = FILE_PATH + scheduleFileLoadDTO.getNameInFileSystem();
+            File dest = new File(nameWithPath);
 
             //Check if the directory exists
             if(!dest.getParentFile().exists()){
@@ -106,11 +107,10 @@ public class FileService {
             }
 
             scheduleFileLoadDTO.getUploadFile().transferTo(dest);
-
             return true;
+
         } catch (IOException ioException){
-            logger.error("copyAtFileSystem. ioException.getMessage()={}", ioException.getMessage());
-            ioException.getStackTrace();
+            logger.error(ioException.getMessage(), ioException);
             return false;
         }
     }
@@ -118,7 +118,7 @@ public class FileService {
     public boolean queueLoad(ScheduleFileLoadDTO scheduleFileLoadDTO){
 
         LoadedFile loadedFile = new LoadedFile();
-        loadedFile.setFileName(scheduleFileLoadDTO.getName());
+        loadedFile.setFileName(scheduleFileLoadDTO.getNameInFileSystem());
         loadedFile.setFileType(scheduleFileLoadDTO.getSelectedType());
         loadedFile.setLoadedDate(scheduleFileLoadDTO.getLoadedOnDateTime());
         //TODO identify loadedByUserId with csvFile.getLoadedBy(), logged user
@@ -149,6 +149,21 @@ public class FileService {
         logger.info("executeFileLoadScheduled. filesLoadedScheduled={}", filesLoadedScheduled);
 
         //TODO read file's content
+
+        for(LoadedFile loadedFile : filesLoadedScheduled){
+            String pathName = FILE_PATH + loadedFile.getFileName();
+
+            try (Reader inputReader = new InputStreamReader(new FileInputStream(
+                    new File(pathName)), "UTF-8")) {
+                CsvParser parser = new CsvParser(new CsvParserSettings());
+                List<String[]> parsedRows = parser.parseAll(inputReader);
+                logger.info("executeFileLoadScheduled. parsedRows={}",parsedRows);
+            } catch (IOException ioe) {
+                logger.error(ioe.getMessage(), ioe);
+            }
+
+        }
+
 
 
         //TODO validate load records by file's type
