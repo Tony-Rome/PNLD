@@ -133,45 +133,45 @@ public class FileUtilService {
 
     public ProcessedParsedFileResumeDTO processParsedFile(ParsedFileDTO parsedFileDTO){
 
-        switch (parsedFileDTO.getFileType()){
+        switch (FileTypes.valueOfLabel(parsedFileDTO.getFileType())){
 
-            case "teacher-roster":
+            case TEACHER_ROSTER:
                 return this.processTeacherRosterFile(parsedFileDTO);
 
-            case "teacher-opt-in":
+            case TEACHER_OPT_IN:
                 return this.processTeacherOptInFile(parsedFileDTO);
 
-            case "student-level":
+            case STUDENT_LEVEL:
                 return this.processStudentLevelFile(parsedFileDTO);
 
-            case "signin-per-course":
+            case SIGNIN_PER_COURSE:
                 return this.processSignInPerCourseFile(parsedFileDTO);
 
-            case "sign-ins":
+            case SIGN_INS:
                 return this.processSignInsFile(parsedFileDTO);
 
-            case "diagnostico":
+            case DIAGNOSTICO:
                 return this.diagnosticoFile(parsedFileDTO);
 
-            case "pre-capacita":
+            case PRE_CAPACITA:
                 return this.preCapacitaFile(parsedFileDTO);
 
-            case "post-capacita":
+            case POST_CAPACITA:
                 return this.postCapacitaFile(parsedFileDTO);
 
-            case "test-pc-1":
+            case TEST_PC_1:
                 return this.testPCOneFile(parsedFileDTO);
 
-            case "test-pc-2":
+            case TEST_PC_2:
                 return this.testPCTwoFile(parsedFileDTO);
 
-            case "test-pc-3":
+            case TEST_PC_3:
                 return this.testPCThreeFile(parsedFileDTO);
 
-            case "salida":
+            case SALIDA:
                 return this.salidaFile(parsedFileDTO);
 
-            case "satis":
+            case SATIS:
                 return this.satisFile(parsedFileDTO);
 
             default:
