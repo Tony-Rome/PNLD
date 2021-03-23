@@ -159,14 +159,12 @@ public class FileService {
             String pathName = FILE_PATH + loadedFile.getFileName();
             ParsedFileDTO parsedFileDTO = fileUtilService.getParsedFile(pathName);
             parsedFileDTO.setFileType(loadedFile.getFileType());
+
             ProcessedParsedFileResumeDTO resume = fileUtilService.processParsedFile(parsedFileDTO);
 
             //TODO resume load file
             //TODO update record load file
         }
-
-
-
     }
 
 }

@@ -25,6 +25,21 @@ public class FileUtilService {
     @Autowired
     private CSVHeadersProperties csvHeadersProperties;
 
+    private CsvParserSettings csvParserSettings;
+
+    private RowListProcessor rowListProcessor;
+
+    private CsvParser csvParser;
+
+    public FileUtilService(){
+        csvParserSettings = new CsvParserSettings();
+        csvParserSettings.setLineSeparatorDetectionEnabled(true);
+        rowListProcessor = new RowListProcessor();
+        csvParserSettings.setProcessor(rowListProcessor);
+        csvParserSettings.setHeaderExtractionEnabled(true);
+        csvParser = new CsvParser(csvParserSettings);
+    }
+
     public String removeSymbols(String strToClean){
         String strCleaned = strToClean.replaceAll("[^a-zA-Z0-9,]", "");
         return strCleaned.toLowerCase();
@@ -98,33 +113,22 @@ public class FileUtilService {
 
     public ParsedFileDTO getParsedFile(String pathName){
 
-        CsvParserSettings csvParserSettings = new CsvParserSettings();
-        csvParserSettings.setLineSeparatorDetectionEnabled(true);
-        RowListProcessor rowListProcessor = new RowListProcessor();
-        csvParserSettings.setProcessor(rowListProcessor);
-        csvParserSettings.setHeaderExtractionEnabled(true);
+        try (Reader inputReader = new InputStreamReader(new FileInputStream(pathName), "UTF-8")) {
 
-        ParsedFileDTO parsedFile = new ParsedFileDTO();
-
-        try (Reader inputReader = new InputStreamReader(new FileInputStream(
-                new File(pathName)), "UTF-8")) {
-
-            CsvParser parser = new CsvParser(csvParserSettings);
-            parser.parse(inputReader);
-
+            csvParser.parse(inputReader);
             String[] headers = rowListProcessor.getHeaders();
             List<String[]> rows = rowListProcessor.getRows();
 
-            logger.info("executeFileLoadScheduled. headers={}", Arrays.stream(headers).collect(Collectors.toList()));
+            ParsedFileDTO parsedFile = new ParsedFileDTO();
             parsedFile.setHeaders(headers);
-            logger.info("executeFileLoadScheduled. rows={}", rows);
             parsedFile.setRows(rows);
-
+            logger.info("getParsedFile. parsedFile={}", parsedFile);
+            return  parsedFile;
         } catch (IOException ioe) {
             logger.error(ioe.getMessage(), ioe);
+            logger.info("getParsedFile. returning empty parsed file");
+            return new ParsedFileDTO();
         }
-
-        return parsedFile;
     }
 
     public ProcessedParsedFileResumeDTO processParsedFile(ParsedFileDTO parsedFileDTO){
