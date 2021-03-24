@@ -30,10 +30,12 @@ public class FileController {
     @PostMapping("/scheduleFileLoadPost")
     public String scheduleFileLoadPost(ScheduleFileLoadDTO scheduleFileLoadDTO, Model model) {
 
-        String loadedBy = SecurityContextHolder.getContext().getAuthentication().getName();
-        logger.info("scheduleFileLoadPost. loadedBy={}",loadedBy);
 
         model.addAttribute("scheduleFileLoadDTO", scheduleFileLoadDTO);
+
+        String loadedBy = SecurityContextHolder.getContext().getAuthentication().getName();
+        logger.info("scheduleFileLoadPost. loadedBy={}",loadedBy);
+        scheduleFileLoadDTO.setLoadedBy(loadedBy);
         logger.info("scheduleFileLoadPost. scheduleFileLoadDTO={}", scheduleFileLoadDTO);
 
         ScheduleFileLoadResponse scheduleFileLoadResponse = fileService.scheduleLoad(scheduleFileLoadDTO);

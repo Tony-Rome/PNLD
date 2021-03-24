@@ -15,7 +15,7 @@ public class FileRepository {
     @Autowired
     EstadoArchivoMapper estadoArchivoMapper;
 
-    public int insertProcessFile(LoadedFile loadedFile){
+    public int insertProcessFile (LoadedFile loadedFile) throws Exception {
         return estadoArchivoMapper.insertProcessFile(loadedFile);
     }
 

@@ -8,7 +8,7 @@ public class LoadedFile {
     private LocalDateTime loadedDate;
     private String fileName;
     private String fileType;
-    private int loadedByUserId;
+    private String loadedByAdminName;
     private int stateId;
     private LocalDateTime processDate;
     private int totalRecords;
@@ -19,14 +19,14 @@ public class LoadedFile {
         super();
     }
 
-    public LoadedFile(int idLoadedFile, LocalDateTime loadedDate, String fileName, String fileType, int loadedByUserId,
+    public LoadedFile(int idLoadedFile, LocalDateTime loadedDate, String fileName, String fileType, String loadedByAdminName,
                       int stateId, LocalDateTime processDate, int totalRecords, int newRecords, int duplicateRecords) {
         super();
         this.idLoadedFile = idLoadedFile;
         this.loadedDate = loadedDate;
         this.fileName = fileName;
         this.fileType = fileType;
-        this.loadedByUserId = loadedByUserId;
+        this.loadedByAdminName = loadedByAdminName;
         this.stateId = stateId;
         this.processDate = processDate;
         this.totalRecords = totalRecords;
@@ -66,12 +66,12 @@ public class LoadedFile {
         this.fileType = fileType;
     }
 
-    public int getLoadedByUserId() {
-        return loadedByUserId;
+    public String getLoadedByAdminName() {
+        return loadedByAdminName;
     }
 
-    public void setLoadedByUserId(int loadedByUserId) {
-        this.loadedByUserId = loadedByUserId;
+    public void setLoadedByAdminName(String loadedByAdminName) {
+        this.loadedByAdminName = loadedByAdminName;
     }
 
     public int getStateId() {
@@ -121,7 +121,7 @@ public class LoadedFile {
                 ", loadedDate=" + loadedDate +
                 ", fileName='" + fileName + '\'' +
                 ", fileType='" + fileType + '\'' +
-                ", loadedByUserId=" + loadedByUserId +
+                ", loadedByAdminName=" + loadedByAdminName +
                 ", stateId=" + stateId +
                 ", processDate=" + processDate +
                 ", totalRecords=" + totalRecords +

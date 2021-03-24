@@ -6,9 +6,6 @@ import com.react.pnld.model.dto.ProcessedParsedFileResumeDTO;
 import com.react.pnld.model.dto.ScheduleFileLoadDTO;
 import com.react.pnld.model.ScheduleFileLoadResponse;
 import com.react.pnld.repo.FileRepository;
-import com.univocity.parsers.common.processor.RowListProcessor;
-import com.univocity.parsers.csv.CsvParser;
-import com.univocity.parsers.csv.CsvParserSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class FileService {
@@ -41,7 +36,7 @@ public class FileService {
 
     public ScheduleFileLoadResponse scheduleLoad(ScheduleFileLoadDTO scheduleFileLoadDTO){
 
-        scheduleFileLoadDTO.setLoadedBy("1");//TODO remove this line when user logged is identified
+        scheduleFileLoadDTO.setLoadedBy(scheduleFileLoadDTO.getLoadedBy());
         scheduleFileLoadDTO.setLoadedOnDateTime(LocalDateTime.now(ZoneId.of("UTC")));
 
         ScheduleFileLoadResponse scheduleFileLoadResponse =
@@ -64,6 +59,7 @@ public class FileService {
             scheduleFileLoadResponse.setResponse("NOK");
             scheduleFileLoadResponse.setDescription("queue load is not succesfull");
         }
+
         return scheduleFileLoadResponse;
     }
 
@@ -126,19 +122,22 @@ public class FileService {
         loadedFile.setFileName(scheduleFileLoadDTO.getNameInFileSystem());
         loadedFile.setFileType(scheduleFileLoadDTO.getSelectedType());
         loadedFile.setLoadedDate(scheduleFileLoadDTO.getLoadedOnDateTime());
-        //TODO identify loadedByUserId with csvFile.getLoadedBy(), logged user
-        loadedFile.setLoadedByUserId(1);
+        loadedFile.setLoadedByAdminName(scheduleFileLoadDTO.getLoadedBy());
         loadedFile.setStateId(FILE_STATE_SCHEDULED);
         loadedFile.setProcessDate(null);
         loadedFile.setTotalRecords(0);
         loadedFile.setDuplicateRecords(0);
         loadedFile.setNewRecords(0);
-        int responseInsert = fileRepository.insertProcessFile(loadedFile);
 
-        if(responseInsert == 0){
+        try {
+            int insertResult = fileRepository.insertProcessFile(loadedFile);
+            logger.info("queueLoad. insertResult={}", insertResult);
+            return true;
+        } catch (Exception exception) {
+            logger.error(exception.getMessage(), exception);
             return false;
         }
-        return true;
+
     }
 
     @Scheduled(cron = "${cron.process-loadscheduled}", zone = "UTC")

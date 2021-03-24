@@ -12,10 +12,10 @@ import java.util.List;
 
 public interface EstadoArchivoMapper {
 
-    @Insert("INSERT INTO pnld.archivo_cargado (fecha_carga, nombre_archivo, tipo_archivo, cargado_por_id_persona, " +
+    @Insert("INSERT INTO pnld.archivo_cargado (fecha_carga, nombre_archivo, tipo_archivo, cargado_por_admin, " +
             "id_estado, fecha_procesado, registros_totales, registros_nuevos, registros_duplicados) " +
-            "VALUES(#{loadedDate},#{fileName},#{fileType},#{loadedByUserId},#{stateId},#{processDate}, #{totalRecords}," +
-            "#{newRecords},#{duplicateRecords});")
+            "VALUES(#{loadedDate},#{fileName},#{fileType},(SELECT id_admin FROM pnld.admin WHERE nombre=#{loadedByAdminName})," +
+            "#{stateId},#{processDate}, #{totalRecords},#{newRecords},#{duplicateRecords});")
     int insertProcessFile(LoadedFile loadedFile);
 
     @Select("select * from pnld.archivo_cargado " +
