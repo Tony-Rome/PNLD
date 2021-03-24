@@ -47,45 +47,45 @@ public class FileUtilService {
 
     public String[] selectedHeadersArray(String selectedType){
 
-        switch (selectedType){
+        switch (FileTypes.valueOfLabel(selectedType)){
 
-            case "teacher-roster":
+            case TEACHER_ROSTER:
                 return csvHeadersProperties.getTeacherRoster();
 
-            case "teacher-opt-in":
+            case TEACHER_OPT_IN:
                 return csvHeadersProperties.getTeacherOptIn();
 
-            case "student-level":
+            case STUDENT_LEVEL:
                 return csvHeadersProperties.getStudentLevel();
 
-            case "signin-per-course":
+            case SIGNIN_PER_COURSE:
                 return csvHeadersProperties.getSigninPerCourse();
 
-            case "sign-ins":
+            case SIGN_INS:
                 return csvHeadersProperties.getSignIns();
 
-            case "diagnostico":
+            case DIAGNOSTICO:
                 return csvHeadersProperties.getDiagnostico();
 
-            case "pre-capacita":
+            case PRE_CAPACITA:
                 return csvHeadersProperties.getPreCapacita();
 
-            case "post-capacita":
+            case POST_CAPACITA:
                 return csvHeadersProperties.getPostCapacita();
 
-            case "test-pc-1":
+            case TEST_PC_1:
                 return csvHeadersProperties.getTestPc1();
 
-            case "test-pc-2":
+            case TEST_PC_2:
                 return csvHeadersProperties.getTestPc2();
 
-            case "test-pc-3":
+            case TEST_PC_3:
                 return csvHeadersProperties.getTestPc3();
 
-            case "salida":
+            case SALIDA:
                 return csvHeadersProperties.getSalida();
 
-            case "satis":
+            case SATIS:
                 return csvHeadersProperties.getSatis();
 
             default:
