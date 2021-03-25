@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -42,7 +45,7 @@ public class FileService {
         ScheduleFileLoadResponse scheduleFileLoadResponse =
                 new ScheduleFileLoadResponse("OK", "finish schedule file load");
 
-        if(! this.isValidCsvHeader(scheduleFileLoadDTO)){
+        if(!this.isValidCsvHeader(scheduleFileLoadDTO)){
             logger.info("scheduleLoad. headers invalid");
             scheduleFileLoadResponse.setResponse("NOK");
             scheduleFileLoadResponse.setDescription("headers invalid");
@@ -58,6 +61,7 @@ public class FileService {
             logger.info("scheduleLoad. queue load is not succesfull");
             scheduleFileLoadResponse.setResponse("NOK");
             scheduleFileLoadResponse.setDescription("queue load is not succesfull");
+            rollbackCopyAtFileSystem(scheduleFileLoadDTO);
         }
 
         return scheduleFileLoadResponse;
@@ -100,18 +104,30 @@ public class FileService {
             scheduleFileLoadDTO.setNameInFileSystem(finalFileName);
 
             String nameWithPath = FILE_PATH + scheduleFileLoadDTO.getNameInFileSystem();
-            File dest = new File(nameWithPath);
+            File fileLoaded = new File(nameWithPath);
 
             //Check if the directory exists
-            if(!dest.getParentFile().exists()){
-                dest.getParentFile().mkdirs();
+            if(!fileLoaded.getParentFile().exists()){
+                fileLoaded.getParentFile().mkdirs();
             }
 
-            scheduleFileLoadDTO.getUploadFile().transferTo(dest);
+            scheduleFileLoadDTO.getUploadFile().transferTo(fileLoaded);
             return true;
 
         } catch (IOException ioException){
             logger.error(ioException.getMessage(), ioException);
+            return false;
+        }
+    }
+
+    public boolean rollbackCopyAtFileSystem(ScheduleFileLoadDTO scheduleFileLoadDTO){
+
+        try {
+            String fileName = scheduleFileLoadDTO.getNameInFileSystem();
+            Path path = FileSystems.getDefault().getPath(FILE_PATH, fileName);
+            return Files.deleteIfExists(path);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
             return false;
         }
     }
@@ -137,7 +153,6 @@ public class FileService {
             logger.error(exception.getMessage(), exception);
             return false;
         }
-
     }
 
     @Scheduled(cron = "${cron.process-loadscheduled}", zone = "UTC")
