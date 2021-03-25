@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface EstadoArchivoMapper {
 
-    @Insert("INSERT INTO pnld.archivo_cargado (fecha_carga, nombre_archivo, tipo_archivo, cargado_por_admin, " +
+    @Insert("INSERT INTO pnld.archivo_cargado (fecha_carga, nombre, tipo, cargado_por_admin, " +
             "id_estado, fecha_procesado, registros_totales, registros_nuevos, registros_duplicados) " +
             "VALUES(#{loadedDate},#{fileName},#{fileType},(SELECT id_admin FROM pnld.admin WHERE nombre=#{loadedByAdminName})," +
             "#{stateId},#{processDate}, #{totalRecords},#{newRecords},#{duplicateRecords});")
@@ -23,8 +23,8 @@ public interface EstadoArchivoMapper {
     @Results({
             @Result(property = "idLoadedFile", column = "id_archivo"),
             @Result(property = "loadedDate", column = "fecha_carga"),
-            @Result(property = "fileName", column = "nombre_archivo"),
-            @Result(property = "fileType", column = "tipo_archivo"),
+            @Result(property = "fileName", column = "nombre"),
+            @Result(property = "fileType", column = "tipo"),
             @Result(property = "loadedByUserId", column = "cargado_por_id_persona"),
             @Result(property = "stateId", column = "id_estado"),
             @Result(property = "processDate", column = "fecha_procesado"),
