@@ -91,19 +91,7 @@ public class FileService {
     public boolean copyAtFileSystem(ScheduleFileLoadDTO scheduleFileLoadDTO){
 
         try {
-            String originalFilename = scheduleFileLoadDTO.getUploadFile().getOriginalFilename();
-            logger.info("copyAtFileSystem. originalFilename={}", originalFilename);
-            String extensionFile = fileUtilService.getExtension(originalFilename);
-            logger.info("copyAtFileSystem. extensionFile={}", extensionFile);
-
-            String loadedDateTimeLikeString = scheduleFileLoadDTO.getLoadedOnDateTime().toString().replace(":","-");
-            String loadedDateFormatted = loadedDateTimeLikeString.replace(fileUtilService.getExtension(loadedDateTimeLikeString),"");
-            String finalFileName =   loadedDateFormatted + "-" + scheduleFileLoadDTO.getName() + extensionFile;
-            logger.info("copyAtFileSystem. finalFileName={}", finalFileName);
-
-            scheduleFileLoadDTO.setNameInFileSystem(finalFileName);
-
-            String nameWithPath = FILE_PATH + scheduleFileLoadDTO.getNameInFileSystem();
+            String nameWithPath = FILE_PATH + fileUtilService.getLoadedFileName(scheduleFileLoadDTO);
             File fileLoaded = new File(nameWithPath);
 
             //Check if the directory exists
@@ -123,7 +111,7 @@ public class FileService {
     public boolean rollbackCopyAtFileSystem(ScheduleFileLoadDTO scheduleFileLoadDTO){
 
         try {
-            String fileName = scheduleFileLoadDTO.getNameInFileSystem();
+            String fileName = fileUtilService.getLoadedFileName(scheduleFileLoadDTO);
             Path path = FileSystems.getDefault().getPath(FILE_PATH, fileName);
             return Files.deleteIfExists(path);
         } catch (IOException ioException) {
@@ -135,7 +123,7 @@ public class FileService {
     public boolean queueLoad(ScheduleFileLoadDTO scheduleFileLoadDTO){
 
         LoadedFile loadedFile = new LoadedFile();
-        loadedFile.setFileName(scheduleFileLoadDTO.getNameInFileSystem());
+        loadedFile.setFileName(fileUtilService.getLoadedFileName(scheduleFileLoadDTO));
         loadedFile.setFileType(scheduleFileLoadDTO.getSelectedType());
         loadedFile.setLoadedDate(scheduleFileLoadDTO.getLoadedOnDateTime());
         loadedFile.setLoadedByAdminName(scheduleFileLoadDTO.getLoadedBy());

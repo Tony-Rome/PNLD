@@ -1,9 +1,9 @@
 package com.react.pnld.services;
 
 import com.react.pnld.model.CSVHeadersProperties;
-import com.react.pnld.model.LoadedFile;
 import com.react.pnld.model.dto.ParsedFileDTO;
 import com.react.pnld.model.dto.ProcessedParsedFileResumeDTO;
+import com.react.pnld.model.dto.ScheduleFileLoadDTO;
 import com.univocity.parsers.common.processor.RowListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
@@ -111,7 +111,21 @@ public class FileUtilService {
         return fileExtensionName;
     }
 
+    public String getLoadedFileName(ScheduleFileLoadDTO scheduleFileLoadDTO){
 
+        String originalFilename = scheduleFileLoadDTO.getUploadFile().getOriginalFilename();
+        logger.info("copyAtFileSystem. originalFilename={}", originalFilename);
+
+        String extensionFile = getExtension(originalFilename);
+        logger.info("copyAtFileSystem. extensionFile={}", extensionFile);
+
+        String loadedDateFormattedString = scheduleFileLoadDTO.getLoadedOnDateTime().toString().replace(":","-");
+        String loadedDateFormatted = loadedDateFormattedString.replace(getExtension(loadedDateFormattedString),"");
+        String finalFileName =   loadedDateFormatted + "-" + scheduleFileLoadDTO.getName() + extensionFile;
+        logger.info("copyAtFileSystem. finalFileName={}", finalFileName);
+
+        return finalFileName;
+    }
 
     public ParsedFileDTO getParsedFile(String pathName){
 

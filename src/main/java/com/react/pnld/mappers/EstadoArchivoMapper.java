@@ -21,7 +21,7 @@ public interface EstadoArchivoMapper {
     @Select("select * from pnld.archivo_cargado " +
             "where id_estado = #{idEstado} AND fecha_carga >= #{initTime} AND fecha_carga < #{endTime}")
     @Results({
-            @Result(property = "idLoadedFile", column = "id_archivo"),
+            @Result(property = "idLoadedFile", column = "id"),
             @Result(property = "loadedDate", column = "fecha_carga"),
             @Result(property = "fileName", column = "nombre"),
             @Result(property = "fileType", column = "tipo"),

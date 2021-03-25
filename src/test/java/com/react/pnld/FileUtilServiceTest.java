@@ -1,11 +1,18 @@
 package com.react.pnld;
 
+import com.react.pnld.model.dto.ScheduleFileLoadDTO;
 import com.react.pnld.services.FileUtilService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 import org.testng.Assert;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.ZoneId;
 import java.util.Arrays;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -107,5 +114,22 @@ public class FileUtilServiceTest {
     void getFileExtension_When_PdfFile(){
         String filePdfName = "test.pdf";
         Assert.assertEquals(fileUtilService.getExtension(filePdfName),".pdf");
+    }
+
+    @Test
+    void getLoadedFileName_When_Is_2021_03_01(){
+        ScheduleFileLoadDTO fooScheduleFileLoadDTO = new ScheduleFileLoadDTO();
+
+        fooScheduleFileLoadDTO.setName("name_by_user");
+
+        MultipartFile multipartFile = new MockMultipartFile("foo_file", "foo_file.csv",
+                "text/plain","foo bar".getBytes());
+        fooScheduleFileLoadDTO.setUploadFile(multipartFile);
+
+        Instant instant = Instant.parse("2021-03-01T00:00:00.21Z");
+        fooScheduleFileLoadDTO.setLoadedOnDateTime(LocalDateTime.ofInstant(instant,ZoneId.of("UTC")));
+
+        Assert.assertEquals("2021-03-01T00-00-00-name_by_user.csv",
+                fileUtilService.getLoadedFileName(fooScheduleFileLoadDTO));
     }
 }
