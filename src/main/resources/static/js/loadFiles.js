@@ -12,8 +12,11 @@ const popupName = document.getElementById("popupName");
 const popupType = document.getElementById("popupType");
 const popupFile = document.getElementById("popupFile");
 const popupBodyFile = document.getElementById("popupBodyFile");
-const popupBodyMsg = document.getElementById("popupBodyMsg");
+const popupBodyMsgOk = document.getElementById("popupBodyMsgOk");
+const popupBodyMsgError = document.getElementById("popupBodyMsgError");
 const btSubmitOk = document.getElementById("btSubmitOk");
+const btSubmitError = document.getElementById("btSubmitError");
+const spinner = document.getElementById("spinner");
 
 
         let formDataValid = {
@@ -67,33 +70,6 @@ const btSubmitOk = document.getElementById("btSubmitOk");
             submitController();
         });
 
-        activeFileName = (name) => {
-            dropFile.classList.add("displayNone");
-            uploadedFileName.classList.remove("displayNone");
-            uploadedFileName.innerHTML = name;
-            formDataValid.uploadFile = true;
-        };
-
-        deactivateFileName = () => {
-            dropFile.classList.remove("displayNone");
-            uploadedFileName.classList.add("displayNone");
-            formDataValid.uploadFile = false;
-        };
-
-        submitController = () => {
-            if(formDataValid.name && formDataValid.uploadFile){
-                btSubmitForm.classList.remove('disabled');
-                btSubmitForm.classList.add('enabled');
-                btSubmitForm.toggleAttribute('disabled', false);
-
-            }
-            else{
-                btSubmitForm.classList.remove('enabled');
-                btSubmitForm.classList.add('disabled');
-                btSubmitForm.toggleAttribute('disabled', true);
-            }
-        };
-
         form.addEventListener("submit", (e)=>{
             e.preventDefault();
         });
@@ -106,44 +82,107 @@ const btSubmitOk = document.getElementById("btSubmitOk");
         });
 
         popupYes.addEventListener("click", ()=> {
+            let formResponse;
             let formData = new FormData(form);
+
             var xmlhttp = new XMLHttpRequest();
             var url = "/scheduleFileLoadPost";
+
             xmlhttp.open("POST", url);
             xmlhttp.send(formData);
-            xmlhttp.onload = () => console.log(xmlhttp.status);
 
+            switchPopup(0);
 
+            xmlhttp.onload = ()=>{
 
-            formDataValid.name = false;
-
-
-
-            popupBodyFile.classList.add("displayNone");
-            popupBodyMsg.classList.remove("displayNone");
-
+                if(xmlhttp.status === 200){
+                    switchPopup(1);
+                }
+                else{
+                    switchPopup(2);
+                }
+            };
 
         });
 
         popupNo.addEventListener("click", ()=> {
 
             popup.style.display = "none";
-            form.reset();
             deactivateFileName();
+            form.reset();
             formDataValid.name = false;
-            dropFile.style.borderColor = "#ccc";
-            dropFile.style.borderStyle = "dashed";
             submitController();
         });
 
         btSubmitOk.addEventListener("click", ()=> {
             form.reset();
+            formDataValid.name = false;
             deactivateFileName();
             popup.style.display = "none";
-            popupBodyFile.classList.remove("displayNone");
-            popupBodyMsg.classList.add("displayNone");
-            dropFile.style.borderColor = "#ccc";
-            dropFile.style.borderStyle = "dashed";
+            switchPopup(3);
             submitController();
 
         });
+
+        btSubmitError.addEventListener("click",()=> {
+            popup.style.display = "none";
+            switchPopup(4);
+            deactivateFileName();
+            submitController();
+        });
+
+        submitController = () => {
+                    if(formDataValid.name && formDataValid.uploadFile){
+                        btSubmitForm.classList.remove('disabled');
+                        btSubmitForm.classList.add('enabled');
+                        btSubmitForm.toggleAttribute('disabled', false);
+
+                    }
+                    else{
+                        btSubmitForm.classList.remove('enabled');
+                        btSubmitForm.classList.add('disabled');
+                        btSubmitForm.toggleAttribute('disabled', true);
+                    }
+                };
+
+        activeFileName = (name) => {
+                    dropFile.classList.add("displayNone");
+                    uploadedFileName.classList.remove("displayNone");
+                    uploadedFileName.innerHTML = name;
+                    formDataValid.uploadFile = true;
+                };
+
+        deactivateFileName = () => {
+                    dropFile.classList.remove("displayNone");
+                    uploadedFileName.classList.add("displayNone");
+                    formDataValid.uploadFile = false;
+                    dropFile.style.borderColor = "#ccc";
+                    dropFile.style.borderStyle = "dashed";
+                };
+
+        switchPopup = (status) => {
+
+            switch(status){
+                case 0:
+                    spinner.classList.remove("displayNone");
+                    popupBodyFile.classList.add("displayNone");
+                    break;
+                case 1:
+                    spinner.classList.add("displayNone");
+                    popupBodyFile.classList.add("displayNone");
+                    popupBodyMsgOk.classList.remove("displayNone");
+                    break;
+                case 2:
+                    spinner.classList.add("displayNone");
+                    popupBodyFile.classList.add("displayNone");
+                    popupBodyMsgError.classList.remove("displayNone");
+                    break;
+                case 3:
+                    popupBodyFile.classList.remove("displayNone");
+                    popupBodyMsgOk.classList.add("displayNone");
+                    break;
+                case 4:
+                     popupBodyFile.classList.remove("displayNone");
+                     popupBodyMsgError.classList.add("displayNone");
+            }
+        };

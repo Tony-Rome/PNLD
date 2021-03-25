@@ -2,7 +2,6 @@
     <div class="filesTableContainer">
             <div class="filesTableHeader">
                 <div>Archivos cargados</div>
-                <div>Filtros</div>
             </div>
 
             <div>

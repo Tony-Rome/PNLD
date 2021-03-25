@@ -1,0 +1,141 @@
+body{
+    margin: 0;
+}
+.header {
+    display: flex;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.logoMineduc {
+    width: 15vw;
+    height: 12vw;
+    margin-left: 2vw;
+}
+
+.title {
+    font-size: 4vw;
+    display: flex;
+    align-items: center;
+    margin-left: 25%;
+}
+
+/* == DESDE AQUI ESTILOS PARA LA TABLA CON ARCHIVOS CARGADOS == */
+.filesTableContainer {
+    margin-left: 25%;
+    margin-bottom: 2%;
+    margin-top: 2%;
+}
+
+.filesTableHeader {
+    display: flex;
+    margin-bottom: 2%;
+}
+
+
+table, th, td {
+  border-collapse: collapse;
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.pagination {
+    margin-top: 2%;
+    margin-bottom: 2%;
+    text-align: center;
+}
+
+.pagination a {
+  color: black;
+  padding: 8px 16px;
+  text-decoration: none;
+  font-size: 15px;
+  /*transition: background-color .3s;*/
+}
+
+
+/* ===  DESDE AQUI ESTILOS PARA EL FORMULARIO CARGA DE ARCHIVO ===*/
+
+.formContainer {
+  margin-right: 20%;
+  margin-left: 20%;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+input[type=text], select{
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  resize: vertical;
+
+}
+
+label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+
+.col-25 {
+  float: left;
+  width: 25%;
+  margin-top: 6px;
+}
+
+.col-75 {
+    float: left;
+    width: 75%;
+    margin-top: 6px;
+}
+
+#dropZone {
+    height:200px;
+    border: 2px;
+    border-color: #ccc;
+    border-radius: 4px;
+    border-style: dashed;
+    text-align: center;
+    padding-top: 25%;
+    cursor: pointer;
+}
+
+#uploadedFileName{
+    padding: 12px 0;
+    color: #088A68;
+    font-style: italic;
+}
+
+#span {
+    font-size: 30px;
+    padding: 10px;
+}
+
+.displayNone {
+    display: none;
+}
+
+#btSubmitForm{
+  float: left;
+  margin-left: 55%;
+  color: black;
+}
+
+input[type=submit] {
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 2%;
+  margin-bottom: 4%;
+}
+
+.enabled{
+    background-color: #4CAF50;
+}
+
+.disabled {
+    background-color: #767575;
+}
