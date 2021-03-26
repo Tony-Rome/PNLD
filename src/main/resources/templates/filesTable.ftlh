@@ -5,7 +5,7 @@
             </div>
 
             <div>
-                <table>
+                <table class="filesTable">
                   <tr>
                     <th>Responsable</th>
                     <th>Nombre archivo</th>

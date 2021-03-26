@@ -3,6 +3,7 @@ package com.react.pnld.model;
 import java.io.Serializable;
 
 public class ScheduleFileLoadResponse implements Serializable {
+
     private String response;
     private String description;
 

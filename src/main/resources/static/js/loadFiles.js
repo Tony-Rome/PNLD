@@ -95,6 +95,7 @@ const spinner = document.getElementById("spinner");
 
             xmlhttp.onload = ()=>{
 
+                console.log(xmlhttp);
                 if(xmlhttp.status === 200){
                     switchPopup(1);
                 }
