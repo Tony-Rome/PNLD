@@ -1,5 +1,12 @@
-table{
+.tableFileForm{
     margin: auto;
+}
+
+table.tableFileForm label{
+    width: 110px;
+}
+table.tableFileForm td{
+    vertical-align: top;
 }
 
 input[type=text], select{
@@ -19,6 +26,7 @@ label {
 
 #dropZone {
     height:200px;
+    width: 500px;
     border: 2px;
     border-color: #ccc;
     border-radius: 4px;
@@ -29,6 +37,7 @@ label {
 }
 
 #uploadedFileName{
+    width: 500px;
     padding: 12px 0;
     color: #088A68;
     font-style: italic;
@@ -45,7 +54,6 @@ label {
 }
 
 #btSubmitForm{
-  float: left;
   margin-left: 50%;
   color: black;
 }

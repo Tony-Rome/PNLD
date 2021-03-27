@@ -1,44 +1,30 @@
-@media screen
-and (min-width: 801px)
-and (max-width: 826px){
+@media screen and (max-width: 700px) {
 
-    .col-25, .col-75 {
-        width: 100%;
-      }
-
-    label {
-      width: 100%;
-    }
-
-    #btSubmitForm {
-        margin-left: 40%;
-    }
-}
-
-@media screen and (max-width: 800px) {
-
-  .col-25, .col-75 {
-    width: 100%;
-    margin-top: 0;
+  .tableFileForm {
+    padding: 0 20px;
   }
 
-  #btSubmitForm {
-    margin-left: 40%;
+  table.tableFileForm tr{
+    display: inline-grid;
+  }
+
+  table.tableFileForm tbody{
+    display: grid;
   }
 
   .filesTableContainer {
-      margin-left: 12.5%;
-  }
+        margin-left: 12px;
+    }
 
-  .filesTableHeader {
-      margin-top: 5%;
-  }
+    .filesTableHeader {
+        margin-top: 20px;
+    }
 
-  .pagination {
-    margin-top: 4%;
-  }
+    .pagination {
+      margin-top: 20px;
+    }
 
-  .pagination a {
-    padding: 8px 4px;
-  }
+    .pagination a {
+      padding: 8px 4px;
+    }
 }

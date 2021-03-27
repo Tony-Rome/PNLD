@@ -10,7 +10,9 @@
                 <input type="submit" id="btSubmitOk" value="Entendido">
             </div>
             <div class="displayNone" id="popupBodyMsgError">
-                <div class="popupMsg">No se pudo planificar carga del archivo.<br/><br/>Sugerencia: validar archivo a cargar y tipo seleccionado</div>
+                <div class="popupMsg">Se ha producido un error al planificar carga del archivo.</div>
+                <br/>
+                Motivo: <span id="popupMsgResponse"></span>
                 <input type="submit" id="btSubmitError" value="Entendido">
             </div>
             <div id="popupBodyFile">

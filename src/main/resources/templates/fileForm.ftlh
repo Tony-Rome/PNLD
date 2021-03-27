@@ -1,7 +1,7 @@
 <#macro fileForm>
     <form name="fileForm" id="fileForm" action="/scheduleFileLoadPost" method="post" enctype="multipart/form-data">
 
-        <table>
+        <table class="tableFileForm">
             <tr>
                 <td><label>Nombre archivo</label></td>
                 <td><input type="text" id="fileName" name="name" placeholder="Nombre del archivo"> </td>

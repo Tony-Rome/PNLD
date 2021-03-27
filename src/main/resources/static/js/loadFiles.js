@@ -14,6 +14,7 @@ const popupFile = document.getElementById("popupFile");
 const popupBodyFile = document.getElementById("popupBodyFile");
 const popupBodyMsgOk = document.getElementById("popupBodyMsgOk");
 const popupBodyMsgError = document.getElementById("popupBodyMsgError");
+const popupMsgResponse = document.getElementById("popupMsgResponse");
 const btSubmitOk = document.getElementById("btSubmitOk");
 const btSubmitError = document.getElementById("btSubmitError");
 const spinner = document.getElementById("spinner");
@@ -96,10 +97,15 @@ const spinner = document.getElementById("spinner");
             xmlhttp.onload = ()=>{
 
                 console.log(xmlhttp);
+                console.log(xmlhttp.responseText);
+
+
                 if(xmlhttp.status === 200){
                     switchPopup(1);
                 }
                 else{
+
+                    popupMsgResponse.innerHTML = xmlhttp.response;
                     switchPopup(2);
                 }
             };
