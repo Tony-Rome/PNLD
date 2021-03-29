@@ -18,6 +18,12 @@ const popupMsgResponse = document.getElementById("popupMsgResponse");
 const btSubmitOk = document.getElementById("btSubmitOk");
 const btSubmitError = document.getElementById("btSubmitError");
 const spinner = document.getElementById("spinner");
+const STATUS_FILE_UPLOAD_OK = 200;
+const SHOW_SPINNER = 0;
+const SHOW_MSG_OK = 1;
+const SHOW_MSG_ERROR = 2;
+const REMOVE_MSG_OK = 3;
+const REMOVE_MSG_ERROR = 4;
 
 
         let formDataValid = {
@@ -92,7 +98,7 @@ const spinner = document.getElementById("spinner");
             xmlhttp.open("POST", url);
             xmlhttp.send(formData);
 
-            switchPopup(0);
+            switchPopup(SHOW_SPINNER);
 
             xmlhttp.onload = ()=>{
 
@@ -100,13 +106,13 @@ const spinner = document.getElementById("spinner");
                 console.log(xmlhttp.responseText);
 
 
-                if(xmlhttp.status === 200){
-                    switchPopup(1);
+                if(xmlhttp.status === STATUS_FILE_UPLOAD_OK){
+                    switchPopup(SHOW_MSG_OK);
                 }
                 else{
 
                     popupMsgResponse.innerHTML = xmlhttp.response;
-                    switchPopup(2);
+                    switchPopup(SHOW_MSG_ERROR);
                 }
             };
 
@@ -126,14 +132,14 @@ const spinner = document.getElementById("spinner");
             formDataValid.name = false;
             deactivateFileName();
             popup.style.display = "none";
-            switchPopup(3);
+            switchPopup(REMOVE_MSG_OK);
             submitController();
 
         });
 
         btSubmitError.addEventListener("click",()=> {
             popup.style.display = "none";
-            switchPopup(4);
+            switchPopup(REMOVE_MSG_ERROR);
             deactivateFileName();
             submitController();
         });
@@ -167,28 +173,28 @@ const spinner = document.getElementById("spinner");
                     dropFile.style.borderStyle = "dashed";
                 };
 
-        switchPopup = (status) => {
+        switchPopup = (msg) => {
 
-            switch(status){
-                case 0:
+            switch(msg){
+                case SHOW_SPINNER:
                     spinner.classList.remove("displayNone");
                     popupBodyFile.classList.add("displayNone");
                     break;
-                case 1:
+                case SHOW_MSG_OK:
                     spinner.classList.add("displayNone");
                     popupBodyFile.classList.add("displayNone");
                     popupBodyMsgOk.classList.remove("displayNone");
                     break;
-                case 2:
+                case SHOW_MSG_ERROR:
                     spinner.classList.add("displayNone");
                     popupBodyFile.classList.add("displayNone");
                     popupBodyMsgError.classList.remove("displayNone");
                     break;
-                case 3:
+                case REMOVE_MSG_OK:
                     popupBodyFile.classList.remove("displayNone");
                     popupBodyMsgOk.classList.add("displayNone");
                     break;
-                case 4:
+                case REMOVE_MSG_ERROR:
                      popupBodyFile.classList.remove("displayNone");
                      popupBodyMsgError.classList.add("displayNone");
             }
