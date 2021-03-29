@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -39,25 +40,28 @@ public class FileService {
         scheduleFileLoadDTO.setLoadedOnDateTime(OffsetDateTime.now(ZoneId.of("UTC")));
 
         ScheduleFileLoadResponse scheduleFileLoadResponse =
-                new ScheduleFileLoadResponse("OK", "finish schedule file load");
+                new ScheduleFileLoadResponse(HttpStatus.BAD_REQUEST);
 
         if(! this.isValidCsvHeader(scheduleFileLoadDTO)){
             logger.info("scheduleLoad. headers invalid");
-            scheduleFileLoadResponse.setResponse("NOK");
-            scheduleFileLoadResponse.setDescription("headers invalid");
+            scheduleFileLoadResponse.setDescription("Cabeceras inválidas");
+            return scheduleFileLoadResponse;
         }
 
         if(!this.copyAtFileSystem(scheduleFileLoadDTO)){
             logger.info("scheduleLoad. copy at file system is not complete");
-            scheduleFileLoadResponse.setResponse("NOK");
-            scheduleFileLoadResponse.setDescription("copy at file system is not complete");
+            scheduleFileLoadResponse.setDescription("Copia de archivo al sistema no se pudo completar");
+            return scheduleFileLoadResponse;
         }
 
         if(!this.queueLoad(scheduleFileLoadDTO)){
             logger.info("scheduleLoad. queue load is not succesfull");
-            scheduleFileLoadResponse.setResponse("NOK");
-            scheduleFileLoadResponse.setDescription("queue load is not succesfull");
+            scheduleFileLoadResponse.setDescription("Error en la cola de procesamiento");
+            return scheduleFileLoadResponse;
         }
+
+        logger.info("scheduleLoad. file load successfully");
+        scheduleFileLoadResponse.setResponse(HttpStatus.OK);
         return scheduleFileLoadResponse;
     }
 
