@@ -4,11 +4,12 @@ import java.time.LocalDateTime;
 
 public class LoadedFile {
 
-    private int idLoadedFile;
+    private int id;
     private LocalDateTime loadedDate;
-    private String fileName;
-    private String fileType;
-    private String loadedByAdminName;
+    private String name;
+    private String storedIn;
+    private String type;
+    private String loadedByAdmin;
     private int stateId;
     private LocalDateTime processDate;
     private int totalRecords;
@@ -19,14 +20,15 @@ public class LoadedFile {
         super();
     }
 
-    public LoadedFile(int idLoadedFile, LocalDateTime loadedDate, String fileName, String fileType, String loadedByAdminName,
+    public LoadedFile(int id, LocalDateTime loadedDate, String name, String storedIn, String type, String loadedByAdmin,
                       int stateId, LocalDateTime processDate, int totalRecords, int newRecords, int duplicateRecords) {
         super();
-        this.idLoadedFile = idLoadedFile;
+        this.id = id;
         this.loadedDate = loadedDate;
-        this.fileName = fileName;
-        this.fileType = fileType;
-        this.loadedByAdminName = loadedByAdminName;
+        this.name = name;
+        this.storedIn = storedIn;
+        this.type = type;
+        this.loadedByAdmin = loadedByAdmin;
         this.stateId = stateId;
         this.processDate = processDate;
         this.totalRecords = totalRecords;
@@ -34,12 +36,12 @@ public class LoadedFile {
         this.duplicateRecords = duplicateRecords;
     }
 
-    public int getIdLoadedFile() {
-        return idLoadedFile;
+    public int getId() {
+        return id;
     }
 
-    public void setIdLoadedFile(int idLoadedFile) {
-        this.idLoadedFile = idLoadedFile;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public LocalDateTime getLoadedDate() {
@@ -50,28 +52,36 @@ public class LoadedFile {
         this.loadedDate = loadedDate;
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getName() {
+        return name;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getFileType() {
-        return fileType;
+    public String getStoredIn() {
+        return storedIn;
     }
 
-    public void setFileType(String fileType) {
-        this.fileType = fileType;
+    public void setStoredIn(String storedIn) {
+        this.storedIn = storedIn;
     }
 
-    public String getLoadedByAdminName() {
-        return loadedByAdminName;
+    public String getType() {
+        return type;
     }
 
-    public void setLoadedByAdminName(String loadedByAdminName) {
-        this.loadedByAdminName = loadedByAdminName;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getLoadedByAdmin() {
+        return loadedByAdmin;
+    }
+
+    public void setLoadedByAdmin(String loadedByAdmin) {
+        this.loadedByAdmin = loadedByAdmin;
     }
 
     public int getStateId() {
@@ -117,11 +127,12 @@ public class LoadedFile {
     @Override
     public String toString() {
         return "LoadedFile{" +
-                "idLoadedFile=" + idLoadedFile +
+                "id=" + id +
                 ", loadedDate=" + loadedDate +
-                ", fileName='" + fileName + '\'' +
-                ", fileType='" + fileType + '\'' +
-                ", loadedByAdminName=" + loadedByAdminName +
+                ", name='" + name + '\'' +
+                ", storedIn='" + storedIn + '\'' +
+                ", type='" + type + '\'' +
+                ", loadedByAdmin='" + loadedByAdmin + '\'' +
                 ", stateId=" + stateId +
                 ", processDate=" + processDate +
                 ", totalRecords=" + totalRecords +

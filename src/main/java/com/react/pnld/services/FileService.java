@@ -123,10 +123,11 @@ public class FileService {
     public boolean queueLoad(ScheduleFileLoadDTO scheduleFileLoadDTO){
 
         LoadedFile loadedFile = new LoadedFile();
-        loadedFile.setFileName(fileUtilService.getLoadedFileName(scheduleFileLoadDTO));
-        loadedFile.setFileType(scheduleFileLoadDTO.getSelectedType());
+        loadedFile.setName(fileUtilService.getLoadedFileName(scheduleFileLoadDTO));
+        loadedFile.setStoredIn(FILE_PATH);
+        loadedFile.setType(scheduleFileLoadDTO.getSelectedType());
         loadedFile.setLoadedDate(scheduleFileLoadDTO.getLoadedOnDateTime());
-        loadedFile.setLoadedByAdminName(scheduleFileLoadDTO.getLoadedBy());
+        loadedFile.setLoadedByAdmin(scheduleFileLoadDTO.getLoadedBy());
         loadedFile.setStateId(FILE_STATE_SCHEDULED);
         loadedFile.setProcessDate(null);
         loadedFile.setTotalRecords(0);
@@ -158,9 +159,9 @@ public class FileService {
         //TODO read file's content
 
         for(LoadedFile loadedFile : filesLoadedScheduled){
-            String pathName = FILE_PATH + loadedFile.getFileName();
+            String pathName = FILE_PATH + loadedFile.getName();
             ParsedFileDTO parsedFileDTO = fileUtilService.getParsedFile(pathName);
-            parsedFileDTO.setFileType(loadedFile.getFileType());
+            parsedFileDTO.setFileType(loadedFile.getType());
 
             ProcessedParsedFileResumeDTO resume = fileUtilService.processParsedFile(parsedFileDTO);
 
