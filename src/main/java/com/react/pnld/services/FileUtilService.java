@@ -248,7 +248,14 @@ public class FileUtilService {
     }
 
     public ProcessedParsedFileResumeDTO postCapacitaFile(ParsedFileDTO postCapacitaParsedFile){
+
         //TODO validate load records by file's type
+            //check if docente y persona exist
+
+        //insert entity test
+        //insert entity pregunta
+
+
         //TODO insert records if not exist
 
         return new ProcessedParsedFileResumeDTO();

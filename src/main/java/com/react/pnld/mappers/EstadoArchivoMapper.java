@@ -24,6 +24,7 @@ public interface EstadoArchivoMapper {
             @Result(property = "id", column = "id"),
             @Result(property = "loadedDate", column = "fecha_carga"),
             @Result(property = "name", column = "nombre"),
+            @Result(property = "storedIn", column = "ubicado_en"),
             @Result(property = "type", column = "tipo"),
             @Result(property = "loadedByAdmin", column = "cargado_por_admin"),
             @Result(property = "stateId", column = "id_estado"),

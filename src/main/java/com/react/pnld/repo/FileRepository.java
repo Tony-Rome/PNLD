@@ -19,8 +19,8 @@ public class FileRepository {
         return estadoArchivoMapper.insertProcessFile(loadedFile);
     }
 
-    public List<LoadedFile> getLoadedFilesByStateAndTimestamps(int scheduledState, Timestamp initTime, Timestamp endTime){
-        return estadoArchivoMapper.getLoadedFilesByStateAndTimestamps(scheduledState, initTime, endTime);
+    public List<LoadedFile> getLoadedFilesByStateAndTimestamps(int stateId, Timestamp initTime, Timestamp endTime){
+        return estadoArchivoMapper.getLoadedFilesByStateAndTimestamps(stateId, initTime, endTime);
     }
 
     public List<EstadoArchivoDTO> getEstadoArchivoList(){
