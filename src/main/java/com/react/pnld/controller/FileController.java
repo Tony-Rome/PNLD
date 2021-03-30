@@ -12,6 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 public class FileController {
@@ -22,11 +25,22 @@ public class FileController {
 
     @GetMapping(value = "/")
     public String index(Model model) {
+
         return "index";
     }
 
     @GetMapping(value = "/scheduleFileLoadPost")
-    public String scheduleFileLoadGet(Model model) { return "loadFiles"; }
+    public ModelAndView scheduleFileLoadGet(Model model) {
+
+        int filesCount = fileService.getFilesCount();
+
+        List<?> filesUploadedList = fileService.getFilesUploaded();
+        ModelAndView mav = new ModelAndView("loadFiles");
+        mav.addObject("files", filesUploadedList);
+        mav.addObject("filesCount", filesCount);
+
+        return mav;
+    }
 
     @PostMapping(value = "/scheduleFileLoadPost")
     public ResponseEntity<String> scheduleFileLoadPost(ScheduleFileLoadDTO scheduleFileLoadDTO, Model model) {

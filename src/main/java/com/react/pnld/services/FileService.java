@@ -3,6 +3,7 @@ package com.react.pnld.services;
 import com.react.pnld.model.dto.ScheduleFileLoadDTO;
 import com.react.pnld.model.dto.ProcesaArchivoDTO;
 import com.react.pnld.model.ScheduleFileLoadResponse;
+import com.react.pnld.model.dto.TableFile;
 import com.react.pnld.repo.FileRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 @Service
 public class FileService {
@@ -145,4 +147,7 @@ public class FileService {
         //TODO update record load filex
     }
 
+    public List<TableFile> getFilesUploaded(){ return fileRepository.getFilesUploaded(); }
+
+    public int getFilesCount(){return fileRepository.getFilesCount();}
 }

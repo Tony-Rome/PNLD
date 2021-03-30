@@ -1,0 +1,3 @@
+pagination = () =>{
+    console.log("CLIKEADO!");
+};

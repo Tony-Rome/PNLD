@@ -28,5 +28,6 @@
         <@pu.popup/>
 
         <script src="js/loadFiles.js"></script>
+        <script src="js/filesTable.js"></script>
     </body>
 </html>
