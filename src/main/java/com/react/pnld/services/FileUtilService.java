@@ -3,9 +3,7 @@ package com.react.pnld.services;
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.model.LoadedFile;
 import com.react.pnld.model.dto.FileResumeDTO;
-import com.react.pnld.model.dto.PostCapacitaDTO;
 import com.react.pnld.model.dto.ScheduleFileLoadDTO;
-import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.common.processor.RowListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.Arrays;
-import java.util.List;
 
 @Service
 public class FileUtilService {
@@ -146,7 +143,7 @@ public class FileUtilService {
             logger.info("getParsedFile. returning empty parsed file");
             return new ParsedFileDTO();
         }
-    }*/
+    }
 
     public List<Clazz<?>> listByTypeFile(String path, Class<?> clazz){
 
@@ -159,7 +156,7 @@ public class FileUtilService {
 
         // The BeanListProcessor provides a list of objects extracted from the input.
          return rowProcessor.getBeans();
-    }
+    }*/
 
     public Reader getReader(String path) {
         try {
@@ -272,7 +269,7 @@ public class FileUtilService {
 
         //TODO Parsing parsedFile to postCapacitaDTO
         String path = loadedFile.getStoredIn() + loadedFile.getName();
-        List<PostCapacitaDTO> postCapacitaRows = listByTypeFile(path, PostCapacitaDTO.class);
+        //List<PostCapacitaDTO> postCapacitaRows = listByTypeFile(path, PostCapacitaDTO.class);
 
 
 

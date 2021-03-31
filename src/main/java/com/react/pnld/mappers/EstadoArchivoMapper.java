@@ -13,7 +13,7 @@ public interface EstadoArchivoMapper {
 
     @Insert("INSERT INTO pnld.archivo_cargado (fecha_carga, nombre, ubicado_en, tipo, cargado_por_admin, " +
             "id_estado, fecha_procesado, registros_totales, registros_nuevos, registros_duplicados) " +
-            "VALUES(#{loadedDate},#{name}, #{storedIn}, #{type},(SELECT id_admin FROM pnld.admin WHERE nombre=#{loadedByAdmin})," +
+            "VALUES(#{loadedDate},#{name}, #{storedIn}, #{type},(SELECT id FROM pnld.admin WHERE user_name=#{loadedByAdmin})," +
             "#{stateId},#{processDate}, #{totalRecords},#{newRecords},#{duplicateRecords});")
     int insertProcessFile(LoadedFile loadedFile);
 
