@@ -2,7 +2,6 @@ package com.react.pnld.repo;
 
 import com.react.pnld.mappers.EstadoArchivoMapper;
 import com.react.pnld.model.LoadedFile;
-import com.react.pnld.model.dto.EstadoArchivoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -22,9 +21,4 @@ public class FileRepository {
     public List<LoadedFile> getLoadedFilesByStateAndTimestamps(int stateId, Timestamp initTime, Timestamp endTime){
         return estadoArchivoMapper.getLoadedFilesByStateAndTimestamps(stateId, initTime, endTime);
     }
-
-    public List<EstadoArchivoDTO> getEstadoArchivoList(){
-        return estadoArchivoMapper.getEstadoArchivoList();
-    }
-
 }

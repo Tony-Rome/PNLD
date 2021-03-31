@@ -1,9 +1,11 @@
 package com.react.pnld.services;
 
 import com.react.pnld.model.CSVHeadersProperties;
-import com.react.pnld.model.dto.ParsedFileDTO;
-import com.react.pnld.model.dto.ProcessedParsedFileResumeDTO;
+import com.react.pnld.model.LoadedFile;
+import com.react.pnld.model.dto.FileResumeDTO;
+import com.react.pnld.model.dto.PostCapacitaDTO;
 import com.react.pnld.model.dto.ScheduleFileLoadDTO;
+import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.common.processor.RowListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
@@ -12,10 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,10 +35,10 @@ public class FileUtilService {
     public FileUtilService(){
         csvParserSettings = new CsvParserSettings();
         csvParserSettings.setLineSeparatorDetectionEnabled(true);
-        rowListProcessor = new RowListProcessor();
-        csvParserSettings.setProcessor(rowListProcessor);
-        csvParserSettings.setHeaderExtractionEnabled(true);
-        csvParser = new CsvParser(csvParserSettings);
+        //rowListProcessor = new RowListProcessor();
+        //csvParserSettings.setProcessor(rowListProcessor);
+        //csvParserSettings.setHeaderExtractionEnabled(true);
+        //csvParser = new CsvParser(csvParserSettings);
     }
 
     public String removeSymbols(String strToClean){
@@ -129,7 +128,7 @@ public class FileUtilService {
         return finalFileName;
     }
 
-    public ParsedFileDTO getParsedFile(String pathName){
+    /*public FileResumeDTO getParsedFile(String pathName){
 
         try (Reader inputReader = new InputStreamReader(new FileInputStream(pathName), "UTF-8")) {
 
@@ -147,156 +146,178 @@ public class FileUtilService {
             logger.info("getParsedFile. returning empty parsed file");
             return new ParsedFileDTO();
         }
+    }*/
+
+    public List<Clazz<?>> listByTypeFile(String path, Class<?> clazz){
+
+        BeanListProcessor<clazz> rowProcessor = new BeanListProcessor<>(clazz.class);
+        csvParserSettings.setProcessor(rowProcessor);
+        csvParserSettings.setHeaderExtractionEnabled(true);
+
+        CsvParser parser = new CsvParser(csvParserSettings);
+        parser.parse(getReader(path));
+
+        // The BeanListProcessor provides a list of objects extracted from the input.
+         return rowProcessor.getBeans();
     }
 
-    public ProcessedParsedFileResumeDTO processParsedFile(ParsedFileDTO parsedFileDTO){
-
-        switch (FileTypes.valueOfLabel(parsedFileDTO.getFileType())){
-
-            case TEACHER_ROSTER:
-                return this.processTeacherRosterFile(parsedFileDTO);
-
-            case TEACHER_OPT_IN:
-                return this.processTeacherOptInFile(parsedFileDTO);
-
-            case STUDENT_LEVEL:
-                return this.processStudentLevelFile(parsedFileDTO);
-
-            case SIGNIN_PER_COURSE:
-                return this.processSignInPerCourseFile(parsedFileDTO);
-
-            case SIGN_INS:
-                return this.processSignInsFile(parsedFileDTO);
-
-            case DIAGNOSTICO:
-                return this.diagnosticoFile(parsedFileDTO);
-
-            case PRE_CAPACITA:
-                return this.preCapacitaFile(parsedFileDTO);
-
-            case POST_CAPACITA:
-                return this.postCapacitaFile(parsedFileDTO);
-
-            case TEST_PC_1:
-                return this.testPCOneFile(parsedFileDTO);
-
-            case TEST_PC_2:
-                return this.testPCTwoFile(parsedFileDTO);
-
-            case TEST_PC_3:
-                return this.testPCThreeFile(parsedFileDTO);
-
-            case SALIDA:
-                return this.salidaFile(parsedFileDTO);
-
-            case SATIS:
-                return this.satisFile(parsedFileDTO);
-
-            default:
-                return new ProcessedParsedFileResumeDTO(0,0,0);
+    public Reader getReader(String path) {
+        try {
+            return new InputStreamReader(new FileInputStream(path), "UTF-8");
+        } catch (UnsupportedEncodingException | FileNotFoundException e) {
+            logger.error(e.getMessage(), e);
+            throw new IllegalStateException("Unable to read input", e);
         }
     }
 
-    public ProcessedParsedFileResumeDTO processTeacherRosterFile(ParsedFileDTO teacherRosterParsedFile){
+    public FileResumeDTO processLoadedFile(LoadedFile loadedFile){
+
+        switch (FileTypes.valueOfLabel(loadedFile.getType())){
+
+            case TEACHER_ROSTER:
+                return this.processTeacherRosterFile(loadedFile);
+
+            case TEACHER_OPT_IN:
+                return this.processTeacherOptInFile(loadedFile);
+
+            case STUDENT_LEVEL:
+                return this.processStudentLevelFile(loadedFile);
+
+            case SIGNIN_PER_COURSE:
+                return this.processSignInPerCourseFile(loadedFile);
+
+            case SIGN_INS:
+                return this.processSignInsFile(loadedFile);
+
+            case DIAGNOSTICO:
+                return this.diagnosticoFile(loadedFile);
+
+            case PRE_CAPACITA:
+                return this.preCapacitaFile(loadedFile);
+
+            case POST_CAPACITA:
+                return this.postCapacitaFile(loadedFile);
+
+            case TEST_PC_1:
+                return this.testPCOneFile(loadedFile);
+
+            case TEST_PC_2:
+                return this.testPCTwoFile(loadedFile);
+
+            case TEST_PC_3:
+                return this.testPCThreeFile(loadedFile);
+
+            case SALIDA:
+                return this.salidaFile(loadedFile);
+
+            case SATIS:
+                return this.satisFile(loadedFile);
+
+            default:
+                return new FileResumeDTO(0,0,0);
+        }
+    }
+
+    public FileResumeDTO processTeacherRosterFile(LoadedFile loadedFile){
         //TODO validate load records by file's type
         //TODO insert records if not exist
 
         logger.info("processTeacherRosterFile init");
-        return new ProcessedParsedFileResumeDTO();
+        return new FileResumeDTO();
     }
 
-    public ProcessedParsedFileResumeDTO processTeacherOptInFile(ParsedFileDTO teacherOptInParsedFile){
+    public FileResumeDTO processTeacherOptInFile(LoadedFile loadedFile){
         //TODO validate load records by file's type
         //TODO insert records if not exist
 
-        return new ProcessedParsedFileResumeDTO();
+        return new FileResumeDTO();
     }
 
-    public ProcessedParsedFileResumeDTO processStudentLevelFile(ParsedFileDTO studentLevelParsedFile){
+    public FileResumeDTO processStudentLevelFile(LoadedFile loadedFile){
         //TODO validate load records by file's type
         //TODO insert records if not exist
 
-        return new ProcessedParsedFileResumeDTO();
+        return new FileResumeDTO();
     }
 
-    public ProcessedParsedFileResumeDTO processSignInPerCourseFile(ParsedFileDTO signInPerCourseParsedFile){
+    public FileResumeDTO processSignInPerCourseFile(LoadedFile loadedFile){
         //TODO validate load records by file's type
         //TODO insert records if not exist
 
-        return new ProcessedParsedFileResumeDTO();
+        return new FileResumeDTO();
     }
 
-    public ProcessedParsedFileResumeDTO processSignInsFile(ParsedFileDTO signInsParsedFile){
+    public FileResumeDTO processSignInsFile(LoadedFile loadedFile){
         //TODO validate load records by file's type
         //TODO insert records if not exist
 
-        return new ProcessedParsedFileResumeDTO();
+        return new FileResumeDTO();
     }
 
-    public ProcessedParsedFileResumeDTO diagnosticoFile(ParsedFileDTO diagnosticoParsedFile){
+    public FileResumeDTO diagnosticoFile(LoadedFile loadedFile){
         //TODO validate load records by file's type
         //TODO insert records if not exist
 
-        return new ProcessedParsedFileResumeDTO();
+        return new FileResumeDTO();
     }
 
-    public ProcessedParsedFileResumeDTO preCapacitaFile(ParsedFileDTO preCapacitaParsedFile){
+    public FileResumeDTO preCapacitaFile(LoadedFile loadedFile){
         //TODO validate load records by file's type
         //TODO insert records if not exist
 
-        return new ProcessedParsedFileResumeDTO();
+        return new FileResumeDTO();
     }
 
-    public ProcessedParsedFileResumeDTO postCapacitaFile(ParsedFileDTO postCapacitaParsedFile){
+    public FileResumeDTO postCapacitaFile(LoadedFile loadedFile){
 
-        //TODO validate load records by file's type
-            //check if docente y persona exist
-
-        //insert entity test
-        //insert entity pregunta
+        //TODO Parsing parsedFile to postCapacitaDTO
+        String path = loadedFile.getStoredIn() + loadedFile.getName();
+        List<PostCapacitaDTO> postCapacitaRows = listByTypeFile(path, PostCapacitaDTO.class);
 
 
-        //TODO insert records if not exist
 
-        return new ProcessedParsedFileResumeDTO();
+        //TODO check persona exist, if dont then insert persona, gender, docente
+
+        //TODO update entity Test and Pregunta
+
+
+        return new FileResumeDTO();
     }
 
-    public ProcessedParsedFileResumeDTO testPCOneFile(ParsedFileDTO testPCOneParsedFile){
+    public FileResumeDTO testPCOneFile(LoadedFile loadedFile){
         //TODO validate load records by file's type
-
-
 
         //TODO insert records if not exist
 
         logger.info("testPCOneFile init");
-        return new ProcessedParsedFileResumeDTO();
+        return new FileResumeDTO();
     }
 
-    public ProcessedParsedFileResumeDTO testPCTwoFile(ParsedFileDTO testPCTwoParsedFile){
+    public FileResumeDTO testPCTwoFile(LoadedFile loadedFile){
         //TODO validate load records by file's type
         //TODO insert records if not exist
 
-        return new ProcessedParsedFileResumeDTO();
+        return new FileResumeDTO();
     }
 
-    public ProcessedParsedFileResumeDTO testPCThreeFile(ParsedFileDTO testPCThreeParsedFile){
+    public FileResumeDTO testPCThreeFile(LoadedFile loadedFile){
         //TODO validate load records by file's type
         //TODO insert records if not exist
 
-        return new ProcessedParsedFileResumeDTO();
+        return new FileResumeDTO();
     }
 
-    public ProcessedParsedFileResumeDTO salidaFile(ParsedFileDTO salidaParsedFile){
+    public FileResumeDTO salidaFile(LoadedFile loadedFile){
         //TODO validate load records by file's type
         //TODO insert records if not exist
 
-        return new ProcessedParsedFileResumeDTO();
+        return new FileResumeDTO();
     }
 
-    public ProcessedParsedFileResumeDTO satisFile(ParsedFileDTO satisParsedFile){
+    public FileResumeDTO satisFile(LoadedFile loadedFile){
         //TODO validate load records by file's type
         //TODO insert records if not exist
 
-        return new ProcessedParsedFileResumeDTO();
+        return new FileResumeDTO();
     }
 }

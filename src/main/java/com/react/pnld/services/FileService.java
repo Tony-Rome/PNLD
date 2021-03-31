@@ -1,8 +1,7 @@
 package com.react.pnld.services;
 
 import com.react.pnld.model.LoadedFile;
-import com.react.pnld.model.dto.ParsedFileDTO;
-import com.react.pnld.model.dto.ProcessedParsedFileResumeDTO;
+import com.react.pnld.model.dto.FileResumeDTO;
 import com.react.pnld.model.dto.ScheduleFileLoadDTO;
 import com.react.pnld.model.ScheduleFileLoadResponse;
 import com.react.pnld.repo.FileRepository;
@@ -159,11 +158,8 @@ public class FileService {
         //TODO read file's content
 
         for(LoadedFile loadedFile : filesLoadedScheduled){
-            String pathName = FILE_PATH + loadedFile.getName();
-            ParsedFileDTO parsedFileDTO = fileUtilService.getParsedFile(pathName);
-            parsedFileDTO.setFileType(loadedFile.getType());
-
-            ProcessedParsedFileResumeDTO resume = fileUtilService.processParsedFile(parsedFileDTO);
+            //ParsedFileDTO parsedFileDTO = fileUtilService.getParsedFile(pathName);
+            FileResumeDTO resume = fileUtilService.processLoadedFile(loadedFile);
 
             //TODO resume load file
             //TODO update record load file

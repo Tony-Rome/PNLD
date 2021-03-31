@@ -1,15 +1,15 @@
 package com.react.pnld.model.dto;
 
-public class ProcessedParsedFileResumeDTO {
+public class FileResumeDTO {
     private int totalRecords;
     private int newRecords;
     private int duplicatedRecords;
 
-    public ProcessedParsedFileResumeDTO() {
+    public FileResumeDTO() {
         super();
     }
 
-    public ProcessedParsedFileResumeDTO(int totalRecords, int newRecords, int duplicatedRecords) {
+    public FileResumeDTO(int totalRecords, int newRecords, int duplicatedRecords) {
         super();
         this.totalRecords = totalRecords;
         this.newRecords = newRecords;

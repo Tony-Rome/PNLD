@@ -1,7 +1,6 @@
 package com.react.pnld.mappers;
 
 import com.react.pnld.model.LoadedFile;
-import com.react.pnld.model.dto.EstadoArchivoDTO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
@@ -35,9 +34,4 @@ public interface EstadoArchivoMapper {
     })
     List<LoadedFile> getLoadedFilesByStateAndTimestamps(int stateId, Timestamp initTime, Timestamp endTime);
 
-    @Select("select * from pnld.estado_archivo;")
-    @Results({
-            @Result(property = "idEstado", column = "id_estado")
-    })
-    List<EstadoArchivoDTO> getEstadoArchivoList();
 }
