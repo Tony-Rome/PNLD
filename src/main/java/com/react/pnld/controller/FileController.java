@@ -6,6 +6,7 @@ import com.react.pnld.services.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,8 +28,8 @@ public class FileController {
     @GetMapping(value = "/scheduleFileLoadPost")
     public String scheduleFileLoadGet(Model model) { return "loadFiles"; }
 
-    @PostMapping("/scheduleFileLoadPost")
-    public String scheduleFileLoadPost(ScheduleFileLoadDTO scheduleFileLoadDTO, Model model) {
+    @PostMapping(value = "/scheduleFileLoadPost")
+    public ResponseEntity<String> scheduleFileLoadPost(ScheduleFileLoadDTO scheduleFileLoadDTO, Model model) {
 
 
         model.addAttribute("scheduleFileLoadDTO", scheduleFileLoadDTO);
@@ -41,9 +42,7 @@ public class FileController {
         ScheduleFileLoadResponse scheduleFileLoadResponse = fileService.scheduleLoad(scheduleFileLoadDTO);
         logger.info("scheduleLoadFilePost. scheduleFileLoadResponse={}", scheduleFileLoadResponse);
 
-        //TODO in else change to error page
-        String response = (scheduleFileLoadResponse.getResponse().equals("OK"))? "loadFiles" : "loadFiles";
-        return response;
+        return new ResponseEntity<>(scheduleFileLoadResponse.getDescription(), scheduleFileLoadResponse.getResponse());
     }
 
     @GetMapping("/executeLoadScheduled")

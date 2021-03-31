@@ -1,0 +1,30 @@
+@media screen and (max-width: 700px) {
+
+  .tableFileForm {
+    padding: 0 20px;
+  }
+
+  table.tableFileForm tr{
+    display: inline-grid;
+  }
+
+  table.tableFileForm tbody{
+    display: grid;
+  }
+
+  .filesTableContainer {
+        margin-left: 12px;
+    }
+
+    .filesTableHeader {
+        margin-top: 20px;
+    }
+
+    .pagination {
+      margin-top: 20px;
+    }
+
+    .pagination a {
+      padding: 8px 4px;
+    }
+}
