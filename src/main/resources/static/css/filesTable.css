@@ -22,6 +22,12 @@ div.filesTableContainer td {
     text-align: center;
 }
 
+.currentPage {
+    font-weight: bold;
+    text-decoration: underline !important;
+    font-size: 17px !important;
+}
+
 .pagination a {
   color: black;
   padding: 8px 16px;

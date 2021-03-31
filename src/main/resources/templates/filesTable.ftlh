@@ -1,4 +1,4 @@
- <#function pags x>
+ <#function numberPages x>
     <#if (x%10) != 0>
         <#return ((x/10) + 1)?floor>
     <#else>
@@ -36,14 +36,41 @@
         </div>
     </div>
 
+        <#if filesCount <= 10>
+            <br>
+            <br>
+        <#else>
 
-        <#assign interval = 1..pags(filesCount)>
+            <#assign pages = numberPages(filesCount)>
 
-        <div class="pagination">
-            <a href="#">&laquo; Anterior</a>
-            <#list interval as page>
-                <a href="#" id=${page} onclick="pagination()">${page}</a>
-            </#list>
-            <a href="#">Siguiente &raquo;</a>
-        </div>
+            <#assign interval = 1..pages>
+
+            <div class="pagination">
+
+                <#assign previousPage = currentPage - 1>
+                <#if (previousPage < 1) >
+                    <a>&laquo; Anterior</a>
+                <#else>
+                    <a href="/scheduleFileLoadPost/${previousPage}">&laquo; Anterior</a>
+                </#if>
+
+
+                <#list interval as page>
+                    <#if page == currentPage>
+                        <a class="currentPage" href="/scheduleFileLoadPost/${page}" id=${page} onclick="pagination(${page})">${page}</a>
+                    <#else>
+                        <a href="/scheduleFileLoadPost/${page}" id=${page} onclick="pagination(${page})">${page}</a>
+                    </#if>
+                </#list>
+
+                <#assign nextPage = currentPage + 1>
+                <#if (nextPage > pages) >
+                    <a>Siguiente &raquo;</a>
+                <#else>
+                    <a href="/scheduleFileLoadPost/${nextPage}">Siguiente &raquo;</a>
+                </#if>
+
+
+            </div>
+        </#if>
 </#macro>

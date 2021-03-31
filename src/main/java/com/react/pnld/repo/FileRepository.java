@@ -2,7 +2,7 @@ package com.react.pnld.repo;
 
 import com.react.pnld.mappers.EstadoArchivoMapper;
 import com.react.pnld.model.dto.ProcesaArchivoDTO;
-import com.react.pnld.model.dto.TableFile;
+import com.react.pnld.model.dto.TableFileDTO;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -26,9 +26,9 @@ public class FileRepository {
         return estadoArchivoMapper.insertProcessFile(procesaArchivoDTO);
     }
 
-    public List<TableFile> getFilesUploaded(){
-        RowBounds rb = new RowBounds(1,10);
-        List<TableFile> filesUploaded = estadoArchivoMapper.getFilesUploaded(rb);
+    public List<TableFileDTO> getFilesUploaded(int fileNumber){
+
+        List<TableFileDTO> filesUploaded = estadoArchivoMapper.getFilesUploaded(fileNumber);
         System.out.println(filesUploaded.size());
         return filesUploaded;
     }

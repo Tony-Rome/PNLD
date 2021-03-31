@@ -1,3 +1,4 @@
-pagination = () =>{
-    console.log("CLIKEADO!");
+pagination = (number) =>{
+    console.log(number);
+
 };

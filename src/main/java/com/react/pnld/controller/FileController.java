@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -29,15 +30,24 @@ public class FileController {
         return "index";
     }
 
-    @GetMapping(value = "/scheduleFileLoadPost")
-    public ModelAndView scheduleFileLoadGet(Model model) {
+    @GetMapping(value = {"/scheduleFileLoadPost","/scheduleFileLoadPost/{page}"})
+    public ModelAndView scheduleFileLoadGet(@PathVariable(required = false, value = "page") Integer page) {
 
         int filesCount = fileService.getFilesCount();
 
-        List<?> filesUploadedList = fileService.getFilesUploaded();
+        int fileNumber = 0;
+        int currentPage = 1;
+
+        if(page != null){
+            fileNumber = (page.intValue() - 1) * 10;
+            currentPage = page.intValue();
+        }
+
+        List<?> filesUploadedList = fileService.getFilesUploaded(fileNumber);
         ModelAndView mav = new ModelAndView("loadFiles");
         mav.addObject("files", filesUploadedList);
         mav.addObject("filesCount", filesCount);
+        mav.addObject("currentPage", currentPage);
 
         return mav;
     }
@@ -56,4 +66,5 @@ public class FileController {
 
         return new ResponseEntity<>(scheduleFileLoadResponse.getDescription(), scheduleFileLoadResponse.getResponse());
     }
+    
 }

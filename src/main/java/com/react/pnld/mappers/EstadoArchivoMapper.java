@@ -1,7 +1,7 @@
 package com.react.pnld.mappers;
 
 import com.react.pnld.model.dto.ProcesaArchivoDTO;
-import com.react.pnld.model.dto.TableFile;
+import com.react.pnld.model.dto.TableFileDTO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
@@ -21,7 +21,8 @@ public interface EstadoArchivoMapper {
     @Select("SELECT primer_nombre, nombre_archivo, tipo_archivo, fecha_carga, "+
             "registros_totales, registros_duplicados "+
             "FROM pnld.procesa_archivo LEFT JOIN pnld.persona " +
-            "ON procesa_archivo.id_persona = persona.id_persona;")
+            "ON procesa_archivo.id_persona = persona.id_persona " +
+            "LIMIT 10 OFFSET #{offset};")
     @Results({
             @Result(property = "responsable", column = "primer_nombre"),
             @Result(property = "nombreArchivo", column = "nombre_archivo"),
@@ -30,7 +31,7 @@ public interface EstadoArchivoMapper {
             @Result(property = "registrosTotales", column = "registros_totales"),
             @Result(property = "registrosDuplicados", column = "registros_duplicados")
     })
-    List<TableFile> getFilesUploaded(RowBounds rb);
+    List<TableFileDTO> getFilesUploaded(int offset);
 
     @Select("SELECT COUNT(id_archivo) FROM pnld.procesa_archivo;")
     int getFileCount();

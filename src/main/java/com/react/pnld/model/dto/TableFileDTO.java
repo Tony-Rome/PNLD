@@ -2,7 +2,7 @@ package com.react.pnld.model.dto;
 
 import java.time.OffsetDateTime;
 
-public class TableFile {
+public class TableFileDTO {
 
     private String responsable;
     private String nombreArchivo;
@@ -49,7 +49,7 @@ public class TableFile {
 
     @Override
     public String toString() {
-        return "TableFile{" +
+        return "TableFileDTO{" +
                 "responsable=" + responsable +
                 ", fechaCarga=" + fechaCarga +
                 ", nombreArchivo='" + nombreArchivo + '\'' +
