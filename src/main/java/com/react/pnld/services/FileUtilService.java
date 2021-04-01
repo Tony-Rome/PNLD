@@ -6,7 +6,6 @@ import com.react.pnld.model.dto.FileResumeDTO;
 import com.react.pnld.model.dto.PostCapacitaDTO;
 import com.react.pnld.model.dto.ScheduleFileLoadDTO;
 import com.univocity.parsers.common.processor.BeanListProcessor;
-import com.univocity.parsers.common.processor.RowListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import org.slf4j.Logger;
@@ -29,17 +28,9 @@ public class FileUtilService {
 
     private CsvParserSettings csvParserSettings;
 
-    private RowListProcessor rowListProcessor;
-
-    private CsvParser csvParser;
-
     public FileUtilService(){
         csvParserSettings = new CsvParserSettings();
         csvParserSettings.setLineSeparatorDetectionEnabled(true);
-        //rowListProcessor = new RowListProcessor();
-        //csvParserSettings.setProcessor(rowListProcessor);
-        //csvParserSettings.setHeaderExtractionEnabled(true);
-        //csvParser = new CsvParser(csvParserSettings);
     }
 
     public String removeSymbols(String strToClean){
@@ -129,6 +120,15 @@ public class FileUtilService {
         return finalFileName;
     }
 
+    public Reader getReader(String path) {
+        try {
+            return new InputStreamReader(new FileInputStream(path), "UTF-8");
+        } catch (UnsupportedEncodingException | FileNotFoundException e) {
+            logger.error(e.getMessage(), e);
+            throw new IllegalStateException("Unable to read input", e);
+        }
+    }
+
     public <T> List<T> parseRowsToBeans(String path, Class<T> clazz){
         BeanListProcessor<T> rowProcessor = new BeanListProcessor<T>(clazz);
         csvParserSettings.setProcessor(rowProcessor);
@@ -142,15 +142,6 @@ public class FileUtilService {
         } catch (Exception exception) {
             logger.error(exception.getMessage(), exception);
             return Collections.emptyList();
-        }
-    }
-
-    public Reader getReader(String path) {
-        try {
-            return new InputStreamReader(new FileInputStream(path), "UTF-8");
-        } catch (UnsupportedEncodingException | FileNotFoundException e) {
-            logger.error(e.getMessage(), e);
-            throw new IllegalStateException("Unable to read input", e);
         }
     }
 
