@@ -3,7 +3,9 @@ package com.react.pnld.services;
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.model.LoadedFile;
 import com.react.pnld.model.dto.FileResumeDTO;
+import com.react.pnld.model.dto.PostCapacitaDTO;
 import com.react.pnld.model.dto.ScheduleFileLoadDTO;
+import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.common.processor.RowListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class FileUtilService {
@@ -144,19 +148,23 @@ public class FileUtilService {
             return new ParsedFileDTO();
         }
     }
+    */
 
-    public List<Clazz<?>> listByTypeFile(String path, Class<?> clazz){
-
-        BeanListProcessor<clazz> rowProcessor = new BeanListProcessor<>(clazz.class);
+    public <T> List<T> parseRowsToBeans(String path, Class<T> clazz){
+        BeanListProcessor<T> rowProcessor = new BeanListProcessor<T>(clazz);
         csvParserSettings.setProcessor(rowProcessor);
         csvParserSettings.setHeaderExtractionEnabled(true);
 
-        CsvParser parser = new CsvParser(csvParserSettings);
-        parser.parse(getReader(path));
-
-        // The BeanListProcessor provides a list of objects extracted from the input.
-         return rowProcessor.getBeans();
-    }*/
+        try {
+            CsvParser parser = new CsvParser(csvParserSettings);
+            parser.parse(getReader(path));
+            List<T> rowsLikeBeans = rowProcessor.getBeans();
+            return rowsLikeBeans;
+        } catch (Exception exception) {
+            logger.error(exception.getMessage(), exception);
+            return Collections.emptyList();
+        }
+    }
 
     public Reader getReader(String path) {
         try {
@@ -269,8 +277,8 @@ public class FileUtilService {
 
         //TODO Parsing parsedFile to postCapacitaDTO
         String path = loadedFile.getStoredIn() + loadedFile.getName();
-        //List<PostCapacitaDTO> postCapacitaRows = listByTypeFile(path, PostCapacitaDTO.class);
-
+        List<PostCapacitaDTO> listRows = parseRowsToBeans(path, PostCapacitaDTO.class);
+        logger.info("postCapacitaFile. listRows.size()={}", listRows.size());
 
 
         //TODO check persona exist, if dont then insert persona, gender, docente

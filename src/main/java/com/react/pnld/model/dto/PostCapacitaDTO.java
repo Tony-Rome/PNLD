@@ -1,76 +1,73 @@
 package com.react.pnld.model.dto;
 
+import com.univocity.parsers.annotations.Format;
 import com.univocity.parsers.annotations.Parsed;
-
-import java.sql.Timestamp;
-import java.time.LocalTime;
 
 public class PostCapacitaDTO extends FileResumeDTO{
 
-    @Parsed(index = 1)
+    @Parsed(index = 0)
     private String lastNames;
 
-    @Parsed(index = 2)
+    @Parsed(index = 1)
     private String firstName;
 
-    @Parsed(index = 3)
+    @Parsed(index = 2)
     private String rut;
 
-    @Parsed(index = 4)
+    @Parsed(index = 3)
     private String institution;
 
-    @Parsed(index = 5)
+    @Parsed(index = 4)
     private String department;
 
-    @Parsed(index = 6)
+    @Parsed(index = 5)
     private String email;
 
-    @Parsed(index = 7)
+    @Parsed(index = 6)
     private String testState;
 
+    @Parsed(index = 7)
+    private String startIn;
+
     @Parsed(index = 8)
-    private Timestamp startIn;
+    private String finishIn; //9 de octubre de 2019  14:24
 
     @Parsed(index = 9)
-    private Timestamp finishIn;
+    private String duration;
 
     @Parsed(index = 10)
-    private LocalTime duration;
-
-    @Parsed(index = 11)
+    @Format(formats = {"#0,00"}, options = "decimalSeparator=,")
     private float score;
 
-    @Parsed(index = 12)
+    @Parsed(index = 11)
     private String answerOne;
 
-    @Parsed(index = 13)
+    @Parsed(index = 12)
     private String answerTwo;
 
-    @Parsed(index = 14)
+    @Parsed(index = 13)
     private String answerThree;
 
-    @Parsed(index = 15)
+    @Parsed(index = 14)
     private String answerFour;
 
-    @Parsed(index = 16)
+    @Parsed(index = 15)
     private String answerFive;
 
-    @Parsed(index = 17)
+    @Parsed(index = 16)
     private String answerSix;
 
-    @Parsed(index = 18)
+    @Parsed(index = 17)
     private String answerSeven;
 
-    @Parsed(index = 19)
+    @Parsed(index = 18)
     private String answerEight;
 
-    @Parsed(index = 20)
+    @Parsed(index = 19)
     private String answerNine;
 
-    @Parsed(index = 21)
+    @Parsed(index = 20)
     private String answerTen;
-
-
 
     @Override
     public String toString() {
