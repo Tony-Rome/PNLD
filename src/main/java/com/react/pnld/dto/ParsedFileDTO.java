@@ -1,4 +1,4 @@
-package com.react.pnld.model.dto;
+package com.react.pnld.dto;
 
 import java.util.Arrays;
 import java.util.List;

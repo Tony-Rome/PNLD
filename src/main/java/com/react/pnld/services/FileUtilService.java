@@ -1,10 +1,10 @@
 package com.react.pnld.services;
 
+import com.react.pnld.dto.FileResumeDTO;
+import com.react.pnld.dto.PostCapacitaDTO;
+import com.react.pnld.dto.ScheduleFileLoadDTO;
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.model.LoadedFile;
-import com.react.pnld.model.dto.FileResumeDTO;
-import com.react.pnld.model.dto.PostCapacitaDTO;
-import com.react.pnld.model.dto.ScheduleFileLoadDTO;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;

@@ -2,8 +2,8 @@ package com.react.pnld.services;
 
 import com.react.pnld.model.LoadedFile;
 import com.react.pnld.model.ScheduleFileLoadResponse;
-import com.react.pnld.model.dto.FileResumeDTO;
-import com.react.pnld.model.dto.ScheduleFileLoadDTO;
+import com.react.pnld.dto.FileResumeDTO;
+import com.react.pnld.dto.ScheduleFileLoadDTO;
 import com.react.pnld.repo.FileRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

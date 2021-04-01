@@ -1,4 +1,4 @@
-package com.react.pnld.model.dto;
+package com.react.pnld.dto;
 
 import com.univocity.parsers.annotations.Format;
 import com.univocity.parsers.annotations.Parsed;

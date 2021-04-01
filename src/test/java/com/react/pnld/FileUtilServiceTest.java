@@ -1,6 +1,6 @@
 package com.react.pnld;
 
-import com.react.pnld.model.dto.ScheduleFileLoadDTO;
+import com.react.pnld.dto.ScheduleFileLoadDTO;
 import com.react.pnld.services.FileUtilService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.testng.Assert;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.ZoneId;
 import java.util.Arrays;
 
