@@ -129,27 +129,6 @@ public class FileUtilService {
         return finalFileName;
     }
 
-    /*public FileResumeDTO getParsedFile(String pathName){
-
-        try (Reader inputReader = new InputStreamReader(new FileInputStream(pathName), "UTF-8")) {
-
-            csvParser.parse(inputReader);
-            String[] headers = rowListProcessor.getHeaders();
-            List<String[]> rows = rowListProcessor.getRows();
-
-            ParsedFileDTO parsedFile = new ParsedFileDTO();
-            parsedFile.setHeaders(headers);
-            parsedFile.setRows(rows);
-            logger.info("getParsedFile. parsedFile={}", parsedFile);
-            return  parsedFile;
-        } catch (IOException ioe) {
-            logger.error(ioe.getMessage(), ioe);
-            logger.info("getParsedFile. returning empty parsed file");
-            return new ParsedFileDTO();
-        }
-    }
-    */
-
     public <T> List<T> parseRowsToBeans(String path, Class<T> clazz){
         BeanListProcessor<T> rowProcessor = new BeanListProcessor<T>(clazz);
         csvParserSettings.setProcessor(rowProcessor);
@@ -274,12 +253,9 @@ public class FileUtilService {
     }
 
     public FileResumeDTO postCapacitaFile(LoadedFile loadedFile){
-
-        //TODO Parsing parsedFile to postCapacitaDTO
         String path = loadedFile.getStoredIn() + loadedFile.getName();
         List<PostCapacitaDTO> listRows = parseRowsToBeans(path, PostCapacitaDTO.class);
         logger.info("postCapacitaFile. listRows.size()={}", listRows.size());
-
 
         //TODO check persona exist, if dont then insert persona, gender, docente
 
