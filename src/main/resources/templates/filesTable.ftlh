@@ -59,7 +59,7 @@
                     <#if page == currentPage>
                         <a class="currentPage" href="/scheduleFileLoadPost/${page}" id=${page} onclick="pagination(${page})">${page}</a>
                     <#else>
-                        <a href="/scheduleFileLoadPost/${page}" id=${page} onclick="pagination(${page})">${page}</a>
+                        <a href="/scheduleFileLoadPost/${page}" id=${page}>${page}</a>
                     </#if>
                 </#list>
 

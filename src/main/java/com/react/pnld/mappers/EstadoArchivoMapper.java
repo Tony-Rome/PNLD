@@ -1,12 +1,11 @@
 package com.react.pnld.mappers;
 
-import com.react.pnld.model.dto.ProcesaArchivoDTO;
-import com.react.pnld.model.dto.TableFileDTO;
+import com.react.pnld.dto.ProcesaArchivoDTO;
+import com.react.pnld.dto.TableFileDTO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 

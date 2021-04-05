@@ -1,6 +1,5 @@
-package com.react.pnld.model.dto;
+package com.react.pnld.dto;
 
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 public class ProcesaArchivoDTO {

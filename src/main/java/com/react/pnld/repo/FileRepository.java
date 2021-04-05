@@ -1,9 +1,8 @@
 package com.react.pnld.repo;
 
 import com.react.pnld.mappers.EstadoArchivoMapper;
-import com.react.pnld.model.dto.ProcesaArchivoDTO;
-import com.react.pnld.model.dto.TableFileDTO;
-import org.apache.ibatis.session.RowBounds;
+import com.react.pnld.dto.ProcesaArchivoDTO;
+import com.react.pnld.dto.TableFileDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
