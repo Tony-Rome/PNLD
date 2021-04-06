@@ -9,7 +9,7 @@ public class PostTrainingDTO {
     private String lastNames;
 
     @Parsed(index = 1)
-    private String firstName;
+    private String name;
 
     @Parsed(index = 2)
     private String rut;
@@ -73,13 +73,13 @@ public class PostTrainingDTO {
         super();
     }
 
-    public PostTrainingDTO(String lastNames, String firstName, String rut, String institution, String department,
+    public PostTrainingDTO(String lastNames, String name, String rut, String institution, String department,
                            String email, String testState, String startIn, String finishIn, String duration, float score,
                            String answerOne, String answerTwo, String answerThree, String answerFour, String answerFive,
                            String answerSix, String answerSeven, String answerEight, String answerNine, String answerTen) {
         super();
         this.lastNames = lastNames;
-        this.firstName = firstName;
+        this.name = name;
         this.rut = rut;
         this.institution = institution;
         this.department = department;
@@ -109,12 +109,12 @@ public class PostTrainingDTO {
         this.lastNames = lastNames;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getRut() {
@@ -273,7 +273,7 @@ public class PostTrainingDTO {
     public String toString() {
         return "PostTrainingDTO{" +
                 "lastNames='" + lastNames + '\'' +
-                ", firstName='" + firstName + '\'' +
+                ", name='" + name + '\'' +
                 ", rut='" + rut + '\'' +
                 ", institution='" + institution + '\'' +
                 ", department='" + department + '\'' +

@@ -10,11 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LoaderMoodleFile{
 
     private static final Logger logger = LoggerFactory.getLogger(LoaderMoodleFile.class);
+    private static final int DUMMY_PERSON_ID = 0;
+    private  static final String DELIMITER_LAST_NAMES = " ";
 
     @Autowired
     PersonRepository personRepository;
@@ -26,15 +29,13 @@ public class LoaderMoodleFile{
         for(PostTrainingDTO postTrainingRow : postTrainingRows){
 
             //TODO check docente exist, if dont then insert persona, gender, docente
-            Person person = personRepository.getPerson(postTrainingRow.getRut(), postTrainingRow.getEmail());
+            Optional<Person> personInModel = personRepository.getPerson(postTrainingRow.getRut(), postTrainingRow.getEmail());
 
-            if(person == null){
-                int dummyPersonId = 0;
-                String dummySecondName = "";
-                String[] lastNames = postTrainingRow.getLastNames().split(" ");
+            if(!personInModel.isPresent()){
+                String[] lastNames = postTrainingRow.getLastNames().split(DELIMITER_LAST_NAMES);//TODO validate when only one lastname
                 int idGenderNotSpecified = 4; //TODO get gender by type
 
-                person = new Person(dummyPersonId, postTrainingRow.getFirstName(),dummySecondName,lastNames[0],
+                Person person = new Person(DUMMY_PERSON_ID, postTrainingRow.getName(), lastNames[0],
                         lastNames[1],postTrainingRow.getRut(), postTrainingRow.getEmail(), idGenderNotSpecified);
 
                 int insertValue = this.insertPerson(person);
@@ -43,7 +44,6 @@ public class LoaderMoodleFile{
                     this.insertTeacherByPersonRut(person.getRut());
                 }
             }
-
         }
 
         //TODO update entity test and pregunta

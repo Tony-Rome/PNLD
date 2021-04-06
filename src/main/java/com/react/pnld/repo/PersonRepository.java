@@ -5,14 +5,16 @@ import com.react.pnld.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class PersonRepository {
 
     @Autowired
     PersonMapper personMapper;
 
-    public Person getPerson(String rut, String email){
-        return this.personMapper.getPerson(rut, email);
+    public Optional<Person> getPerson(String rut, String email){
+        return Optional.ofNullable(this.personMapper.getPerson(rut, email));
     }
 
     public int insertPerson(Person person){

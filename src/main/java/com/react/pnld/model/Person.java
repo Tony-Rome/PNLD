@@ -4,7 +4,6 @@ public class Person {
 
     public int id;
     public String firstName;
-    public String secondName;
     public String lastName;
     public String motherLastName;
     public String rut;
@@ -15,11 +14,10 @@ public class Person {
         super();
     }
 
-    public Person(int id, String firstName, String secondName, String lastName, String motherLastName,
+    public Person(int id, String firstName, String lastName, String motherLastName,
                   String rut, String email, int genderId) {
         this.id = id;
         this.firstName = firstName;
-        this.secondName = secondName;
         this.lastName = lastName;
         this.motherLastName = motherLastName;
         this.rut = rut;
@@ -41,14 +39,6 @@ public class Person {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
     }
 
     public String getLastName() {
@@ -96,7 +86,6 @@ public class Person {
         return "Person{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
-                ", secondName='" + secondName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", motherLastName='" + motherLastName + '\'' +
                 ", rut='" + rut + '\'' +
