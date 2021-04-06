@@ -3,29 +3,27 @@ package com.react.pnld.model;
 public class Person {
 
     public int id;
-    public String email;
     public String firstName;
     public String secondName;
     public String lastName;
     public String motherLastName;
     public String rut;
-    public String altEmail;
+    public String email;
     public int genderId;
 
     public Person(){
         super();
     }
 
-    public Person(int id, String email, String firstName, String secondName, String lastName, String motherLastName,
-                  String rut, String altEmail, int genderId) {
+    public Person(int id, String firstName, String secondName, String lastName, String motherLastName,
+                  String rut, String email, int genderId) {
         this.id = id;
-        this.email = email;
         this.firstName = firstName;
         this.secondName = secondName;
         this.lastName = lastName;
         this.motherLastName = motherLastName;
         this.rut = rut;
-        this.altEmail = altEmail;
+        this.email = email;
         this.genderId = genderId;
     }
 
@@ -35,14 +33,6 @@ public class Person {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getFirstName() {
@@ -85,12 +75,12 @@ public class Person {
         this.rut = rut;
     }
 
-    public String getAltEmail() {
-        return altEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setAltEmail(String altEmail) {
-        this.altEmail = altEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getGenderId() {
@@ -105,13 +95,12 @@ public class Person {
     public String toString() {
         return "Person{" +
                 "id=" + id +
-                ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", secondName='" + secondName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", motherLastName='" + motherLastName + '\'' +
                 ", rut='" + rut + '\'' +
-                ", altEmail='" + altEmail + '\'' +
+                ", email='" + email + '\'' +
                 ", genderId=" + genderId +
                 '}';
     }

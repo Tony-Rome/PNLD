@@ -1,11 +1,10 @@
 package com.react.pnld.services;
 
 import com.react.pnld.dto.FileResumeDTO;
-import com.react.pnld.dto.PostCapacitaDTO;
+import com.react.pnld.dto.PostTrainingDTO;
 import com.react.pnld.dto.ScheduleFileLoadDTO;
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.model.LoadedFile;
-import com.react.pnld.model.Teacher;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
@@ -26,6 +25,9 @@ public class FileUtilService {
 
     @Autowired
     private CSVHeadersProperties csvHeadersProperties;
+
+    @Autowired
+    private LoaderMoodleFile loaderMoodleFile;
 
     private CsvParserSettings csvParserSettings;
 
@@ -148,6 +150,8 @@ public class FileUtilService {
 
     public FileResumeDTO processLoadedFile(LoadedFile loadedFile){
 
+        String path = loadedFile.getStoredIn() + loadedFile.getName();
+
         switch (FileTypes.valueOfLabel(loadedFile.getType())){
 
             case TEACHER_ROSTER:
@@ -170,9 +174,10 @@ public class FileUtilService {
 
             case PRE_CAPACITA:
                 return this.preCapacitaFile(loadedFile);
-
             case POST_CAPACITA:
-                return this.postCapacitaFile(loadedFile);
+
+                List<PostTrainingDTO> postTrainingRows = parseRowsToBeans(path, PostTrainingDTO.class);
+                return loaderMoodleFile.processPostTrainingRows(postTrainingRows);
 
             case TEST_PC_1:
                 return this.testPCOneFile(loadedFile);
@@ -240,29 +245,6 @@ public class FileUtilService {
     public FileResumeDTO preCapacitaFile(LoadedFile loadedFile){
         //TODO validate load records by file's type
         //TODO insert records if not exist
-
-        return new FileResumeDTO();
-    }
-
-    public FileResumeDTO postCapacitaFile(LoadedFile loadedFile){
-        String path = loadedFile.getStoredIn() + loadedFile.getName();
-
-        List<PostCapacitaDTO> postCapacitaRows = parseRowsToBeans(path, PostCapacitaDTO.class);
-        logger.info("postCapacitaFile. listRows.size()={}", postCapacitaRows.size());
-
-
-        //TODO check persona exist, if dont then insert persona, gender, docente
-
-        for(PostCapacitaDTO postCapacitaRow : postCapacitaRows){
-
-            Teacher teacher = new Teacher();
-            teacher.setEmail(postCapacitaRow.getEmail());
-
-
-
-        }
-
-        //TODO update entity Test and Pregunta
 
         return new FileResumeDTO();
     }

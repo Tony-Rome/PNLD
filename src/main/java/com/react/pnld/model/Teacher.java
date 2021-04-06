@@ -2,17 +2,15 @@ package com.react.pnld.model;
 
 public class Teacher {
     private int id;
-    private int idPerson;
-    private String email;
+    private int personId;
 
     public Teacher(){
         super();
     }
 
-    public Teacher(int id, int idPerson, String email) {
+    public Teacher(int id, int personId) {
         this.id = id;
-        this.idPerson = idPerson;
-        this.email = email;
+        this.personId = personId;
     }
 
     public int getId() {
@@ -23,28 +21,19 @@ public class Teacher {
         this.id = id;
     }
 
-    public int getIdPerson() {
-        return idPerson;
+    public int getPersonId() {
+        return personId;
     }
 
-    public void setIdPerson(int idPerson) {
-        this.idPerson = idPerson;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPersonId(int personId) {
+        this.personId = personId;
     }
 
     @Override
     public String toString() {
         return "Teacher{" +
                 "id=" + id +
-                ", idPerson=" + idPerson +
-                ", email='" + email + '\'' +
+                ", personId=" + personId +
                 '}';
     }
 }

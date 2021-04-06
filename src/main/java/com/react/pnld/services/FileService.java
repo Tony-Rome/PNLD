@@ -161,14 +161,11 @@ public class FileService {
                 Timestamp.valueOf(startDateTime), Timestamp.valueOf(endDateTime));
         logger.info("executeFileLoadScheduled. filesLoadedScheduled={}", filesLoadedScheduled);
 
-        //TODO read file's content
-
         for(LoadedFile loadedFile : filesLoadedScheduled){
             //ParsedFileDTO parsedFileDTO = fileUtilService.getParsedFile(pathName);
             FileResumeDTO resume = fileUtilService.processLoadedFile(loadedFile);
 
-            //TODO resume load file
-            //TODO update record load file
+            //TODO update record loaded_file with resume
         }
     }
 
