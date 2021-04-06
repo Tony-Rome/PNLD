@@ -19,7 +19,11 @@ import java.util.List;
 
 @Controller
 public class FileController {
+
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
+    private Integer filesCount;
+    private int fileNumber = 0;
+    private int currentPage = 1;
 
     @Autowired
     private FileService fileService;
@@ -33,10 +37,9 @@ public class FileController {
     @GetMapping(value = {"/scheduleFileLoadPost","/scheduleFileLoadPost/{page}"})
     public ModelAndView scheduleFileLoadGet(@PathVariable(required = false, value = "page") Integer page) {
 
-        int filesCount = fileService.getFilesCount();
-
-        int fileNumber = 0;
-        int currentPage = 1;
+        if(filesCount == null){
+            filesCount = fileService.getFilesCount();
+        }
 
         if(page != null){
             fileNumber = (page.intValue() - 1) * 10;
@@ -46,7 +49,7 @@ public class FileController {
         List<?> filesUploadedList = fileService.getFilesUploaded(fileNumber);
         ModelAndView mav = new ModelAndView("loadFiles");
         mav.addObject("files", filesUploadedList);
-        mav.addObject("filesCount", filesCount);
+        mav.addObject("filesCount", filesCount.intValue());
         mav.addObject("currentPage", currentPage);
 
         return mav;
