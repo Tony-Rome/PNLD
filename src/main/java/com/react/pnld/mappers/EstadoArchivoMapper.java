@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface EstadoArchivoMapper {
 
-    @Insert("INSERT INTO pnld.procesa_archivo (fecha_carga, nombre_archivo, tipo_archivo, id_persona, id_estado, " +
+    @Insert("INSERT INTO pnld.archivo_cargado (fecha_carga, nombre_archivo, tipo_archivo, id_persona, id_estado, " +
             "fecha_procesado, registros_totales, registros_nuevos, registros_duplicados) " +
             "VALUES(#{fechaCarga},#{nombreArchivo},#{tipoArchivo},#{idPersona},#{idEstado},#{fechaProcesado}," +
             "#{registrosTotales},#{registrosNuevos},#{registrosDuplicados});")
@@ -19,8 +19,8 @@ public interface EstadoArchivoMapper {
 
     @Select("SELECT primer_nombre, nombre_archivo, tipo_archivo, fecha_carga, "+
             "registros_totales, registros_duplicados "+
-            "FROM pnld.procesa_archivo LEFT JOIN pnld.persona " +
-            "ON procesa_archivo.id_persona = persona.id_persona " +
+            "FROM pnld.archivo_cargado LEFT JOIN pnld.persona " +
+            "ON archivo_cargado.id_persona = persona.id_persona " +
             "LIMIT 10 OFFSET #{offset};")
     @Results({
             @Result(property = "responsable", column = "primer_nombre"),
@@ -32,6 +32,6 @@ public interface EstadoArchivoMapper {
     })
     List<TableFileDTO> getFilesUploaded(int offset);
 
-    @Select("SELECT COUNT(id_archivo) FROM pnld.procesa_archivo;")
+    @Select("SELECT COUNT(id_archivo) FROM pnld.archivo_cargado;")
     int getFileCount();
 }

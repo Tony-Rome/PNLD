@@ -3,6 +3,9 @@ package com.react.pnld.repo;
 import com.react.pnld.mappers.EstadoArchivoMapper;
 import com.react.pnld.dto.ProcesaArchivoDTO;
 import com.react.pnld.dto.TableFileDTO;
+import com.react.pnld.services.FileService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +13,8 @@ import java.util.List;
 
 @Repository
 public class FileRepository {
+
+    private static final Logger logger = LoggerFactory.getLogger(FileService.class);
 
     @Autowired
     EstadoArchivoMapper estadoArchivoMapper;
@@ -28,7 +33,8 @@ public class FileRepository {
     public List<TableFileDTO> getFilesUploaded(int fileNumber){
 
         List<TableFileDTO> filesUploaded = estadoArchivoMapper.getFilesUploaded(fileNumber);
-        System.out.println(filesUploaded.size());
+        logger.info("getFilesUploaded. filesUploaded.size={}", filesUploaded.size());
+
         return filesUploaded;
     }
 
