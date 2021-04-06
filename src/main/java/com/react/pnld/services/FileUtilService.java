@@ -5,6 +5,7 @@ import com.react.pnld.dto.PostCapacitaDTO;
 import com.react.pnld.dto.ScheduleFileLoadDTO;
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.model.LoadedFile;
+import com.react.pnld.model.Teacher;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
@@ -245,13 +246,23 @@ public class FileUtilService {
 
     public FileResumeDTO postCapacitaFile(LoadedFile loadedFile){
         String path = loadedFile.getStoredIn() + loadedFile.getName();
-        List<PostCapacitaDTO> listRows = parseRowsToBeans(path, PostCapacitaDTO.class);
-        logger.info("postCapacitaFile. listRows.size()={}", listRows.size());
+
+        List<PostCapacitaDTO> postCapacitaRows = parseRowsToBeans(path, PostCapacitaDTO.class);
+        logger.info("postCapacitaFile. listRows.size()={}", postCapacitaRows.size());
+
 
         //TODO check persona exist, if dont then insert persona, gender, docente
 
-        //TODO update entity Test and Pregunta
+        for(PostCapacitaDTO postCapacitaRow : postCapacitaRows){
 
+            Teacher teacher = new Teacher();
+            teacher.setEmail(postCapacitaRow.getEmail());
+
+
+
+        }
+
+        //TODO update entity Test and Pregunta
 
         return new FileResumeDTO();
     }
