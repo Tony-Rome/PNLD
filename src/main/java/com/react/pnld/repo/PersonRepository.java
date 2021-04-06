@@ -3,11 +3,11 @@ package com.react.pnld.repo;
 import com.react.pnld.mappers.PersonMapper;
 import com.react.pnld.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Service
+@Repository
 public class PersonRepository {
 
     @Autowired

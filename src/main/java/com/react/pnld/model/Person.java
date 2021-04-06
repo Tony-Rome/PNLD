@@ -2,13 +2,13 @@ package com.react.pnld.model;
 
 public class Person {
 
-    public int id;
-    public String firstName;
-    public String lastName;
-    public String motherLastName;
-    public String rut;
-    public String email;
-    public int genderId;
+    private int id;
+    private String firstName;
+    private String lastName;
+    private String motherLastName;
+    private String rut;
+    private String email;
+    private int genderId;
 
     public Person(){
         super();

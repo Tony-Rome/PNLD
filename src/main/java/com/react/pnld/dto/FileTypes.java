@@ -1,4 +1,4 @@
-package com.react.pnld.services;
+package com.react.pnld.dto;
 
 public enum FileTypes {
     TEACHER_ROSTER("teacher-roster"),

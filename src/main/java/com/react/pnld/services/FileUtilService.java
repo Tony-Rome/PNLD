@@ -1,6 +1,7 @@
 package com.react.pnld.services;
 
 import com.react.pnld.dto.FileResumeDTO;
+import com.react.pnld.dto.FileTypes;
 import com.react.pnld.dto.PostTrainingDTO;
 import com.react.pnld.dto.ScheduleFileLoadDTO;
 import com.react.pnld.model.CSVHeadersProperties;
@@ -177,7 +178,7 @@ public class FileUtilService {
             case POST_CAPACITA:
 
                 List<PostTrainingDTO> postTrainingRows = parseRowsToBeans(path, PostTrainingDTO.class);
-                return loaderMoodleFile.processPostTrainingRows(postTrainingRows);
+                return loaderMoodleFile.processPostTrainingRows(postTrainingRows, loadedFile.getId());
 
             case TEST_PC_1:
                 return this.testPCOneFile(loadedFile);
