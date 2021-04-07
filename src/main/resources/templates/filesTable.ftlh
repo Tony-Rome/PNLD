@@ -24,12 +24,12 @@
               </tr>
               <#list files as file>
                   <tr>
-                    <td>${file.responsable}</td>
-                    <td>${file.nombreArchivo}</td>
-                    <td>${file.tipoArchivo}</td>
-                    <td>${file.fechaCarga}</td>
-                    <td>${file.registrosTotales}</td>
-                    <td>${file.registrosDuplicados}</td>
+                    <td>${file.loadedBy}</td>
+                    <td>${file.name}</td>
+                    <td>${file.fileType}</td>
+                    <td>${file.loadedOnDateTime}</td>
+                    <td>${file.totalRecords}</td>
+                    <td>${file.duplicateRecords}</td>
                   </tr>
               </#list>
             </table>

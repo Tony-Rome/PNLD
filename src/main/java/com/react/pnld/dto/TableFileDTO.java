@@ -4,58 +4,58 @@ import java.time.OffsetDateTime;
 
 public class TableFileDTO {
 
-    private String responsable;
-    private String nombreArchivo;
-    private String tipoArchivo;
-    private OffsetDateTime fechaCarga;
-    private int registrosTotales;
-    private int registrosDuplicados;
+    private String loadedBy;
+    private String name;
+    private String fileType;
+    private OffsetDateTime loadedOnDateTime;
+    private int totalRecords;
+    private int duplicateRecords;
 
-    public void setResponsable(String responsable){
-        this.responsable = responsable;
+    public void setLoadedBy(String loadedBy){
+        this.loadedBy = loadedBy;
     }
 
-    public String getResponsable(){return responsable;}
+    public String getLoadedBy(){return loadedBy;}
 
-    public void setNombreArchivo(String nombreArchivo){
-        this.nombreArchivo = nombreArchivo;
+    public void setName(String name){
+        this.name = name;
     }
 
-    public String getNombreArchivo(){return nombreArchivo;}
+    public String getName(){return name;}
 
-    public void setTipoArchivo(String tipoArchivo){
-        this.tipoArchivo = tipoArchivo;
+    public void setFileType(String fileType){
+        this.fileType = fileType;
     }
 
-    public String getTipoArchivo(){return tipoArchivo;}
+    public String getFileType(){return fileType;}
 
-    public void setFechaCarga(OffsetDateTime fechaCarga){
-        this.fechaCarga = fechaCarga;
+    public void setLoadedOnDateTime(OffsetDateTime loadedOnDateTime){
+        this.loadedOnDateTime = loadedOnDateTime;
     }
 
-    public OffsetDateTime getFechaCarga(){return fechaCarga;}
+    public OffsetDateTime getLoadedOnDateTime(){return loadedOnDateTime;}
 
-    public void setRegistrosTotales(int registrosTotales){
-        this.registrosTotales = registrosTotales;
+    public void setTotalRecords(int totalRecords){
+        this.totalRecords = totalRecords;
     }
 
-    public int getRegistrosTotales(){return registrosTotales;}
+    public int getTotalRecords(){return totalRecords;}
 
-    public void setRegistrosDuplicados(int registrosDuplicados){
-        this.registrosDuplicados = registrosDuplicados;
+    public void setDuplicateRecords(int duplicateRecords){
+        this.duplicateRecords = duplicateRecords;
     }
 
-    public int getRegistrosDuplicados(){return registrosDuplicados;}
+    public int getDuplicateRecords(){return duplicateRecords;}
 
     @Override
     public String toString() {
         return "TableFileDTO{" +
-                "responsable=" + responsable +
-                ", fechaCarga=" + fechaCarga +
-                ", nombreArchivo='" + nombreArchivo + '\'' +
-                ", tipoArchivo='" + tipoArchivo + '\'' +
-                ", registrosTotales=" + registrosTotales +
-                ", registrosDuplicados=" + registrosDuplicados +
+                "loadedBy=" + loadedBy +
+                ", loadedOnDateTime=" + loadedOnDateTime +
+                ", name='" + name + '\'' +
+                ", fileType='" + fileType + '\'' +
+                ", totalRecords=" + totalRecords +
+                ", duplicateRecords=" + duplicateRecords +
                 '}';
     }
 }

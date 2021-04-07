@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface EstadoArchivoMapper {
 
-    @Insert("INSERT INTO pnld.archivo_cargado (fecha_carga, nombre_archivo, tipo_archivo, id_persona, id_estado, " +
+    @Insert("INSERT INTO pnld.archivo_cargado (fecha_carga, nombre, tipo_archivo, id_persona, id_estado, " +
             "fecha_procesado, registros_totales, registros_nuevos, registros_duplicados) " +
             "VALUES(#{fechaCarga},#{nombreArchivo},#{tipoArchivo},#{idPersona},#{idEstado},#{fechaProcesado}," +
             "#{registrosTotales},#{registrosNuevos},#{registrosDuplicados});")
@@ -23,12 +23,12 @@ public interface EstadoArchivoMapper {
             "ON archivo_cargado.id_persona = persona.id_persona " +
             "LIMIT 10 OFFSET #{offset};")
     @Results({
-            @Result(property = "responsable", column = "primer_nombre"),
-            @Result(property = "nombreArchivo", column = "nombre_archivo"),
-            @Result(property = "tipoArchivo", column = "tipo_archivo"),
-            @Result(property = "fechaCarga", column = "fecha_carga"),
-            @Result(property = "registrosTotales", column = "registros_totales"),
-            @Result(property = "registrosDuplicados", column = "registros_duplicados")
+            @Result(property = "loadedBy", column = "primer_nombre"),
+            @Result(property = "name", column = "nombre_archivo"),
+            @Result(property = "fileType", column = "tipo_archivo"),
+            @Result(property = "loadedOnDateTime", column = "fecha_carga"),
+            @Result(property = "totalRecords", column = "registros_totales"),
+            @Result(property = "duplicateRecords", column = "registros_duplicados")
     })
     List<TableFileDTO> getFilesUploaded(int offset);
 
