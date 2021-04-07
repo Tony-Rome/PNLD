@@ -28,11 +28,12 @@ public class LoaderMoodleFile{
     TestRepository testRepository;
 
     public FileResumeDTO processPostTrainingRows(List<PostTrainingDTO> postTrainingRows, int loadedFileId) {
-
         logger.info("processTrainingRows. postTrainingRows.size()={}", postTrainingRows.size());
+
         int newRecords = 0;
         int duplicatedRecords = 0;
         String POST_CAPACITA = "post-capacita";//TODO change for enum
+
         for(PostTrainingDTO postTrainingRow : postTrainingRows){
 
             //check docente exist, if dont then insert persona, gender, docente
@@ -40,17 +41,9 @@ public class LoaderMoodleFile{
                     postTrainingRow.getEmail());
 
             if(!teacherSelected.isPresent()){
-
-                int teacherId = this.teacherRepository.getNextTeacherId();
-
-                String[] lastNames = postTrainingRow.getLastNames().split(DELIMITER_LAST_NAMES);//TODO validate when only one lastname
-                int idGenderNotSpecified = 4; //TODO get gender by type
-
-                Teacher teacher = new Teacher(teacherId, postTrainingRow.getName(), lastNames[0],
-                        lastNames[1],postTrainingRow.getRut(), postTrainingRow.getEmail(), idGenderNotSpecified);
-
-                int insertValue = this.teacherRepository.insertTeacher(teacher);
-
+                Teacher teacher = this.buildTeacherFrom(postTrainingRow);
+                teacher.setId(this.teacherRepository.getNextTeacherId());
+                this.teacherRepository.insertTeacher(teacher);
                 teacherSelected = Optional.of(teacher);
             }
 
@@ -79,5 +72,13 @@ public class LoaderMoodleFile{
         }
 
         return new FileResumeDTO(postTrainingRows.size(), newRecords, duplicatedRecords);
+    }
+
+    Teacher buildTeacherFrom(PostTrainingDTO postTrainingRow){
+        String[] lastNames = postTrainingRow.getLastNames().split(DELIMITER_LAST_NAMES);//TODO validate when only one lastname
+        int idGenderNotSpecified = 4; //TODO get gender by type
+
+        return new Teacher(DUMMY_ID, postTrainingRow.getName(), lastNames[0],
+                lastNames[1],postTrainingRow.getRut(), postTrainingRow.getEmail(), idGenderNotSpecified);
     }
 }
