@@ -21,5 +21,10 @@ body{
 }
 
 .logout {
-    margin: 20px 100px 0 auto;
+    margin: 20px 100px auto auto;
+    color: black;
+    background-color: #ED0101;
+    border-radius: 4px;
+    text-decoration-line: none;
+    padding: 12px;
 }
