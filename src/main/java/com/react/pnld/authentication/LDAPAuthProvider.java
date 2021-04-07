@@ -32,7 +32,7 @@ public class LDAPAuthProvider implements AuthenticationProvider {
             return null;
         }
 
-        detail = new Admin(username, "admin@email.com", password);
+        detail = new Admin(username, "admin@email.com", password, "ROLE_ADMIN");
 
         return new SimpleAuthentication(username,authorities, detail, password);
     }

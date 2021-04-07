@@ -19,8 +19,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         Admin admin = adminMapper.findByUsername(username);
 
-        System.out.println(admin.toString());
-
         if(admin == null)
             throw new UsernameNotFoundException("Credenciales erróneas");
 

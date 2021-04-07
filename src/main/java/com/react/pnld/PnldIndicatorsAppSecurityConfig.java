@@ -48,8 +48,7 @@ public class PnldIndicatorsAppSecurityConfig extends WebSecurityConfigurerAdapte
                     .passwordParameter("txtClave")
                 .defaultSuccessUrl("/scheduleFileLoadPost",true)
                 .and()
-                .logout()
-                .permitAll();
+                .logout().permitAll();
     }
 
 
