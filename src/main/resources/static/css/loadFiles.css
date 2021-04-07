@@ -19,3 +19,7 @@ body{
     align-items: center;
     margin-left: 25%;
 }
+
+.logout {
+    margin: 20px 100px 0 auto;
+}
