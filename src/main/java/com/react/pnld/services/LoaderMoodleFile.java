@@ -2,10 +2,9 @@ package com.react.pnld.services;
 
 import com.react.pnld.dto.FileResumeDTO;
 import com.react.pnld.dto.PostTrainingDTO;
-import com.react.pnld.model.Person;
+import com.react.pnld.model.Teacher;
 import com.react.pnld.model.Test;
-import com.react.pnld.model.TestQuestion;
-import com.react.pnld.repo.PersonRepository;
+import com.react.pnld.repo.TeacherRepository;
 import com.react.pnld.repo.TestRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +22,7 @@ public class LoaderMoodleFile{
     private  static final String DELIMITER_LAST_NAMES = " ";
 
     @Autowired
-    PersonRepository personRepository;
+    TeacherRepository teacherRepository;
 
     @Autowired
     TestRepository testRepository;
@@ -37,28 +36,28 @@ public class LoaderMoodleFile{
         for(PostTrainingDTO postTrainingRow : postTrainingRows){
 
             //check docente exist, if dont then insert persona, gender, docente
-            Optional<Person> personInModel = personRepository.getPerson(postTrainingRow.getRut(), postTrainingRow.getEmail());
+            Optional<Teacher> teacherSelected = teacherRepository.getPerson(postTrainingRow.getRut(),
+                    postTrainingRow.getEmail());
 
-            if(!personInModel.isPresent()){
+            if(!teacherSelected.isPresent()){
+
+                int teacherId = this.teacherRepository.getNextTeacherId();
+
                 String[] lastNames = postTrainingRow.getLastNames().split(DELIMITER_LAST_NAMES);//TODO validate when only one lastname
                 int idGenderNotSpecified = 4; //TODO get gender by type
 
-                Person person = new Person(DUMMY_ID, postTrainingRow.getName(), lastNames[0],
+                Teacher teacher = new Teacher(teacherId, postTrainingRow.getName(), lastNames[0],
                         lastNames[1],postTrainingRow.getRut(), postTrainingRow.getEmail(), idGenderNotSpecified);
 
-                int insertValue = this.insertPerson(person);
+                int insertValue = this.teacherRepository.insertTeacher(teacher);
 
-                if(insertValue > 0){
-                    this.insertTeacherByPersonRut(person.getRut());
-                }
-
-                personInModel = Optional.of(person);
+                teacherSelected = Optional.of(teacher);
             }
 
-            Optional<Test> teacherTest = this.testRepository.getTeacherTest(personInModel.get().getId(), POST_CAPACITA);
+            Optional<Test> teacherTest = this.testRepository.getTeacherTest(teacherSelected.get().getId(), POST_CAPACITA);
 
-            if(!teacherTest.isPresent()){
-                Test test = new Test(DUMMY_ID, personInModel.get().getId(), loadedFileId, POST_CAPACITA,
+            /*if(!teacherTest.isPresent()){
+                Test test = new Test(DUMMY_ID, teacherSelected.get().getId(), loadedFileId, POST_CAPACITA,
                         postTrainingRow.getTestState(), postTrainingRow.getStartIn(), postTrainingRow.getFinishIn(),
                         postTrainingRow.getDuration(), postTrainingRow.getScore());
 
@@ -75,19 +74,10 @@ public class LoaderMoodleFile{
                 newRecords++;
             } else {
                 duplicatedRecords++;
-            }
+            }*/
 
         }
 
         return new FileResumeDTO(postTrainingRows.size(), newRecords, duplicatedRecords);
-    }
-
-    public int insertPerson(Person person){
-        return personRepository.insertPerson(person);
-    }
-
-
-    public int insertTeacherByPersonRut(String personRut){
-        return personRepository.insertTeacherByPersonRut(personRut);
     }
 }
