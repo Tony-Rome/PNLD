@@ -47,19 +47,21 @@
 
             <div class="pagination">
 
+                <#assign pagePath = "/scheduleFileLoadPost/page">
+
                 <#assign previousPage = currentPage - 1>
                 <#if (previousPage < 1) >
                     <a>&laquo; Anterior</a>
                 <#else>
-                    <a href="/scheduleFileLoadPost/${previousPage}">&laquo; Anterior</a>
+                    <a href=${pagePath}/${previousPage}>&laquo; Anterior</a>
                 </#if>
 
 
                 <#list interval as page>
                     <#if page == currentPage>
-                        <a class="currentPage" href="/scheduleFileLoadPost/${page}" id=${page} onclick="pagination(${page})">${page}</a>
+                        <a class="currentPage" href=${pagePath}/${page} id=${page}>${page}</a>
                     <#else>
-                        <a href="/scheduleFileLoadPost/${page}" id=${page}>${page}</a>
+                        <a href=${pagePath}/${page} id=${page}>${page}</a>
                     </#if>
                 </#list>
 
@@ -67,7 +69,7 @@
                 <#if (nextPage > pages) >
                     <a>Siguiente &raquo;</a>
                 <#else>
-                    <a href="/scheduleFileLoadPost/${nextPage}">Siguiente &raquo;</a>
+                    <a href=${pagePath}/${nextPage}>Siguiente &raquo;</a>
                 </#if>
 
 

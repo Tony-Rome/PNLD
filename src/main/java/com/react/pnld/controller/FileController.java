@@ -34,7 +34,7 @@ public class FileController {
         return "index";
     }
 
-    @GetMapping(value = {"/scheduleFileLoadPost","/scheduleFileLoadPost/{page}"})
+    @GetMapping(value = {"/scheduleFileLoadPost","/scheduleFileLoadPost/page/{page}"})
     public ModelAndView scheduleFileLoadGet(@PathVariable(required = false, value = "page") Integer page) {
 
         if(filesCount == null){
