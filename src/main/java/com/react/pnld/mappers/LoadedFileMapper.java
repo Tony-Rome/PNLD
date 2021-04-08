@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import java.sql.Timestamp;
 import java.util.List;
 
-public interface EstadoArchivoMapper {
+public interface LoadedFileMapper {
 
     @Insert("INSERT INTO pnld.archivo_cargado (fecha_carga, nombre, ubicado_en, tipo, cargado_por_admin, " +
             "id_estado, fecha_procesado, registros_totales, registros_nuevos, registros_duplicados) " +

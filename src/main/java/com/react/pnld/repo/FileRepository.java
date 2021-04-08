@@ -1,6 +1,6 @@
 package com.react.pnld.repo;
 
-import com.react.pnld.mappers.EstadoArchivoMapper;
+import com.react.pnld.mappers.LoadedFileMapper;
 import com.react.pnld.model.LoadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -12,13 +12,13 @@ import java.util.List;
 public class FileRepository {
 
     @Autowired
-    EstadoArchivoMapper estadoArchivoMapper;
+    LoadedFileMapper loadedFileMapper;
 
     public int insertProcessFile (LoadedFile loadedFile) throws Exception {
-        return estadoArchivoMapper.insertProcessFile(loadedFile);
+        return loadedFileMapper.insertProcessFile(loadedFile);
     }
 
     public List<LoadedFile> getLoadedFilesByStateAndTimestamps(int stateId, Timestamp initTime, Timestamp endTime){
-        return estadoArchivoMapper.getLoadedFilesByStateAndTimestamps(stateId, initTime, endTime);
+        return loadedFileMapper.getLoadedFilesByStateAndTimestamps(stateId, initTime, endTime);
     }
 }
