@@ -30,4 +30,8 @@ public enum FileTypes {
         }
         return NOT_DEFINED;
     }
+
+    public static final int STATE_SCHEDULED = 1;
+    public static final int STATE_IN_PROCESS = 2;
+    public static final int FILE_STATE_PROCESSED = 3;
 }

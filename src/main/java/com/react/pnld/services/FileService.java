@@ -1,5 +1,6 @@
 package com.react.pnld.services;
 
+import com.react.pnld.dto.FileTypes;
 import com.react.pnld.model.LoadedFile;
 import com.react.pnld.model.ScheduleFileLoadResponse;
 import com.react.pnld.dto.FileResumeDTO;
@@ -30,8 +31,6 @@ import java.util.List;
 public class FileService {
 
     private static final Logger logger = LoggerFactory.getLogger(FileService.class);
-    private final int FILE_STATE_SCHEDULED = 1;
-    private final int FILE_STATE_PROCESSED = 3;
     @Value("${copy.path.files}")
     private String FILE_PATH;
 
@@ -134,7 +133,7 @@ public class FileService {
         loadedFile.setType(scheduleFileLoadDTO.getSelectedType());
         loadedFile.setLoadedDate(scheduleFileLoadDTO.getLoadedOnDateTime());
         loadedFile.setLoadedByAdmin(scheduleFileLoadDTO.getLoadedBy());
-        loadedFile.setStateId(FILE_STATE_SCHEDULED);
+        loadedFile.setStateId(FileTypes.STATE_SCHEDULED);
         loadedFile.setProcessDate(null);
         loadedFile.setTotalRecords(0);
         loadedFile.setDuplicateRecords(0);
@@ -158,15 +157,18 @@ public class FileService {
         LocalDateTime startDateTime = endDateTime.minusDays(1L);
         logger.info("executeFileLoadScheduled. startDateTime={}", startDateTime);
 
-        List<LoadedFile> filesLoadedScheduled = fileRepository.getLoadedFilesByStateAndTimestamps(FILE_STATE_SCHEDULED,
+        List<LoadedFile> filesLoadedScheduled = fileRepository.getLoadedFilesByStateAndTimestamps(FileTypes.STATE_SCHEDULED,
                 Timestamp.valueOf(startDateTime), Timestamp.valueOf(endDateTime));
         logger.info("executeFileLoadScheduled. filesLoadedScheduled={}", filesLoadedScheduled);
 
         for(LoadedFile loadedFile : filesLoadedScheduled){
+            loadedFile.setStateId(FileTypes.STATE_IN_PROCESS);
+            this.fileRepository.updateFileLoaded(loadedFile);
+
             FileResumeDTO resume = fileUtilService.processLoadedFile(loadedFile);
 
             loadedFile.setProcessDate(LocalDateTime.now(ZoneId.of("UTC")));
-            loadedFile.setStateId(FILE_STATE_PROCESSED);
+            loadedFile.setStateId(FileTypes.FILE_STATE_PROCESSED);
             loadedFile.setTotalRecords(resume.getTotalRecords());
             loadedFile.setNewRecords(resume.getNewRecords());
             loadedFile.setDuplicateRecords(resume.getDuplicatedRecords());
