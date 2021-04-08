@@ -15,10 +15,14 @@ public class FileRepository {
     LoadedFileMapper loadedFileMapper;
 
     public int insertProcessFile (LoadedFile loadedFile) throws Exception {
-        return loadedFileMapper.insertProcessFile(loadedFile);
+        return this.loadedFileMapper.insertProcessFile(loadedFile);
     }
 
     public List<LoadedFile> getLoadedFilesByStateAndTimestamps(int stateId, Timestamp initTime, Timestamp endTime){
-        return loadedFileMapper.getLoadedFilesByStateAndTimestamps(stateId, initTime, endTime);
+        return this.loadedFileMapper.getLoadedFilesByStateAndTimestamps(stateId, initTime, endTime);
+    }
+
+    public int updateFileLoaded(LoadedFile loadedFile){
+        return this.loadedFileMapper.updateLoadedFile(loadedFile);
     }
 }

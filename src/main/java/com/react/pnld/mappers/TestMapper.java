@@ -1,6 +1,7 @@
 package com.react.pnld.mappers;
 
 import com.react.pnld.model.Test;
+import com.react.pnld.model.TrainingAnswer;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
@@ -21,8 +22,19 @@ public interface TestMapper {
             @Result(property = "score", column = "calificacion")})
     Test getTeacherTest(int teacherId, String typeTest);
 
-    @Insert("INSERT INTO pnld.test (id_docente, id_archivo_fuente, tipo, estado, fecha_inicio, fecha_fin, tiempo_requerido," +
-            "calificacion) VALUES (#{teacherId}, #{loadedFileId}, #{type}, #{state}, #{initDate}, #{endDate}, #{duration}, " +
+    @Insert("INSERT INTO pnld.test (id, id_docente, id_archivo_fuente, tipo, estado, fecha_inicio, fecha_fin, tiempo_requerido," +
+            "calificacion) VALUES (#{id}, #{teacherId}, #{loadedFileId}, #{type}, #{state}, #{initDate}, #{endDate}, #{duration}, " +
             "#{score});")
     int insertTest(Test test);
+
+    @Select("SELECT nextval(pg_get_serial_sequence('pnld.test', 'id'));")
+    int getNextTestId();
+
+    @Select("SELECT nextval(pg_get_serial_sequence('pnld.respuesta_capacitacion', 'id'));")
+    int getNextTrainingAnswer();
+
+    @Insert("INSERT INTO pnld.respuesta_capacitacion (id, id_test, resp_uno, resp_dos, resp_tres, resp_cuatro, resp_cinco," +
+            "resp_seis, resp_siete, resp_ocho, resp_nueve, resp_diez) VALUES (#{id},#{testId},#{ansOne},#{ansTwo},#{ansThree}," +
+            "#{ansFour},#{ansFive},#{ansSix},#{ansSeven},#{ansEight},#{ansNine},#{ansTen});")
+    int insertTrainingAnswer(TrainingAnswer trainingAnswer);
 }

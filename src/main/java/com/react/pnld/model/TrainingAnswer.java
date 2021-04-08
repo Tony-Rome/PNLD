@@ -1,6 +1,6 @@
 package com.react.pnld.model;
 
-public class TestQuestion {
+public class TrainingAnswer {
 
     private int id;
     private int testId;
@@ -15,12 +15,12 @@ public class TestQuestion {
     private String ansNine;
     private String ansTen;
 
-    public TestQuestion(){
+    public TrainingAnswer(){
         super();
     }
 
-    public TestQuestion(int id, int testId, String ansOne, String ansTwo, String ansThree, String ansFour,
-                        String ansFive, String ansSix, String ansSeven, String ansEight, String ansNine, String ansTen) {
+    public TrainingAnswer(int id, int testId, String ansOne, String ansTwo, String ansThree, String ansFour,
+                          String ansFive, String ansSix, String ansSeven, String ansEight, String ansNine, String ansTen) {
         this.id = id;
         this.testId = testId;
         this.ansOne = ansOne;

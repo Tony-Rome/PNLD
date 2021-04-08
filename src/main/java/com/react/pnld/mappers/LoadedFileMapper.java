@@ -1,10 +1,7 @@
 package com.react.pnld.mappers;
 
 import com.react.pnld.model.LoadedFile;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -34,4 +31,8 @@ public interface LoadedFileMapper {
     })
     List<LoadedFile> getLoadedFilesByStateAndTimestamps(int stateId, Timestamp initTime, Timestamp endTime);
 
+    @Update("UPDATE pnld.archivo_cargado SET id_estado = #{stateId}, fecha_procesado = #{processDate}, " +
+            "registros_totales = #{totalRecords}, registros_nuevos = #{newRecords}, " +
+            "registros_duplicados = #{duplicateRecords} WHERE id = #{id}")
+    int updateLoadedFile(LoadedFile loadedFile);
 }

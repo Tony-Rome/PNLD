@@ -31,6 +31,7 @@ public class FileService {
 
     private static final Logger logger = LoggerFactory.getLogger(FileService.class);
     private final int FILE_STATE_SCHEDULED = 1;
+    private final int FILE_STATE_PROCESSED = 3;
     @Value("${copy.path.files}")
     private String FILE_PATH;
 
@@ -162,10 +163,16 @@ public class FileService {
         logger.info("executeFileLoadScheduled. filesLoadedScheduled={}", filesLoadedScheduled);
 
         for(LoadedFile loadedFile : filesLoadedScheduled){
-            //ParsedFileDTO parsedFileDTO = fileUtilService.getParsedFile(pathName);
             FileResumeDTO resume = fileUtilService.processLoadedFile(loadedFile);
 
-            //TODO update record loaded_file with resume
+            loadedFile.setProcessDate(LocalDateTime.now(ZoneId.of("UTC")));
+            loadedFile.setStateId(FILE_STATE_PROCESSED);
+            loadedFile.setTotalRecords(resume.getTotalRecords());
+            loadedFile.setNewRecords(resume.getNewRecords());
+            loadedFile.setDuplicateRecords(resume.getDuplicatedRecords());
+
+            this.fileRepository.updateFileLoaded(loadedFile);
+
         }
     }
 
