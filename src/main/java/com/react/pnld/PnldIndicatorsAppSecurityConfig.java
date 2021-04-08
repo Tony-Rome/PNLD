@@ -62,10 +62,10 @@ public class PnldIndicatorsAppSecurityConfig extends WebSecurityConfigurerAdapte
      *
      * */
 
-        /*auth.authenticationProvider(ldapAuthProvider());*/
+        auth.authenticationProvider(ldapAuthProvider());
 
-       auth.userDetailsService(userDetailsService)
-               .passwordEncoder(passwordEncoder());
+       /*auth.userDetailsService(userDetailsService)
+               .passwordEncoder(passwordEncoder());*/
 
 
     }
