@@ -2,6 +2,7 @@ package com.react.pnld.services;
 
 import com.react.pnld.dto.FileResumeDTO;
 import com.react.pnld.dto.PostTrainingDTO;
+import com.react.pnld.model.LoadedFile;
 import com.react.pnld.model.Teacher;
 import com.react.pnld.model.Test;
 import com.react.pnld.model.TrainingAnswer;
@@ -82,4 +83,31 @@ public class LoaderMoodleFile{
                 lastNames[1],postTrainingRow.getRut(), postTrainingRow.getEmail(), idGenderNotSpecified);
     }
 
+    public FileResumeDTO diagnosticoFile(LoadedFile loadedFile){
+        //TODO validate load records by file's type
+        //TODO insert records if not exist
+
+        return new FileResumeDTO();
+    }
+
+    public FileResumeDTO preCapacitaFile(LoadedFile loadedFile){
+        //TODO validate load records by file's type
+        //TODO insert records if not exist
+
+        return new FileResumeDTO();
+    }
+
+    public FileResumeDTO salidaFile(LoadedFile loadedFile){
+        //TODO validate load records by file's type
+        //TODO insert records if not exist
+
+        return new FileResumeDTO();
+    }
+
+    public FileResumeDTO satisFile(LoadedFile loadedFile){
+        //TODO validate load records by file's type
+        //TODO insert records if not exist
+
+        return new FileResumeDTO();
+    }
 }

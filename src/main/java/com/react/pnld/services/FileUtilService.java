@@ -30,6 +30,12 @@ public class FileUtilService {
     @Autowired
     private LoaderMoodleFile loaderMoodleFile;
 
+    @Autowired
+    private LoaderCodeFile loaderCodeFile;
+
+    @Autowired
+    private LoaderCPFile loaderCPFile;
+
     private CsvParserSettings csvParserSettings;
 
     public FileUtilService(){
@@ -156,134 +162,48 @@ public class FileUtilService {
         switch (FileTypes.valueOfLabel(loadedFile.getType())){
 
             case TEACHER_ROSTER:
-                return this.processTeacherRosterFile(loadedFile);
+                return this.loaderCodeFile.processTeacherRosterFile(loadedFile);
 
             case TEACHER_OPT_IN:
-                return this.processTeacherOptInFile(loadedFile);
+                return this.loaderCodeFile.processTeacherOptInFile(loadedFile);
 
             case STUDENT_LEVEL:
-                return this.processStudentLevelFile(loadedFile);
+                return this.loaderCodeFile.processStudentLevelFile(loadedFile);
 
             case SIGNIN_PER_COURSE:
-                return this.processSignInPerCourseFile(loadedFile);
+                return this.loaderCodeFile.processSignInPerCourseFile(loadedFile);
 
             case SIGN_INS:
-                return this.processSignInsFile(loadedFile);
+                return this.loaderCodeFile.processSignInsFile(loadedFile);
 
             case DIAGNOSTICO:
-                return this.diagnosticoFile(loadedFile);
+                return this.loaderMoodleFile.diagnosticoFile(loadedFile);
 
             case PRE_CAPACITA:
-                return this.preCapacitaFile(loadedFile);
+                return this.loaderMoodleFile.preCapacitaFile(loadedFile);
             case POST_CAPACITA:
 
                 List<PostTrainingDTO> postTrainingRows = parseRowsToBeans(path, PostTrainingDTO.class);
                 return loaderMoodleFile.processPostTrainingRows(postTrainingRows, loadedFile.getId());
 
-            case TEST_PC_1:
-                return this.testPCOneFile(loadedFile);
-
-            case TEST_PC_2:
-                return this.testPCTwoFile(loadedFile);
-
-            case TEST_PC_3:
-                return this.testPCThreeFile(loadedFile);
 
             case SALIDA:
-                return this.salidaFile(loadedFile);
+                return this.loaderMoodleFile.salidaFile(loadedFile);
 
             case SATIS:
-                return this.satisFile(loadedFile);
+                return this.loaderMoodleFile.satisFile(loadedFile);
+
+            case TEST_PC_1:
+                return this.loaderCPFile.testPCOneFile(loadedFile);
+
+            case TEST_PC_2:
+                return this.loaderCPFile.testPCTwoFile(loadedFile);
+
+            case TEST_PC_3:
+                return this.loaderCPFile.testPCThreeFile(loadedFile);
 
             default:
                 return new FileResumeDTO(0,0,0);
         }
-    }
-
-    public FileResumeDTO processTeacherRosterFile(LoadedFile loadedFile){
-        //TODO validate load records by file's type
-        //TODO insert records if not exist
-
-        logger.info("processTeacherRosterFile init");
-        return new FileResumeDTO();
-    }
-
-    public FileResumeDTO processTeacherOptInFile(LoadedFile loadedFile){
-        //TODO validate load records by file's type
-        //TODO insert records if not exist
-
-        return new FileResumeDTO();
-    }
-
-    public FileResumeDTO processStudentLevelFile(LoadedFile loadedFile){
-        //TODO validate load records by file's type
-        //TODO insert records if not exist
-
-        return new FileResumeDTO();
-    }
-
-    public FileResumeDTO processSignInPerCourseFile(LoadedFile loadedFile){
-        //TODO validate load records by file's type
-        //TODO insert records if not exist
-
-        return new FileResumeDTO();
-    }
-
-    public FileResumeDTO processSignInsFile(LoadedFile loadedFile){
-        //TODO validate load records by file's type
-        //TODO insert records if not exist
-
-        return new FileResumeDTO();
-    }
-
-    public FileResumeDTO diagnosticoFile(LoadedFile loadedFile){
-        //TODO validate load records by file's type
-        //TODO insert records if not exist
-
-        return new FileResumeDTO();
-    }
-
-    public FileResumeDTO preCapacitaFile(LoadedFile loadedFile){
-        //TODO validate load records by file's type
-        //TODO insert records if not exist
-
-        return new FileResumeDTO();
-    }
-
-    public FileResumeDTO testPCOneFile(LoadedFile loadedFile){
-        //TODO validate load records by file's type
-
-        //TODO insert records if not exist
-
-        logger.info("testPCOneFile init");
-        return new FileResumeDTO();
-    }
-
-    public FileResumeDTO testPCTwoFile(LoadedFile loadedFile){
-        //TODO validate load records by file's type
-        //TODO insert records if not exist
-
-        return new FileResumeDTO();
-    }
-
-    public FileResumeDTO testPCThreeFile(LoadedFile loadedFile){
-        //TODO validate load records by file's type
-        //TODO insert records if not exist
-
-        return new FileResumeDTO();
-    }
-
-    public FileResumeDTO salidaFile(LoadedFile loadedFile){
-        //TODO validate load records by file's type
-        //TODO insert records if not exist
-
-        return new FileResumeDTO();
-    }
-
-    public FileResumeDTO satisFile(LoadedFile loadedFile){
-        //TODO validate load records by file's type
-        //TODO insert records if not exist
-
-        return new FileResumeDTO();
     }
 }
