@@ -23,6 +23,7 @@ public class LoaderMoodleFile{
     private static final int DUMMY_ID = 0;
     private  static final String DELIMITER_LAST_NAMES = " ";
     private static final String POST_CAPACITA = "post-capacita";//TODO change for enum
+
     @Autowired
     TeacherRepository teacherRepository;
 
@@ -36,6 +37,7 @@ public class LoaderMoodleFile{
         int duplicatedRecords = 0;
 
         for(PostTrainingDTO postTrainingRow : postTrainingRows){
+            logger.info("processTrainingRows. postTrainingRow={}", postTrainingRow);
 
             //check docente exist, if dont then insert persona, gender, docente
             Optional<Teacher> teacherSelected = teacherRepository.getPerson(postTrainingRow.getRut(),
@@ -48,6 +50,8 @@ public class LoaderMoodleFile{
                 teacherSelected = Optional.of(teacher);
             }
 
+            logger.info("processTrainingRows. teacherSelected.get()={}", teacherSelected.get());
+
             Optional<Test> teacherTest = this.testRepository.getTeacherTest(teacherSelected.get().getId(), POST_CAPACITA);
 
             if(!teacherTest.isPresent()){
@@ -56,7 +60,8 @@ public class LoaderMoodleFile{
                         POST_CAPACITA, postTrainingRow.getTestState(), postTrainingRow.getStartIn(),
                         postTrainingRow.getFinishIn(), postTrainingRow.getDuration(), postTrainingRow.getScore());
 
-                this.testRepository.insertTest(test);
+                int resultInsertTest = this.testRepository.insertTest(test);
+                logger.info("processTrainingRows. resultInsertTest={}", resultInsertTest);
 
                 TrainingAnswer trainingAnswer = new TrainingAnswer(this.testRepository.getNextTrainingAnswer(), test.getId(),
                         postTrainingRow.getAnswerOne(), postTrainingRow.getAnswerTwo(), postTrainingRow.getAnswerThree(),
@@ -64,7 +69,9 @@ public class LoaderMoodleFile{
                         postTrainingRow.getAnswerSeven(), postTrainingRow.getAnswerEight(), postTrainingRow.getAnswerNine(),
                         postTrainingRow.getAnswerTen());
 
-                this.testRepository.insertTrainingAnswer(trainingAnswer);
+                int resultInsertTrainingAnswer = this.testRepository.insertTrainingAnswer(trainingAnswer);
+                logger.info("processTrainingRows. resultInsertTrainingAnswer={}", resultInsertTrainingAnswer);
+
                 newRecords++;
             } else {
                 duplicatedRecords++;

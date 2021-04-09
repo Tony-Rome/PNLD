@@ -174,7 +174,7 @@ public class FileService {
             loadedFile.setDuplicateRecords(resume.getDuplicatedRecords());
 
             this.fileRepository.updateFileLoaded(loadedFile);
-
+            logger.info("executeFileLoadScheduled. updated loadedFile={}", loadedFile);
         }
     }
 

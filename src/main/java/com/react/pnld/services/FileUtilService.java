@@ -182,10 +182,8 @@ public class FileUtilService {
             case PRE_CAPACITA:
                 return this.loaderMoodleFile.preCapacitaFile(loadedFile);
             case POST_CAPACITA:
-
                 List<PostTrainingDTO> postTrainingRows = parseRowsToBeans(path, PostTrainingDTO.class);
                 return loaderMoodleFile.processPostTrainingRows(postTrainingRows, loadedFile.getId());
-
 
             case SALIDA:
                 return this.loaderMoodleFile.salidaFile(loadedFile);
