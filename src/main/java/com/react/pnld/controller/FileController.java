@@ -1,7 +1,7 @@
 package com.react.pnld.controller;
 
-import com.react.pnld.model.dto.ScheduleFileLoadDTO;
-import com.react.pnld.model.ScheduleFileLoadResponse;
+import com.react.pnld.dto.ScheduleFileLoadDTO;
+import com.react.pnld.controller.response.ScheduleFileLoadResponse;
 import com.react.pnld.services.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,15 +31,24 @@ public class FileController {
     @PostMapping(value = "/scheduleFileLoadPost")
     public ResponseEntity<String> scheduleFileLoadPost(ScheduleFileLoadDTO scheduleFileLoadDTO, Model model) {
 
-        String loadedBy = SecurityContextHolder.getContext().getAuthentication().getName();
-        logger.info("scheduleFileLoadPost. loadedBy={}",loadedBy);
 
         model.addAttribute("scheduleFileLoadDTO", scheduleFileLoadDTO);
+
+        String loadedBy = SecurityContextHolder.getContext().getAuthentication().getName();
+        logger.info("scheduleFileLoadPost. loadedBy={}",loadedBy);
+        scheduleFileLoadDTO.setLoadedBy(loadedBy);
         logger.info("scheduleFileLoadPost. scheduleFileLoadDTO={}", scheduleFileLoadDTO);
 
         ScheduleFileLoadResponse scheduleFileLoadResponse = fileService.scheduleLoad(scheduleFileLoadDTO);
         logger.info("scheduleLoadFilePost. scheduleFileLoadResponse={}", scheduleFileLoadResponse);
 
         return new ResponseEntity<>(scheduleFileLoadResponse.getDescription(), scheduleFileLoadResponse.getResponse());
+    }
+
+    @GetMapping("/executeLoadScheduled")
+    public String executeLoadScheduled(){
+        logger.info("executeLoadScheduled. init");
+        fileService.executeFileLoadScheduled();
+        return "finish";
     }
 }

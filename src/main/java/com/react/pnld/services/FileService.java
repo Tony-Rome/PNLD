@@ -1,8 +1,10 @@
 package com.react.pnld.services;
 
-import com.react.pnld.model.dto.ScheduleFileLoadDTO;
-import com.react.pnld.model.dto.ProcesaArchivoDTO;
-import com.react.pnld.model.ScheduleFileLoadResponse;
+import com.react.pnld.dto.FileTypes;
+import com.react.pnld.model.LoadedFile;
+import com.react.pnld.controller.response.ScheduleFileLoadResponse;
+import com.react.pnld.dto.FileResumeDTO;
+import com.react.pnld.dto.ScheduleFileLoadDTO;
 import com.react.pnld.repo.FileRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,14 +19,18 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.time.OffsetDateTime;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 @Service
 public class FileService {
 
     private static final Logger logger = LoggerFactory.getLogger(FileService.class);
-
     @Value("${copy.path.files}")
     private String FILE_PATH;
 
@@ -36,8 +42,8 @@ public class FileService {
 
     public ScheduleFileLoadResponse scheduleLoad(ScheduleFileLoadDTO scheduleFileLoadDTO){
 
-        scheduleFileLoadDTO.setLoadedBy("1");//TODO remove this line when user logged is identified
-        scheduleFileLoadDTO.setLoadedOnDateTime(OffsetDateTime.now(ZoneId.of("UTC")));
+        scheduleFileLoadDTO.setLoadedBy(scheduleFileLoadDTO.getLoadedBy());
+        scheduleFileLoadDTO.setLoadedOnDateTime(LocalDateTime.now(ZoneId.of("UTC")));
 
         ScheduleFileLoadResponse scheduleFileLoadResponse =
                 new ScheduleFileLoadResponse(HttpStatus.BAD_REQUEST);
@@ -57,6 +63,7 @@ public class FileService {
         if(!this.queueLoad(scheduleFileLoadDTO)){
             logger.info("scheduleLoad. queue load is not succesfull");
             scheduleFileLoadResponse.setDescription("Error en la cola de procesamiento");
+            rollbackCopyAtFileSystem(scheduleFileLoadDTO);
             return scheduleFileLoadResponse;
         }
 
@@ -89,60 +96,86 @@ public class FileService {
     public boolean copyAtFileSystem(ScheduleFileLoadDTO scheduleFileLoadDTO){
 
         try {
-            String originalFilename = scheduleFileLoadDTO.getUploadFile().getOriginalFilename();
-            logger.info("copyAtFileSystem. originalFilename={}", originalFilename);
-            String extensionFile = fileUtilService.getExtension(originalFilename);
-            logger.info("copyAtFileSystem. extensionFile={}", extensionFile);
-
-            String loadedDateTimeLikeString = scheduleFileLoadDTO.getLoadedOnDateTime().toString().replace(":","-");
-            String loadedDateFormatted = loadedDateTimeLikeString.replace(fileUtilService.getExtension(loadedDateTimeLikeString),"");
-            String finalFileName =   loadedDateFormatted + "-" + scheduleFileLoadDTO.getName() + extensionFile;
-            logger.info("copyAtFileSystem. finalFileName={}", finalFileName);
-
-            String finalPath = FILE_PATH + finalFileName;
-            File dest = new File(finalPath);
+            String nameWithPath = FILE_PATH + fileUtilService.getLoadedFileName(scheduleFileLoadDTO);
+            File fileLoaded = new File(nameWithPath);
 
             //Check if the directory exists
-            if(!dest.getParentFile().exists()){
-                dest.getParentFile().mkdirs();
+            if(!fileLoaded.getParentFile().exists()){
+                fileLoaded.getParentFile().mkdirs();
             }
 
-            scheduleFileLoadDTO.getUploadFile().transferTo(dest);
-
+            scheduleFileLoadDTO.getUploadFile().transferTo(fileLoaded);
             return true;
+
         } catch (IOException ioException){
-            logger.error("copyAtFileSystem. ioException.getMessage()={}", ioException.getMessage());
-            ioException.getStackTrace();
+            logger.error(ioException.getMessage(), ioException);
+            return false;
+        }
+    }
+
+    public boolean rollbackCopyAtFileSystem(ScheduleFileLoadDTO scheduleFileLoadDTO){
+
+        try {
+            String fileName = fileUtilService.getLoadedFileName(scheduleFileLoadDTO);
+            Path path = FileSystems.getDefault().getPath(FILE_PATH, fileName);
+            return Files.deleteIfExists(path);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
             return false;
         }
     }
 
     public boolean queueLoad(ScheduleFileLoadDTO scheduleFileLoadDTO){
 
-        ProcesaArchivoDTO procesaArchivoDTO = new ProcesaArchivoDTO();
-        procesaArchivoDTO.setNombreArchivo(scheduleFileLoadDTO.getName());
-        procesaArchivoDTO.setTipoArchivo(scheduleFileLoadDTO.getSelectedType());
-        procesaArchivoDTO.setFechaCarga(scheduleFileLoadDTO.getLoadedOnDateTime());
-        //TODO identify idPersona with csvFile.getLoadedBy()
-        procesaArchivoDTO.setIdPersona(1); //TODO set by logged user
+        LoadedFile loadedFile = new LoadedFile();
+        loadedFile.setName(fileUtilService.getLoadedFileName(scheduleFileLoadDTO));
+        loadedFile.setStoredIn(FILE_PATH);
+        loadedFile.setType(scheduleFileLoadDTO.getSelectedType());
+        loadedFile.setLoadedDate(scheduleFileLoadDTO.getLoadedOnDateTime());
+        loadedFile.setLoadedByAdmin(scheduleFileLoadDTO.getLoadedBy());
+        loadedFile.setStateId(FileTypes.STATE_SCHEDULED);
+        loadedFile.setProcessDate(null);
+        loadedFile.setTotalRecords(0);
+        loadedFile.setDuplicateRecords(0);
+        loadedFile.setNewRecords(0);
 
-        int responseInsert = fileRepository.insertProcessFile(procesaArchivoDTO);
-
-        if(responseInsert == 0){
+        try {
+            int insertResult = fileRepository.insertProcessFile(loadedFile);
+            logger.info("queueLoad. insertResult={}", insertResult);
+            return true;
+        } catch (Exception exception) {
+            logger.error(exception.getMessage(), exception);
             return false;
         }
-        return true;
     }
 
     @Scheduled(cron = "${cron.process-loadscheduled}", zone = "UTC")
-    public void executeScheduledLoadFile(){
-        //System.out.println("Time instant UTC: "+Instant.now());
-        //TODO select scheduled files
-        //TODO read file's content
-        //TODO validate load records by file's type
-            //TODO insert records if not exist
-        //TODO resume load file
-        //TODO update record load filex
+    public void executeFileLoadScheduled(){
+
+        LocalDateTime endDateTime = LocalDateTime.now(ZoneId.of("UTC"));
+        logger.info("executeFileLoadScheduled. endDateTime={}", endDateTime);
+        LocalDateTime startDateTime = endDateTime.minusDays(1L);
+        logger.info("executeFileLoadScheduled. startDateTime={}", startDateTime);
+
+        List<LoadedFile> filesLoadedScheduled = fileRepository.getLoadedFilesByStateAndTimestamps(FileTypes.STATE_SCHEDULED,
+                Timestamp.valueOf(startDateTime), Timestamp.valueOf(endDateTime));
+        logger.info("executeFileLoadScheduled. filesLoadedScheduled={}", filesLoadedScheduled);
+
+        for(LoadedFile loadedFile : filesLoadedScheduled){
+            loadedFile.setStateId(FileTypes.STATE_IN_PROCESS);
+            this.fileRepository.updateFileLoaded(loadedFile);
+
+            FileResumeDTO resume = fileUtilService.processLoadedFile(loadedFile);
+
+            loadedFile.setProcessDate(LocalDateTime.now(ZoneId.of("UTC")));
+            loadedFile.setStateId(FileTypes.FILE_STATE_PROCESSED);
+            loadedFile.setTotalRecords(resume.getTotalRecords());
+            loadedFile.setNewRecords(resume.getNewRecords());
+            loadedFile.setDuplicateRecords(resume.getDuplicatedRecords());
+
+            this.fileRepository.updateFileLoaded(loadedFile);
+            logger.info("executeFileLoadScheduled. updated loadedFile={}", loadedFile);
+        }
     }
 
 }
