@@ -40,7 +40,7 @@ public class LoaderMoodleFile{
             logger.info("processTrainingRows. postTrainingRow={}", postTrainingRow);
 
             //check docente exist, if dont then insert persona, gender, docente
-            Optional<Teacher> teacherSelected = teacherRepository.getPerson(postTrainingRow.getRut(),
+            Optional<Teacher> teacherSelected = teacherRepository.getTeacher(postTrainingRow.getRut(),
                     postTrainingRow.getEmail());
 
             if(!teacherSelected.isPresent()){

@@ -17,7 +17,7 @@ public class TeacherRepository {
     @Autowired
     TeacherMapper teacherMapper;
 
-    public Optional<Teacher> getPerson(String rut, String email){
+    public Optional<Teacher> getTeacher(String rut, String email){
         return Optional.ofNullable(this.teacherMapper.getTeacher(rut, email));
     }
 

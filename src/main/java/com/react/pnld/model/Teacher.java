@@ -4,8 +4,8 @@ public class Teacher {
 
     private int id;
     private String firstName;
-    private String lastName;
-    private String motherLastName;
+    private String paternalLastName;
+    private String maternalLastName;
     private String rut;
     private String email;
     private int genderId;
@@ -14,12 +14,12 @@ public class Teacher {
         super();
     }
 
-    public Teacher(int id, String firstName, String lastName, String motherLastName,
+    public Teacher(int id, String firstName, String paternalLastName, String maternalLastName,
                    String rut, String email, int genderId) {
         this.id = id;
         this.firstName = firstName;
-        this.lastName = lastName;
-        this.motherLastName = motherLastName;
+        this.paternalLastName = paternalLastName;
+        this.maternalLastName = maternalLastName;
         this.rut = rut;
         this.email = email;
         this.genderId = genderId;
@@ -41,20 +41,20 @@ public class Teacher {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getPaternalLastName() {
+        return paternalLastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setPaternalLastName(String paternalLastName) {
+        this.paternalLastName = paternalLastName;
     }
 
-    public String getMotherLastName() {
-        return motherLastName;
+    public String getMaternalLastName() {
+        return maternalLastName;
     }
 
-    public void setMotherLastName(String motherLastName) {
-        this.motherLastName = motherLastName;
+    public void setMaternalLastName(String maternalLastName) {
+        this.maternalLastName = maternalLastName;
     }
 
     public String getRut() {
@@ -86,8 +86,8 @@ public class Teacher {
         return "Teacher{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", motherLastName='" + motherLastName + '\'' +
+                ", paternalLastName='" + paternalLastName + '\'' +
+                ", maternalLastName='" + maternalLastName + '\'' +
                 ", rut='" + rut + '\'' +
                 ", email='" + email + '\'' +
                 ", genderId=" + genderId +

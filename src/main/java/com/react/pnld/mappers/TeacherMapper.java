@@ -12,8 +12,8 @@ public interface TeacherMapper {
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "firstName", column = "nombre"),
-            @Result(property = "lastName", column = "apellido_paterno"),
-            @Result(property = "motherLastName", column = "apellido_materno"),
+            @Result(property = "paternalLastName", column = "apellido_paterno"),
+            @Result(property = "maternalLastName", column = "apellido_materno"),
             @Result(property = "rut", column = "rut"),
             @Result(property = "email", column = "correo"),
             @Result(property = "genderId", column = "id_genero")})
