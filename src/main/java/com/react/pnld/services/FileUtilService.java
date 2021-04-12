@@ -67,28 +67,28 @@ public class FileUtilService {
             case SIGN_INS:
                 return csvHeadersProperties.getSignIns();
 
-            case DIAGNOSTICO:
+            case DIAGNOSIS:
                 return csvHeadersProperties.getDiagnostico();
 
-            case PRE_CAPACITA:
+            case PRE_TRAINING:
                 return csvHeadersProperties.getPreCapacita();
 
-            case POST_CAPACITA:
+            case POST_TRAINING:
                 return csvHeadersProperties.getPostCapacita();
 
-            case TEST_PC_1:
+            case TEST_CT_1:
                 return csvHeadersProperties.getTestPc1();
 
-            case TEST_PC_2:
+            case TEST_CT_2:
                 return csvHeadersProperties.getTestPc2();
 
-            case TEST_PC_3:
+            case TEST_CT_3:
                 return csvHeadersProperties.getTestPc3();
 
             case SALIDA:
                 return csvHeadersProperties.getSalida();
 
-            case SATIS:
+            case SATISFACTION:
                 return csvHeadersProperties.getSatis();
 
             default:
@@ -176,27 +176,27 @@ public class FileUtilService {
             case SIGN_INS:
                 return this.loaderCodeFile.processSignInsFile(loadedFile);
 
-            case DIAGNOSTICO:
+            case DIAGNOSIS:
                 return this.loaderMoodleFile.diagnosticoFile(loadedFile);
 
-            case PRE_CAPACITA:
-            case POST_CAPACITA:
+            case PRE_TRAINING:
+            case POST_TRAINING:
                 List<TrainingFileDTO> trainingRows = parseRowsToBeans(path, TrainingFileDTO.class);
                 return loaderMoodleFile.processTrainingFileRows(trainingRows, loadedFile.getId(), loadedFile.getType());
 
             case SALIDA:
                 return this.loaderMoodleFile.salidaFile(loadedFile);
 
-            case SATIS:
+            case SATISFACTION:
                 return this.loaderMoodleFile.satisFile(loadedFile);
 
-            case TEST_PC_1:
+            case TEST_CT_1:
                 return this.loaderCPFile.testPCOneFile(loadedFile);
 
-            case TEST_PC_2:
+            case TEST_CT_2:
                 return this.loaderCPFile.testPCTwoFile(loadedFile);
 
-            case TEST_PC_3:
+            case TEST_CT_3:
                 return this.loaderCPFile.testPCThreeFile(loadedFile);
 
             default:
