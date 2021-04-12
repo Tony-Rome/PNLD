@@ -2,7 +2,7 @@ package com.react.pnld.services;
 
 import com.react.pnld.dto.FileTypes;
 import com.react.pnld.model.LoadedFile;
-import com.react.pnld.model.ScheduleFileLoadResponse;
+import com.react.pnld.controller.response.ScheduleFileLoadResponse;
 import com.react.pnld.dto.FileResumeDTO;
 import com.react.pnld.dto.ScheduleFileLoadDTO;
 import com.react.pnld.repo.FileRepository;

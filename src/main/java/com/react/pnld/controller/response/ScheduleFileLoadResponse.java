@@ -1,4 +1,4 @@
-package com.react.pnld.model;
+package com.react.pnld.controller.response;
 
 import org.springframework.http.HttpStatus;
 

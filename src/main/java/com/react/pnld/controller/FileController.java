@@ -1,7 +1,7 @@
 package com.react.pnld.controller;
 
 import com.react.pnld.dto.ScheduleFileLoadDTO;
-import com.react.pnld.model.ScheduleFileLoadResponse;
+import com.react.pnld.controller.response.ScheduleFileLoadResponse;
 import com.react.pnld.services.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
