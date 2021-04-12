@@ -3,7 +3,7 @@ package com.react.pnld.dto;
 import com.univocity.parsers.annotations.Format;
 import com.univocity.parsers.annotations.Parsed;
 
-public class PostTrainingDTO {
+public class TrainingFileDTO {
 
     @Parsed(index = 0)
     private String lastNames;
@@ -69,11 +69,11 @@ public class PostTrainingDTO {
     @Parsed(index = 20)
     private String answerTen;
 
-    public PostTrainingDTO(){
+    public TrainingFileDTO(){
         super();
     }
 
-    public PostTrainingDTO(String lastNames, String name, String rut, String institution, String department,
+    public TrainingFileDTO(String lastNames, String name, String rut, String institution, String department,
                            String email, String testState, String startIn, String finishIn, String duration, float score,
                            String answerOne, String answerTwo, String answerThree, String answerFour, String answerFive,
                            String answerSix, String answerSeven, String answerEight, String answerNine, String answerTen) {

@@ -6,14 +6,14 @@ public enum FileTypes {
     STUDENT_LEVEL("student-level"),
     SIGNIN_PER_COURSE("signin-per-course"),
     SIGN_INS("sign-ins"),
-    DIAGNOSTICO("diagnostico"),
-    PRE_CAPACITA("pre-capacita"),
-    POST_CAPACITA("post-capacita"),
-    TEST_PC_1("test-pc-1"),
-    TEST_PC_2("test-pc-2"),
-    TEST_PC_3("test-pc-3"),
-    SALIDA("salida"),
-    SATIS("satis"),
+    DIAGNOSIS("diagnostico"),
+    PRE_TRAINING("pre-capacita"),
+    POST_TRAINING("post-capacita"),
+    TEST_CT_1("test-pc-1"),
+    TEST_CT_2("test-pc-2"),
+    TEST_CT_3("test-pc-3"),
+    SALIDA("salida"), //TODO remove, same file with satisfaction
+    SATISFACTION("satis"),
     NOT_DEFINED("");
 
     public final String label;

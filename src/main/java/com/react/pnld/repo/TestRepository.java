@@ -18,8 +18,8 @@ public class TestRepository {
     @Autowired
     private TestMapper testMapper;
 
-    public Optional<Test> getTeacherTest(int teacherId, String typeTest){
-        return Optional.ofNullable(this.testMapper.getTeacherTest(teacherId, typeTest));
+    public Optional<Test> getTeacherTest(int teacherId, String testType){
+        return Optional.ofNullable(this.testMapper.getTeacherTest(teacherId, testType));
     }
 
     public int insertTest(Test test){

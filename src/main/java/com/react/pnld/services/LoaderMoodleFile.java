@@ -1,7 +1,7 @@
 package com.react.pnld.services;
 
 import com.react.pnld.dto.FileResumeDTO;
-import com.react.pnld.dto.PostTrainingDTO;
+import com.react.pnld.dto.TrainingFileDTO;
 import com.react.pnld.model.LoadedFile;
 import com.react.pnld.model.Teacher;
 import com.react.pnld.model.Test;
@@ -22,7 +22,6 @@ public class LoaderMoodleFile{
     private static final Logger logger = LoggerFactory.getLogger(LoaderMoodleFile.class);
     private static final int DUMMY_ID = 0;
     private  static final String DELIMITER_LAST_NAMES = " ";
-    private static final String POST_CAPACITA = "post-capacita";//TODO change for enum
 
     @Autowired
     TeacherRepository teacherRepository;
@@ -30,14 +29,17 @@ public class LoaderMoodleFile{
     @Autowired
     TestRepository testRepository;
 
-    public FileResumeDTO processPostTrainingRows(List<PostTrainingDTO> postTrainingRows, int loadedFileId) {
-        logger.info("processTrainingRows. postTrainingRows.size()={}", postTrainingRows.size());
+    public FileResumeDTO processTrainingFileRows(List<TrainingFileDTO> postTrainingRows, int loadedFileId,
+                                                 String testType) {
+
+        logger.info("processTrainingFileRows. postTrainingRows.size()={}, loadedFileId={}, testType={}",
+                postTrainingRows.size(), loadedFileId, testType);
 
         int newRecords = 0;
         int duplicatedRecords = 0;
 
-        for(PostTrainingDTO postTrainingRow : postTrainingRows){
-            logger.info("processTrainingRows. postTrainingRow={}", postTrainingRow);
+        for(TrainingFileDTO postTrainingRow : postTrainingRows){
+            logger.info("processTrainingFileRows. postTrainingRow={}", postTrainingRow);
 
             //check docente exist, if dont then insert persona, gender, docente
             Optional<Teacher> teacherSelected = teacherRepository.getTeacher(postTrainingRow.getRut(),
@@ -50,18 +52,18 @@ public class LoaderMoodleFile{
                 teacherSelected = Optional.of(teacher);
             }
 
-            logger.info("processTrainingRows. teacherSelected.get()={}", teacherSelected.get());
+            logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherSelected.get());
 
-            Optional<Test> teacherTest = this.testRepository.getTeacherTest(teacherSelected.get().getId(), POST_CAPACITA);
+            Optional<Test> teacherTest = this.testRepository.getTeacherTest(teacherSelected.get().getId(), testType);
 
             if(!teacherTest.isPresent()){
 
                 Test test = new Test(this.testRepository.getNextTestId(), teacherSelected.get().getId(), loadedFileId,
-                        POST_CAPACITA, postTrainingRow.getTestState(), postTrainingRow.getStartIn(),
+                        testType, postTrainingRow.getTestState(), postTrainingRow.getStartIn(),
                         postTrainingRow.getFinishIn(), postTrainingRow.getDuration(), postTrainingRow.getScore());
 
                 int resultInsertTest = this.testRepository.insertTest(test);
-                logger.info("processTrainingRows. resultInsertTest={}", resultInsertTest);
+                logger.info("processTrainingFileRows. resultInsertTest={}", resultInsertTest);
 
                 TrainingAnswer trainingAnswer = new TrainingAnswer(this.testRepository.getNextTrainingAnswer(), test.getId(),
                         postTrainingRow.getAnswerOne(), postTrainingRow.getAnswerTwo(), postTrainingRow.getAnswerThree(),
@@ -70,7 +72,7 @@ public class LoaderMoodleFile{
                         postTrainingRow.getAnswerTen());
 
                 int resultInsertTrainingAnswer = this.testRepository.insertTrainingAnswer(trainingAnswer);
-                logger.info("processTrainingRows. resultInsertTrainingAnswer={}", resultInsertTrainingAnswer);
+                logger.info("processTrainingFileRows. resultInsertTrainingAnswer={}", resultInsertTrainingAnswer);
 
                 newRecords++;
             } else {
@@ -82,7 +84,7 @@ public class LoaderMoodleFile{
         return new FileResumeDTO(postTrainingRows.size(), newRecords, duplicatedRecords);
     }
 
-    Teacher buildTeacherFrom(PostTrainingDTO postTrainingRow){
+    Teacher buildTeacherFrom(TrainingFileDTO postTrainingRow){
         String[] lastNames = postTrainingRow.getLastNames().split(DELIMITER_LAST_NAMES);//TODO validate when only one lastname
         int idGenderNotSpecified = 4; //TODO get gender by type
 
@@ -91,13 +93,6 @@ public class LoaderMoodleFile{
     }
 
     public FileResumeDTO diagnosticoFile(LoadedFile loadedFile){
-        //TODO validate load records by file's type
-        //TODO insert records if not exist
-
-        return new FileResumeDTO();
-    }
-
-    public FileResumeDTO preCapacitaFile(LoadedFile loadedFile){
         //TODO validate load records by file's type
         //TODO insert records if not exist
 
