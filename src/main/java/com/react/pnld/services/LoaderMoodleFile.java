@@ -32,14 +32,14 @@ public class LoaderMoodleFile{
     public FileResumeDTO processTrainingFileRows(List<TrainingFileDTO> postTrainingRows, int loadedFileId,
                                                  String testType) {
 
-        logger.info("processTrainingRows. postTrainingRows.size()={}, loadedFileId={}, testType={}",
+        logger.info("processTrainingFileRows. postTrainingRows.size()={}, loadedFileId={}, testType={}",
                 postTrainingRows.size(), loadedFileId, testType);
 
         int newRecords = 0;
         int duplicatedRecords = 0;
 
         for(TrainingFileDTO postTrainingRow : postTrainingRows){
-            logger.info("processTrainingRows. postTrainingRow={}", postTrainingRow);
+            logger.info("processTrainingFileRows. postTrainingRow={}", postTrainingRow);
 
             //check docente exist, if dont then insert persona, gender, docente
             Optional<Teacher> teacherSelected = teacherRepository.getTeacher(postTrainingRow.getRut(),
@@ -52,7 +52,7 @@ public class LoaderMoodleFile{
                 teacherSelected = Optional.of(teacher);
             }
 
-            logger.info("processTrainingRows. teacherSelected.get()={}", teacherSelected.get());
+            logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherSelected.get());
 
             Optional<Test> teacherTest = this.testRepository.getTeacherTest(teacherSelected.get().getId(), testType);
 
@@ -63,7 +63,7 @@ public class LoaderMoodleFile{
                         postTrainingRow.getFinishIn(), postTrainingRow.getDuration(), postTrainingRow.getScore());
 
                 int resultInsertTest = this.testRepository.insertTest(test);
-                logger.info("processTrainingRows. resultInsertTest={}", resultInsertTest);
+                logger.info("processTrainingFileRows. resultInsertTest={}", resultInsertTest);
 
                 TrainingAnswer trainingAnswer = new TrainingAnswer(this.testRepository.getNextTrainingAnswer(), test.getId(),
                         postTrainingRow.getAnswerOne(), postTrainingRow.getAnswerTwo(), postTrainingRow.getAnswerThree(),
@@ -72,7 +72,7 @@ public class LoaderMoodleFile{
                         postTrainingRow.getAnswerTen());
 
                 int resultInsertTrainingAnswer = this.testRepository.insertTrainingAnswer(trainingAnswer);
-                logger.info("processTrainingRows. resultInsertTrainingAnswer={}", resultInsertTrainingAnswer);
+                logger.info("processTrainingFileRows. resultInsertTrainingAnswer={}", resultInsertTrainingAnswer);
 
                 newRecords++;
             } else {
