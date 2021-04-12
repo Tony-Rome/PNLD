@@ -20,8 +20,8 @@ public interface TeacherMapper {
     Teacher getTeacher(String rut, String email);
 
     @Insert("INSERT INTO pnld.docente (id, nombre, apellido_paterno, apellido_materno, rut," +
-            "correo, id_genero) VALUES (#{id}, #{firstName},#{lastName},#{motherLastName},#{rut}," +
-            "#{email},#{genderId});")
+            "correo, id_genero) VALUES (#{id}, #{firstName}, #{paternalLastName}, #{maternalLastName}, #{rut}," +
+            "#{email}, #{genderId});")
     int insertTeacher(Teacher teacher);
 
     @Select("SELECT nextval(pg_get_serial_sequence('pnld.docente', 'id'));")

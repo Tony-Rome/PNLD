@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Select;
 
 public interface TestMapper {
 
-    @Select("SELECT * FROM pnld.test WHERE id_docente=#{teacherId} AND tipo=#{typeTest};")
+    @Select("SELECT * FROM pnld.test WHERE id_docente=#{teacherId} AND tipo=#{testType};")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "teacherId", column = "id_docente"),
@@ -20,7 +20,7 @@ public interface TestMapper {
             @Result(property = "endDate", column = "fecha_fin"),
             @Result(property = "duration", column = "tiempo_requerido"),
             @Result(property = "score", column = "calificacion")})
-    Test getTeacherTest(int teacherId, String typeTest);
+    Test getTeacherTest(int teacherId, String testType);
 
     @Insert("INSERT INTO pnld.test (id, id_docente, id_archivo_fuente, tipo, estado, fecha_inicio, fecha_fin, tiempo_requerido," +
             "calificacion) VALUES (#{id}, #{teacherId}, #{loadedFileId}, #{type}, #{state}, #{initDate}, #{endDate}, #{duration}, " +

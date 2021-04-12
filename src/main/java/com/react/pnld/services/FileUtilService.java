@@ -2,7 +2,7 @@ package com.react.pnld.services;
 
 import com.react.pnld.dto.FileResumeDTO;
 import com.react.pnld.dto.FileTypes;
-import com.react.pnld.dto.PostTrainingDTO;
+import com.react.pnld.dto.TrainingFileDTO;
 import com.react.pnld.dto.ScheduleFileLoadDTO;
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.model.LoadedFile;
@@ -180,10 +180,9 @@ public class FileUtilService {
                 return this.loaderMoodleFile.diagnosticoFile(loadedFile);
 
             case PRE_CAPACITA:
-                return this.loaderMoodleFile.preCapacitaFile(loadedFile);
             case POST_CAPACITA:
-                List<PostTrainingDTO> postTrainingRows = parseRowsToBeans(path, PostTrainingDTO.class);
-                return loaderMoodleFile.processPostTrainingRows(postTrainingRows, loadedFile.getId());
+                List<TrainingFileDTO> trainingRows = parseRowsToBeans(path, TrainingFileDTO.class);
+                return loaderMoodleFile.processTrainingFileRows(trainingRows, loadedFile.getId(), loadedFile.getType());
 
             case SALIDA:
                 return this.loaderMoodleFile.salidaFile(loadedFile);
