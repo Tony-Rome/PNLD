@@ -19,6 +19,7 @@
                 <th>Nombre archivo</th>
                 <th>Tipo</th>
                 <th>Fecha subida</th>
+                <th>Estado</th>
                 <th>Registros totales</th>
                 <th>Registros duplicados</th>
               </tr>
@@ -28,6 +29,7 @@
                     <td>${file.name}</td>
                     <td>${file.type}</td>
                     <td>${file.loadedOnDateTime}</td>
+                    <td>${file.state}</td>
                     <td>${file.totalRecords}</td>
                     <td>${file.duplicateRecords}</td>
                   </tr>

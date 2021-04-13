@@ -9,6 +9,7 @@ public class FileTableResumeDTO {
     private String name;
     private String type;
     private String loadedOnDateTime;
+    private String state;
     private int totalRecords;
     private int duplicateRecords;
 
@@ -37,6 +38,10 @@ public class FileTableResumeDTO {
     }
 
     public String getLoadedOnDateTime(){return loadedOnDateTime;}
+
+    public void setState(String state){ this.state = state; }
+
+    public String getState(){ return this.state; }
 
     public void setTotalRecords(int totalRecords){
         this.totalRecords = totalRecords;

@@ -37,10 +37,10 @@ public interface LoadedFileMapper {
             "registros_duplicados = #{duplicateRecords} WHERE id = #{id}")
     int updateLoadedFile(LoadedFile loadedFile);
 
-    @Select("SELECT nombre_usuario, nombre, tipo, fecha_carga, "+
-            "registros_totales, registros_duplicados "+
-            "FROM pnld.archivo_cargado LEFT JOIN pnld.admin " +
-            "ON archivo_cargado.cargado_por_admin = admin.id " +
+    @Select("SELECT ac.nombre, ac.tipo, ac.fecha_carga, ac.registros_totales, ac.registros_duplicados, " +
+            "ad.nombre_usuario, ea.descripcion " +
+            "FROM pnld.archivo_cargado ac JOIN pnld.admin ad ON ac.cargado_por_admin = ad.id " +
+            "JOIN pnld.estado_archivo ea ON ac.id_estado = ea.id " +
             "ORDER BY fecha_carga DESC " +
             "LIMIT #{limitPagination} OFFSET #{offsetPagination};")
     @Results({
@@ -48,6 +48,7 @@ public interface LoadedFileMapper {
             @Result(property = "name", column = "nombre"),
             @Result(property = "type", column = "tipo"),
             @Result(property = "loadedOnDateTime", column = "fecha_carga"),
+            @Result(property = "state", column = "descripcion"),
             @Result(property = "totalRecords", column = "registros_totales"),
             @Result(property = "duplicateRecords", column = "registros_duplicados")
     })
