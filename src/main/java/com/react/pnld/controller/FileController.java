@@ -36,19 +36,22 @@ public class FileController {
 
         int filesCountTotal = fileService.getFilesCountTotal();
 
-        int paginationNumber = 0;
+        int backspaceNumber = 1;
+        int limitPagination = 10;
+        int offsetPagination = 0;
         int currentPage = 1;
 
         if(page != null){
-            paginationNumber = (page.intValue() - 1) * 10;
+            offsetPagination = (page.intValue() - backspaceNumber) * limitPagination;
             currentPage = page.intValue();
         }
 
-        List<?> filesUploadedList = fileService.getFilesUploaded(paginationNumber);
+        List<?> filesUploadedList = fileService.getFilesUploaded(limitPagination, offsetPagination);
         ModelAndView mav = new ModelAndView("loadFiles");
         mav.addObject("files", filesUploadedList);
         mav.addObject("filesCount", filesCountTotal);
         mav.addObject("currentPage", currentPage);
+        mav.addObject("limitPagination", limitPagination);
 
         return mav;
     }

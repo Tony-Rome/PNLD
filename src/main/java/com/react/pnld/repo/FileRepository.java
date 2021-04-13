@@ -33,9 +33,9 @@ public class FileRepository {
 
     public int getFilesCountTotal() { return loadedFileMapper.getFileCountTotal();}
 
-    public List<FileTableResumeDTO> getFilesUploaded(int fileNumber) {
+    public List<FileTableResumeDTO> getFilesUploaded(int limitPagination, int offsetPagination) {
 
-        List<FileTableResumeDTO> filesUploaded = loadedFileMapper.getFilesUploaded(fileNumber);
+        List<FileTableResumeDTO> filesUploaded = loadedFileMapper.getFilesUploaded(limitPagination, offsetPagination);
         logger.info("getFilesUploaded. filesUploaded.size={}", filesUploaded.size());
 
         return filesUploaded;

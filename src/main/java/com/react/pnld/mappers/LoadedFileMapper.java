@@ -42,7 +42,7 @@ public interface LoadedFileMapper {
             "FROM pnld.archivo_cargado LEFT JOIN pnld.admin " +
             "ON archivo_cargado.cargado_por_admin = admin.id " +
             "ORDER BY fecha_carga DESC " +
-            "LIMIT 10 OFFSET #{offset};")
+            "LIMIT #{limitPagination} OFFSET #{offsetPagination};")
     @Results({
             @Result(property = "loadedBy", column = "nombre_usuario"),
             @Result(property = "name", column = "nombre"),
@@ -51,7 +51,7 @@ public interface LoadedFileMapper {
             @Result(property = "totalRecords", column = "registros_totales"),
             @Result(property = "duplicateRecords", column = "registros_duplicados")
     })
-    List<FileTableResumeDTO> getFilesUploaded(int offset);
+    List<FileTableResumeDTO> getFilesUploaded(int limitPagination, int offsetPagination);
 
     @Select("SELECT COUNT(id) FROM pnld.archivo_cargado;")
     int getFileCountTotal();

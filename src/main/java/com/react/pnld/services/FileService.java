@@ -33,7 +33,7 @@ public class FileService {
 
     private static final Logger logger = LoggerFactory.getLogger(FileService.class);
 
-    private int filesCount = 0;
+    private Integer filesCount;
 
     @Value("${copy.path.files}")
     private String FILE_PATH;
@@ -184,9 +184,14 @@ public class FileService {
         filesCount = fileRepository.getFilesCountTotal();
     }
 
-    public int getFilesCountTotal() { return this.filesCount; }
+    public int getFilesCountTotal() {
+        if(this.filesCount == null){
+            this.filesCount = fileRepository.getFilesCountTotal();
+        }
+        return this.filesCount.intValue();
+    }
 
-    public List<FileTableResumeDTO> getFilesUploaded(int fileNumber){ return fileRepository.getFilesUploaded(fileNumber); }
-
-
+    public List<FileTableResumeDTO> getFilesUploaded(int limitPagination, int offsetPagination){
+        return fileRepository.getFilesUploaded(limitPagination, offsetPagination);
+    }
 }

@@ -1,8 +1,8 @@
-<#function numberPages x>
-    <#if (x%10) != 0>
-        <#return ((x/10) + 1)?floor>
+<#function calculateNumberPages numberPages>
+    <#if (numberPages % limitPagination) != 0>
+        <#return ((numberPages / limitPagination) + 1)?floor>
     <#else>
-        <#return (x/10)>
+        <#return (numberPages / limitPagination)>
     </#if>
  </#function>
 
@@ -36,12 +36,12 @@
         </div>
     </div>
 
-        <#if filesCount <= 10>
+        <#if filesCount <= limitPagination>
             <br>
             <br>
         <#else>
 
-            <#assign pages = numberPages(filesCount)>
+            <#assign pages = calculateNumberPages(filesCount)>
 
             <#assign interval = 1..pages>
 
