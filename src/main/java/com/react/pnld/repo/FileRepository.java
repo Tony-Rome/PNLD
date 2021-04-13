@@ -31,7 +31,7 @@ public class FileRepository {
         return this.loadedFileMapper.updateLoadedFile(loadedFile);
     }
 
-    public int getFilesCount() { return loadedFileMapper.getFileCount();}
+    public int getFilesCountTotal() { return loadedFileMapper.getFileCountTotal();}
 
     public List<FileTableResumeDTO> getFilesUploaded(int fileNumber) {
 

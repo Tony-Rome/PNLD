@@ -54,5 +54,5 @@ public interface LoadedFileMapper {
     List<FileTableResumeDTO> getFilesUploaded(int offset);
 
     @Select("SELECT COUNT(id) FROM pnld.archivo_cargado;")
-    int getFileCount();
+    int getFileCountTotal();
 }
