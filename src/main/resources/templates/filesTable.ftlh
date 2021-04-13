@@ -42,8 +42,21 @@
         <#else>
 
             <#assign pages = calculateNumberPages(filesCount)>
+            #{pages}
+            <#assign maxRange = 3>
 
-            <#assign interval = 1..pages>
+            <#if ((currentPage - maxRange) <= 1)>
+                <#assign minInterval = 1>
+            <#else>
+                <#assign minInterval = currentPage - 3>
+            </#if>
+            <#if ((currentPage + maxRange) >= pages) >
+                <#assign maxInterval = pages>
+            <#else>
+                <#assign maxInterval = currentPage + maxRange>
+            </#if>
+
+            <#assign interval = minInterval..maxInterval>
 
             <div class="pagination">
 
@@ -55,7 +68,6 @@
                 <#else>
                     <a href=${pagePath}/${previousPage}>&laquo; Anterior</a>
                 </#if>
-
 
                 <#list interval as page>
                     <#if page == currentPage>

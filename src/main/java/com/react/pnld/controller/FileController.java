@@ -37,7 +37,7 @@ public class FileController {
         int filesCountTotal = fileService.getFilesCountTotal();
 
         int backspaceNumber = 1;
-        int limitPagination = 10;
+        int limitPagination = 5;
         int offsetPagination = 0;
         int currentPage = 1;
 
