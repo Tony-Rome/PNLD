@@ -1,13 +1,14 @@
 package com.react.pnld.dto;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class FileTableResumeDTO {
 
     private String loadedBy;
     private String name;
     private String type;
-    private OffsetDateTime loadedOnDateTime;
+    private String loadedOnDateTime;
     private int totalRecords;
     private int duplicateRecords;
 
@@ -29,11 +30,13 @@ public class FileTableResumeDTO {
 
     public String getType(){return type;}
 
-    public void setLoadedOnDateTime(OffsetDateTime loadedOnDateTime){
+    public void setLoadedOnDateTime(LocalDateTime LoadedOnDateTimeRaw){
+
+        String loadedOnDateTime = LoadedOnDateTimeRaw.format(DateTimeFormatter.ofPattern("yyy-MM-dd HH:mm:ss"));
         this.loadedOnDateTime = loadedOnDateTime;
     }
 
-    public OffsetDateTime getLoadedOnDateTime(){return loadedOnDateTime;}
+    public String getLoadedOnDateTime(){return loadedOnDateTime;}
 
     public void setTotalRecords(int totalRecords){
         this.totalRecords = totalRecords;
