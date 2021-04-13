@@ -42,7 +42,7 @@
         <#else>
 
             <#assign pages = calculateNumberPages(filesCount)>
-            #{pages}
+
             <#assign maxRange = 3>
 
             <#if ((currentPage - maxRange) <= 1)>
@@ -69,6 +69,10 @@
                     <a href=${pagePath}/${previousPage}>&laquo; Anterior</a>
                 </#if>
 
+                <#if (minInterval > 1) >
+                    <a href=${pagePath}/${minInterval-1}>..</a>
+                </#if>
+
                 <#list interval as page>
                     <#if page == currentPage>
                         <a class="currentPage" href=${pagePath}/${page} id=${page}>${page}</a>
@@ -76,6 +80,10 @@
                         <a href=${pagePath}/${page} id=${page}>${page}</a>
                     </#if>
                 </#list>
+
+                <#if (maxInterval < pages) >
+                    <a href=${pagePath}/${maxInterval+1}>..</a>
+                </#if>
 
                 <#assign nextPage = currentPage + 1>
                 <#if (nextPage > pages) >
