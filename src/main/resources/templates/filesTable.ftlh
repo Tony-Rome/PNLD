@@ -1,3 +1,11 @@
+<#function numberPages x>
+    <#if (x%10) != 0>
+        <#return ((x/10) + 1)?floor>
+    <#else>
+        <#return (x/10)>
+    </#if>
+ </#function>
+
 <#macro filesTable>
     <div class="filesTableContainer">
         <div class="filesTableHeader">
@@ -14,34 +22,57 @@
                 <th>Registros totales</th>
                 <th>Registros duplicados</th>
               </tr>
-              <tr>
-                <td>Admin1</td>
-                <td>Teachers_Opt_in_data</td>
-                <td>Code.org</td>
-                <td>18/01/2021</td>
-                <td>900</td>
-                <td>100</td>
-              </tr>
-              <tr>
-                <td>Admin2</td>
-                <td>PC_1</td>
-                <td>test PC</td>
-                <td>20/02/2021</td>
-                <td>30</td>
-                <td>2</td>
-              </tr>
+              <#list files as file>
+                  <tr>
+                    <td>${file.loadedBy}</td>
+                    <td>${file.name}</td>
+                    <td>${file.type}</td>
+                    <td>${file.loadedOnDateTime}</td>
+                    <td>${file.totalRecords}</td>
+                    <td>${file.duplicateRecords}</td>
+                  </tr>
+              </#list>
             </table>
         </div>
     </div>
 
-        <div class="pagination">
-          <a href="#">&laquo; Anterior</a>
-          <a href="#">1</a>
-          <a class="active" href="#">2</a>
-          <a href="#">3</a>
-          <a href="#">4</a>
-          <a href="#">5</a>
-          <a href="#">6</a>
-          <a href="#">Siguiente &raquo;</a>
-        </div>
+        <#if filesCount <= 10>
+            <br>
+            <br>
+        <#else>
+
+            <#assign pages = numberPages(filesCount)>
+
+            <#assign interval = 1..pages>
+
+            <div class="pagination">
+
+                <#assign pagePath = "/scheduleFileLoadPost/page">
+
+                <#assign previousPage = currentPage - 1>
+                <#if (previousPage < 1) >
+                    <a>&laquo; Anterior</a>
+                <#else>
+                    <a href=${pagePath}/${previousPage}>&laquo; Anterior</a>
+                </#if>
+
+
+                <#list interval as page>
+                    <#if page == currentPage>
+                        <a class="currentPage" href=${pagePath}/${page} id=${page}>${page}</a>
+                    <#else>
+                        <a href=${pagePath}/${page} id=${page}>${page}</a>
+                    </#if>
+                </#list>
+
+                <#assign nextPage = currentPage + 1>
+                <#if (nextPage > pages) >
+                    <a>Siguiente &raquo;</a>
+                <#else>
+                    <a href=${pagePath}/${nextPage}>Siguiente &raquo;</a>
+                </#if>
+
+
+            </div>
+        </#if>
 </#macro>

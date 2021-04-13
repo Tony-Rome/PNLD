@@ -11,11 +11,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 public class FileController {
+
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
+    private Integer filesCount;
+    private int pageNumber = 0;
+    private int currentPage = 1;
 
     @Autowired
     private FileService fileService;
@@ -25,8 +33,26 @@ public class FileController {
         return "index";
     }
 
-    @GetMapping(value = "/scheduleFileLoadPost")
-    public String scheduleFileLoadGet(Model model) { return "loadFiles"; }
+    @GetMapping(value = {"/scheduleFileLoadPost","/scheduleFileLoadPost/page/{page}"})
+    public ModelAndView scheduleFileLoadGet(@PathVariable(required = false, value = "page") Integer page) {
+
+        if(filesCount == null){
+            filesCount = fileService.getFilesCount();
+        }
+
+        if(page != null){
+            pageNumber = (page.intValue() - 1) * 10;
+            currentPage = page.intValue();
+        }
+
+        List<?> filesUploadedList = fileService.getFilesUploaded(pageNumber);
+        ModelAndView mav = new ModelAndView("loadFiles");
+        mav.addObject("files", filesUploadedList);
+        mav.addObject("filesCount", filesCount.intValue());
+        mav.addObject("currentPage", currentPage);
+
+        return mav;
+    }
 
     @PostMapping(value = "/scheduleFileLoadPost")
     public ResponseEntity<String> scheduleFileLoadPost(ScheduleFileLoadDTO scheduleFileLoadDTO, Model model) {

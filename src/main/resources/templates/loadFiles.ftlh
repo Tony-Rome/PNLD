@@ -7,6 +7,7 @@
     <head>
         <title>Archivos</title>
         <meta charset="UTF-8">
+        <base href="/">
         <link href="css/loadFiles.css" rel="stylesheet"/>
         <link href="css/popup.css" rel="stylesheet"/>
         <link href="css/responsive.css" rel="stylesheet"/>

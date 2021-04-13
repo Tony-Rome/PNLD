@@ -1,5 +1,6 @@
 package com.react.pnld.services;
 
+import com.react.pnld.dto.FileTableResumeDTO;
 import com.react.pnld.dto.FileTypes;
 import com.react.pnld.model.LoadedFile;
 import com.react.pnld.controller.response.ScheduleFileLoadResponse;
@@ -25,6 +26,7 @@ import java.nio.file.Path;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -178,4 +180,7 @@ public class FileService {
         }
     }
 
+    public List<FileTableResumeDTO> getFilesUploaded(int fileNumber){ return fileRepository.getFilesUploaded(fileNumber); }
+
+    public int getFilesCount(){return fileRepository.getFilesCount();}
 }
