@@ -2,22 +2,21 @@ package com.react.pnld;
 
 import com.react.pnld.dto.ScheduleFileLoadDTO;
 import com.react.pnld.services.FileUtilService;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.web.multipart.MultipartFile;
 import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 @SpringBootTest
-public class FileUtilServiceTest {
+public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
 
     @Autowired
     private FileUtilService fileUtilService;
@@ -30,7 +29,7 @@ public class FileUtilServiceTest {
 
     @Test
     void contextLoads() {
-        assertThat(fileUtilService).isNotNull();
+        Assert.assertNotNull(fileUtilService);
     }
 
     @Test
