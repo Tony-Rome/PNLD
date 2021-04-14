@@ -33,8 +33,6 @@ public class FileService {
 
     private static final Logger logger = LoggerFactory.getLogger(FileService.class);
 
-    private Integer filesCount;
-
     @Value("${copy.path.files}")
     private String FILE_PATH;
 
@@ -180,18 +178,9 @@ public class FileService {
             this.fileRepository.updateFileLoaded(loadedFile);
             logger.info("executeFileLoadScheduled. updated loadedFile={}", loadedFile);
         }
-
-        filesCount = fileRepository.getFilesCountTotal();
     }
 
-    public int getFilesCountTotal() {
-        if(this.filesCount == null){
-            this.filesCount = fileRepository.getFilesCountTotal();
-        }
-        return this.filesCount.intValue();
-    }
-
-    public List<FileTableResumeDTO> getFilesUploaded(int limitPagination, int offsetPagination){
-        return fileRepository.getFilesUploaded(limitPagination, offsetPagination);
+    public List<FileTableResumeDTO> getUploadedFiles(){
+        return fileRepository.getUploadedFiles();
     }
 }

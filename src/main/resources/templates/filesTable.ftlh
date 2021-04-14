@@ -1,10 +1,9 @@
-<#function calculateNumberPages numberPages>
-    <#if (numberPages % limitPagination) != 0>
-        <#return ((numberPages / limitPagination) + 1)?floor>
-    <#else>
-        <#return (numberPages / limitPagination)>
-    </#if>
- </#function>
+<#if (((currentPage * 10) - 1) > (filesList?size - 1) ) >
+    <#assign maxID = filesList?size -1 />
+<#else>
+    <#assign maxID = (currentPage * 10) - 1 />
+</#if>
+<#assign minID = (currentPage - 1) * 10 />
 
 <#macro filesTable>
     <div class="filesTableContainer">
@@ -23,78 +22,20 @@
                 <th>Registros totales</th>
                 <th>Registros duplicados</th>
               </tr>
-              <#list files as file>
-                  <tr>
-                    <td>${file.loadedBy}</td>
-                    <td>${file.name}</td>
-                    <td>${file.type}</td>
-                    <td>${file.loadedOnDateTime}</td>
-                    <td>${file.state}</td>
-                    <td>${file.totalRecords}</td>
-                    <td>${file.duplicateRecords}</td>
-                  </tr>
+              <#list minID..maxID as i>
+                      <tr>
+                        <td>${filesList[i].loadedBy}</td>
+                        <td>${filesList[i].name}</td>
+                        <td>${filesList[i].type}</td>
+                        <td>${filesList[i].loadedOnDateTime}</td>
+                        <td>${filesList[i].state}</td>
+                        <td>${filesList[i].totalRecords}</td>
+                        <td>${filesList[i].duplicateRecords}</td>
+                      </tr>
               </#list>
             </table>
         </div>
     </div>
 
-        <#if filesCount <= limitPagination>
-            <br>
-            <br>
-        <#else>
 
-            <#assign pages = calculateNumberPages(filesCount)>
-
-            <#assign maxRange = 3>
-
-            <#if ((currentPage - maxRange) <= 1)>
-                <#assign minInterval = 1>
-            <#else>
-                <#assign minInterval = currentPage - 3>
-            </#if>
-            <#if ((currentPage + maxRange) >= pages) >
-                <#assign maxInterval = pages>
-            <#else>
-                <#assign maxInterval = currentPage + maxRange>
-            </#if>
-
-            <#assign interval = minInterval..maxInterval>
-
-            <div class="pagination">
-
-                <#assign pagePath = "/scheduleFileLoadPost/page">
-
-                <#assign previousPage = currentPage - 1>
-                <#if (previousPage < 1) >
-                    <a>&laquo; Anterior</a>
-                <#else>
-                    <a href=${pagePath}/${previousPage}>&laquo; Anterior</a>
-                </#if>
-
-                <#if (minInterval > 1) >
-                    <a href=${pagePath}/${minInterval-1}>..</a>
-                </#if>
-
-                <#list interval as page>
-                    <#if page == currentPage>
-                        <a class="currentPage" href=${pagePath}/${page} id=${page}>${page}</a>
-                    <#else>
-                        <a href=${pagePath}/${page} id=${page}>${page}</a>
-                    </#if>
-                </#list>
-
-                <#if (maxInterval < pages) >
-                    <a href=${pagePath}/${maxInterval+1}>..</a>
-                </#if>
-
-                <#assign nextPage = currentPage + 1>
-                <#if (nextPage > pages) >
-                    <a>Siguiente &raquo;</a>
-                <#else>
-                    <a href=${pagePath}/${nextPage}>Siguiente &raquo;</a>
-                </#if>
-
-
-            </div>
-        </#if>
 </#macro>

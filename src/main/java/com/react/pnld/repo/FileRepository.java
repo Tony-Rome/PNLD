@@ -31,11 +31,9 @@ public class FileRepository {
         return this.loadedFileMapper.updateLoadedFile(loadedFile);
     }
 
-    public int getFilesCountTotal() { return loadedFileMapper.getFileCountTotal();}
+    public List<FileTableResumeDTO> getUploadedFiles() {
 
-    public List<FileTableResumeDTO> getFilesUploaded(int limitPagination, int offsetPagination) {
-
-        List<FileTableResumeDTO> filesUploaded = loadedFileMapper.getFilesUploaded(limitPagination, offsetPagination);
+        List<FileTableResumeDTO> filesUploaded = loadedFileMapper.getUploadedFiles();
         logger.info("getFilesUploaded. filesUploaded.size={}", filesUploaded.size());
 
         return filesUploaded;

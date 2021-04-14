@@ -1,5 +1,6 @@
 package com.react.pnld.controller;
 
+import com.react.pnld.dto.FileTableResumeDTO;
 import com.react.pnld.dto.ScheduleFileLoadDTO;
 import com.react.pnld.controller.response.ScheduleFileLoadResponse;
 import com.react.pnld.services.FileService;
@@ -28,30 +29,23 @@ public class FileController {
 
     @GetMapping(value = "/")
     public String index(Model model) {
-        return "index";
+        return "filesTable";
     }
 
     @GetMapping(value = {"/scheduleFileLoadPost","/scheduleFileLoadPost/page/{page}"})
     public ModelAndView scheduleFileLoadGet(@PathVariable(required = false, value = "page") Integer page) {
 
-        int filesCountTotal = fileService.getFilesCountTotal();
+        List<FileTableResumeDTO> fileTableResumeDTOList = fileService.getUploadedFiles();
 
-        int backspaceNumber = 1;
-        int limitPagination = 5;
-        int offsetPagination = 0;
         int currentPage = 1;
 
         if(page != null){
-            offsetPagination = (page.intValue() - backspaceNumber) * limitPagination;
             currentPage = page.intValue();
         }
 
-        List<?> filesUploadedList = fileService.getFilesUploaded(limitPagination, offsetPagination);
         ModelAndView mav = new ModelAndView("loadFiles");
-        mav.addObject("files", filesUploadedList);
-        mav.addObject("filesCount", filesCountTotal);
+        mav.addObject("filesList", fileTableResumeDTOList);
         mav.addObject("currentPage", currentPage);
-        mav.addObject("limitPagination", limitPagination);
 
         return mav;
     }

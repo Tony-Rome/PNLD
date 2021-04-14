@@ -199,3 +199,7 @@ const REMOVE_MSG_ERROR = 4;
                      popupBodyMsgError.classList.add("displayNone");
             }
         };
+
+      reloadTable = () => {
+        window.location.href+"";
+      };

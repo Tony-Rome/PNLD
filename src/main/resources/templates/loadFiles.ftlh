@@ -1,4 +1,5 @@
 <#import "filesTable.ftlh" as ft/>
+<#import "pagination.ftlh" as pg/>
 <#import "popup.ftlh" as pu/>
 <#import "fileForm.ftlh" as ff/>
 
@@ -23,10 +24,11 @@
             <a class="logout" href="/logout">Cerrar sesión</a>
         </div>
 
+        <#assign numberFiles = 10 />
+
         <@ft.filesTable/>
-
+        <@pg.pagination numberFiles = numberFiles/>
         <@ff.fileForm/>
-
         <@pu.popup/>
 
         <script src="js/loadFiles.js"></script>
