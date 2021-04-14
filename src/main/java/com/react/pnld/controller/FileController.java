@@ -43,7 +43,7 @@ public class FileController {
             currentPage = page.intValue();
         }
 
-        ModelAndView mav = new ModelAndView("loadFiles");
+        ModelAndView mav = new ModelAndView("uploadFile");
         mav.addObject("filesList", fileTableResumeDTOList);
         mav.addObject("currentPage", currentPage);
 
