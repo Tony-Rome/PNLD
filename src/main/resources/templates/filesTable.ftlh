@@ -1,11 +1,8 @@
-<#if (((currentPage * 10) - 1) > (filesList?size - 1) ) >
-    <#assign maxID = filesList?size -1 />
-<#else>
-    <#assign maxID = (currentPage * 10) - 1 />
-</#if>
-<#assign minID = (currentPage - 1) * 10 />
+<#macro filesTable filesNumberToShow>
 
-<#macro filesTable>
+    <#assign maxID = [((currentPage * filesNumberToShow) - 1), (filesList?size - 1)]?min />
+    <#assign minID = (currentPage - 1) * filesNumberToShow />
+
     <div class="filesTableContainer">
         <div class="filesTableHeader">
             <div>Archivos cargados</div>

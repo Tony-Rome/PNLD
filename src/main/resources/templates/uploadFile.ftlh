@@ -19,12 +19,11 @@
     </head>
     <body>
 
+        <#assign filesNumberToShow = 2 />
+
         <@hf.header />
-
-        <#assign numberFiles = 10 />
-
-        <@ft.filesTable/>
-        <@pg.pagination numberFiles = numberFiles/>
+        <@ft.filesTable filesNumberToShow = filesNumberToShow/>
+        <@pg.pagination filesNumberToShow = filesNumberToShow/>
         <@ff.fileForm/>
         <@pu.popup/>
 
