@@ -33,7 +33,7 @@ public class TrainingFileDTO {
     private String finishIn; //9 de octubre de 2019  14:24
 
     @Parsed(index = 9)
-    private String duration;
+    private String duration; //6 minutos 24 segundos
 
     @Parsed(index = 10)
     @Format(formats = {"#0,00"}, options = "decimalSeparator=,")
