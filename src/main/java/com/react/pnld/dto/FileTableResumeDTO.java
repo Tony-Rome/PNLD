@@ -31,9 +31,9 @@ public class FileTableResumeDTO {
 
     public String getType(){return type;}
 
-    public void setLoadedOnDateTime(LocalDateTime LoadedOnDateTimeRaw){
+    public void setLoadedOnDateTime(LocalDateTime loadedOnDateTimeRaw){
 
-        String loadedOnDateTime = LoadedOnDateTimeRaw.format(DateTimeFormatter.ofPattern("yyy-MM-dd HH:mm:ss"));
+        String loadedOnDateTime = loadedOnDateTimeRaw.format(DateTimeFormatter.ofPattern("yyy-MM-dd HH:mm:ss"));
         this.loadedOnDateTime = loadedOnDateTime;
     }
 
