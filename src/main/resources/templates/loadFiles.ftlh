@@ -2,6 +2,7 @@
 <#import "pagination.ftlh" as pg/>
 <#import "popup.ftlh" as pu/>
 <#import "fileForm.ftlh" as ff/>
+<#import "fileUploadHeader.ftlh" as hf />
 
 <!DOCTYPE html>
 <html>
@@ -18,11 +19,7 @@
     </head>
     <body>
 
-        <div class="header">
-            <img src="img/logo_mineduc.jpg" class="logoMineduc" alt="logo_mineduc">
-            <div class="title">Archivos</div>
-            <a class="logout" href="/logout">Cerrar sesión</a>
-        </div>
+        <@hf.header />
 
         <#assign numberFiles = 10 />
 
