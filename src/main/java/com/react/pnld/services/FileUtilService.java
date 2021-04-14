@@ -62,34 +62,34 @@ public class FileUtilService {
                 return csvHeadersProperties.getStudentLevel();
 
             case SIGNIN_PER_COURSE:
-                return csvHeadersProperties.getSigninPerCourse();
+                return csvHeadersProperties.getSignInPerCourse();
 
             case SIGN_INS:
                 return csvHeadersProperties.getSignIns();
 
             case DIAGNOSIS:
-                return csvHeadersProperties.getDiagnostico();
+                return csvHeadersProperties.getDiagnosis();
 
             case PRE_TRAINING:
-                return csvHeadersProperties.getPreCapacita();
+                return csvHeadersProperties.getPreTraining();
 
             case POST_TRAINING:
-                return csvHeadersProperties.getPostCapacita();
+                return csvHeadersProperties.getPostTraining();
 
             case TEST_CT_1:
-                return csvHeadersProperties.getTestPc1();
+                return csvHeadersProperties.getTestCT1();
 
             case TEST_CT_2:
-                return csvHeadersProperties.getTestPc2();
+                return csvHeadersProperties.getTestCT2();
 
             case TEST_CT_3:
-                return csvHeadersProperties.getTestPc3();
+                return csvHeadersProperties.getTestCT3();
 
             case SALIDA:
                 return csvHeadersProperties.getSalida();
 
             case SATISFACTION:
-                return csvHeadersProperties.getSatis();
+                return csvHeadersProperties.getSatisfaction();
 
             default:
                 return new String[1];

@@ -8,16 +8,16 @@ public class CSVHeadersProperties {
     private String [] teacherRoster;
     private String [] teacherOptIn;
     private String [] studentLevel;
-    private String [] signinPerCourse;
+    private String [] signInPerCourse;
     private String [] signIns;
-    private String [] diagnostico;
-    private String [] preCapacita;
-    private String [] postCapacita;
-    private String [] testPc1;
-    private String [] testPc2;
-    private String [] testPc3;
-    private String [] salida;
-    private String [] satis;
+    private String [] diagnosis;
+    private String [] preTraining;
+    private String [] postTraining;
+    private String [] testCT1;
+    private String [] testCT2;
+    private String [] testCT3;
+    private String [] salida;//TODO remove
+    private String [] satisfaction;
 
     public String[] getTeacherRoster() {
         return teacherRoster;
@@ -43,12 +43,12 @@ public class CSVHeadersProperties {
         this.studentLevel = studentLevel;
     }
 
-    public String[] getSigninPerCourse() {
-        return signinPerCourse;
+    public String[] getSignInPerCourse() {
+        return signInPerCourse;
     }
 
-    public void setSigninPerCourse(String[] signinPerCourse) {
-        this.signinPerCourse = signinPerCourse;
+    public void setSignInPerCourse(String[] signInPerCourse) {
+        this.signInPerCourse = signInPerCourse;
     }
 
     public String[] getSignIns() {
@@ -59,52 +59,52 @@ public class CSVHeadersProperties {
         this.signIns = signIns;
     }
 
-    public String[] getDiagnostico() {
-        return diagnostico;
+    public String[] getDiagnosis() {
+        return diagnosis;
     }
 
-    public void setDiagnostico(String[] diagnostico) {
-        this.diagnostico = diagnostico;
+    public void setDiagnosis(String[] diagnosis) {
+        this.diagnosis = diagnosis;
     }
 
-    public String[] getPreCapacita() {
-        return preCapacita;
+    public String[] getPreTraining() {
+        return preTraining;
     }
 
-    public void setPreCapacita(String[] preCapacita) {
-        this.preCapacita = preCapacita;
+    public void setPreTraining(String[] preTraining) {
+        this.preTraining = preTraining;
     }
 
-    public String[] getPostCapacita() {
-        return postCapacita;
+    public String[] getPostTraining() {
+        return postTraining;
     }
 
-    public void setPostCapacita(String[] postCapacita) {
-        this.postCapacita = postCapacita;
+    public void setPostTraining(String[] postTraining) {
+        this.postTraining = postTraining;
     }
 
-    public String[] getTestPc1() {
-        return testPc1;
+    public String[] getTestCT1() {
+        return testCT1;
     }
 
-    public void setTestPc1(String[] testPc1) {
-        this.testPc1 = testPc1;
+    public void setTestCT1(String[] testCT1) {
+        this.testCT1 = testCT1;
     }
 
-    public String[] getTestPc2() {
-        return testPc2;
+    public String[] getTestCT2() {
+        return testCT2;
     }
 
-    public void setTestPc2(String[] testPc2) {
-        this.testPc2 = testPc2;
+    public void setTestCT2(String[] testCT2) {
+        this.testCT2 = testCT2;
     }
 
-    public String[] getTestPc3() {
-        return testPc3;
+    public String[] getTestCT3() {
+        return testCT3;
     }
 
-    public void setTestPc3(String[] testPc3) {
-        this.testPc3 = testPc3;
+    public void setTestCT3(String[] testCT3) {
+        this.testCT3 = testCT3;
     }
 
     public String[] getSalida() {
@@ -115,11 +115,11 @@ public class CSVHeadersProperties {
         this.salida = salida;
     }
 
-    public String[] getSatis() {
-        return satis;
+    public String[] getSatisfaction() {
+        return satisfaction;
     }
 
-    public void setSatis(String[] satis) {
-        this.satis = satis;
+    public void setSatisfaction(String[] satisfaction) {
+        this.satisfaction = satisfaction;
     }
 }
