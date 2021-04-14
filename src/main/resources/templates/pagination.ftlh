@@ -1,16 +1,7 @@
-<#function calculateNumberPages filesNumber filesNumberToShow>
-    <#if (filesNumber % filesNumberToShow) != 0>
-        <#return ((filesNumber / filesNumberToShow) + 1)?floor>
-    <#else>
-        <#return (filesNumber / filesNumberToShow)>
-    </#if>
- </#function>
-
 <#macro pagination filesNumberToShow>
 
     <#assign filesNumber = filesList?size />
-    <#assign numberPages = calculateNumberPages(filesNumber, filesNumberToShow) />
-
+    <#assign numberPages = (filesNumber / filesNumberToShow)?ceiling />
 
     <#assign previousPage = [(currentPage - 1), 1]?max />
     <#assign nextPage = [(currentPage + 1),numberPages]?min />

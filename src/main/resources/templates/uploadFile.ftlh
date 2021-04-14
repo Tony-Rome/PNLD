@@ -19,7 +19,7 @@
     </head>
     <body>
 
-        <#assign filesNumberToShow = 2 />
+        <#assign filesNumberToShow = 5 />
 
         <@hf.header />
         <@ft.filesTable filesNumberToShow = filesNumberToShow/>
