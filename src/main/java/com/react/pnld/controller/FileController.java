@@ -28,7 +28,7 @@ public class FileController {
     private FileService fileService;
 
     @GetMapping(value = {"/scheduleFileLoadPost","/scheduleFileLoadPost/page/{page}"})
-    public ModelAndView scheduleFileLoadGet(@PathVariable(required = false, value = "page") Integer page) {
+    public String scheduleFileLoadGet(@PathVariable(required = false, value = "page") Integer page, Model model) {
 
         List<FileTableResumeDTO> fileTableResumeDTOList = fileService.getUploadedFiles();
 
@@ -37,12 +37,11 @@ public class FileController {
         if(page != null){
             currentPage = page.intValue();
         }
+       
+        model.addAttribute("filesList", fileTableResumeDTOList);
+        model.addAttribute("currentPage", currentPage);
 
-        ModelAndView mav = new ModelAndView("uploadFile");
-        mav.addObject("filesList", fileTableResumeDTOList);
-        mav.addObject("currentPage", currentPage);
-
-        return mav;
+        return "uploadFile";
     }
 
     @PostMapping(value = "/scheduleFileLoadPost")

@@ -21,6 +21,11 @@ div.filesTableContainer td {
   text-align: center;
 }
 
+.emptyTableMsg {
+    text-align: center;
+    margin-top: 80px;
+}
+
 .pagination {
     margin-top: 2%;
     margin-bottom: 2%;

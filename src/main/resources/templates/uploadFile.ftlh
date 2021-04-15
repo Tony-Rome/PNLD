@@ -23,7 +23,11 @@
 
         <@hf.header />
         <@ft.filesTable filesNumberToShow = filesNumberToShow/>
-        <@pg.pagination filesNumberToShow = filesNumberToShow/>
+
+        <#if (filesList?has_content) >
+            <@pg.pagination filesNumberToShow = filesNumberToShow/>
+        </#if>
+
         <@ff.fileForm/>
         <@pu.popup/>
 
