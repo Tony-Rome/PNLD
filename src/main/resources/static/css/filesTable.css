@@ -25,23 +25,3 @@ div.filesTableContainer td {
     text-align: center;
     margin-top: 80px;
 }
-
-.pagination {
-    margin-top: 2%;
-    margin-bottom: 2%;
-    text-align: center;
-}
-
-.currentPage {
-    font-weight: bold;
-    text-decoration: underline !important;
-    font-size: 17px !important;
-}
-
-.pagination a {
-  color: black;
-  padding: 8px 16px;
-  text-decoration: none;
-  font-size: 15px;
-  /*transition: background-color .3s;*/
-}

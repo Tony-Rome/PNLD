@@ -15,6 +15,7 @@
         <link href="css/responsive.css" rel="stylesheet"/>
         <link href="css/filesTable.css" rel="stylesheet"/>
         <link href="css/fileForm.css" rel="stylesheet"/>
+        <link href="css/pagination.css" rel="stylesheet"/>
 
     </head>
     <body>
