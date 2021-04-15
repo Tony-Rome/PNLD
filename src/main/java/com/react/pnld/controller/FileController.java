@@ -27,11 +27,6 @@ public class FileController {
     @Autowired
     private FileService fileService;
 
-    @GetMapping(value = "/")
-    public String index(Model model) {
-        return "filesTable";
-    }
-
     @GetMapping(value = {"/scheduleFileLoadPost","/scheduleFileLoadPost/page/{page}"})
     public ModelAndView scheduleFileLoadGet(@PathVariable(required = false, value = "page") Integer page) {
 
