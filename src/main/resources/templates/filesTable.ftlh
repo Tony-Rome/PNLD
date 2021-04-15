@@ -17,7 +17,7 @@
                 <th>Registros duplicados</th>
               </tr>
 
-              <#if (filesList?has_content) >
+              <#if filesList?has_content >
 
                   <#assign maxID = [((currentPage * filesNumberToShow) - 1), (filesList?size - 1)]?min />
                   <#assign minID = (currentPage - 1) * filesNumberToShow />
@@ -38,7 +38,7 @@
             </table>
         </div>
 
-        <h2 class="emptyTableMsg">No hay archivos subidos para mostrar actualmente</h2>
+        <#if !filesList?has_content ><h2 class="emptyTableMsg">No hay archivos subidos para mostrar actualmente</h2></#if>
     </div>
 
 
