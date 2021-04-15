@@ -24,7 +24,7 @@
                         <td>${filesList[i].loadedBy}</td>
                         <td>${filesList[i].name}</td>
                         <td>${filesList[i].type}</td>
-                        <td>${filesList[i].loadedOnDateTime}</td>
+                        <td>${filesList[i].uploadedDateTime}</td>
                         <td>${filesList[i].state}</td>
                         <td>${filesList[i].totalRecords}</td>
                         <td>${filesList[i].duplicateRecords}</td>

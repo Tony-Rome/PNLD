@@ -8,7 +8,7 @@ public class FileTableResumeDTO {
     private String loadedBy;
     private String name;
     private String type;
-    private String loadedOnDateTime;
+    private String uploadedDateTime;
     private String state;
     private int totalRecords;
     private int duplicateRecords;
@@ -31,13 +31,13 @@ public class FileTableResumeDTO {
 
     public String getType(){return type;}
 
-    public void setLoadedOnDateTime(LocalDateTime loadedOnDateTimeRaw){
+    public void setUploadedDateTime(LocalDateTime localDateTime){
 
-        String loadedOnDateTime = loadedOnDateTimeRaw.format(DateTimeFormatter.ofPattern("yyy-MM-dd HH:mm:ss"));
-        this.loadedOnDateTime = loadedOnDateTime;
+        String uploadedDateTime = localDateTime.format(DateTimeFormatter.ofPattern("yyy-MM-dd HH:mm:ss"));
+        this.uploadedDateTime = uploadedDateTime;
     }
 
-    public String getLoadedOnDateTime(){return loadedOnDateTime;}
+    public String getUploadedDateTime(){return uploadedDateTime;}
 
     public void setState(String state){ this.state = state; }
 
@@ -59,7 +59,7 @@ public class FileTableResumeDTO {
     public String toString() {
         return "TableFileDTO{" +
                 "loadedBy=" + loadedBy +
-                ", loadedOnDateTime=" + loadedOnDateTime +
+                ", uploadedDateTime=" + uploadedDateTime +
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 ", totalRecords=" + totalRecords +

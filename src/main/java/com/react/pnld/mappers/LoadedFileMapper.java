@@ -46,7 +46,7 @@ public interface LoadedFileMapper {
             @Result(property = "loadedBy", column = "nombre_usuario"),
             @Result(property = "name", column = "nombre"),
             @Result(property = "type", column = "tipo"),
-            @Result(property = "loadedOnDateTime", column = "fecha_carga"),
+            @Result(property = "uploadedDateTime", column = "fecha_carga"),
             @Result(property = "state", column = "descripcion"),
             @Result(property = "totalRecords", column = "registros_totales"),
             @Result(property = "duplicateRecords", column = "registros_duplicados")
