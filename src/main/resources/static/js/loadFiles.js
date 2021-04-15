@@ -25,6 +25,7 @@ const SHOW_MSG_ERROR = 2;
 const REMOVE_MSG_OK = 3;
 const REMOVE_MSG_ERROR = 4;
 
+const INIT_URL = "/scheduleFileLoadPost";
 
         let formDataValid = {
                     name: false,
@@ -93,7 +94,7 @@ const REMOVE_MSG_ERROR = 4;
             let formData = new FormData(form);
 
             var xmlhttp = new XMLHttpRequest();
-            var url = "/scheduleFileLoadPost";
+            var url = INIT_URL;
 
             xmlhttp.open("POST", url);
             xmlhttp.send(formData);
@@ -134,7 +135,7 @@ const REMOVE_MSG_ERROR = 4;
             popup.style.display = "none";
             switchPopup(REMOVE_MSG_OK);
             submitController();
-            location.reload(true);
+            window.location.replace(INIT_URL);
 
         });
 
