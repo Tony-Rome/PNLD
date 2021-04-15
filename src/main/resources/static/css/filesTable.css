@@ -1,3 +1,7 @@
+.filesTableContainer{
+    height: 320px;
+}
+
 .filesTable {
     margin: auto;
 }
@@ -14,6 +18,7 @@ div.filesTableContainer td {
   border-collapse: collapse;
   border: 1px solid black;
   padding: 10px;
+  text-align: center;
 }
 
 .pagination {
