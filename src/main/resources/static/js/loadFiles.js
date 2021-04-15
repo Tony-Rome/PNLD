@@ -134,6 +134,7 @@ const REMOVE_MSG_ERROR = 4;
             popup.style.display = "none";
             switchPopup(REMOVE_MSG_OK);
             submitController();
+            location.reload(true);
 
         });
 
@@ -199,7 +200,3 @@ const REMOVE_MSG_ERROR = 4;
                      popupBodyMsgError.classList.add("displayNone");
             }
         };
-
-      reloadTable = () => {
-        window.location.href+"";
-      };
