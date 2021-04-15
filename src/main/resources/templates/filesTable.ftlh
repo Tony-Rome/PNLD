@@ -1,4 +1,5 @@
-<#macro filesTable>
+<#macro filesTable filesNumberToShow>
+
     <div class="filesTableContainer">
         <div class="filesTableHeader">
             <div>Archivos cargados</div>
@@ -11,37 +12,34 @@
                 <th>Nombre archivo</th>
                 <th>Tipo</th>
                 <th>Fecha subida</th>
+                <th>Estado</th>
                 <th>Registros totales</th>
                 <th>Registros duplicados</th>
               </tr>
-              <tr>
-                <td>Admin1</td>
-                <td>Teachers_Opt_in_data</td>
-                <td>Code.org</td>
-                <td>18/01/2021</td>
-                <td>900</td>
-                <td>100</td>
-              </tr>
-              <tr>
-                <td>Admin2</td>
-                <td>PC_1</td>
-                <td>test PC</td>
-                <td>20/02/2021</td>
-                <td>30</td>
-                <td>2</td>
-              </tr>
+
+              <#if filesList?has_content >
+
+                  <#assign maxID = [((currentPage * filesNumberToShow) - 1), (filesList?size - 1)]?min />
+                  <#assign minID = (currentPage - 1) * filesNumberToShow />
+
+                  <#list minID..maxID as i>
+                          <tr>
+                            <td>${filesList[i].loadedBy}</td>
+                            <td>${filesList[i].name}</td>
+                            <td>${filesList[i].type}</td>
+                            <td>${filesList[i].uploadedDateTime}</td>
+                            <td>${filesList[i].state}</td>
+                            <td>${filesList[i].totalRecords}</td>
+                            <td>${filesList[i].duplicateRecords}</td>
+                          </tr>
+                  </#list>
+
+              </#if>
             </table>
         </div>
+
+        <#if !filesList?has_content ><h2 class="emptyTableMsg">No hay archivos subidos para mostrar actualmente</h2></#if>
     </div>
 
-        <div class="pagination">
-          <a href="#">&laquo; Anterior</a>
-          <a href="#">1</a>
-          <a class="active" href="#">2</a>
-          <a href="#">3</a>
-          <a href="#">4</a>
-          <a href="#">5</a>
-          <a href="#">6</a>
-          <a href="#">Siguiente &raquo;</a>
-        </div>
+
 </#macro>

@@ -5,11 +5,11 @@
                 Resumen archivo de carga
             </div>
             <div class="spinner displayNone" id="spinner"></div>
-            <div class="displayNone" id="popupBodyMsgOk">
+            <div class="displayNone popupDetail" id="popupBodyMsgOk">
                 <div class="popupMsg">La carga de archivo se ha planificado. <br/><br/>Se procesará a las 00:00 UTC.</div>
                 <input type="submit" id="btSubmitOk" value="Entendido">
             </div>
-            <div class="displayNone" id="popupBodyMsgError">
+            <div class="displayNone popupDetail" id="popupBodyMsgError">
                 <div class="popupMsg">Se ha producido un error al planificar carga del archivo.</div>
                 <br/>
                 Motivo: <span id="popupMsgResponse"></span>

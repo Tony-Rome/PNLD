@@ -1,5 +1,6 @@
 package com.react.pnld.controller;
 
+import com.react.pnld.dto.FileTableResumeDTO;
 import com.react.pnld.dto.ScheduleFileLoadDTO;
 import com.react.pnld.controller.response.ScheduleFileLoadResponse;
 import com.react.pnld.services.FileService;
@@ -11,22 +12,36 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Controller
 public class FileController {
+
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
+
 
     @Autowired
     private FileService fileService;
 
-    @GetMapping(value = "/")
-    public String index(Model model) {
-        return "index";
-    }
+    @GetMapping(value = {"/scheduleFileLoadPost","/scheduleFileLoadPost/page/{page}"})
+    public String scheduleFileLoadGet(@PathVariable(required = false, value = "page") Integer page, Model model) {
 
-    @GetMapping(value = "/scheduleFileLoadPost")
-    public String scheduleFileLoadGet(Model model) { return "loadFiles"; }
+        List<FileTableResumeDTO> fileTableResumeDTOList = fileService.getUploadedFiles();
+
+        int currentPage = 1;
+
+        if(page != null){
+            currentPage = page.intValue();
+        }
+       
+        model.addAttribute("filesList", fileTableResumeDTOList);
+        model.addAttribute("currentPage", currentPage);
+
+        return "uploadFile";
+    }
 
     @PostMapping(value = "/scheduleFileLoadPost")
     public ResponseEntity<String> scheduleFileLoadPost(ScheduleFileLoadDTO scheduleFileLoadDTO, Model model) {

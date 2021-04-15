@@ -1,5 +1,6 @@
 package com.react.pnld.mappers;
 
+import com.react.pnld.dto.FileTableResumeDTO;
 import com.react.pnld.model.LoadedFile;
 import org.apache.ibatis.annotations.*;
 
@@ -35,4 +36,21 @@ public interface LoadedFileMapper {
             "registros_totales = #{totalRecords}, registros_nuevos = #{newRecords}, " +
             "registros_duplicados = #{duplicateRecords} WHERE id = #{id}")
     int updateLoadedFile(LoadedFile loadedFile);
+
+    @Select({"SELECT ac.nombre, ac.tipo, ac.fecha_carga, ac.registros_totales, ac.registros_duplicados, " +
+            "ad.nombre_usuario, ea.descripcion " +
+            "FROM pnld.archivo_cargado ac JOIN pnld.admin ad ON ac.cargado_por_admin = ad.id " +
+            "JOIN pnld.estado_archivo ea ON ac.id_estado = ea.id " +
+            "ORDER BY fecha_carga DESC; "})
+    @Results({
+            @Result(property = "loadedBy", column = "nombre_usuario"),
+            @Result(property = "name", column = "nombre"),
+            @Result(property = "type", column = "tipo"),
+            @Result(property = "uploadedDateTime", column = "fecha_carga"),
+            @Result(property = "state", column = "descripcion"),
+            @Result(property = "totalRecords", column = "registros_totales"),
+            @Result(property = "duplicateRecords", column = "registros_duplicados")
+    })
+    List<FileTableResumeDTO> getUploadedFiles();
+
 }
