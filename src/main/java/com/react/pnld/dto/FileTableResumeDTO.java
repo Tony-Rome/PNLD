@@ -19,8 +19,9 @@ public class FileTableResumeDTO {
 
     public String getLoadedBy(){return loadedBy;}
 
-    public void setName(String name){
-        this.name = name;
+    public void setName(String rawName){
+        String newName = rawName.split("-")[5];
+        this.name = newName;
     }
 
     public String getName(){return name;}
