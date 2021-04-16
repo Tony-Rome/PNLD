@@ -1,8 +1,9 @@
 package com.react.pnld.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class LoadedFile {
+public class LoadedFile implements Serializable {
 
     private int id;
     private LocalDateTime loadedDate;

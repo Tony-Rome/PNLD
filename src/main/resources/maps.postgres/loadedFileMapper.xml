@@ -14,6 +14,35 @@
 			#{stateId},#{processDate}, #{totalRecords},#{newRecords},#{duplicateRecords});
 	</insert>
 
+	<resultMap id="loadedFilesByStateAndTimestamps" type="com.react.pnld.model.LoadedFile">
+		<result property="id" column="id" />
+		<result property="loadedDate" column="fecha_carga" />
+		<result property="name" column="nombre" />
+		<result property="storedIn" column="ubicado_en" />
+		<result property="type" column="tipo" />
+		<result property="loadedByAdmin" column="cargado_por_admin" />
+		<result property="stateId" column="id_estado" />
+		<result property="processDate" column="fecha_procesado" />
+		<result property="totalRecords" column="registros_totales" />
+		<result property="newRecords" column="registros_totales" />
+		<result property="duplicateRecords" column="registros_duplicados" />
+	</resultMap>
+
+	<select id="getLoadedFilesByStateAndTimestamps" resultMap="loadedFilesByStateAndTimestamps" useCache="true">
+		SELECT * FROM pnld.archivo_cargado
+		WHERE
+			id_estado = #{stateId} AND fecha_carga >= #{initTime} AND   #{endTime} > fecha_carga
+	</select>
+
+	<update id="updateLoadedFile">
+		UPDATE pnld.archivo_cargado
+		SET
+			id_estado = #{stateId}, fecha_procesado = #{processDate},
+			registros_totales = #{totalRecords}, registros_nuevos = #{newRecords},
+			registros_duplicados = #{duplicateRecords}
+		WHERE id = #{id};
+	</update>
+
 	<resultMap id="fileTableResumeDTO" type="com.react.pnld.dto.FileTableResumeDTO">
 		<result property="loadedBy" column="nombre_usuario"/>
 		<result property="name" column="nombre"/>
