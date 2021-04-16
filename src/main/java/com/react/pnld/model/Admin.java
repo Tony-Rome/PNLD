@@ -1,6 +1,8 @@
 package com.react.pnld.model;
 
-public class Admin {
+import java.io.Serializable;
+
+public class Admin implements Serializable {
     private Long idAdmin;
     private String username;
     private String email;
