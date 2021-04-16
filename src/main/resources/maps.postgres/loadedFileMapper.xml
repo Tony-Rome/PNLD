@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.react.pnld.mappers.LoadedFileMapper">
+	<cache/>
+	<insert id="insertProcessFile" parameterType="com.react.pnld.model.LoadedFile">
+		INSERT INTO pnld.archivo_cargado
+			(fecha_carga, nombre, ubicado_en, tipo, cargado_por_admin, id_estado, fecha_procesado,
+			 registros_totales, registros_nuevos, registros_duplicados)
+		VALUES
+			(#{loadedDate},#{name}, #{storedIn}, #{type},
+				(SELECT id FROM pnld.admin WHERE nombre_usuario = #{loadedByAdmin}),
+			#{stateId},#{processDate}, #{totalRecords},#{newRecords},#{duplicateRecords});
+	</insert>
+
+	<resultMap id="fileTableResumeDTO" type="com.react.pnld.dto.FileTableResumeDTO">
+		<result property="loadedBy" column="nombre_usuario"/>
+		<result property="name" column="nombre"/>
+		<result property="type" column="tipo"/>
+		<result property="uploadedDateTime" column="fecha_carga"/>
+		<result property="state" column="descripcion"/>
+		<result property="totalRecords" column="registros_totales"/>
+		<result property="duplicateRecords" column="registros_duplicados"/>
+	</resultMap>
+
+	<select id="getUploadedFiles" useCache="true" resultMap="fileTableResumeDTO">
+		SELECT
+			ac.nombre, ac.tipo, ac.fecha_carga, ac.registros_totales,
+			ac.registros_duplicados, ad.nombre_usuario, ea.descripcion
+		FROM
+			pnld.archivo_cargado ac
+			JOIN pnld.admin ad ON ac.cargado_por_admin = ad.id
+			JOIN pnld.estado_archivo ea ON ac.id_estado = ea.id
+		ORDER BY fecha_carga DESC;
+	</select>
+</mapper>
+

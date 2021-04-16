@@ -1,9 +1,10 @@
 package com.react.pnld.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class FileTableResumeDTO {
+public class FileTableResumeDTO implements Serializable {
 
     private String loadedBy;
     private String name;

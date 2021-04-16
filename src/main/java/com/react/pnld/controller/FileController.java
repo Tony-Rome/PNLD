@@ -3,7 +3,10 @@ package com.react.pnld.controller;
 import com.react.pnld.dto.FileTableResumeDTO;
 import com.react.pnld.dto.ScheduleFileLoadDTO;
 import com.react.pnld.controller.response.ScheduleFileLoadResponse;
+import com.react.pnld.mappers.LoadedFileMapper;
 import com.react.pnld.services.FileService;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +29,22 @@ public class FileController {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private SqlSessionFactory sqlSessionFactory;
+
     @GetMapping(value = {"/scheduleFileLoadPost","/scheduleFileLoadPost/page/{page}"})
     public String scheduleFileLoadGet(@PathVariable(required = false, value = "page") Integer page, Model model) {
 
         List<FileTableResumeDTO> fileTableResumeDTOList = fileService.getUploadedFiles();
+        SqlSession session = sqlSessionFactory.openSession();
+        LoadedFileMapper loadedFileMapper = session.getMapper(LoadedFileMapper.class);
+        System.out.println(loadedFileMapper.getUploadedFiles().size());
+        System.out.println(loadedFileMapper.getUploadedFiles().size());
+        System.out.println(loadedFileMapper.getUploadedFiles().size());
+        System.out.println(" ============================= ");
+        System.out.println(fileService.getUploadedFiles().size());
+        System.out.println(fileService.getUploadedFiles().size());
+        System.out.println(fileService.getUploadedFiles().size());
 
         int currentPage = 1;
 
