@@ -14,6 +14,7 @@ import org.testng.annotations.Test;
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -64,14 +65,18 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
 
 
     @Test
-    public void test(){
+    public void moodleTimestampFormat_parser_to_DateTime(){
+        //TODO move logic getReader from parseRowsToBeans
+        //TODO Parsear solo un objeto y no solo una lista
         List<TrainingFileDTO> dummyList = this.getListTrainingBeans();
-
-        Assert.assertTrue(true);
+        //TODO test minutes number and seconds
+        LocalTime duration = dummyList.get(0).getDuration();
+        Assert.assertEquals(duration.getMinute(), 6);
+        Assert.assertEquals(duration.getSecond(), 24);
+        //Assert.assertTrue(true);
     }
 
-
-    @Test
+    //@Test
     public void testFormmaterTime(){
         String timeString = "6 minutos 24 segundos";
 

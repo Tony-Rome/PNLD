@@ -1,5 +1,7 @@
 package com.react.pnld.model;
 
+import java.time.LocalTime;
+
 public class Test {
 
     private int id;
@@ -9,15 +11,15 @@ public class Test {
     private String state;
     private String initDate;
     private String endDate;
-    private String duration;
+    private LocalTime duration;
     private float score;
 
     public Test(){
         super();
     }
 
-    public Test(int id, int teacherId, int loadedFileId, String type, String state, String initDate, String endDate, String duration,
-                float score) {
+    public Test(int id, int teacherId, int loadedFileId, String type, String state, String initDate, String endDate,
+                LocalTime duration, float score) {
         super();
         this.id = id;
         this.teacherId = teacherId;
@@ -86,11 +88,11 @@ public class Test {
         this.endDate = endDate;
     }
 
-    public String getDuration() {
+    public LocalTime getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(LocalTime duration) {
         this.duration = duration;
     }
 

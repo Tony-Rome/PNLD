@@ -3,7 +3,10 @@ package com.react.pnld.dto;
 import com.univocity.parsers.annotations.Format;
 import com.univocity.parsers.annotations.Parsed;
 import com.univocity.parsers.annotations.Replace;
-import com.univocity.parsers.annotations.Trim;
+
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 public class TrainingFileDTO {
 
@@ -34,10 +37,7 @@ public class TrainingFileDTO {
     @Parsed(index = 8)
     private String finishIn; //9 de octubre de 2019  14:24
 
-    @Parsed(index = 9)
-    @Trim
-    @Replace(expression = "minutos", replacement = ":")
-    private String duration; //6 minutos 24 segundos
+    private LocalTime duration;
 
     @Parsed(index = 10)
     @Format(formats = {"#0,00"}, options = "decimalSeparator=,")
@@ -78,7 +78,7 @@ public class TrainingFileDTO {
     }
 
     public TrainingFileDTO(String lastNames, String name, String rut, String institution, String department,
-                           String email, String testState, String startIn, String finishIn, String duration, float score,
+                           String email, String testState, String startIn, String finishIn, LocalTime duration, float score,
                            String answerOne, String answerTwo, String answerThree, String answerFour, String answerFive,
                            String answerSix, String answerSeven, String answerEight, String answerNine, String answerTen) {
         super();
@@ -177,12 +177,16 @@ public class TrainingFileDTO {
         this.finishIn = finishIn;
     }
 
-    public String getDuration() {
+    public LocalTime getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
+    @Parsed(index = 9)
+    @Replace(expression = "[^0-9]", replacement = "")//36 minutos 24 segundos
+    @Format(formats = {"mmss"}, options = "locale=en;lenient=false")
+    public void setDuration(Date duration) {
+        LocalTime localTimeDuration =  duration.toInstant().atZone(ZoneId.of("UTC")).toLocalTime();
+        this.duration = localTimeDuration.withHour(0);
     }
 
     public float getScore() {
