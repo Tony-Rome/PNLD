@@ -55,6 +55,7 @@ public class LoaderMoodleFile{
             logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherSelected.get());
 
             Optional<Test> teacherTest = testRepository.getTeacherTest(teacherSelected.get().getId(), testType);
+
             if(!teacherTest.isPresent()){
 
                 Test test = new Test(this.testRepository.getNextTestId(), teacherSelected.get().getId(), loadedFileId,
