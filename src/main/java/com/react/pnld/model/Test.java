@@ -1,6 +1,8 @@
 package com.react.pnld.model;
 
-public class Test {
+import java.io.Serializable;
+
+public class Test implements Serializable {
 
     private int id;
     private int teacherId;

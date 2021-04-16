@@ -28,7 +28,7 @@
 		<result property="duplicateRecords" column="registros_duplicados" />
 	</resultMap>
 
-	<select id="getLoadedFilesByStateAndTimestamps" resultMap="loadedFilesByStateAndTimestamps" useCache="true">
+	<select id="getLoadedFilesByStateAndTimestamps" resultMap="loadedFilesByStateAndTimestamps">
 		SELECT * FROM pnld.archivo_cargado
 		WHERE
 			id_estado = #{stateId} AND fecha_carga >= #{initTime} AND   #{endTime} > fecha_carga
