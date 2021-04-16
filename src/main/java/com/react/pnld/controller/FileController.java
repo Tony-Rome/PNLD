@@ -25,26 +25,13 @@ public class FileController {
 
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
-
     @Autowired
     private FileService fileService;
-
-    @Autowired
-    private SqlSessionFactory sqlSessionFactory;
 
     @GetMapping(value = {"/scheduleFileLoadPost","/scheduleFileLoadPost/page/{page}"})
     public String scheduleFileLoadGet(@PathVariable(required = false, value = "page") Integer page, Model model) {
 
         List<FileTableResumeDTO> fileTableResumeDTOList = fileService.getUploadedFiles();
-        SqlSession session = sqlSessionFactory.openSession();
-        LoadedFileMapper loadedFileMapper = session.getMapper(LoadedFileMapper.class);
-        System.out.println(loadedFileMapper.getUploadedFiles().size());
-        System.out.println(loadedFileMapper.getUploadedFiles().size());
-        System.out.println(loadedFileMapper.getUploadedFiles().size());
-        System.out.println(" ============================= ");
-        System.out.println(fileService.getUploadedFiles().size());
-        System.out.println(fileService.getUploadedFiles().size());
-        System.out.println(fileService.getUploadedFiles().size());
 
         int currentPage = 1;
 

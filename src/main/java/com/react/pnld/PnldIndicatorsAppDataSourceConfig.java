@@ -26,7 +26,7 @@ public class PnldIndicatorsAppDataSourceConfig {
         return new DataSourceTransactionManager(this.dataSource);
     }
 
-    @Bean()
+    @Bean
     @Primary
     public SqlSessionFactory sqlSessionFactoryPNLD() throws Exception {
         SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
@@ -35,15 +35,4 @@ public class PnldIndicatorsAppDataSourceConfig {
         sessionFactoryBean.setMapperLocations(resources);
         return sessionFactoryBean.getObject();
     }
-
-   /* @Bean(name = "estadoArchivoMapperFactoryBean")
-    public MapperFactoryBean<EstadoArchivoMapper> estadoArchivoMapperFactoryBean() throws Exception {
-        MapperFactoryBean<EstadoArchivoMapper> mapperFactoryBean = new MapperFactoryBean<EstadoArchivoMapper>();
-        mapperFactoryBean.setMapperInterface(EstadoArchivoMapper.class);
-        mapperFactoryBean.setSqlSessionFactory(sqlSessionFactoryPNLD());
-        return mapperFactoryBean;
-    }*/
-
-
-
 }

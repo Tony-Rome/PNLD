@@ -3,6 +3,8 @@ package com.react.pnld.repo;
 import com.react.pnld.dto.FileTableResumeDTO;
 import com.react.pnld.mappers.LoadedFileMapper;
 import com.react.pnld.model.LoadedFile;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,21 +19,37 @@ public class FileRepository {
     private static final Logger logger = LoggerFactory.getLogger(FileRepository.class);
 
     @Autowired
-    LoadedFileMapper loadedFileMapper;
+    private  SqlSessionFactory sqlSessionFactory;
+
+    @Autowired
+    private LoadedFileMapper getLoadedFileMapper(){
+        SqlSession session = this.sqlSessionFactory.openSession();
+        LoadedFileMapper loadedFileMapper = session.getMapper(LoadedFileMapper.class);
+        return loadedFileMapper;
+    }
 
     public int insertProcessFile (LoadedFile loadedFile) throws Exception {
-        return this.loadedFileMapper.insertProcessFile(loadedFile);
+
+
+        LoadedFileMapper loadedFileMapper = this.getLoadedFileMapper();
+        return loadedFileMapper.insertProcessFile(loadedFile);
     }
 
     public List<LoadedFile> getLoadedFilesByStateAndTimestamps(int stateId, Timestamp initTime, Timestamp endTime){
-        return this.loadedFileMapper.getLoadedFilesByStateAndTimestamps(stateId, initTime, endTime);
+
+        LoadedFileMapper loadedFileMapper = this.getLoadedFileMapper();
+        return loadedFileMapper.getLoadedFilesByStateAndTimestamps(stateId, initTime, endTime);
     }
 
     public int updateFileLoaded(LoadedFile loadedFile){
-        return this.loadedFileMapper.updateLoadedFile(loadedFile);
+
+        LoadedFileMapper loadedFileMapper = this.getLoadedFileMapper();
+        return loadedFileMapper.updateLoadedFile(loadedFile);
     }
 
     public List<FileTableResumeDTO> getUploadedFiles() {
+
+        LoadedFileMapper loadedFileMapper = this.getLoadedFileMapper();
 
         List<FileTableResumeDTO> filesUploaded = loadedFileMapper.getUploadedFiles();
         logger.info("getFilesUploaded. filesUploaded.size={}", filesUploaded.size());
