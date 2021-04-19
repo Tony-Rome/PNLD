@@ -11,13 +11,13 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.Duration;
 import java.io.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -31,7 +31,7 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
                 replace("[","").replace("]","");
 
         String dummyTeacher = "IBARRA UBEDA,PATRICIA,15.098.834-9,,,PATTYIBARRAUBEDA@HOTMAIL.COM,Finalizado," +
-                "\"9 de octubre de 2019  14:24\",\"9 de octubre de 2019  14:30\",\"6 minutos 24 segundos\",\"8,00\",";
+                "\"9 de octubre de 2019  14:24\",\"9 de octubre de 2019  14:30\",\"06 minutos 24 segundos\",\"8,00\",";
 
         return postTrainingHeaders.concat("\n").concat(dummyTeacher);
     }
@@ -76,14 +76,45 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
         //Assert.assertTrue(true);
     }
 
-    //@Test
+    @Test
     public void testFormmaterTime(){
-        String timeString = "6 minutos 24 segundos";
+        String DAYS_STRING = "día";
+        String HOURS_STRING = "hora";
+        String MINUTES_STRING = "minutos";
+        String SECONDS_STRING = "segundos";
 
+        String timeString = "8 horas 6 minutos";
+        String timeWithoutWords = timeString.replaceAll("[a-zA-Z]","");
+        String timeWithoutSpace = timeWithoutWords.trim().replaceAll("[ \\t\\n\\x0B\\f\\r]",";");
+        String[] time = timeWithoutSpace.split(";");
+
+
+        int days = 0;
+        int hour = 0;
+        int mins = 0;
+        int secs = 0;
+        if(timeString.contains(DAYS_STRING) && timeString.contains(HOURS_STRING)){
+            days = Integer.parseInt(time[0].trim());
+            hour = Integer.parseInt(time[1].trim());
+
+        }
+
+        if(timeString.contains(HOURS_STRING) && timeString.contains(MINUTES_STRING)){
+            hour = Integer.parseInt(time[0].trim());
+            mins = Integer.parseInt(time[1].trim());
+
+        }
+
+        if(timeString.contains(MINUTES_STRING) && timeString.contains(SECONDS_STRING)) {
+            mins = Integer.parseInt(time[0].trim());
+            secs = Integer.parseInt(time[1].trim());
+        }
 
         try {
-            Date myDate = new SimpleDateFormat("m minutos ss segundos").parse(timeString);
-        } catch (ParseException e) {
+            Duration duration = DatatypeFactory.newInstance().newDurationDayTime(true, days, hour, mins, secs);
+
+
+        } catch (DatatypeConfigurationException e) {
             e.printStackTrace();
         }
     }

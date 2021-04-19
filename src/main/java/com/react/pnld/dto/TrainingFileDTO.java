@@ -5,8 +5,6 @@ import com.univocity.parsers.annotations.Parsed;
 import com.univocity.parsers.annotations.Replace;
 
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.util.Date;
 
 public class TrainingFileDTO {
 
@@ -183,10 +181,12 @@ public class TrainingFileDTO {
 
     @Parsed(index = 9)
     @Replace(expression = "[^0-9]", replacement = "")//36 minutos 24 segundos
-    @Format(formats = {"mmss"}, options = "locale=en;lenient=false")
-    public void setDuration(Date duration) {
-        LocalTime localTimeDuration =  duration.toInstant().atZone(ZoneId.of("UTC")).toLocalTime();
-        this.duration = localTimeDuration.withHour(0);
+    @Format(formats = {"mmss"}, options = "locale=es;lenient=false")
+    public void setDuration(String duration) {
+
+        //LocalTime localTimeDuration =  duration.toInstant().atZone(ZoneId.of("UTC")).toLocalTime();
+        //this.duration = localTimeDuration.withHour(0);
+
     }
 
     public float getScore() {
