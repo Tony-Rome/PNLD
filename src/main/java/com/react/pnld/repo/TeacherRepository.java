@@ -17,17 +17,17 @@ public class TeacherRepository {
     @Autowired
     private TeacherMapper teacherMapper;
 
-    public Optional<Teacher> getTeacher(String rut, String email){
+    public Optional<Teacher> getTeacher(String rut, String email) {
 
         return Optional.ofNullable(teacherMapper.getTeacher(rut, email));
     }
 
-    public int insertTeacher(Teacher teacher){
-        logger.info("insertTeacher. teacher={}",teacher);
+    public int insertTeacher(Teacher teacher) {
+        logger.info("insertTeacher. teacher={}", teacher);
         return teacherMapper.insertTeacher(teacher);
     }
 
-    public int getNextTeacherId(){
+    public int getNextTeacherId() {
 
         return teacherMapper.getNextTeacherId();
     }

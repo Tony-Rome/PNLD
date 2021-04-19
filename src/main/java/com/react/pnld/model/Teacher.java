@@ -12,7 +12,7 @@ public class Teacher implements Serializable {
     private String email;
     private int genderId;
 
-    public Teacher(){
+    public Teacher() {
         super();
     }
 

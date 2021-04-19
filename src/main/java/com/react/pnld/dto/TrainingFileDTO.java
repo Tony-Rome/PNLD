@@ -69,7 +69,7 @@ public class TrainingFileDTO {
     @Parsed(index = 20)
     private String answerTen;
 
-    public TrainingFileDTO(){
+    public TrainingFileDTO() {
         super();
     }
 

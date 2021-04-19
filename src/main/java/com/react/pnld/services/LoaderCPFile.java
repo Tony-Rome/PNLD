@@ -7,21 +7,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoaderCPFile {
 
-    public FileResumeDTO testPCOneFile(LoadedFile loadedFile){
+    public FileResumeDTO testPCOneFile(LoadedFile loadedFile) {
         //TODO validate load records by file's type
 
         //TODO insert records if not exist
         return new FileResumeDTO();
     }
 
-    public FileResumeDTO testPCTwoFile(LoadedFile loadedFile){
+    public FileResumeDTO testPCTwoFile(LoadedFile loadedFile) {
         //TODO validate load records by file's type
         //TODO insert records if not exist
 
         return new FileResumeDTO();
     }
 
-    public FileResumeDTO testPCThreeFile(LoadedFile loadedFile){
+    public FileResumeDTO testPCThreeFile(LoadedFile loadedFile) {
         //TODO validate load records by file's type
         //TODO insert records if not exist
 

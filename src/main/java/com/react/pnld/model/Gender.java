@@ -5,7 +5,7 @@ public class Gender {
     private int id;
     private String type;
 
-    public Gender(){
+    public Gender() {
         super();
     }
 

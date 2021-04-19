@@ -14,7 +14,7 @@ public class Test implements Serializable {
     private String duration;
     private float score;
 
-    public Test(){
+    public Test() {
         super();
     }
 

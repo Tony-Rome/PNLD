@@ -17,11 +17,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class LoaderMoodleFile{
+public class LoaderMoodleFile {
 
     private static final Logger logger = LoggerFactory.getLogger(LoaderMoodleFile.class);
     private static final int DUMMY_ID = 0;
-    private  static final String DELIMITER_LAST_NAMES = " ";
+    private static final String DELIMITER_LAST_NAMES = " ";
 
     @Autowired
     TeacherRepository teacherRepository;
@@ -38,14 +38,14 @@ public class LoaderMoodleFile{
         int newRecords = 0;
         int duplicatedRecords = 0;
 
-        for(TrainingFileDTO postTrainingRow : postTrainingRows){
+        for (TrainingFileDTO postTrainingRow : postTrainingRows) {
             logger.info("processTrainingFileRows. postTrainingRow={}", postTrainingRow);
 
             //check docente exist, if dont then insert persona, gender, docente
             Optional<Teacher> teacherSelected = teacherRepository.getTeacher(postTrainingRow.getRut(),
                     postTrainingRow.getEmail());
 
-            if(!teacherSelected.isPresent()){
+            if (!teacherSelected.isPresent()) {
                 Teacher teacher = this.buildTeacherFrom(postTrainingRow);
                 teacher.setId(this.teacherRepository.getNextTeacherId());
                 this.teacherRepository.insertTeacher(teacher);
@@ -56,7 +56,7 @@ public class LoaderMoodleFile{
 
             Optional<Test> teacherTest = testRepository.getTeacherTest(teacherSelected.get().getId(), testType);
 
-            if(!teacherTest.isPresent()){
+            if (!teacherTest.isPresent()) {
 
                 Test test = new Test(this.testRepository.getNextTestId(), teacherSelected.get().getId(), loadedFileId,
                         testType, postTrainingRow.getTestState(), postTrainingRow.getStartIn(),
@@ -84,29 +84,29 @@ public class LoaderMoodleFile{
         return new FileResumeDTO(postTrainingRows.size(), newRecords, duplicatedRecords);
     }
 
-    Teacher buildTeacherFrom(TrainingFileDTO postTrainingRow){
+    Teacher buildTeacherFrom(TrainingFileDTO postTrainingRow) {
         String[] lastNames = postTrainingRow.getLastNames().split(DELIMITER_LAST_NAMES);//TODO validate when only one lastname
         int idGenderNotSpecified = 4; //TODO get gender by type
 
         return new Teacher(DUMMY_ID, postTrainingRow.getName(), lastNames[0],
-                lastNames[1],postTrainingRow.getRut(), postTrainingRow.getEmail(), idGenderNotSpecified);
+                lastNames[1], postTrainingRow.getRut(), postTrainingRow.getEmail(), idGenderNotSpecified);
     }
 
-    public FileResumeDTO diagnosticoFile(LoadedFile loadedFile){
+    public FileResumeDTO diagnosticoFile(LoadedFile loadedFile) {
         //TODO validate load records by file's type
         //TODO insert records if not exist
 
         return new FileResumeDTO();
     }
 
-    public FileResumeDTO salidaFile(LoadedFile loadedFile){
+    public FileResumeDTO salidaFile(LoadedFile loadedFile) {
         //TODO validate load records by file's type
         //TODO insert records if not exist
 
         return new FileResumeDTO();
     }
 
-    public FileResumeDTO satisFile(LoadedFile loadedFile){
+    public FileResumeDTO satisFile(LoadedFile loadedFile) {
         //TODO validate load records by file's type
         //TODO insert records if not exist
 

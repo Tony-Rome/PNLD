@@ -28,13 +28,13 @@ public class LDAPAuthProvider implements AuthenticationProvider {
         authorities = new ArrayList<GrantedAuthority>(1);
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
-        if(!ldapServices.loginUser(username, password)){
+        if (!ldapServices.loginUser(username, password)) {
             return null;
         }
 
         detail = new Admin(username, "admin@email.com", password);
 
-        return new SimpleAuthentication(username,authorities, detail, password);
+        return new SimpleAuthentication(username, authorities, detail, password);
     }
 
     @Override
