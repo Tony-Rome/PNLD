@@ -1,52 +1,69 @@
 package com.react.pnld;
 
-import com.react.pnld.services.FileUtilService;
+import com.react.pnld.dto.TrainingFileDTO;
+import com.react.pnld.model.CSVHeadersProperties;
+import com.univocity.parsers.common.processor.BeanListProcessor;
+import com.univocity.parsers.csv.CsvParser;
+import com.univocity.parsers.csv.CsvParserSettings;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.time.Duration;
+import java.io.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @SpringBootTest
 public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
 
-    @Test
-    public void getTrainingDuration_When_string_duration_MinsAndSecs(){
-        Duration duration = FileUtilService.getTrainingDuration("12 minutos 31 segundos");
-        long totalSeconds = 12 * 60 + 31;
-        Assert.assertEquals(totalSeconds, duration.getSeconds());
+    @Autowired
+    CSVHeadersProperties csvHeadersProperties;
+
+    private String getDummyPostTrainingFileLikeString(){
+        String postTrainingHeaders = Arrays.toString(csvHeadersProperties.getPostTraining()).
+                replace("[","").replace("]","");
+
+        String dummyTeacher = "IBARRA UBEDA,PATRICIA,15.098.834-9,,,PATTYIBARRAUBEDA@HOTMAIL.COM,Finalizado," +
+                "\"9 de octubre de 2019  14:24\",\"9 de octubre de 2019  14:30\",\"06 minutos 24 segundos\",\"8,00\",";
+
+        return postTrainingHeaders.concat("\n").concat(dummyTeacher);
     }
 
-    @Test
-    public void getTrainingDuration_When_string_duration_HourAndMins(){
-        Duration duration = FileUtilService.getTrainingDuration("1 hora 32 minutos");
-        long totalSeconds = 1 * 60 * 60 + 32 * 60;
-        Assert.assertEquals(totalSeconds, duration.getSeconds());
+
+    private List<TrainingFileDTO> getListTrainingBeans(){
+        InputStream inputStream = new ByteArrayInputStream(getDummyPostTrainingFileLikeString().getBytes());
+
+        try {
+            Reader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+
+            BeanListProcessor<TrainingFileDTO> rowProcessor = new BeanListProcessor<TrainingFileDTO>(TrainingFileDTO.class);
+
+            CsvParserSettings parserSettings = new CsvParserSettings();
+            parserSettings.setLineSeparatorDetectionEnabled(true);
+            parserSettings.setProcessor(rowProcessor);
+            parserSettings.setHeaderExtractionEnabled(true);
+
+            CsvParser parser = new CsvParser(parserSettings);
+            parser.parse(inputStreamReader);
+
+            // The BeanListProcessor provides a list of objects extracted from the input.
+
+            List<TrainingFileDTO> beans = rowProcessor.getBeans();
+            return beans;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
     }
 
-    @Test
-    public void getTrainingDuration_When_string_duration_DaysAndHours(){
-        Duration duration = FileUtilService.getTrainingDuration("6 días 19 horas");
-        long totalSeconds = 6 * 24 * 60 * 60 + 19 * 60 * 60;
-        Assert.assertEquals(totalSeconds, duration.getSeconds());
-    }
 
     @Test
-    public void getTrainingDuration_When_string_duration_empty(){
-        Duration duration = FileUtilService.getTrainingDuration("");
-        Assert.assertEquals(0, duration.getSeconds());
-    }
-
-    @Test
-    public void getTrainingDuration_When_string_duration_other_format(){
-        Duration duration = FileUtilService.getTrainingDuration("-- --");
-        Assert.assertEquals(0, duration.getSeconds());
-    }
-
-    @Test
-    public void getTrainingDuration_When_string_duration_unusual_format(){
-        Duration duration = FileUtilService.getTrainingDuration("2 houses 2 dogs");
-        Assert.assertEquals(0, duration.getSeconds());
+    public void moodleTimestampFormat_parser_to_DateTime(){
+        //TODO move logic getReader from parseRowsToBeans
+        //TODO Parsear solo un objeto y no solo una lista
+        List<TrainingFileDTO> dummyList = this.getListTrainingBeans();
+        //TODO test minutes number and seconds
     }
 }
