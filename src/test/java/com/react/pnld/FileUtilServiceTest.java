@@ -2,22 +2,22 @@ package com.react.pnld;
 
 import com.react.pnld.dto.ScheduleFileLoadDTO;
 import com.react.pnld.services.FileUtilService;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.web.multipart.MultipartFile;
 import org.testng.Assert;
+import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 @SpringBootTest
-public class FileUtilServiceTest {
+public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
 
     @Autowired
     private FileUtilService fileUtilService;
@@ -30,7 +30,7 @@ public class FileUtilServiceTest {
 
     @Test
     void contextLoads() {
-        assertThat(fileUtilService).isNotNull();
+        Assert.assertNotNull(fileUtilService);
     }
 
     @Test
@@ -130,5 +130,44 @@ public class FileUtilServiceTest {
 
         Assert.assertEquals("2021-03-01T00-00-00-name_by_user.csv",
                 fileUtilService.getLoadedFileName(fooScheduleFileLoadDTO));
+    }
+
+    @Test
+    public void getTrainingDuration_When_string_duration_MinsAndSecs(){
+        Duration duration = FileUtilService.getTrainingDuration("12 minutos 31 segundos");
+        long totalSeconds = 12 * 60 + 31;
+        Assert.assertEquals(totalSeconds, duration.getSeconds());
+    }
+
+    @Test
+    public void getTrainingDuration_When_string_duration_HourAndMins(){
+        Duration duration = FileUtilService.getTrainingDuration("1 hora 32 minutos");
+        long totalSeconds = 1 * 60 * 60 + 32 * 60;
+        Assert.assertEquals(totalSeconds, duration.getSeconds());
+    }
+
+    @Test
+    public void getTrainingDuration_When_string_duration_DaysAndHours(){
+        Duration duration = FileUtilService.getTrainingDuration("6 días 19 horas");
+        long totalSeconds = 6 * 24 * 60 * 60 + 19 * 60 * 60;
+        Assert.assertEquals(totalSeconds, duration.getSeconds());
+    }
+
+    @Test
+    public void getTrainingDuration_When_string_duration_empty(){
+        Duration duration = FileUtilService.getTrainingDuration("");
+        Assert.assertEquals(0, duration.getSeconds());
+    }
+
+    @Test
+    public void getTrainingDuration_When_string_duration_other_format(){
+        Duration duration = FileUtilService.getTrainingDuration("-- --");
+        Assert.assertEquals(0, duration.getSeconds());
+    }
+
+    @Test
+    public void getTrainingDuration_When_string_duration_unusual_format(){
+        Duration duration = FileUtilService.getTrainingDuration("2 houses 2 dogs");
+        Assert.assertEquals(0, duration.getSeconds());
     }
 }

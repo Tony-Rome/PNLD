@@ -30,9 +30,8 @@ public class TrainingFileDTO {
     private String startIn;
 
     @Parsed(index = 8)
-    private String finishIn; //9 de octubre de 2019  14:24
+    private String finishIn;
 
-    @Parsed(index = 9)
     private String duration;
 
     @Parsed(index = 10)
@@ -177,7 +176,11 @@ public class TrainingFileDTO {
         return duration;
     }
 
+    @Parsed(index = 9)
     public void setDuration(String duration) {
+        //TODO implement string to Duration
+        //LocalTime localTimeDuration =  duration.toInstant().atZone(ZoneId.of("UTC")).toLocalTime();
+        //this.duration = localTimeDuration.withHour(0);
         this.duration = duration;
     }
 

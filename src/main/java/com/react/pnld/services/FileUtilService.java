@@ -14,7 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 import java.io.*;
+import java.text.Normalizer;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -62,34 +66,34 @@ public class FileUtilService {
                 return csvHeadersProperties.getStudentLevel();
 
             case SIGNIN_PER_COURSE:
-                return csvHeadersProperties.getSigninPerCourse();
+                return csvHeadersProperties.getSignInPerCourse();
 
             case SIGN_INS:
                 return csvHeadersProperties.getSignIns();
 
             case DIAGNOSIS:
-                return csvHeadersProperties.getDiagnostico();
+                return csvHeadersProperties.getDiagnosis();
 
             case PRE_TRAINING:
-                return csvHeadersProperties.getPreCapacita();
+                return csvHeadersProperties.getPreTraining();
 
             case POST_TRAINING:
-                return csvHeadersProperties.getPostCapacita();
+                return csvHeadersProperties.getPostTraining();
 
             case TEST_CT_1:
-                return csvHeadersProperties.getTestPc1();
+                return csvHeadersProperties.getTestCT1();
 
             case TEST_CT_2:
-                return csvHeadersProperties.getTestPc2();
+                return csvHeadersProperties.getTestCT2();
 
             case TEST_CT_3:
-                return csvHeadersProperties.getTestPc3();
+                return csvHeadersProperties.getTestCT3();
 
             case SALIDA:
                 return csvHeadersProperties.getSalida();
 
             case SATISFACTION:
-                return csvHeadersProperties.getSatis();
+                return csvHeadersProperties.getSatisfaction();
 
             default:
                 return new String[1];
@@ -202,5 +206,52 @@ public class FileUtilService {
             default:
                 return new FileResumeDTO(0, 0, 0);
         }
+    }
+
+    public static Duration getTrainingDuration(String durationString){
+        String DAY_LABEL = "dia";
+        String HOUR_LABEL = "hora";
+        String MINUTE_LABEL = "minuto";
+        String SECOND_LABEL = "segundo";
+
+        int days = 0;
+        int hour = 0;
+        int mins = 0;
+        int secs = 0;
+
+        String durationWithoutAccents = removeAccents(durationString);
+        String onlyNumsString = durationWithoutAccents.trim().replaceAll("([ \\t\\n\\x0B\\f\\r][a-z]+)","");
+        String[] time = onlyNumsString.split("[ \\t\\n\\x0B\\f\\r]");
+
+        if(durationWithoutAccents.contains(DAY_LABEL) && durationWithoutAccents.contains(HOUR_LABEL)){
+            days = Integer.parseInt(time[0].trim());
+            hour = Integer.parseInt(time[1].trim());
+        }
+
+        if(durationWithoutAccents.contains(HOUR_LABEL) && durationWithoutAccents.contains(MINUTE_LABEL)){
+            hour = Integer.parseInt(time[0].trim());
+            mins = Integer.parseInt(time[1].trim());
+        }
+
+        if(durationWithoutAccents.contains(MINUTE_LABEL) && durationWithoutAccents.contains(SECOND_LABEL)) {
+            mins = Integer.parseInt(time[0].trim());
+            secs = Integer.parseInt(time[1].trim());
+        }
+
+        try {
+            String durationDayTimeLikeString = DatatypeFactory.newInstance().newDurationDayTime(true, days, hour, mins, secs)
+                    .toString();
+
+            return Duration.parse(durationDayTimeLikeString);
+
+        } catch (DatatypeConfigurationException e) {
+            logger.error(e.getMessage(), e);
+            return Duration.ZERO;
+        }
+
+    }
+
+    public static String removeAccents(String toClean){
+        return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
     }
 }
