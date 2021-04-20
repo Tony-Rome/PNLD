@@ -15,18 +15,20 @@ public class TeacherRepository {
     private static final Logger logger = LoggerFactory.getLogger(TeacherRepository.class);
 
     @Autowired
-    TeacherMapper teacherMapper;
+    private TeacherMapper teacherMapper;
 
-    public Optional<Teacher> getTeacher(String rut, String email){
-        return Optional.ofNullable(this.teacherMapper.getTeacher(rut, email));
+    public Optional<Teacher> getTeacher(String rut, String email) {
+
+        return Optional.ofNullable(teacherMapper.getTeacher(rut, email));
     }
 
-    public int insertTeacher(Teacher teacher){
-        logger.info("insertTeacher. teacher={}",teacher);
-        return this.teacherMapper.insertTeacher(teacher);
+    public int insertTeacher(Teacher teacher) {
+        logger.info("insertTeacher. teacher={}", teacher);
+        return teacherMapper.insertTeacher(teacher);
     }
 
-    public int getNextTeacherId(){
-        return this.teacherMapper.getNextTeacherId();
+    public int getNextTeacherId() {
+
+        return teacherMapper.getNextTeacherId();
     }
 }

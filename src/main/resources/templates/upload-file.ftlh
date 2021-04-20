@@ -1,8 +1,8 @@
-<#import "filesTable.ftlh" as ft/>
+<#import "files-table.ftlh" as ft/>
 <#import "pagination.ftlh" as pg/>
 <#import "popup.ftlh" as pu/>
-<#import "fileForm.ftlh" as ff/>
-<#import "fileUploadHeader.ftlh" as hf />
+<#import "file-form.ftlh" as ff/>
+<#import "file-upload-header.ftlh" as hf />
 
 <!DOCTYPE html>
 <html>
@@ -10,11 +10,11 @@
         <title>Archivos</title>
         <meta charset="UTF-8">
         <base href="/">
-        <link href="css/loadFiles.css" rel="stylesheet"/>
+        <link href="css/load-files.css" rel="stylesheet"/>
         <link href="css/popup.css" rel="stylesheet"/>
         <link href="css/responsive.css" rel="stylesheet"/>
-        <link href="css/filesTable.css" rel="stylesheet"/>
-        <link href="css/fileForm.css" rel="stylesheet"/>
+        <link href="css/files-table.css" rel="stylesheet"/>
+        <link href="css/file-form.css" rel="stylesheet"/>
         <link href="css/pagination.css" rel="stylesheet"/>
 
     </head>

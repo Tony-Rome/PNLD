@@ -34,22 +34,22 @@ public class LDAPServices {
         env.put(Context.INITIAL_CONTEXT_FACTORY, ldapFactory);
         env.put(Context.PROVIDER_URL, providerUrl);
         env.put(Context.SECURITY_AUTHENTICATION, ldapAuthentication);
-        env.put(Context.SECURITY_PRINCIPAL, String.format("uid=%s,ou=people,dc=springframework,dc=org",username));
+        env.put(Context.SECURITY_PRINCIPAL, String.format("uid=%s,ou=people,dc=springframework,dc=org", username));
         env.put(Context.SECURITY_CREDENTIALS, password);
 
         try {
             dir = new InitialDirContext(env);
-        }catch (AuthenticationException ex){
+        } catch (AuthenticationException ex) {
             logger.info("AuthenticationException", ex);
-        } catch (NamingException ex){
+        } catch (NamingException ex) {
             logger.info("NamingException", ex);
-        }finally {
-            try{
-                if(dir != null){
+        } finally {
+            try {
+                if (dir != null) {
                     dir.close();
                     result = true;
                 }
-            }catch (NamingException ex){
+            } catch (NamingException ex) {
                 logger.info("NamingException close connection", ex);
             }
         }

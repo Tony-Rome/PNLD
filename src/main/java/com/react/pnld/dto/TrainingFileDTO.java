@@ -2,9 +2,6 @@ package com.react.pnld.dto;
 
 import com.univocity.parsers.annotations.Format;
 import com.univocity.parsers.annotations.Parsed;
-import com.univocity.parsers.annotations.Replace;
-
-import java.time.LocalTime;
 
 public class TrainingFileDTO {
 
@@ -33,9 +30,9 @@ public class TrainingFileDTO {
     private String startIn;
 
     @Parsed(index = 8)
-    private String finishIn; //9 de octubre de 2019  14:24
+    private String finishIn;
 
-    private LocalTime duration;
+    private String duration;
 
     @Parsed(index = 10)
     @Format(formats = {"#0,00"}, options = "decimalSeparator=,")
@@ -71,12 +68,12 @@ public class TrainingFileDTO {
     @Parsed(index = 20)
     private String answerTen;
 
-    public TrainingFileDTO(){
+    public TrainingFileDTO() {
         super();
     }
 
     public TrainingFileDTO(String lastNames, String name, String rut, String institution, String department,
-                           String email, String testState, String startIn, String finishIn, LocalTime duration, float score,
+                           String email, String testState, String startIn, String finishIn, String duration, float score,
                            String answerOne, String answerTwo, String answerThree, String answerFour, String answerFive,
                            String answerSix, String answerSeven, String answerEight, String answerNine, String answerTen) {
         super();
@@ -175,18 +172,16 @@ public class TrainingFileDTO {
         this.finishIn = finishIn;
     }
 
-    public LocalTime getDuration() {
+    public String getDuration() {
         return duration;
     }
 
     @Parsed(index = 9)
-    @Replace(expression = "[^0-9]", replacement = "")//36 minutos 24 segundos
-    @Format(formats = {"mmss"}, options = "locale=es;lenient=false")
     public void setDuration(String duration) {
-
+        //TODO implement string to Duration
         //LocalTime localTimeDuration =  duration.toInstant().atZone(ZoneId.of("UTC")).toLocalTime();
         //this.duration = localTimeDuration.withHour(0);
-
+        this.duration = duration;
     }
 
     public float getScore() {

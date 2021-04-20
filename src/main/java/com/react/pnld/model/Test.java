@@ -1,8 +1,8 @@
 package com.react.pnld.model;
 
-import java.time.LocalTime;
+import java.io.Serializable;
 
-public class Test {
+public class Test implements Serializable {
 
     private int id;
     private int teacherId;
@@ -11,15 +11,15 @@ public class Test {
     private String state;
     private String initDate;
     private String endDate;
-    private LocalTime duration;
+    private String duration;
     private float score;
 
-    public Test(){
+    public Test() {
         super();
     }
 
-    public Test(int id, int teacherId, int loadedFileId, String type, String state, String initDate, String endDate,
-                LocalTime duration, float score) {
+    public Test(int id, int teacherId, int loadedFileId, String type, String state, String initDate, String endDate, String duration,
+                float score) {
         super();
         this.id = id;
         this.teacherId = teacherId;
@@ -88,11 +88,11 @@ public class Test {
         this.endDate = endDate;
     }
 
-    public LocalTime getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(LocalTime duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 

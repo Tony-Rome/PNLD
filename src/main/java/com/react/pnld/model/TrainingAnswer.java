@@ -15,7 +15,7 @@ public class TrainingAnswer {
     private String ansNine;
     private String ansTen;
 
-    public TrainingAnswer(){
+    public TrainingAnswer() {
         super();
     }
 

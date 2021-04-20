@@ -1,6 +1,8 @@
 package com.react.pnld.model;
 
-public class Teacher {
+import java.io.Serializable;
+
+public class Teacher implements Serializable {
 
     private int id;
     private String firstName;
@@ -10,7 +12,7 @@ public class Teacher {
     private String email;
     private int genderId;
 
-    public Teacher(){
+    public Teacher() {
         super();
     }
 
