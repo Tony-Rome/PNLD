@@ -1,11 +1,11 @@
 package com.react.pnld.services;
 
-import com.react.pnld.dto.FileTableResumeDTO;
-import com.react.pnld.dto.FileTypes;
-import com.react.pnld.model.LoadedFile;
 import com.react.pnld.controller.response.ScheduleFileLoadResponse;
 import com.react.pnld.dto.FileResumeDTO;
+import com.react.pnld.dto.FileTableResumeDTO;
+import com.react.pnld.dto.FileTypes;
 import com.react.pnld.dto.ScheduleFileLoadDTO;
+import com.react.pnld.model.LoadedFile;
 import com.react.pnld.repo.FileRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +42,7 @@ public class FileService {
     @Autowired
     private FileRepository fileRepository;
 
-    public ScheduleFileLoadResponse scheduleLoad(ScheduleFileLoadDTO scheduleFileLoadDTO){
+    public ScheduleFileLoadResponse scheduleLoad(ScheduleFileLoadDTO scheduleFileLoadDTO) {
 
         scheduleFileLoadDTO.setLoadedBy(scheduleFileLoadDTO.getLoadedBy());
         scheduleFileLoadDTO.setLoadedOnDateTime(LocalDateTime.now(ZoneId.of("UTC")));
@@ -50,19 +50,19 @@ public class FileService {
         ScheduleFileLoadResponse scheduleFileLoadResponse =
                 new ScheduleFileLoadResponse(HttpStatus.BAD_REQUEST);
 
-        if(! this.isValidCsvHeader(scheduleFileLoadDTO)){
+        if (!this.isValidCsvHeader(scheduleFileLoadDTO)) {
             logger.info("scheduleLoad. headers invalid");
             scheduleFileLoadResponse.setDescription("Cabeceras inválidas");
             return scheduleFileLoadResponse;
         }
 
-        if(!this.copyAtFileSystem(scheduleFileLoadDTO)){
+        if (!this.copyAtFileSystem(scheduleFileLoadDTO)) {
             logger.info("scheduleLoad. copy at file system is not complete");
             scheduleFileLoadResponse.setDescription("Copia de archivo al sistema no se pudo completar");
             return scheduleFileLoadResponse;
         }
 
-        if(!this.queueLoad(scheduleFileLoadDTO)){
+        if (!this.queueLoad(scheduleFileLoadDTO)) {
             logger.info("scheduleLoad. queue load is not succesfull");
             scheduleFileLoadResponse.setDescription("Error en la cola de procesamiento");
             rollbackCopyAtFileSystem(scheduleFileLoadDTO);
@@ -95,27 +95,27 @@ public class FileService {
         return isHeadersEquals;
     }
 
-    public boolean copyAtFileSystem(ScheduleFileLoadDTO scheduleFileLoadDTO){
+    public boolean copyAtFileSystem(ScheduleFileLoadDTO scheduleFileLoadDTO) {
 
         try {
             String nameWithPath = FILE_PATH + fileUtilService.getLoadedFileName(scheduleFileLoadDTO);
             File fileLoaded = new File(nameWithPath);
 
             //Check if the directory exists
-            if(!fileLoaded.getParentFile().exists()){
+            if (!fileLoaded.getParentFile().exists()) {
                 fileLoaded.getParentFile().mkdirs();
             }
 
             scheduleFileLoadDTO.getUploadFile().transferTo(fileLoaded);
             return true;
 
-        } catch (IOException ioException){
+        } catch (IOException ioException) {
             logger.error(ioException.getMessage(), ioException);
             return false;
         }
     }
 
-    public boolean rollbackCopyAtFileSystem(ScheduleFileLoadDTO scheduleFileLoadDTO){
+    public boolean rollbackCopyAtFileSystem(ScheduleFileLoadDTO scheduleFileLoadDTO) {
 
         try {
             String fileName = fileUtilService.getLoadedFileName(scheduleFileLoadDTO);
@@ -127,7 +127,7 @@ public class FileService {
         }
     }
 
-    public boolean queueLoad(ScheduleFileLoadDTO scheduleFileLoadDTO){
+    public boolean queueLoad(ScheduleFileLoadDTO scheduleFileLoadDTO) {
 
         LoadedFile loadedFile = new LoadedFile();
         loadedFile.setName(fileUtilService.getLoadedFileName(scheduleFileLoadDTO));
@@ -152,7 +152,7 @@ public class FileService {
     }
 
     @Scheduled(cron = "${cron.process-loadscheduled}", zone = "UTC")
-    public void executeFileLoadScheduled(){
+    public void executeFileLoadScheduled() {
 
         LocalDateTime endDateTime = LocalDateTime.now(ZoneId.of("UTC"));
         logger.info("executeFileLoadScheduled. endDateTime={}", endDateTime);
@@ -163,7 +163,7 @@ public class FileService {
                 Timestamp.valueOf(startDateTime), Timestamp.valueOf(endDateTime));
         logger.info("executeFileLoadScheduled. filesLoadedScheduled={}", filesLoadedScheduled);
 
-        for(LoadedFile loadedFile : filesLoadedScheduled){
+        for (LoadedFile loadedFile : filesLoadedScheduled) {
             loadedFile.setStateId(FileTypes.STATE_IN_PROCESS);
             this.fileRepository.updateFileLoaded(loadedFile);
 
@@ -180,7 +180,7 @@ public class FileService {
         }
     }
 
-    public List<FileTableResumeDTO> getUploadedFiles(){
+    public List<FileTableResumeDTO> getUploadedFiles() {
         return fileRepository.getUploadedFiles();
     }
 }

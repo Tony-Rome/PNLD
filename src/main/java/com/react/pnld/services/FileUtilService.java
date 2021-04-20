@@ -2,8 +2,8 @@ package com.react.pnld.services;
 
 import com.react.pnld.dto.FileResumeDTO;
 import com.react.pnld.dto.FileTypes;
-import com.react.pnld.dto.TrainingFileDTO;
 import com.react.pnld.dto.ScheduleFileLoadDTO;
+import com.react.pnld.dto.TrainingFileDTO;
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.model.LoadedFile;
 import com.univocity.parsers.common.processor.BeanListProcessor;
@@ -38,19 +38,19 @@ public class FileUtilService {
 
     private CsvParserSettings csvParserSettings;
 
-    public FileUtilService(){
+    public FileUtilService() {
         csvParserSettings = new CsvParserSettings();
         csvParserSettings.setLineSeparatorDetectionEnabled(true);
     }
 
-    public String removeSymbols(String strToClean){
+    public String removeSymbols(String strToClean) {
         String strCleaned = strToClean.replaceAll("[^a-zA-Z0-9,]", "");
         return strCleaned.toLowerCase();
     }
 
-    public String[] selectedHeadersArray(String selectedType){
+    public String[] selectedHeadersArray(String selectedType) {
 
-        switch (FileTypes.valueOfLabel(selectedType)){
+        switch (FileTypes.valueOfLabel(selectedType)) {
 
             case TEACHER_ROSTER:
                 return csvHeadersProperties.getTeacherRoster();
@@ -96,7 +96,7 @@ public class FileUtilService {
         }
     }
 
-    public boolean isStringArraysEquals(String[] firstArray, String[] secondArray){
+    public boolean isStringArraysEquals(String[] firstArray, String[] secondArray) {
         logger.info("isStringArraysEquals. firstArray={}", firstArray);
         logger.info("isStringArraysEquals. secondArray={}", secondArray);
 
@@ -108,13 +108,13 @@ public class FileUtilService {
         return Arrays.equals(firstArraySorted, secondArraySorted);
     }
 
-    public String getExtension(String extension){
+    public String getExtension(String extension) {
         int indexExtensionStart = extension.indexOf(".");
-        String fileExtensionName = extension.substring(indexExtensionStart,extension.length());
+        String fileExtensionName = extension.substring(indexExtensionStart, extension.length());
         return fileExtensionName;
     }
 
-    public String getLoadedFileName(ScheduleFileLoadDTO scheduleFileLoadDTO){
+    public String getLoadedFileName(ScheduleFileLoadDTO scheduleFileLoadDTO) {
 
         String originalFilename = scheduleFileLoadDTO.getUploadFile().getOriginalFilename();
         logger.info("copyAtFileSystem. originalFilename={}", originalFilename);
@@ -122,9 +122,9 @@ public class FileUtilService {
         String extensionFile = getExtension(originalFilename);
         logger.info("copyAtFileSystem. extensionFile={}", extensionFile);
 
-        String loadedDateFormattedString = scheduleFileLoadDTO.getLoadedOnDateTime().toString().replace(":","-");
-        String loadedDateFormatted = loadedDateFormattedString.replace(getExtension(loadedDateFormattedString),"");
-        String finalFileName =   loadedDateFormatted + "-" + scheduleFileLoadDTO.getName() + extensionFile;
+        String loadedDateFormattedString = scheduleFileLoadDTO.getLoadedOnDateTime().toString().replace(":", "-");
+        String loadedDateFormatted = loadedDateFormattedString.replace(getExtension(loadedDateFormattedString), "");
+        String finalFileName = loadedDateFormatted + "-" + scheduleFileLoadDTO.getName() + extensionFile;
         logger.info("copyAtFileSystem. finalFileName={}", finalFileName);
 
         return finalFileName;
@@ -139,7 +139,7 @@ public class FileUtilService {
         }
     }
 
-    public <T> List<T> parseRowsToBeans(String path, Class<T> clazz){
+    public <T> List<T> parseRowsToBeans(String path, Class<T> clazz) {
         BeanListProcessor<T> rowProcessor = new BeanListProcessor<T>(clazz);
         csvParserSettings.setProcessor(rowProcessor);
         csvParserSettings.setHeaderExtractionEnabled(true);
@@ -155,11 +155,11 @@ public class FileUtilService {
         }
     }
 
-    public FileResumeDTO processLoadedFile(LoadedFile loadedFile){
+    public FileResumeDTO processLoadedFile(LoadedFile loadedFile) {
 
         String path = loadedFile.getStoredIn() + loadedFile.getName();
 
-        switch (FileTypes.valueOfLabel(loadedFile.getType())){
+        switch (FileTypes.valueOfLabel(loadedFile.getType())) {
 
             case TEACHER_ROSTER:
                 return this.loaderCodeFile.processTeacherRosterFile(loadedFile);
@@ -200,7 +200,7 @@ public class FileUtilService {
                 return this.loaderCPFile.testPCThreeFile(loadedFile);
 
             default:
-                return new FileResumeDTO(0,0,0);
+                return new FileResumeDTO(0, 0, 0);
         }
     }
 }

@@ -1,8 +1,8 @@
 package com.react.pnld.controller;
 
+import com.react.pnld.controller.response.ScheduleFileLoadResponse;
 import com.react.pnld.dto.FileTableResumeDTO;
 import com.react.pnld.dto.ScheduleFileLoadDTO;
-import com.react.pnld.controller.response.ScheduleFileLoadResponse;
 import com.react.pnld.services.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,25 +22,24 @@ public class FileController {
 
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
-
     @Autowired
     private FileService fileService;
 
-    @GetMapping(value = {"/scheduleFileLoadPost","/scheduleFileLoadPost/page/{page}"})
+    @GetMapping(value = {"/scheduleFileLoadPost", "/scheduleFileLoadPost/page/{page}"})
     public String scheduleFileLoadGet(@PathVariable(required = false, value = "page") Integer page, Model model) {
 
         List<FileTableResumeDTO> fileTableResumeDTOList = fileService.getUploadedFiles();
 
         int currentPage = 1;
 
-        if(page != null){
+        if (page != null) {
             currentPage = page.intValue();
         }
-       
+
         model.addAttribute("filesList", fileTableResumeDTOList);
         model.addAttribute("currentPage", currentPage);
 
-        return "uploadFile";
+        return "upload-file";
     }
 
     @PostMapping(value = "/scheduleFileLoadPost")
@@ -50,7 +49,7 @@ public class FileController {
         model.addAttribute("scheduleFileLoadDTO", scheduleFileLoadDTO);
 
         String loadedBy = SecurityContextHolder.getContext().getAuthentication().getName();
-        logger.info("scheduleFileLoadPost. loadedBy={}",loadedBy);
+        logger.info("scheduleFileLoadPost. loadedBy={}", loadedBy);
         scheduleFileLoadDTO.setLoadedBy(loadedBy);
         logger.info("scheduleFileLoadPost. scheduleFileLoadDTO={}", scheduleFileLoadDTO);
 
@@ -61,7 +60,7 @@ public class FileController {
     }
 
     @GetMapping("/executeLoadScheduled")
-    public String executeLoadScheduled(){
+    public String executeLoadScheduled() {
         logger.info("executeLoadScheduled. init");
         fileService.executeFileLoadScheduled();
         return "finish";

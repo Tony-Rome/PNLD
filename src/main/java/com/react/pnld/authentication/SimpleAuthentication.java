@@ -14,7 +14,7 @@ public class SimpleAuthentication implements Authentication {
     private boolean authenticated;
     private String credential;
 
-    public SimpleAuthentication(String principal, List<GrantedAuthority> authorities, Object detail, String clave){
+    public SimpleAuthentication(String principal, List<GrantedAuthority> authorities, Object detail, String clave) {
         this.principal = principal;
         this.authorities = authorities;
         this.detail = detail;

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.react.pnld.mappers.AdminMapper">
+
+    <cache/>
+
+    <resultMap id="admin" type="com.react.pnld.model.Admin">
+        <id property="idAdmin" column="id_admin" />
+        <result property="username" column="nombre_usuario" />
+        <result property="password" column="contrasena" />
+    </resultMap>
+
+    <select id="findByUsername" resultMap="admin" parameterType="String">
+        SELECT * FROM pnld.pnld.admin WHERE nombre_usuario = #{username}
+    </select>
+
+</mapper>

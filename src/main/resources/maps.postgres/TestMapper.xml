@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.react.pnld.mappers.TestMapper">
+    <cache/>
+    <resultMap id="teacherTest" type="com.react.pnld.model.Test">
+        <id property="id" column="id"/>
+        <result property="teacherId" column="id_docente" />
+        <result property="loadedFileId" column="id_archivo_fuente" />
+        <result property="type" column="tipo" />
+        <result property="state" column="estado" />
+        <result property="initDate" column="fecha_inicio" />
+        <result property="endDate" column="fecha_fin" />
+        <result property="duration" column="tiempo_requerido" />
+        <result property="score" column="calificacion" />
+    </resultMap>
+
+    <select id="getTeacherTest" resultMap="teacherTest">
+        SELECT * FROM pnld.test WHERE id_docente=#{teacherId} AND tipo=#{testType}
+    </select>
+    
+    <insert id="insertTest" useGeneratedKeys="true">
+        INSERT INTO pnld.test 
+            (id, id_docente, id_archivo_fuente, tipo, estado,
+            fecha_inicio, fecha_fin, tiempo_requerido, calificacion) 
+        VALUES 
+            (#{id}, #{teacherId}, #{loadedFileId}, #{type}, #{state},
+            #{initDate}, #{endDate}, #{duration}, #{score});
+    </insert>
+    
+    <select id="getNextTestId" >
+        SELECT nextval(pg_get_serial_sequence('pnld.test', 'id'));
+    </select>
+
+    <select id="getNextTrainingAnswer">
+        SELECT nextval(pg_get_serial_sequence('pnld.respuesta_capacitacion', 'id'));
+    </select>
+    
+    <insert id="insertTrainingAnswer" useGeneratedKeys="true">
+        INSERT INTO pnld.respuesta_capacitacion 
+            (id, id_test, resp_uno, resp_dos, resp_tres, resp_cuatro, 
+            resp_cinco, resp_seis, resp_siete, resp_ocho, resp_nueve, resp_diez) 
+        VALUES 
+            (#{id},#{testId},#{ansOne},#{ansTwo},#{ansThree}, #{ansFour},
+            #{ansFive},#{ansSix},#{ansSeven},#{ansEight},#{ansNine},#{ansTen});
+    </insert>
+</mapper>

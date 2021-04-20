@@ -7,35 +7,35 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoaderCodeFile {
 
-    public FileResumeDTO processTeacherRosterFile(LoadedFile loadedFile){
+    public FileResumeDTO processTeacherRosterFile(LoadedFile loadedFile) {
         //TODO validate load records by file's type
         //TODO insert records if not exist
 
         return new FileResumeDTO();
     }
 
-    public FileResumeDTO processTeacherOptInFile(LoadedFile loadedFile){
+    public FileResumeDTO processTeacherOptInFile(LoadedFile loadedFile) {
         //TODO validate load records by file's type
         //TODO insert records if not exist
 
         return new FileResumeDTO();
     }
 
-    public FileResumeDTO processStudentLevelFile(LoadedFile loadedFile){
+    public FileResumeDTO processStudentLevelFile(LoadedFile loadedFile) {
         //TODO validate load records by file's type
         //TODO insert records if not exist
 
         return new FileResumeDTO();
     }
 
-    public FileResumeDTO processSignInPerCourseFile(LoadedFile loadedFile){
+    public FileResumeDTO processSignInPerCourseFile(LoadedFile loadedFile) {
         //TODO validate load records by file's type
         //TODO insert records if not exist
 
         return new FileResumeDTO();
     }
 
-    public FileResumeDTO processSignInsFile(LoadedFile loadedFile){
+    public FileResumeDTO processSignInsFile(LoadedFile loadedFile) {
         //TODO validate load records by file's type
         //TODO insert records if not exist
 
