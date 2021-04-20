@@ -29,6 +29,7 @@
 }
 
 .popupDetail {
+
     margin: 20px 100px 2px;
 }
 
@@ -54,11 +55,6 @@
     margin-top: 20px;
     padding: 0 60px 0;
 
-}
-
-#popupBodyMsgError {
-    text-align: center;
-    margin: 40px 40px 10px;
 }
 
 #btSubmitYes {

@@ -1,5 +1,6 @@
 package com.react.pnld.services;
 
+import com.react.pnld.dto.FileTableResumeDTO;
 import com.react.pnld.dto.FileTypes;
 import com.react.pnld.model.LoadedFile;
 import com.react.pnld.controller.response.ScheduleFileLoadResponse;
@@ -31,6 +32,7 @@ import java.util.List;
 public class FileService {
 
     private static final Logger logger = LoggerFactory.getLogger(FileService.class);
+
     @Value("${copy.path.files}")
     private String FILE_PATH;
 
@@ -178,4 +180,7 @@ public class FileService {
         }
     }
 
+    public List<FileTableResumeDTO> getUploadedFiles(){
+        return fileRepository.getUploadedFiles();
+    }
 }
