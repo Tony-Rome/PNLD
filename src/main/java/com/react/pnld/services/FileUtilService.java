@@ -141,14 +141,14 @@ public class FileUtilService {
         }
     }
 
-    public <T> List<T> parseRowsToBeans(String path, Class<T> clazz) {
+    public <T> List<T> parseRowsToBeans(Reader reader, Class<T> clazz) {
         BeanListProcessor<T> rowProcessor = new BeanListProcessor<T>(clazz);
         csvParserSettings.setProcessor(rowProcessor);
         csvParserSettings.setHeaderExtractionEnabled(true);
 
         try {
             CsvParser parser = new CsvParser(csvParserSettings);
-            parser.parse(getReader(path));
+            parser.parse(reader);
             List<T> rowsLikeBeans = rowProcessor.getBeans();
             return rowsLikeBeans;
         } catch (Exception exception) {
@@ -160,6 +160,7 @@ public class FileUtilService {
     public FileResumeDTO processLoadedFile(LoadedFile loadedFile) {
 
         String path = loadedFile.getStoredIn() + loadedFile.getName();
+        Reader loadedFileReader = getReader(path);
 
         switch (FileTypes.valueOfLabel(loadedFile.getType())) {
 
@@ -183,7 +184,7 @@ public class FileUtilService {
 
             case PRE_TRAINING:
             case POST_TRAINING:
-                List<TrainingFileDTO> trainingRows = parseRowsToBeans(path, TrainingFileDTO.class);
+                List<TrainingFileDTO> trainingRows = parseRowsToBeans(loadedFileReader, TrainingFileDTO.class);
                 return loaderMoodleFile.processTrainingFileRows(trainingRows, loadedFile.getId(), loadedFile.getType());
 
             case SALIDA:

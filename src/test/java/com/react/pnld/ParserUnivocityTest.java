@@ -2,9 +2,7 @@ package com.react.pnld;
 
 import com.react.pnld.dto.TrainingFileDTO;
 import com.react.pnld.model.CSVHeadersProperties;
-import com.univocity.parsers.common.processor.BeanListProcessor;
-import com.univocity.parsers.csv.CsvParser;
-import com.univocity.parsers.csv.CsvParserSettings;
+import com.react.pnld.services.FileUtilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -13,7 +11,6 @@ import org.testng.annotations.Test;
 
 import java.io.*;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @SpringBootTest
@@ -22,7 +19,10 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
     @Autowired
     CSVHeadersProperties csvHeadersProperties;
 
-    private String getDummyPostTrainingFileLikeString(){
+    @Autowired
+    FileUtilService fileUtilService;
+
+    private String getDummyTrainingFileLikeString(){
         String postTrainingHeaders = Arrays.toString(csvHeadersProperties.getPostTraining()).
                 replace("[","").replace("]","");
 
@@ -32,39 +32,12 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
         return postTrainingHeaders.concat("\n").concat(dummyTeacher);
     }
 
-
-    private List<TrainingFileDTO> getListTrainingBeans(){
-        InputStream inputStream = new ByteArrayInputStream(getDummyPostTrainingFileLikeString().getBytes());
-
-        try {
-            Reader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-
-            BeanListProcessor<TrainingFileDTO> rowProcessor = new BeanListProcessor<TrainingFileDTO>(TrainingFileDTO.class);
-
-            CsvParserSettings parserSettings = new CsvParserSettings();
-            parserSettings.setLineSeparatorDetectionEnabled(true);
-            parserSettings.setProcessor(rowProcessor);
-            parserSettings.setHeaderExtractionEnabled(true);
-
-            CsvParser parser = new CsvParser(parserSettings);
-            parser.parse(inputStreamReader);
-
-            // The BeanListProcessor provides a list of objects extracted from the input.
-
-            List<TrainingFileDTO> beans = rowProcessor.getBeans();
-            return beans;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return Collections.emptyList();
-        }
-    }
-
-
     @Test
-    public void moodleTimestampFormat_parser_to_DateTime(){
-        //TODO move logic getReader from parseRowsToBeans
-        //TODO Parsear solo un objeto y no solo una lista
-        List<TrainingFileDTO> dummyList = this.getListTrainingBeans();
+    public void moodleTimestampFormat_parser_to_DateTime() throws UnsupportedEncodingException {
+        InputStream inputStream = new ByteArrayInputStream(getDummyTrainingFileLikeString().getBytes());
+        Reader reader = new InputStreamReader(inputStream, "UTF-8");
+
+        List<TrainingFileDTO> dummyList = fileUtilService.parseRowsToBeans(reader, TrainingFileDTO.class);
         Assert.assertEquals(6, dummyList.get(0).getDuration().getMinutes());
         Assert.assertEquals(24, dummyList.get(0).getDuration().getSeconds());
     }
