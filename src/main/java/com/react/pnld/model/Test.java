@@ -1,5 +1,7 @@
 package com.react.pnld.model;
 
+import org.postgresql.util.PGInterval;
+
 import java.io.Serializable;
 
 public class Test implements Serializable {
@@ -11,15 +13,15 @@ public class Test implements Serializable {
     private String state;
     private String initDate;
     private String endDate;
-    private String duration;
+    private PGInterval duration;
     private float score;
 
     public Test() {
         super();
     }
 
-    public Test(int id, int teacherId, int loadedFileId, String type, String state, String initDate, String endDate, String duration,
-                float score) {
+    public Test(int id, int teacherId, int loadedFileId, String type, String state, String initDate, String endDate,
+                PGInterval duration, float score) {
         super();
         this.id = id;
         this.teacherId = teacherId;
@@ -88,11 +90,11 @@ public class Test implements Serializable {
         this.endDate = endDate;
     }
 
-    public String getDuration() {
+    public PGInterval getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(PGInterval duration) {
         this.duration = duration;
     }
 

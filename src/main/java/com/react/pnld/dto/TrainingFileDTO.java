@@ -1,7 +1,9 @@
 package com.react.pnld.dto;
 
+import com.react.pnld.services.FileUtilService;
 import com.univocity.parsers.annotations.Format;
 import com.univocity.parsers.annotations.Parsed;
+import org.postgresql.util.PGInterval;
 
 public class TrainingFileDTO {
 
@@ -32,7 +34,7 @@ public class TrainingFileDTO {
     @Parsed(index = 8)
     private String finishIn;
 
-    private String duration;
+    private PGInterval duration;
 
     @Parsed(index = 10)
     @Format(formats = {"#0,00"}, options = "decimalSeparator=,")
@@ -73,7 +75,7 @@ public class TrainingFileDTO {
     }
 
     public TrainingFileDTO(String lastNames, String name, String rut, String institution, String department,
-                           String email, String testState, String startIn, String finishIn, String duration, float score,
+                           String email, String testState, String startIn, String finishIn, PGInterval duration, float score,
                            String answerOne, String answerTwo, String answerThree, String answerFour, String answerFive,
                            String answerSix, String answerSeven, String answerEight, String answerNine, String answerTen) {
         super();
@@ -172,16 +174,17 @@ public class TrainingFileDTO {
         this.finishIn = finishIn;
     }
 
-    public String getDuration() {
+    public PGInterval getDuration() {
         return duration;
     }
 
-    @Parsed(index = 9)
-    public void setDuration(String duration) {
-        //TODO implement string to Duration
-        //LocalTime localTimeDuration =  duration.toInstant().atZone(ZoneId.of("UTC")).toLocalTime();
-        //this.duration = localTimeDuration.withHour(0);
+    public void setDuration(PGInterval duration) {
         this.duration = duration;
+    }
+
+    @Parsed(index = 9)
+    public void setPGIntervalFromString(String durationString){
+        this.duration = FileUtilService.getTrainingDuration(durationString);
     }
 
     public float getScore() {

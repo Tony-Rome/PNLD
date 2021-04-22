@@ -9,16 +9,14 @@ import com.react.pnld.model.LoadedFile;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
+import org.postgresql.util.PGInterval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
 import java.io.*;
 import java.text.Normalizer;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -208,12 +206,14 @@ public class FileUtilService {
         }
     }
 
-    public static Duration getTrainingDuration(String durationString){
+    public static PGInterval getTrainingDuration(String durationString){
         String DAY_LABEL = "dia";
         String HOUR_LABEL = "hora";
         String MINUTE_LABEL = "minuto";
         String SECOND_LABEL = "segundo";
 
+        int yearZero = 0;
+        int monthZero = 0;
         int days = 0;
         int hour = 0;
         int mins = 0;
@@ -238,17 +238,7 @@ public class FileUtilService {
             secs = Integer.parseInt(time[1].trim());
         }
 
-        try {
-            String durationDayTimeLikeString = DatatypeFactory.newInstance().newDurationDayTime(true, days, hour, mins, secs)
-                    .toString();
-
-            return Duration.parse(durationDayTimeLikeString);
-
-        } catch (DatatypeConfigurationException e) {
-            logger.error(e.getMessage(), e);
-            return Duration.ZERO;
-        }
-
+        return new PGInterval(yearZero, monthZero, days, hour, mins, secs);
     }
 
     public static String removeAccents(String toClean){

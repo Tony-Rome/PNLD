@@ -11,7 +11,7 @@
         <result property="state" column="estado" />
         <result property="initDate" column="fecha_inicio" />
         <result property="endDate" column="fecha_fin" />
-        <result property="duration" column="tiempo_requerido" />
+        <result property="duration" column="tiempo_requerido"  javaType="java.lang.Object"/>
         <result property="score" column="calificacion" />
     </resultMap>
 
@@ -28,11 +28,11 @@
             #{initDate}, #{endDate}, #{duration}, #{score});
     </insert>
     
-    <select id="getNextTestId" >
+    <select id="getNextTestId" resultType="int">
         SELECT nextval(pg_get_serial_sequence('pnld.test', 'id'));
     </select>
 
-    <select id="getNextTrainingAnswer">
+    <select id="getNextTrainingAnswer" resultType="int">
         SELECT nextval(pg_get_serial_sequence('pnld.respuesta_capacitacion', 'id'));
     </select>
     

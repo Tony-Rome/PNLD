@@ -8,6 +8,7 @@ import com.univocity.parsers.csv.CsvParserSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.*;
@@ -26,7 +27,7 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
                 replace("[","").replace("]","");
 
         String dummyTeacher = "IBARRA UBEDA,PATRICIA,15.098.834-9,,,PATTYIBARRAUBEDA@HOTMAIL.COM,Finalizado," +
-                "\"9 de octubre de 2019  14:24\",\"9 de octubre de 2019  14:30\",\"06 minutos 24 segundos\",\"8,00\",";
+                "\"9 de octubre de 2019  14:24\",\"9 de octubre de 2019  14:30\",\"6 minutos 24 segundos\",\"8,00\",";
 
         return postTrainingHeaders.concat("\n").concat(dummyTeacher);
     }
@@ -64,6 +65,7 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
         //TODO move logic getReader from parseRowsToBeans
         //TODO Parsear solo un objeto y no solo una lista
         List<TrainingFileDTO> dummyList = this.getListTrainingBeans();
-        //TODO test minutes number and seconds
+        Assert.assertEquals(6, dummyList.get(0).getDuration().getMinutes());
+        Assert.assertEquals(24, dummyList.get(0).getDuration().getSeconds());
     }
 }
