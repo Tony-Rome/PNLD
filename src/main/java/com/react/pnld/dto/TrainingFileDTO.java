@@ -34,7 +34,7 @@ public class TrainingFileDTO {
     @Parsed(index = 8)
     private String finishIn;
 
-    private PGInterval duration;
+    private PGInterval requiredInterval;
 
     @Parsed(index = 10)
     @Format(formats = {"#0,00"}, options = "decimalSeparator=,")
@@ -75,7 +75,7 @@ public class TrainingFileDTO {
     }
 
     public TrainingFileDTO(String lastNames, String name, String rut, String institution, String department,
-                           String email, String testState, String startIn, String finishIn, PGInterval duration, float score,
+                           String email, String testState, String startIn, String finishIn, PGInterval requiredInterval, float score,
                            String answerOne, String answerTwo, String answerThree, String answerFour, String answerFive,
                            String answerSix, String answerSeven, String answerEight, String answerNine, String answerTen) {
         super();
@@ -88,7 +88,7 @@ public class TrainingFileDTO {
         this.testState = testState;
         this.startIn = startIn;
         this.finishIn = finishIn;
-        this.duration = duration;
+        this.requiredInterval = requiredInterval;
         this.score = score;
         this.answerOne = answerOne;
         this.answerTwo = answerTwo;
@@ -174,17 +174,17 @@ public class TrainingFileDTO {
         this.finishIn = finishIn;
     }
 
-    public PGInterval getDuration() {
-        return duration;
+    public PGInterval getRequiredInterval() {
+        return requiredInterval;
     }
 
-    public void setDuration(PGInterval duration) {
-        this.duration = duration;
+    public void setRequiredInterval(PGInterval requiredInterval) {
+        this.requiredInterval = requiredInterval;
     }
 
     @Parsed(index = 9)
-    public void setPGIntervalFromString(String durationString){
-        this.duration = FileUtilService.getTrainingDuration(durationString);
+    public void setIntervalFromString(String requiredInterval){
+        this.requiredInterval = FileUtilService.getRequiredTrainingInterval(requiredInterval);
     }
 
     public float getScore() {
@@ -287,7 +287,7 @@ public class TrainingFileDTO {
                 ", testState='" + testState + '\'' +
                 ", startIn=" + startIn +
                 ", finishIn=" + finishIn +
-                ", duration=" + duration +
+                ", requiredInterval=" + requiredInterval +
                 ", score=" + score +
                 ", answerOne='" + answerOne + '\'' +
                 ", answerTwo='" + answerTwo + '\'' +

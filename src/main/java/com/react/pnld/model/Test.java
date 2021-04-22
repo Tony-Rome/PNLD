@@ -13,7 +13,7 @@ public class Test implements Serializable {
     private String state;
     private String initDate;
     private String endDate;
-    private PGInterval duration;
+    private PGInterval requiredInterval;
     private float score;
 
     public Test() {
@@ -21,7 +21,7 @@ public class Test implements Serializable {
     }
 
     public Test(int id, int teacherId, int loadedFileId, String type, String state, String initDate, String endDate,
-                PGInterval duration, float score) {
+                PGInterval requiredInterval, float score) {
         super();
         this.id = id;
         this.teacherId = teacherId;
@@ -30,7 +30,7 @@ public class Test implements Serializable {
         this.state = state;
         this.initDate = initDate;
         this.endDate = endDate;
-        this.duration = duration;
+        this.requiredInterval = requiredInterval;
         this.score = score;
     }
 
@@ -90,12 +90,12 @@ public class Test implements Serializable {
         this.endDate = endDate;
     }
 
-    public PGInterval getDuration() {
-        return duration;
+    public PGInterval getRequiredInterval() {
+        return requiredInterval;
     }
 
-    public void setDuration(PGInterval duration) {
-        this.duration = duration;
+    public void setRequiredInterval(PGInterval requiredInterval) {
+        this.requiredInterval = requiredInterval;
     }
 
     public float getScore() {
@@ -116,7 +116,7 @@ public class Test implements Serializable {
                 ", state='" + state + '\'' +
                 ", initDate='" + initDate + '\'' +
                 ", endDate='" + endDate + '\'' +
-                ", duration='" + duration + '\'' +
+                ", interval='" + requiredInterval + '\'' +
                 ", score=" + score +
                 '}';
     }

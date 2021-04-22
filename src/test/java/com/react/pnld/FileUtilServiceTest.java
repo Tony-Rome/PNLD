@@ -134,41 +134,41 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void getTrainingDuration_When_string_duration_MinsAndSecs(){
-        PGInterval duration = FileUtilService.getTrainingDuration("12 minutos 31 segundos");
+        PGInterval duration = FileUtilService.getRequiredTrainingInterval("12 minutos 31 segundos");
         Assert.assertEquals(12, duration.getMinutes());
         Assert.assertEquals(31, duration.getSeconds());
     }
 
     @Test
     public void getTrainingDuration_When_string_duration_HourAndMins(){
-        PGInterval duration = FileUtilService.getTrainingDuration("1 hora 32 minutos");
+        PGInterval duration = FileUtilService.getRequiredTrainingInterval("1 hora 32 minutos");
         Assert.assertEquals(1, duration.getHours());
         Assert.assertEquals(32, duration.getMinutes());
     }
 
     @Test
     public void getTrainingDuration_When_string_duration_DaysAndHours(){
-        PGInterval duration = FileUtilService.getTrainingDuration("6 días 19 horas");
+        PGInterval duration = FileUtilService.getRequiredTrainingInterval("6 días 19 horas");
         Assert.assertEquals(6, duration.getDays());
         Assert.assertEquals(19, duration.getHours());
     }
 
     @Test
     public void getTrainingDuration_When_string_duration_empty(){
-        PGInterval duration = FileUtilService.getTrainingDuration("");
+        PGInterval duration = FileUtilService.getRequiredTrainingInterval("");
         Assert.assertEquals(0, duration.getMinutes());
         Assert.assertEquals(0, duration.getSeconds());
     }
 
     @Test
     public void getTrainingDuration_When_string_duration_other_format(){
-        PGInterval duration = FileUtilService.getTrainingDuration("-- --");
+        PGInterval duration = FileUtilService.getRequiredTrainingInterval("-- --");
         Assert.assertEquals(0, duration.getSeconds());
     }
 
     @Test
     public void getTrainingDuration_When_string_duration_unusual_format(){
-        PGInterval duration = FileUtilService.getTrainingDuration("2 houses 2 dogs");
+        PGInterval duration = FileUtilService.getRequiredTrainingInterval("2 houses 2 dogs");
         Assert.assertEquals(0, duration.getSeconds());
     }
 }

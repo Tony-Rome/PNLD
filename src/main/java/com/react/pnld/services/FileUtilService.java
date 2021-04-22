@@ -207,7 +207,7 @@ public class FileUtilService {
         }
     }
 
-    public static PGInterval getTrainingDuration(String durationString){
+    public static PGInterval getRequiredTrainingInterval(String requiredInterval){
         String DAY_LABEL = "dia";
         String HOUR_LABEL = "hora";
         String MINUTE_LABEL = "minuto";
@@ -220,7 +220,7 @@ public class FileUtilService {
         int mins = 0;
         int secs = 0;
 
-        String durationWithoutAccents = removeAccents(durationString);
+        String durationWithoutAccents = removeAccents(requiredInterval);
         String onlyNumsString = durationWithoutAccents.trim().replaceAll("([ \\t\\n\\x0B\\f\\r][a-z]+)","");
         String[] time = onlyNumsString.split("[ \\t\\n\\x0B\\f\\r]");
 

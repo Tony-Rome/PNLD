@@ -38,7 +38,7 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
         Reader reader = new InputStreamReader(inputStream, "UTF-8");
 
         List<TrainingFileDTO> dummyList = fileUtilService.parseRowsToBeans(reader, TrainingFileDTO.class);
-        Assert.assertEquals(6, dummyList.get(0).getDuration().getMinutes());
-        Assert.assertEquals(24, dummyList.get(0).getDuration().getSeconds());
+        Assert.assertEquals(6, dummyList.get(0).getRequiredInterval().getMinutes());
+        Assert.assertEquals(24, dummyList.get(0).getRequiredInterval().getSeconds());
     }
 }

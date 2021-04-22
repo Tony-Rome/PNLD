@@ -60,7 +60,7 @@ public class LoaderMoodleFile {
 
                 Test test = new Test(this.testRepository.getNextTestId(), teacherSelected.get().getId(), loadedFileId,
                         testType, postTrainingRow.getTestState(), postTrainingRow.getStartIn(),
-                        postTrainingRow.getFinishIn(), postTrainingRow.getDuration(), postTrainingRow.getScore());
+                        postTrainingRow.getFinishIn(), postTrainingRow.getRequiredInterval(), postTrainingRow.getScore());
 
                 int resultInsertTest = this.testRepository.insertTest(test);
                 logger.info("processTrainingFileRows. resultInsertTest={}", resultInsertTest);
