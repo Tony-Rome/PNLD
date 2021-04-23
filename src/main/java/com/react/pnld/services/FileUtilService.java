@@ -46,7 +46,7 @@ public class FileUtilService {
     }
 
     public String removeSymbols(String strToClean) {
-        String strCleaned = strToClean.replaceAll("[^a-zA-Z0-9,]", "");
+        String strCleaned = strToClean.replaceAll("[^a-zA-Z0-9,;]", "");
         return strCleaned.toLowerCase();
     }
 
