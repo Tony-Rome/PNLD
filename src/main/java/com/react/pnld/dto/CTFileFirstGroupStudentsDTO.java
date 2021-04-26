@@ -100,7 +100,7 @@ public class CTFileFirstGroupStudentsDTO extends ComputationalThinkingFileDTO{
     @Parsed(field = "Pregunta 25")
     private String questionTwentyFive;
 
-    @Parsed(field = "")
+    @Parsed(index = 38)
     private String lastActualTime;
 
     @Parsed(field = "De 1 a 7, ¿cómo consideras que te fue en el Test?")

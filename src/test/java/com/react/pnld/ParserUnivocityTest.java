@@ -32,6 +32,14 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
         return postTrainingHeaders.concat("\n").concat(dummyTeacher);
     }
 
+    private String getDummyCTtestFirstGroupStudents(){
+        //TODO fix real headers.
+        String headers = "TO_FIX";
+        String dummyResponse = "04-01-21 18:54;Jocelyn;Simmonds;Mujer;6;Mi casa;3º básico;No;Sí;6:52:00 PM;B;D;C;B;B;C;" +
+                "D;A;B;A;C;D;D;;;;C;;C;D;A;;;C;D;;;;6:53:00 PM;5;7;las lei solita :-);tengo tuto;a@aaa.com";
+        return headers.concat("\n").concat(dummyResponse);
+    }
+
     @Test
     public void moodleTimestampFormat_parser_to_DateTime() throws UnsupportedEncodingException {
         InputStream inputStream = new ByteArrayInputStream(getDummyTrainingFileLikeString().getBytes());

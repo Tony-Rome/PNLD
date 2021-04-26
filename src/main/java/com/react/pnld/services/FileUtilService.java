@@ -196,7 +196,8 @@ public class FileUtilService {
                 return this.loaderMoodleFile.satisFile(loadedFile);
 
             case TEST_CT_1:
-                List<ComputationalThinkingFileDTO> ctFirstGroupStudents = parseRowsToBeans(loadedFileReader, ComputationalThinkingFileDTO.class);
+                List<CTFileFirstGroupStudentsDTO> ctFirstGroupStudents = parseRowsToBeans(loadedFileReader,
+                        CTFileFirstGroupStudentsDTO.class);
                 return this.loaderCTFile.testFirstGroupStudents(ctFirstGroupStudents);
 
             case TEST_CT_2:

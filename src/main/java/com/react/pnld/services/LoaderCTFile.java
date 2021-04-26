@@ -1,6 +1,6 @@
 package com.react.pnld.services;
 
-import com.react.pnld.dto.ComputationalThinkingFileDTO;
+import com.react.pnld.dto.CTFileFirstGroupStudentsDTO;
 import com.react.pnld.dto.FileResumeDTO;
 import com.react.pnld.model.LoadedFile;
 import org.slf4j.Logger;
@@ -14,7 +14,7 @@ public class LoaderCTFile {
 
     private static final Logger logger = LoggerFactory.getLogger(LoaderCTFile.class);
 
-    public FileResumeDTO testFirstGroupStudents(List<ComputationalThinkingFileDTO> ctFirstGroupStudents) {
+    public FileResumeDTO testFirstGroupStudents(List<CTFileFirstGroupStudentsDTO> ctFirstGroupStudents) {
         logger.info("testFirstGroupStudents. ctFirstGroupStudents.size()={}", ctFirstGroupStudents.size());
         //TODO validate load records by file's type
 
