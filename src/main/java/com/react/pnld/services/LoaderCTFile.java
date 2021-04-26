@@ -1,13 +1,21 @@
 package com.react.pnld.services;
 
+import com.react.pnld.dto.ComputationalThinkingFileDTO;
 import com.react.pnld.dto.FileResumeDTO;
 import com.react.pnld.model.LoadedFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-@Service
-public class LoaderCPFile {
+import java.util.List;
 
-    public FileResumeDTO testPCOneFile(LoadedFile loadedFile) {
+@Service
+public class LoaderCTFile {
+
+    private static final Logger logger = LoggerFactory.getLogger(LoaderCTFile.class);
+
+    public FileResumeDTO testFirstGroupStudents(List<ComputationalThinkingFileDTO> ctFirstGroupStudents) {
+        logger.info("testFirstGroupStudents. ctFirstGroupStudents.size()={}", ctFirstGroupStudents.size());
         //TODO validate load records by file's type
 
         //TODO insert records if not exist

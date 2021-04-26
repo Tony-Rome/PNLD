@@ -1,9 +1,6 @@
 package com.react.pnld.services;
 
-import com.react.pnld.dto.FileResumeDTO;
-import com.react.pnld.dto.FileTypes;
-import com.react.pnld.dto.ScheduleFileLoadDTO;
-import com.react.pnld.dto.TrainingFileDTO;
+import com.react.pnld.dto.*;
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.model.LoadedFile;
 import com.univocity.parsers.common.processor.BeanListProcessor;
@@ -13,6 +10,7 @@ import org.postgresql.util.PGInterval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -36,13 +34,16 @@ public class FileUtilService {
     private LoaderCodeFile loaderCodeFile;
 
     @Autowired
-    private LoaderCPFile loaderCPFile;
+    private LoaderCTFile loaderCTFile;
 
     private CsvParserSettings csvParserSettings;
 
+    @Value("${csv.delimiters}")
+    private String csvDelimiters;
+
     public FileUtilService() {
         csvParserSettings = new CsvParserSettings();
-        csvParserSettings.setLineSeparatorDetectionEnabled(true);
+        csvParserSettings.setHeaderExtractionEnabled(true);
     }
 
     public String removeSymbols(String strToClean) {
@@ -142,12 +143,13 @@ public class FileUtilService {
     }
 
     public <T> List<T> parseRowsToBeans(Reader reader, Class<T> clazz) {
+        csvParserSettings.detectFormatAutomatically(csvDelimiters.toCharArray());
         BeanListProcessor<T> rowProcessor = new BeanListProcessor<T>(clazz);
         csvParserSettings.setProcessor(rowProcessor);
-        csvParserSettings.setHeaderExtractionEnabled(true);
 
         try {
             CsvParser parser = new CsvParser(csvParserSettings);
+
             parser.parse(reader);
             List<T> rowsLikeBeans = rowProcessor.getBeans();
             return rowsLikeBeans;
@@ -194,13 +196,14 @@ public class FileUtilService {
                 return this.loaderMoodleFile.satisFile(loadedFile);
 
             case TEST_CT_1:
-                return this.loaderCPFile.testPCOneFile(loadedFile);
+                List<ComputationalThinkingFileDTO> ctFirstGroupStudents = parseRowsToBeans(loadedFileReader, ComputationalThinkingFileDTO.class);
+                return this.loaderCTFile.testFirstGroupStudents(ctFirstGroupStudents);
 
             case TEST_CT_2:
-                return this.loaderCPFile.testPCTwoFile(loadedFile);
+                return this.loaderCTFile.testPCTwoFile(loadedFile);
 
             case TEST_CT_3:
-                return this.loaderCPFile.testPCThreeFile(loadedFile);
+                return this.loaderCTFile.testPCThreeFile(loadedFile);
 
             default:
                 return new FileResumeDTO(0, 0, 0);

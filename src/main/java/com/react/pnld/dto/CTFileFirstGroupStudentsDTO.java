@@ -2,7 +2,7 @@ package com.react.pnld.dto;
 
 import com.univocity.parsers.annotations.Parsed;
 
-public class StudentCTFileADTO extends ComputationalThinkingFileDTO{
+public class CTFileFirstGroupStudentsDTO extends ComputationalThinkingFileDTO{
 
     @Parsed(field = "Curso")
     private String level;
@@ -103,74 +103,17 @@ public class StudentCTFileADTO extends ComputationalThinkingFileDTO{
     @Parsed(field = "")
     private String lastActualTime;
 
-    @Parsed(field = "")
+    @Parsed(field = "De 1 a 7, ¿cómo consideras que te fue en el Test?")
     private int howDoYouThinkYouDidInTheTest;
 
-    @Parsed(field = "")
+    @Parsed(field = "De 1 a 7, ¿qué tanto te interesan los computadores y la tecnología?")
     private int howInterestedAreYouInComputersAndTechnology;
 
-    @Parsed(field = "")
+    @Parsed(field = "Cuéntanos sobre el apoyo que tuviste al hacer el test")
     private String tellUsAboutSupportYouReceivedWhileTakingTest;
 
-    @Parsed(field = "")
+    @Parsed(field = "Cuéntanos acerca de cualquier problema que tuviste  para completar el test")
     private String tellUsAboutAnyProblemsYouHadInCompletingTheTest;
-
-    public StudentCTFileADTO(String timeStamp, String name, String lastNames, String gender, String age, String educationalInstitution, String email) {
-        super(timeStamp, name, lastNames, gender, age, educationalInstitution, email);
-    }
-
-    public StudentCTFileADTO(String timeStamp, String name, String lastNames, String gender, String age,
-                             String educationalInstitution, String email, String level, String useCodeOrgPage,
-                             String useScratch, String actualTime, String exampleI, String exampleII, String exampleIII,
-                             String questionOne, String questionTwo, String questionThree, String questionFour,
-                             String questionFive, String questionSix, String questionSeven, String questionEight,
-                             String questionNine, String questionTen, String questionEleven, String questionTwelve,
-                             String questionThirteen, String questionFourteen, String questionFiveteen,
-                             String questionSixteen, String questionSeventeen, String questionEighteen,
-                             String questionNineteen, String questionTwenty, String questionTwentyOne,
-                             String questionTwentyTwo, String questionTwentyThree, String questionTwentyFour,
-                             String questionTwentyFive, String lastActualTime, int howDoYouThinkYouDidInTheTest,
-                             int howInterestedAreYouInComputersAndTechnology, String tellUsAboutSupportYouReceivedWhileTakingTest,
-                             String tellUsAboutAnyProblemsYouHadInCompletingTheTest) {
-        super(timeStamp, name, lastNames, gender, age, educationalInstitution, email);
-        this.level = level;
-        this.useCodeOrgPage = useCodeOrgPage;
-        this.useScratch = useScratch;
-        this.actualTime = actualTime;
-        this.exampleI = exampleI;
-        this.exampleII = exampleII;
-        this.exampleIII = exampleIII;
-        this.questionOne = questionOne;
-        this.questionTwo = questionTwo;
-        this.questionThree = questionThree;
-        this.questionFour = questionFour;
-        this.questionFive = questionFive;
-        this.questionSix = questionSix;
-        this.questionSeven = questionSeven;
-        this.questionEight = questionEight;
-        this.questionNine = questionNine;
-        this.questionTen = questionTen;
-        this.questionEleven = questionEleven;
-        this.questionTwelve = questionTwelve;
-        this.questionThirteen = questionThirteen;
-        this.questionFourteen = questionFourteen;
-        this.questionFiveteen = questionFiveteen;
-        this.questionSixteen = questionSixteen;
-        this.questionSeventeen = questionSeventeen;
-        this.questionEighteen = questionEighteen;
-        this.questionNineteen = questionNineteen;
-        this.questionTwenty = questionTwenty;
-        this.questionTwentyOne = questionTwentyOne;
-        this.questionTwentyTwo = questionTwentyTwo;
-        this.questionTwentyThree = questionTwentyThree;
-        this.questionTwentyFour = questionTwentyFour;
-        this.questionTwentyFive = questionTwentyFive;
-        this.lastActualTime = lastActualTime;
-        this.howDoYouThinkYouDidInTheTest = howDoYouThinkYouDidInTheTest;
-        this.howInterestedAreYouInComputersAndTechnology = howInterestedAreYouInComputersAndTechnology;
-        this.tellUsAboutSupportYouReceivedWhileTakingTest = tellUsAboutSupportYouReceivedWhileTakingTest;
-        this.tellUsAboutAnyProblemsYouHadInCompletingTheTest = tellUsAboutAnyProblemsYouHadInCompletingTheTest;
-    }
 
     public String getLevel() {
         return level;

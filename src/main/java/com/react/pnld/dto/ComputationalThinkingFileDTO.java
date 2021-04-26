@@ -25,17 +25,6 @@ public class ComputationalThinkingFileDTO {
     @Parsed(field = {"Correo electrónico para futuro contacto", "Correo electrónico"})
     private String email;
 
-    public ComputationalThinkingFileDTO(String timeStamp, String name, String lastNames, String gender, String age,
-                                        String educationalInstitution, String email) {
-        this.timeStamp = timeStamp;
-        this.name = name;
-        this.lastNames = lastNames;
-        this.gender = gender;
-        this.age = age;
-        this.educationalInstitution = educationalInstitution;
-        this.email = email;
-    }
-
     public String getTimeStamp() {
         return timeStamp;
     }
