@@ -40,7 +40,7 @@ public class PnldIndicatorsAppSecurityConfig extends WebSecurityConfigurerAdapte
                 .loginPage("/login")
                 .usernameParameter("txtUsuario")
                 .passwordParameter("txtClave")
-                .defaultSuccessUrl("/", true)
+                .defaultSuccessUrl("/home", true)
                 .and()
                 .logout()
                 .permitAll();

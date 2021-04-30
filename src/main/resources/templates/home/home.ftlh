@@ -1,4 +1,4 @@
-<#import "header.ftlh" as hd />
+<#import "../commons/header.ftlh" as hd />
 
 <!DOCTYPE html>
 <html>

@@ -2,7 +2,7 @@
 <#import "pagination.ftlh" as pg/>
 <#import "popup.ftlh" as pu/>
 <#import "file-form.ftlh" as ff/>
-<#import "header.ftlh" as hd />
+<#import "../commons/header.ftlh" as hd />
 
 <!DOCTYPE html>
 <html>
