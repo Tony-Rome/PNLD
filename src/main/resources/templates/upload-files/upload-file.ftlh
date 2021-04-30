@@ -2,7 +2,7 @@
 <#import "pagination.ftlh" as pg/>
 <#import "popup.ftlh" as pu/>
 <#import "file-form.ftlh" as ff/>
-<#import "file-upload-header.ftlh" as hf />
+<#import "../commons/header.ftlh" as hd />
 
 <!DOCTYPE html>
 <html>
@@ -10,7 +10,7 @@
         <title>Archivos</title>
         <meta charset="UTF-8">
         <base href="/">
-        <link href="css/load-files.css" rel="stylesheet"/>
+        <link href="css/header.css" rel="stylesheet"/>
         <link href="css/popup.css" rel="stylesheet"/>
         <link href="css/responsive.css" rel="stylesheet"/>
         <link href="css/files-table.css" rel="stylesheet"/>
@@ -22,7 +22,8 @@
 
         <#assign filesNumberToShow = 5 />
 
-        <@hf.header />
+        <@hd.header title = 'Archivos'/>
+
         <@ft.filesTable filesNumberToShow = filesNumberToShow/>
 
         <#if (filesList?has_content) >

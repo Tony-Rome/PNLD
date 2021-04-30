@@ -39,7 +39,7 @@ public class FileController {
         model.addAttribute("filesList", fileTableResumeDTOList);
         model.addAttribute("currentPage", currentPage);
 
-        return "upload-file";
+        return "upload-files/upload-file";
     }
 
     @PostMapping(value = "/scheduleFileLoadPost")
