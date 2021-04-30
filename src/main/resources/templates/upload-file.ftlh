@@ -22,7 +22,8 @@
 
         <#assign filesNumberToShow = 5 />
 
-        <@hd.header />
+        <@hd.header title = 'Archivos'/>
+
         <@ft.filesTable filesNumberToShow = filesNumberToShow/>
 
         <#if (filesList?has_content) >

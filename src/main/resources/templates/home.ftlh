@@ -10,9 +10,9 @@
     </head>
     <body>
 
-    <@hd.header />
+    <@hd.header title = 'PLATAFORMA PNLD' />
 
-       <h1>HOME !!</h1>
+       <h1>Plataforma PNLD</h1>
 
     </body>
 </html>
