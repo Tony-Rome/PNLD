@@ -1,0 +1,12 @@
+.squareContainer {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 100px;
+}
+
+.square {
+    height: 250px;
+    border-radius: 4px;
+    width: 250px;
+    border: 2px solid black;
+}
