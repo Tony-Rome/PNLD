@@ -74,34 +74,6 @@ public class TrainingFileDTO {
         super();
     }
 
-    public TrainingFileDTO(String lastNames, String name, String rut, String institution, String department,
-                           String email, String testState, String startIn, String finishIn, PGInterval requiredInterval, float score,
-                           String answerOne, String answerTwo, String answerThree, String answerFour, String answerFive,
-                           String answerSix, String answerSeven, String answerEight, String answerNine, String answerTen) {
-        super();
-        this.lastNames = lastNames;
-        this.name = name;
-        this.rut = rut;
-        this.institution = institution;
-        this.department = department;
-        this.email = email;
-        this.testState = testState;
-        this.startIn = startIn;
-        this.finishIn = finishIn;
-        this.requiredInterval = requiredInterval;
-        this.score = score;
-        this.answerOne = answerOne;
-        this.answerTwo = answerTwo;
-        this.answerThree = answerThree;
-        this.answerFour = answerFour;
-        this.answerFive = answerFive;
-        this.answerSix = answerSix;
-        this.answerSeven = answerSeven;
-        this.answerEight = answerEight;
-        this.answerNine = answerNine;
-        this.answerTen = answerTen;
-    }
-
     public String getLastNames() {
         return lastNames;
     }
