@@ -6,6 +6,8 @@ import com.univocity.parsers.annotations.LowerCase;
 import com.univocity.parsers.annotations.Parsed;
 import org.postgresql.util.PGInterval;
 
+import java.time.LocalDateTime;
+
 public class TrainingFileDTO {
 
     @Parsed(index = 0)
@@ -36,13 +38,9 @@ public class TrainingFileDTO {
     @LowerCase
     private String testState;
 
-    @Parsed(index = 7)
-    @LowerCase
-    private String startIn;
+    private LocalDateTime startIn;
 
-    @Parsed(index = 8)
-    @LowerCase
-    private String finishIn;
+    private LocalDateTime finishIn;
 
     private PGInterval requiredInterval;
 
@@ -150,20 +148,32 @@ public class TrainingFileDTO {
         this.testState = testState;
     }
 
-    public String getStartIn() {
+    public LocalDateTime getStartIn() {
         return startIn;
     }
 
-    public void setStartIn(String startIn) {
+    public void setStartIn(LocalDateTime startIn) {
         this.startIn = startIn;
     }
 
-    public String getFinishIn() {
+    @Parsed(index = 7)
+    @LowerCase
+    public void setLocalDateStartIn(String startIn) {
+        this.startIn = FileUtilService.getLocalDateFrom(startIn);
+    }
+
+    public LocalDateTime getFinishIn() {
         return finishIn;
     }
 
-    public void setFinishIn(String finishIn) {
+    public void setFinishIn(LocalDateTime finishIn) {
         this.finishIn = finishIn;
+    }
+
+    @Parsed(index = 8)
+    @LowerCase
+    public void setLocalDateFinishIn(String finishIn) {
+        this.finishIn = FileUtilService.getLocalDateFrom(finishIn);
     }
 
     public PGInterval getRequiredInterval() {

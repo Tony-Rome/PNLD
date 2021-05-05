@@ -50,12 +50,42 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void testParseDate(){
-        String formatString = "dd.MMMM.yyyy HH:mm";
-        String inputClean = "05 de octubre de 2021 14:30".replaceAll(" de ", ".");
-        LocalDateTime localDateTime = LocalDateTime.parse(inputClean,
-                DateTimeFormatter.ofPattern(formatString, new Locale("es", "ES")));
+    public void moodleTrainingTest_parser_StartInDateTime() throws UnsupportedEncodingException {
 
-        Assert.assertEquals(localDateTime.getDayOfMonth(), 5);
+        InputStream inputStream = new ByteArrayInputStream(getDummyTrainingFileLikeString().getBytes());
+        Reader reader = new InputStreamReader(inputStream, "UTF-8");
+
+        List<TrainingFileDTO> dummyList = fileUtilService.parseRowsToBeans(reader, TrainingFileDTO.class);
+
+        Assert.assertEquals(9, dummyList.get(0).getStartIn().getDayOfMonth());
+        Assert.assertEquals(10, dummyList.get(0).getStartIn().getMonth().getValue());
+        Assert.assertEquals(14, dummyList.get(0).getStartIn().getHour());
+        Assert.assertEquals(24, dummyList.get(0).getStartIn().getMinute());
+    }
+
+
+    @Test
+    public void moodleTrainingTest_parser_FinishInDateTime() throws UnsupportedEncodingException {
+
+        InputStream inputStream = new ByteArrayInputStream(getDummyTrainingFileLikeString().getBytes());
+        Reader reader = new InputStreamReader(inputStream, "UTF-8");
+
+        List<TrainingFileDTO> dummyList = fileUtilService.parseRowsToBeans(reader, TrainingFileDTO.class);
+
+        Assert.assertEquals(9, dummyList.get(0).getFinishIn().getDayOfMonth());
+        Assert.assertEquals(10, dummyList.get(0).getFinishIn().getMonth().getValue());
+        Assert.assertEquals(14, dummyList.get(0).getFinishIn().getHour());
+        Assert.assertEquals(30, dummyList.get(0).getFinishIn().getMinute());
+    }
+
+    @Test
+    public void testParseDate() {
+
+        String inputClean = "1 de octubre de 2021 19:35".replaceAll(" de ", "/").replaceAll("\\s+|\\t", " ");
+        String formatPattern = "d/MMMM/yyyy H:m";
+        LocalDateTime localDateTime = LocalDateTime.parse(inputClean,
+                DateTimeFormatter.ofPattern(formatPattern, new Locale("es", "ES")));
+
+        Assert.assertEquals(localDateTime.getDayOfMonth(), 1);
     }
 }

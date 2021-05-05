@@ -13,13 +13,18 @@ import org.postgresql.util.PGInterval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.text.Normalizer;
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class FileUtilService {
@@ -39,6 +44,9 @@ public class FileUtilService {
     private LoaderCPFile loaderCPFile;
 
     private CsvParserSettings csvParserSettings;
+
+    @Value("${format.date.training.test}")
+    private static String formatDateTrainingTest;
 
     public FileUtilService() {
         csvParserSettings = new CsvParserSettings();
@@ -244,5 +252,18 @@ public class FileUtilService {
 
     public static String removeAccents(String toClean){
         return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+    }
+
+    public static LocalDateTime getLocalDateFrom(String stringDate){
+
+        String stringFormatted = stringDate.replaceAll(" de ", "/").replaceAll("\\s+|\\t", " ");;
+        String formatPattern = "d/MMMM/yyyy H:m";
+        try {
+            return LocalDateTime.parse(stringFormatted, DateTimeFormatter.ofPattern(formatPattern,
+                    new Locale("es", "ES")));
+        } catch (DateTimeException dateTimeException){
+            logger.error("getLocalDateFrom.", dateTimeException.getMessage(), dateTimeException);
+            return LocalDateTime.MIN;
+        }
     }
 }
