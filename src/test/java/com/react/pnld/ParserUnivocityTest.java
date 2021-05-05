@@ -10,8 +10,11 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 @SpringBootTest
 public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
@@ -44,5 +47,15 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
         List<TrainingFileDTO> dummyList = fileUtilService.parseRowsToBeans(reader, TrainingFileDTO.class);
         Assert.assertEquals(6, dummyList.get(0).getRequiredInterval().getMinutes());
         Assert.assertEquals(24, dummyList.get(0).getRequiredInterval().getSeconds());
+    }
+
+    @Test
+    public void testParseDate(){
+        String formatString = "dd.MMMM.yyyy HH:mm";
+        String inputClean = "05 de octubre de 2021 14:30".replaceAll(" de ", ".");
+        LocalDateTime localDateTime = LocalDateTime.parse(inputClean,
+                DateTimeFormatter.ofPattern(formatString, new Locale("es", "ES")));
+
+        Assert.assertEquals(localDateTime.getDayOfMonth(), 5);
     }
 }
