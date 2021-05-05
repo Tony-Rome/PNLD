@@ -2,7 +2,10 @@ package com.react.pnld.services;
 
 import com.react.pnld.dto.FileResumeDTO;
 import com.react.pnld.dto.TrainingFileDTO;
-import com.react.pnld.model.*;
+import com.react.pnld.model.LoadedFile;
+import com.react.pnld.model.School;
+import com.react.pnld.model.Teacher;
+import com.react.pnld.model.Training;
 import com.react.pnld.repo.PersonRepository;
 import com.react.pnld.repo.TestRepository;
 import org.slf4j.Logger;
@@ -41,7 +44,6 @@ public class LoaderMoodleFile {
         for (TrainingFileDTO postTrainingRow : postTrainingRows) {
             logger.info("processTrainingFileRows. postTrainingRow={}", postTrainingRow);
 
-            //check docente exist, if dont then insert persona, gender, docente
             Optional<Teacher> teacherSelected = personRepository.getTeacherPerson(FileUtilService.
                     removeSymbols(postTrainingRow.getRut()));
 

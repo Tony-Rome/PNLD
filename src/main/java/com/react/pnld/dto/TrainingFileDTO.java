@@ -2,36 +2,46 @@ package com.react.pnld.dto;
 
 import com.react.pnld.services.FileUtilService;
 import com.univocity.parsers.annotations.Format;
+import com.univocity.parsers.annotations.LowerCase;
 import com.univocity.parsers.annotations.Parsed;
 import org.postgresql.util.PGInterval;
 
 public class TrainingFileDTO {
 
     @Parsed(index = 0)
+    @LowerCase
     private String lastNames;
 
     @Parsed(index = 1)
+    @LowerCase
     private String name;
 
     @Parsed(index = 2)
+    @LowerCase
     private String rut;
 
     @Parsed(index = 3)
+    @LowerCase
     private String institution;
 
     @Parsed(index = 4)
+    @LowerCase
     private String department;
 
     @Parsed(index = 5)
+    @LowerCase
     private String email;
 
     @Parsed(index = 6)
+    @LowerCase
     private String testState;
 
     @Parsed(index = 7)
+    @LowerCase
     private String startIn;
 
     @Parsed(index = 8)
+    @LowerCase
     private String finishIn;
 
     private PGInterval requiredInterval;
@@ -41,33 +51,43 @@ public class TrainingFileDTO {
     private float score;
 
     @Parsed(index = 11)
+    @LowerCase
     private String answerOne;
 
     @Parsed(index = 12)
+    @LowerCase
     private String answerTwo;
 
     @Parsed(index = 13)
+    @LowerCase
     private String answerThree;
 
     @Parsed(index = 14)
+    @LowerCase
     private String answerFour;
 
     @Parsed(index = 15)
+    @LowerCase
     private String answerFive;
 
     @Parsed(index = 16)
+    @LowerCase
     private String answerSix;
 
     @Parsed(index = 17)
+    @LowerCase
     private String answerSeven;
 
     @Parsed(index = 18)
+    @LowerCase
     private String answerEight;
 
     @Parsed(index = 19)
+    @LowerCase
     private String answerNine;
 
     @Parsed(index = 20)
+    @LowerCase
     private String answerTen;
 
     public TrainingFileDTO() {
