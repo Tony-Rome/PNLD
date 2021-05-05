@@ -1,7 +1,7 @@
 package com.react.pnld.model;
 
 public class Person {
-    private int id;
+    private int personId;
     private String name;
     private String paternalLastName;
     private String maternalLastName;
@@ -13,12 +13,12 @@ public class Person {
         super();
     }
 
-    public int getId() {
-        return id;
+    public int getPersonId() {
+        return personId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPersonId(int personId) {
+        this.personId = personId;
     }
 
     public String getName() {
@@ -72,7 +72,7 @@ public class Person {
     @Override
     public String toString() {
         return "Person{" +
-                "id=" + id +
+                "personId=" + personId +
                 ", name='" + name + '\'' +
                 ", paternalLastName='" + paternalLastName + '\'' +
                 ", maternalLastName='" + maternalLastName + '\'' +

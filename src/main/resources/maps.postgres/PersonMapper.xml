@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.react.pnld.mappers.PersonMapper">
+    <cache/>
+    <resultMap id="getTeacherPerson" type="com.react.pnld.model.Teacher">
+        <id property="teacherId" column="id_docente"/>
+        <result property="rut" column="rut" />
+        <result property="age" column="edad" />
+        <result property="department" column="departamento" />
+        <result property="participatedInPNLD" column="participo_en_PNLD" />
+        <result property="trainingId" column="id_capacitacion" />
+        <result property="personId" column="id_persona"/>
+        <result property="name" column="nombre" />
+        <result property="paternalLastName" column="apellido_paterno" />
+        <result property="maternalLastName" column="apellido_materno" />
+        <result property="email" column="correo"/>
+        <result property="genderId" column="id_genero"/>
+        <result property="schoolId" column="id_colegio" />
+    </resultMap>
+    <select id="getTeacherPerson" resultMap="getTeacherPerson" useCache="true">
+        SELECT d.id_docente, d.rut, d.edad, d.departamento, d.participo_en_PNLD, d.id_capacitacion,
+               p.id_persona, p.nombre, p.apellido_paterno, p.apellido_materno, p.correo, p.id_genero, p.id_colegio
+        FROM pnld.persona p INNER JOIN pnld.docente d
+        ON p.id_persona = d.id_persona
+        AND d.rut = #{rut};
+    </select>
+
+    <insert id="insertTeacher">
+        INSERT INTO pnld.docente
+        (id_docente, id_persona, rut, edad, departamento, participo_en_PNLD, dicta_en_niveles, dicta_asignaturas,
+         recursos_cs, recursos_robotica, id_capacitacion)
+        VALUES
+        (#{teacherId}, #{personId}, #{rut}, #{age}, #{department}, #{participatedInPNLD}, #{teachesInLevels},
+         #{teachesSubjects}, #{csResources}, #{roboticsResources}, #{trainingId});
+    </insert>
+
+    <insert id="insertPerson">
+        INSERT INTO pnld.persona
+        (id_persona, nombre, apellido_paterno, apellido_materno, correo, id_genero, id_colegio)
+        VALUES
+        (#{personId}, #{name}, #{paternalLastName}, #{maternalLastName}, #{email}, #{genderId}, #{schoolId});
+    </insert>
+
+    <select id="getNextPersonId" resultType="int">
+        SELECT nextval(pg_get_serial_sequence('pnld.persona', 'id_persona'));
+    </select>
+
+    <select id="getNextTeacherId" resultType="int">
+        SELECT nextval(pg_get_serial_sequence('pnld.docente', 'id_docente'));
+    </select>
+
+    <select id="getNextSchoolId" resultType="int">
+        SELECT nextval(pg_get_serial_sequence('pnld.colegio', 'id'));
+    </select>
+
+    <resultMap id="getSchool" type="com.react.pnld.model.School">
+        <id property="id" column="id"/>
+        <result property="name" column="nombre" />
+        <result property="city" column="ciudad" />
+        <result property="regionId" column="id_region" />
+        <result property="rbd" column="rbd" />
+    </resultMap>
+    <select id="getSchool" resultMap="getSchool">
+        SELECT *
+        FROM pnld.colegio
+        WHERE nombre = #{name};
+    </select>
+
+    <insert id="insertSchool">
+        INSERT INTO pnld.colegio
+            (id, id_region, nombre, ciudad, rbd)
+        VALUES
+            (#{id}, #{regionId}, #{name}, #{city}, #{rbd});
+    </insert>
+
+    <resultMap id="getTraining" type="com.react.pnld.model.Training">
+        <id property="id" column="id"/>
+        <result property="organizer" column="organizador"/>
+        <result property="facilitator" column="facilitador" />
+        <result property="trainingDate" column="fecha" />
+    </resultMap>
+    <select id="getTrainingByFacilitator" resultMap="getTraining">
+        SELECT *
+        FROM pnld.capacitacion
+        WHERE facilitador = #{facilitatorName};
+    </select>
+
+</mapper>

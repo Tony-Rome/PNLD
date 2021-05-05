@@ -4,35 +4,27 @@ import java.io.Serializable;
 
 public class Teacher extends Person implements Serializable {
 
-    private int id;
-    private int personId;
+    private int teacherId;
     private String rut;
     private int age;
     private String department;
-    private boolean participateInPNLD;
+    private boolean participatedInPNLD;
     private String teachesSubjects;
     private String teachesInLevels;
     private String csResources;
     private String roboticsResources;
+    private int trainingId;
 
     public Teacher() {
         super();
     }
 
-    public int getId() {
-        return id;
+    public int getTeacherId() {
+        return teacherId;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getPersonId() {
-        return personId;
-    }
-
-    public void setPersonId(int personId) {
-        this.personId = personId;
+    public void setTeacherId(int teacherId) {
+        this.teacherId = teacherId;
     }
 
     public String getRut() {
@@ -59,12 +51,12 @@ public class Teacher extends Person implements Serializable {
         this.department = department;
     }
 
-    public boolean isParticipateInPNLD() {
-        return participateInPNLD;
+    public boolean isParticipatedInPNLD() {
+        return participatedInPNLD;
     }
 
-    public void setParticipateInPNLD(boolean participateInPNLD) {
-        this.participateInPNLD = participateInPNLD;
+    public void setParticipatedInPNLD(boolean participatedInPNLD) {
+        this.participatedInPNLD = participatedInPNLD;
     }
 
     public String getTeachesSubjects() {
@@ -99,19 +91,27 @@ public class Teacher extends Person implements Serializable {
         this.roboticsResources = roboticsResources;
     }
 
+    public int getTrainingId() {
+        return trainingId;
+    }
+
+    public void setTrainingId(int trainingId) {
+        this.trainingId = trainingId;
+    }
+
     @Override
     public String toString() {
         return "Teacher{" +
-                "id=" + id +
-                ", personId=" + personId +
+                "teacherId=" + teacherId +
                 ", rut='" + rut + '\'' +
                 ", age=" + age +
                 ", department='" + department + '\'' +
-                ", participateInPNLD=" + participateInPNLD +
+                ", participatedInPNLD=" + participatedInPNLD +
                 ", teachesSubjects='" + teachesSubjects + '\'' +
                 ", teachesInLevels='" + teachesInLevels + '\'' +
                 ", csResources='" + csResources + '\'' +
                 ", roboticsResources='" + roboticsResources + '\'' +
+                ", trainingId='" + trainingId + '\'' +
                 '}';
     }
 }

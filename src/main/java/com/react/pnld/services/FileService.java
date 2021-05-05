@@ -23,7 +23,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -159,8 +158,7 @@ public class FileService {
         LocalDateTime startDateTime = endDateTime.minusDays(1L);
         logger.info("executeFileLoadScheduled. startDateTime={}", startDateTime);
 
-        List<LoadedFile> filesLoadedScheduled = fileRepository.getLoadedFilesByStateAndTimestamps(FileTypes.STATE_SCHEDULED,
-                Timestamp.valueOf(startDateTime), Timestamp.valueOf(endDateTime));
+        List<LoadedFile> filesLoadedScheduled = fileRepository.getLoadedFilesNotProcessed();
         logger.info("executeFileLoadScheduled. filesLoadedScheduled={}", filesLoadedScheduled);
 
         for (LoadedFile loadedFile : filesLoadedScheduled) {

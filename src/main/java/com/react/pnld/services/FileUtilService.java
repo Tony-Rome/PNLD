@@ -45,7 +45,7 @@ public class FileUtilService {
         csvParserSettings.setLineSeparatorDetectionEnabled(true);
     }
 
-    public String removeSymbols(String strToClean) {
+    public static String removeSymbols(String strToClean) {
         String strCleaned = strToClean.replaceAll("[^a-zA-Z0-9,]", "");
         return strCleaned.toLowerCase();
     }

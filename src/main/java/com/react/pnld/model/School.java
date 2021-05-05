@@ -1,11 +1,14 @@
 package com.react.pnld.model;
 
-public class School {
+import java.io.Serializable;
+
+public class School implements Serializable {
 
     private int id;
     private String name;
     private String city;
     private int regionId;
+    private int rbd;
 
     public School(){
         super();
@@ -43,6 +46,14 @@ public class School {
         this.regionId = regionId;
     }
 
+    public int getRbd() {
+        return rbd;
+    }
+
+    public void setRbd(int rbd) {
+        this.rbd = rbd;
+    }
+
     @Override
     public String toString() {
         return "School{" +
@@ -50,6 +61,7 @@ public class School {
                 ", name='" + name + '\'' +
                 ", city='" + city + '\'' +
                 ", regionId=" + regionId +
+                ", rbd=" + rbd +
                 '}';
     }
 }
