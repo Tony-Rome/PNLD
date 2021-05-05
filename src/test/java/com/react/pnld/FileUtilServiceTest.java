@@ -1,6 +1,7 @@
 package com.react.pnld;
 
 import com.react.pnld.dto.ScheduleFileLoadDTO;
+import com.react.pnld.dto.TrainingFileDTO;
 import com.react.pnld.services.FileUtilService;
 import org.postgresql.util.PGInterval;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,12 +135,16 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void getTrainingDuration_When_string_duration_MinsAndSecs(){
-        PGInterval duration = FileUtilService.getRequiredTrainingInterval("12 minutos 31 segundos");
+        TrainingFileDTO trainingFileDTO = new TrainingFileDTO();
+        trainingFileDTO.setStartIn(LocalDateTime.of(2021, 5,1,16,50, 00));
+        trainingFileDTO.setFinishIn(LocalDateTime.of(2021, 5,1,17,2, 31));
+
+        PGInterval duration = trainingFileDTO.getRequiredInterval();
         Assert.assertEquals(12, duration.getMinutes());
         Assert.assertEquals(31, duration.getSeconds());
     }
 
-    @Test
+    /*@Test
     public void getTrainingDuration_When_string_duration_HourAndMins(){
         PGInterval duration = FileUtilService.getRequiredTrainingInterval("1 hora 32 minutos");
         Assert.assertEquals(1, duration.getHours());
@@ -170,5 +175,5 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     public void getTrainingDuration_When_string_duration_unusual_format(){
         PGInterval duration = FileUtilService.getRequiredTrainingInterval("2 houses 2 dogs");
         Assert.assertEquals(0, duration.getSeconds());
-    }
+    }*/
 }

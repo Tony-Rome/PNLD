@@ -3,6 +3,7 @@ package com.react.pnld.model;
 import org.postgresql.util.PGInterval;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 public class TrainingTest implements Serializable {
 
@@ -10,8 +11,8 @@ public class TrainingTest implements Serializable {
     private String type;
     private int loadedFileId;
     private int teacherId;
-    private String initDate; //TODO to localdate
-    private String endDate; //TODO to localdate
+    private LocalDateTime initDate;
+    private LocalDateTime endDate;
     private PGInterval requiredInterval;
     private String state;
     private float score;
@@ -53,19 +54,19 @@ public class TrainingTest implements Serializable {
         this.teacherId = teacherId;
     }
 
-    public String getInitDate() {
+    public LocalDateTime getInitDate() {
         return initDate;
     }
 
-    public void setInitDate(String initDate) {
+    public void setInitDate(LocalDateTime initDate) {
         this.initDate = initDate;
     }
 
-    public String getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 

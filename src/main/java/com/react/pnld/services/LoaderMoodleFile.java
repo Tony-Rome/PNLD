@@ -44,6 +44,7 @@ public class LoaderMoodleFile {
             Optional<Teacher> teacherSelected = personRepository.getTeacherPerson(FileUtilService.
                     removeSymbols(postTrainingRow.getRut()));
 
+
             if (!teacherSelected.isPresent()) {
                 Teacher teacher = this.buildTeacherFrom(postTrainingRow);
                 this.personRepository.insertPerson(teacher);
@@ -63,8 +64,8 @@ public class LoaderMoodleFile {
                 newTrainingTest.setType(testType);
                 newTrainingTest.setLoadedFileId(loadedFileId);
                 newTrainingTest.setTeacherId(teacherSelected.get().getTeacherId());
-                newTrainingTest.setInitDate(null);
-                newTrainingTest.setEndDate(null);
+                newTrainingTest.setInitDate(postTrainingRow.getStartIn());
+                newTrainingTest.setEndDate(postTrainingRow.getFinishIn());
                 newTrainingTest.setRequiredInterval(postTrainingRow.getRequiredInterval());
                 newTrainingTest.setState(postTrainingRow.getTestState());
                 newTrainingTest.setScore(postTrainingRow.getScore());

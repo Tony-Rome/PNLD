@@ -9,7 +9,6 @@ import com.react.pnld.model.LoadedFile;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
-import org.postgresql.util.PGInterval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -215,7 +214,8 @@ public class FileUtilService {
         }
     }
 
-    public static PGInterval getRequiredTrainingInterval(String requiredInterval){
+
+    /*public static PGInterval getRequiredTrainingInterval(String requiredInterval){
         String DAY_LABEL = "dia";
         String HOUR_LABEL = "hora";
         String MINUTE_LABEL = "minuto";
@@ -248,7 +248,7 @@ public class FileUtilService {
         }
 
         return new PGInterval(yearZero, monthZero, days, hour, mins, secs);
-    }
+    }*/
 
     public static String removeAccents(String toClean){
         return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
