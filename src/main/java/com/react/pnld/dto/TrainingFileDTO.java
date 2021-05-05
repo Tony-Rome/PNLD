@@ -46,7 +46,7 @@ public class TrainingFileDTO {
 
     private PGInterval requiredInterval;
 
-    @Parsed(index = 10)
+    @Parsed(index = 10 )
     @Format(formats = {"#0,00"}, options = "decimalSeparator=,")
     private float score;
 

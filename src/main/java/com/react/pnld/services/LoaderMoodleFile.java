@@ -2,10 +2,7 @@ package com.react.pnld.services;
 
 import com.react.pnld.dto.FileResumeDTO;
 import com.react.pnld.dto.TrainingFileDTO;
-import com.react.pnld.model.LoadedFile;
-import com.react.pnld.model.School;
-import com.react.pnld.model.Teacher;
-import com.react.pnld.model.Training;
+import com.react.pnld.model.*;
 import com.react.pnld.repo.PersonRepository;
 import com.react.pnld.repo.TestRepository;
 import org.slf4j.Logger;
@@ -56,30 +53,29 @@ public class LoaderMoodleFile {
 
             logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherSelected.get());
 
-            /*Optional<Test> teacherTest = testRepository.getTeacherTest(teacherSelected.get().getId(), testType);
+            Optional<TrainingTest> trainingTest = testRepository.getTrainingTest(teacherSelected.get().getTeacherId(),
+                    testType);
 
-            if (!teacherTest.isPresent()) {
+            if (!trainingTest.isPresent()) {
 
-                Test test = new Test(this.testRepository.getNextTestId(), teacherSelected.get().getId(), loadedFileId,
-                        testType, postTrainingRow.getTestState(), postTrainingRow.getStartIn(),
-                        postTrainingRow.getFinishIn(), postTrainingRow.getRequiredInterval(), postTrainingRow.getScore());
+                TrainingTest newTrainingTest = new TrainingTest();
+                newTrainingTest.setId(this.testRepository.getNextTrainingTestId());
+                newTrainingTest.setType(testType);
+                newTrainingTest.setLoadedFileId(loadedFileId);
+                newTrainingTest.setTeacherId(teacherSelected.get().getTeacherId());
+                newTrainingTest.setInitDate(null);
+                newTrainingTest.setEndDate(null);
+                newTrainingTest.setRequiredInterval(postTrainingRow.getRequiredInterval());
+                newTrainingTest.setState(postTrainingRow.getTestState());
+                newTrainingTest.setScore(postTrainingRow.getScore());
+                newTrainingTest.setAnswers(null);
 
-                int resultInsertTest = this.testRepository.insertTest(test);
+                int resultInsertTest = this.testRepository.insertTrainingTest(newTrainingTest);
                 logger.info("processTrainingFileRows. resultInsertTest={}", resultInsertTest);
-
-                TrainingAnswer trainingAnswer = new TrainingAnswer(this.testRepository.getNextTrainingAnswer(), test.getId(),
-                        postTrainingRow.getAnswerOne(), postTrainingRow.getAnswerTwo(), postTrainingRow.getAnswerThree(),
-                        postTrainingRow.getAnswerFour(), postTrainingRow.getAnswerFive(), postTrainingRow.getAnswerSix(),
-                        postTrainingRow.getAnswerSeven(), postTrainingRow.getAnswerEight(), postTrainingRow.getAnswerNine(),
-                        postTrainingRow.getAnswerTen());
-
-                int resultInsertTrainingAnswer = this.testRepository.insertTrainingAnswer(trainingAnswer);
-                logger.info("processTrainingFileRows. resultInsertTrainingAnswer={}", resultInsertTrainingAnswer);
-
                 newRecords++;
             } else {
                 duplicatedRecords++;
-            }*/
+            }
 
         }
 

@@ -3,45 +3,35 @@
 
 <mapper namespace="com.react.pnld.mappers.TestMapper">
     <cache/>
-    <resultMap id="teacherTest" type="com.react.pnld.model.Test">
+
+    <select id="getNextTrainingTestId" resultType="int">
+        SELECT nextval(pg_get_serial_sequence('pnld.test_capacitacion', 'id'));
+    </select>
+
+    <resultMap id="getTrainingTest" type="com.react.pnld.model.TrainingTest">
         <id property="id" column="id"/>
-        <result property="teacherId" column="id_docente" />
-        <result property="loadedFileId" column="id_archivo_fuente" />
         <result property="type" column="tipo" />
-        <result property="state" column="estado" />
+        <result property="loadedFileId" column="id_archivo_cargado" />
+        <result property="teacherId" column="id_docente" />
         <result property="initDate" column="fecha_inicio" />
         <result property="endDate" column="fecha_fin" />
         <result property="requiredInterval" column="tiempo_requerido"  javaType="java.lang.Object"/>
+        <result property="state" column="estado" />
         <result property="score" column="calificacion" />
+        <result property="answers" column="respuestas"/>
     </resultMap>
-
-    <select id="getTeacherTest" resultMap="teacherTest">
-        SELECT * FROM pnld.test WHERE id_docente=#{teacherId} AND tipo=#{testType}
+    <select id="getTrainingTest" resultMap="getTrainingTest">
+        SELECT *
+        FROM pnld.test_capacitacion
+        WHERE id_docente=#{teacherId} AND tipo=#{testType}
     </select>
     
-    <insert id="insertTest" useGeneratedKeys="true">
-        INSERT INTO pnld.test 
-            (id, id_docente, id_archivo_fuente, tipo, estado,
-            fecha_inicio, fecha_fin, tiempo_requerido, calificacion) 
+    <insert id="insertTrainingTest" useGeneratedKeys="true">
+        INSERT INTO pnld.test_capacitacion
+            (id, tipo, id_archivo_cargado, id_docente, fecha_inicio, fecha_fin, tiempo_requerido, estado, calificacion,
+             respuestas)
         VALUES 
-            (#{id}, #{teacherId}, #{loadedFileId}, #{type}, #{state},
-            #{initDate}, #{endDate}, #{requiredInterval}, #{score});
-    </insert>
-    
-    <select id="getNextTestId" resultType="int">
-        SELECT nextval(pg_get_serial_sequence('pnld.test', 'id'));
-    </select>
-
-    <select id="getNextTrainingAnswer" resultType="int">
-        SELECT nextval(pg_get_serial_sequence('pnld.respuesta_capacitacion', 'id'));
-    </select>
-    
-    <insert id="insertTrainingAnswer" useGeneratedKeys="true">
-        INSERT INTO pnld.respuesta_capacitacion 
-            (id, id_test, resp_uno, resp_dos, resp_tres, resp_cuatro, 
-            resp_cinco, resp_seis, resp_siete, resp_ocho, resp_nueve, resp_diez) 
-        VALUES 
-            (#{id},#{testId},#{ansOne},#{ansTwo},#{ansThree}, #{ansFour},
-            #{ansFive},#{ansSix},#{ansSeven},#{ansEight},#{ansNine},#{ansTen});
+            (#{id}, #{type}, #{loadedFileId}, #{teacherId}, #{initDate}, #{endDate}, #{requiredInterval}, #{state},
+             #{score}, #{answers});
     </insert>
 </mapper>
