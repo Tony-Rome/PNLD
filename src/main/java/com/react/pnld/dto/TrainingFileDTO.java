@@ -189,40 +189,26 @@ public class TrainingFileDTO {
     }
 
     private void buildPGIntervalFrom(){
-
-       //Period period = Period.between(this.startIn.toLocalDate(),this.finishIn.toLocalDate());
-
-       //Duration newDuration = Duration.between(this.startIn, this.finishIn);
-
-       //LocalDateTime duration = finishIn.minusYears(startIn.getYear()).minusMonths(startIn.getMonth().getValue())
-        //      .minusDays(startIn.getDayOfMonth()).minusHours(startIn.getHour()).minusMinutes(startIn.getMinute())
-         //      .minusSeconds(startIn.getSecond());
-
-        //LocalDateTime fromDateTime = LocalDateTime.of(1984, 12, 16, 7, 45, 55);
-        //LocalDateTime toDateTime = LocalDateTime.of(2014, 9, 10, 6, 40, 45);
-
         LocalDateTime tempDateTime = LocalDateTime.from(this.startIn);
 
-        int years = toIntExact(tempDateTime.until(this.finishIn, ChronoUnit.YEARS ));
-        tempDateTime = tempDateTime.plusYears( years );
+        int years = toIntExact(tempDateTime.until(this.finishIn, ChronoUnit.YEARS));
+        tempDateTime = tempDateTime.plusYears(years);
 
-        int months = toIntExact(tempDateTime.until(this.finishIn, ChronoUnit.MONTHS ));
-        tempDateTime = tempDateTime.plusMonths( months );
+        int months = toIntExact(tempDateTime.until(this.finishIn, ChronoUnit.MONTHS));
+        tempDateTime = tempDateTime.plusMonths(months);
 
-        int days = toIntExact(tempDateTime.until( this.finishIn, ChronoUnit.DAYS ));
-        tempDateTime = tempDateTime.plusDays( days );
+        int days = toIntExact(tempDateTime.until(this.finishIn, ChronoUnit.DAYS));
+        tempDateTime = tempDateTime.plusDays(days);
 
+        int hours = toIntExact(tempDateTime.until(this.finishIn, ChronoUnit.HOURS));
+        tempDateTime = tempDateTime.plusHours(hours);
 
-        int hours = toIntExact(tempDateTime.until( this.finishIn, ChronoUnit.HOURS ));
-        tempDateTime = tempDateTime.plusHours( hours );
+        int minutes = toIntExact(tempDateTime.until(this.finishIn, ChronoUnit.MINUTES));
+        tempDateTime = tempDateTime.plusMinutes(minutes);
 
-        int minutes = toIntExact(tempDateTime.until( this.finishIn, ChronoUnit.MINUTES ));
-        tempDateTime = tempDateTime.plusMinutes( minutes );
-
-        int seconds = toIntExact(tempDateTime.until( this.finishIn, ChronoUnit.SECONDS ));
+        int seconds = toIntExact(tempDateTime.until( this.finishIn, ChronoUnit.SECONDS));
 
         this.requiredInterval = new PGInterval(years, months, days, hours, minutes, seconds);
-        //this.requiredInterval = FileUtilService.getRequiredTrainingInterval(requiredInterval);
     }
 
     public float getScore() {
