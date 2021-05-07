@@ -180,7 +180,7 @@ public class TrainingFileDTO {
     }
 
     public PGInterval getRequiredInterval() {
-        this.buildPGIntervalFrom();
+        if(requiredInterval == null) this.buildPGIntervalFrom();
         return requiredInterval;
     }
 
