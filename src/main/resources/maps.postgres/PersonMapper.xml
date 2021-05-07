@@ -50,40 +50,4 @@
         SELECT nextval(pg_get_serial_sequence('pnld.docente', 'id_docente'));
     </select>
 
-    <select id="getNextSchoolId" resultType="int">
-        SELECT nextval(pg_get_serial_sequence('pnld.colegio', 'id'));
-    </select>
-
-    <resultMap id="getSchool" type="com.react.pnld.model.School">
-        <id property="id" column="id"/>
-        <result property="name" column="nombre" />
-        <result property="city" column="ciudad" />
-        <result property="regionId" column="id_region" />
-        <result property="rbd" column="rbd" />
-    </resultMap>
-    <select id="getSchool" resultMap="getSchool">
-        SELECT *
-        FROM pnld.colegio
-        WHERE nombre = #{name};
-    </select>
-
-    <insert id="insertSchool">
-        INSERT INTO pnld.colegio
-            (id, id_region, nombre, ciudad, rbd)
-        VALUES
-            (#{id}, #{regionId}, #{name}, #{city}, #{rbd});
-    </insert>
-
-    <resultMap id="getTraining" type="com.react.pnld.model.Training">
-        <id property="id" column="id"/>
-        <result property="organizer" column="organizador"/>
-        <result property="facilitator" column="facilitador" />
-        <result property="trainingDate" column="fecha" />
-    </resultMap>
-    <select id="getTrainingByFacilitator" resultMap="getTraining">
-        SELECT *
-        FROM pnld.capacitacion
-        WHERE facilitador = #{facilitatorName};
-    </select>
-
 </mapper>

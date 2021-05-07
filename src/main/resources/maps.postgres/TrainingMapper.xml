@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.react.pnld.mappers.TrainingMapper">
+    <cache/>
+
+    <resultMap id="getTraining" type="com.react.pnld.model.Training">
+        <id property="id" column="id"/>
+        <result property="organizer" column="organizador"/>
+        <result property="facilitator" column="facilitador" />
+        <result property="trainingDate" column="fecha" />
+    </resultMap>
+    <select id="getTrainingByFacilitator" resultMap="getTraining">
+        SELECT *
+        FROM pnld.capacitacion
+        WHERE facilitador = #{facilitatorName};
+    </select>
+
+</mapper>

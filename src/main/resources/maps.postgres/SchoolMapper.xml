@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.react.pnld.mappers.SchoolMapper">
+    <cache/>
+
+    <select id="getNextSchoolId" resultType="int">
+        SELECT nextval(pg_get_serial_sequence('pnld.colegio', 'id'));
+    </select>
+
+    <resultMap id="getSchoolByName" type="com.react.pnld.model.School">
+        <id property="id" column="id"/>
+        <result property="name" column="nombre" />
+        <result property="city" column="ciudad" />
+        <result property="regionId" column="id_region" />
+        <result property="rbd" column="rbd" />
+    </resultMap>
+    <select id="getSchoolByName" resultMap="getSchoolByName">
+        SELECT *
+        FROM pnld.colegio
+        WHERE nombre = #{name};
+    </select>
+
+    <insert id="insertSchool">
+        INSERT INTO pnld.colegio
+            (id, id_region, nombre, ciudad, rbd)
+        VALUES
+            (#{id}, #{regionId}, #{name}, #{city}, #{rbd});
+    </insert>
+
+</mapper>

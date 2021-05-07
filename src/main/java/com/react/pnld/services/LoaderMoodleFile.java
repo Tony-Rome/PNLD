@@ -4,7 +4,9 @@ import com.react.pnld.dto.FileResumeDTO;
 import com.react.pnld.dto.TrainingFileDTO;
 import com.react.pnld.model.*;
 import com.react.pnld.repo.PersonRepository;
+import com.react.pnld.repo.SchoolRepository;
 import com.react.pnld.repo.TestRepository;
+import com.react.pnld.repo.TrainingRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,12 @@ public class LoaderMoodleFile {
     @Autowired
     TestRepository testRepository;
 
+    @Autowired
+    TrainingRepository trainingRepository;
+
+    @Autowired
+    SchoolRepository schoolRepository;
+
     public FileResumeDTO processTrainingFileRows(List<TrainingFileDTO> postTrainingRows, int loadedFileId,
                                                  String testType) {
 
@@ -44,7 +52,6 @@ public class LoaderMoodleFile {
             Optional<Teacher> teacherSelected = personRepository.getTeacherPerson(FileUtilService.
                     removeSymbols(postTrainingRow.getRut()));
 
-
             if (!teacherSelected.isPresent()) {
                 Teacher teacher = this.buildTeacherFrom(postTrainingRow);
                 this.personRepository.insertPerson(teacher);
@@ -58,7 +65,6 @@ public class LoaderMoodleFile {
                     testType);
 
             if (!trainingTest.isPresent()) {
-
                 TrainingTest newTrainingTest = new TrainingTest();
                 newTrainingTest.setId(this.testRepository.getNextTrainingTestId());
                 newTrainingTest.setType(testType);
@@ -69,7 +75,7 @@ public class LoaderMoodleFile {
                 newTrainingTest.setRequiredInterval(postTrainingRow.getRequiredInterval());
                 newTrainingTest.setState(postTrainingRow.getTestState());
                 newTrainingTest.setScore(postTrainingRow.getScore());
-                newTrainingTest.setAnswers(null);
+                newTrainingTest.setAnswers(null);//TODO set answers list
 
                 int resultInsertTest = this.testRepository.insertTrainingTest(newTrainingTest);
                 logger.info("processTrainingFileRows. resultInsertTest={}", resultInsertTest);
@@ -84,50 +90,63 @@ public class LoaderMoodleFile {
     }
 
     Teacher buildTeacherFrom(TrainingFileDTO postTrainingRow) {
-        String[] lastNames = postTrainingRow.getLastNames().split(DELIMITER_LAST_NAMES);//TODO validate when only one lastname
-
-        String institution = (postTrainingRow.getInstitution() == null || postTrainingRow.getInstitution().isEmpty())?
-                NOT_SPECIFIED : postTrainingRow.getInstitution();
-        Optional<School> school = personRepository.getSchool(institution.toLowerCase());
-
-        if(!school.isPresent()){
-            School newSchool = new School();
-            newSchool.setId(personRepository.getNextSchoolId());
-            newSchool.setName(institution.toLowerCase());
-            newSchool.setCity(null);
-            newSchool.setRegionId(REGION_ID_OTHER);
-            newSchool.setRbd(RBD_ID_NOT_SPECIFIED);
-
-            int resultInsertSchool = this.personRepository.insertSchool(newSchool);
-            logger.info("buildTeacherFrom. resultInsertSchool={}", resultInsertSchool);
-            school = Optional.of(newSchool);
-        }
-
-        String department = (postTrainingRow.getDepartment() == null || postTrainingRow.getDepartment().isEmpty())?
-                NOT_SPECIFIED : postTrainingRow.getDepartment();
-
-        Training training = this.personRepository.getTrainingByFacilitator(NOT_SPECIFIED);
 
         Teacher teacher = new Teacher();
         teacher.setTeacherId(this.personRepository.getNextTeacherId());
         teacher.setPersonId(this.personRepository.getNextPersonId());
         teacher.setRut(FileUtilService.removeSymbols(postTrainingRow.getRut().trim()));
         teacher.setAge(0);
-        teacher.setDepartment(department);
         teacher.setParticipatedInPNLD(false);
         teacher.setTeachesInLevels(null);
         teacher.setTeachesSubjects(null);
         teacher.setCsResources(null);
         teacher.setRoboticsResources(null);
+
+        String department = (postTrainingRow.getDepartment() == null || postTrainingRow.getDepartment().isEmpty())?
+                NOT_SPECIFIED : postTrainingRow.getDepartment();
+        teacher.setDepartment(department);
+
+        Training training = this.trainingRepository.getTrainingByFacilitator(NOT_SPECIFIED);
         teacher.setTrainingId(training.getId());
+
         //Person, super object
+        String[] lastNames = postTrainingRow.getLastNames().split(DELIMITER_LAST_NAMES);//TODO validate when only one lastname
         teacher.setName(postTrainingRow.getName());
         teacher.setPaternalLastName(lastNames[0]);
         teacher.setMaternalLastName(lastNames[1]);
         teacher.setEmail(postTrainingRow.getEmail());
         teacher.setGenderId(GENDER_ID_NOT_SPECIFIED);
-        teacher.setSchoolId(school.get().getId());
+
+        String schoolName = postTrainingRow.getInstitution();
+        teacher.setSchoolId(getTeacherSchoolByName(schoolName).getId());
         return teacher;
+    }
+
+    private School getTeacherSchoolByName(String schoolName){
+
+        if (schoolName == null || schoolName.isEmpty()) {
+            return schoolRepository.getSchoolByName(NOT_SPECIFIED).get();
+        } else {
+            Optional<School> schoolSelected = schoolRepository.getSchoolByName(schoolName);
+            if(!schoolSelected.isPresent()){
+                School newSchool = createNewSchool(schoolName, null, REGION_ID_OTHER, RBD_ID_NOT_SPECIFIED);
+                schoolSelected = Optional.of(newSchool);
+            }
+            return schoolSelected.get();
+        }
+    }
+
+    School createNewSchool(String name, String city, int regionId, int rbd){
+        School newSchool = new School();
+        newSchool.setId(schoolRepository.getNextSchoolId());
+        newSchool.setName(name);
+        newSchool.setCity(city);
+        newSchool.setRegionId(regionId);
+        newSchool.setRbd(rbd);
+
+        int resultInsertSchool = this.schoolRepository.insertSchool(newSchool);
+        logger.info("createNewSchool. resultInsertSchool={}", resultInsertSchool);
+        return newSchool;
     }
 
     public FileResumeDTO diagnosticoFile(LoadedFile loadedFile) {
