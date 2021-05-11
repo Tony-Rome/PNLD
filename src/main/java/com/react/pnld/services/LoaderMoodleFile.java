@@ -149,24 +149,224 @@ public class LoaderMoodleFile {
         return newSchool;
     }
 
-    public FileResumeDTO diagnosticoFile(LoadedFile loadedFile) {
-        //TODO validate load records by file's type
-        //TODO insert records if not exist
+    public FileResumeDTO diagnosticoFile(List<DiagnosticFileDTO> diagnosticRows, int loadedFileId, String loadedFileType) {
 
-        return new FileResumeDTO();
+        int newRecords = 0;
+        int duplicatedRecords = 0;
+
+        String[] headers = fileUtilService.selectedHeadersArray(loadedFileType);
+
+        for (DiagnosticFileDTO diagnosticRow : diagnosticRows) {
+
+            int regionId = regionRepository.getRegionIdByName(
+                    fileUtilService.normalizeString(diagnosticRow.getRegion()));
+
+            String schoolName = fileUtilService.normalizeString(diagnosticRow.getSchoolName());
+            Optional<School> optionalSchool = schoolRepository.getSchoolByName(schoolName);
+
+            if(!optionalSchool.isPresent()){
+
+                String cleanedRbd = diagnosticRow.getRbd().replaceAll("[^0-9]","");
+                String rbd = cleanedRbd.length() > 6 ? null : cleanedRbd;
+
+                int schoolId = schoolRepository.getNextSchoolId();
+
+                School newSchool = new School(schoolId, schoolName, diagnosticRow.getCommune(), regionId, rbd);
+                schoolRepository.insertSchool(newSchool);
+                optionalSchool = Optional.of(newSchool);
+            }
+
+            if(optionalSchool.isPresent()){
+
+                if(optionalSchool.get().getRbd() == "" || optionalSchool.get().getRbd() == null){
+
+                    String cleanedRbd = diagnosticRow.getRbd().replaceAll("[^0-9]","");
+                    String rbd = cleanedRbd.length() > 6 ? null : cleanedRbd;
+                    optionalSchool.get().setRbd(rbd);
+                }
+                if(optionalSchool.get().getRegionId() <= 0 || optionalSchool.get().getRegionId() > 16){ //TODO: es null o es no especificado (?)
+                    String regionNormalized = fileUtilService.normalizeString(diagnosticRow.getRegion());
+                    int newRegionId = regionRepository.getRegionIdByName(regionNormalized);
+                    optionalSchool.get().setRegionId(newRegionId);
+                }
+                if(optionalSchool.get().getCity() == null){
+                    String newCity = fileUtilService.normalizeString(diagnosticRow.getCommune());
+                    optionalSchool.get().setCity(newCity);
+                }
+
+                schoolRepository.updateSchool(optionalSchool.get());
+            }
+
+
+            String email = diagnosticRow.getEmail().toLowerCase();
+            Optional<Person> optionalPerson = personRepository.getPersonByEmail(email);
+
+            if(!optionalPerson.isPresent()){
+                int personId = personRepository.getNextPersonId();
+                String[] lastNames = fileUtilService.splitLastNames(diagnosticRow.getLastNames()); //TODO: Ver nombre compuesto con 2+ palabras
+
+                String genderStandardized = fileUtilService.genderStandardization(diagnosticRow.getGender().toLowerCase());
+                int genderId = genderRepository.getGenderIdByType(genderStandardized);
+
+                Person newPerson = new Person(personId, diagnosticRow.getNames(), lastNames[0], lastNames[1], email, genderId, optionalSchool.get().getId());
+                personRepository.insertPerson(newPerson);
+
+                optionalPerson = Optional.of(newPerson);
+            }
+
+            if(optionalPerson.isPresent()){
+
+                if( optionalPerson.get().getGenderId() < 1){
+                    String genderStandardized = fileUtilService.genderStandardization(diagnosticRow.getGender().toLowerCase());
+                    int genderId = genderRepository.getGenderIdByType(genderStandardized);
+                    optionalPerson.get().setGenderId(genderId);
+                }
+                if( optionalPerson.get().getSchoolId() <= 0){
+                    optionalPerson.get().setSchoolId(optionalSchool.get().getId());
+                }
+
+                personRepository.updatePerson(optionalPerson.get());
+
+            }
+
+            String cleanedRut = fileUtilService.removeSymbolsFromRut(diagnosticRow.getRut());
+            Optional<Teacher> optionalTeacher = teacherRepository.getTeacherByRut(cleanedRut);
+
+            if(!optionalTeacher.isPresent()){
+                int teacherId = teacherRepository.getNextTeacherId();
+                Teacher newTeacher = new Teacher(teacherId, optionalPerson.get().getId(), cleanedRut, diagnosticRow.getAge(), null, true, null);
+                teacherRepository.insertTeacher(newTeacher);
+                optionalTeacher = Optional.of(newTeacher);
+            }
+
+            int diagnosticQuestionnaireCount = questionnaireRepository.getDiagnosticQuestionnaireCount(optionalTeacher.get().getId());
+
+            if(diagnosticQuestionnaireCount < 1){
+
+                String[] splitDiagnosticRow = diagnosticRow.toString().split("\',|(?<=[0-9]),");
+
+                List<String> splitDiagnosticRowCleaned = Arrays.stream(splitDiagnosticRow)
+                        .map(element -> element.replaceAll(".*=|\'|[}{]",""))
+                        .collect(Collectors.toList());
+
+                Map<String, String> jsonRaw = new LinkedHashMap();
+
+                int ANSWERS_BASE_INDEX = 15;
+
+                for(int i = ANSWERS_BASE_INDEX; i < headers.length; i++){
+                    String key = headers[i];
+                    String value = splitDiagnosticRowCleaned.get(i);
+
+                    jsonRaw.put(key, value);
+                }
+
+                String answersJson = "";
+                try {
+                    answersJson = new ObjectMapper().writeValueAsString(jsonRaw);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+
+
+                int diagnosticQuestionnaireId = questionnaireRepository.getNextDiagnosticQuestionnaireId();
+
+                DiagnosticQuestionnaire newDiagnosticQuestionnaire = new DiagnosticQuestionnaire(
+                        diagnosticQuestionnaireId, loadedFileId, optionalTeacher.get().getId(),
+                        diagnosticRow.getRespondentId(), diagnosticRow.getCollectorId(),
+                        Timestamp.valueOf(diagnosticRow.getCreatedDate()),
+                        Timestamp.valueOf(diagnosticRow.getModifiedDate()), answersJson);
+
+
+                questionnaireRepository.insertDiagnosticQuestionnaire(newDiagnosticQuestionnaire);
+                newRecords++;
+            }
+
+            if(diagnosticQuestionnaireCount >= 1){
+                duplicatedRecords++;
+            }
+
+        }
+
+        return new FileResumeDTO(diagnosticRows.size(), newRecords, duplicatedRecords);
     }
 
-    public FileResumeDTO salidaFile(LoadedFile loadedFile) {
-        //TODO validate load records by file's type
-        //TODO insert records if not exist
+    public FileResumeDTO exitSatisfactionFile(List<ExitFileDTO> exitFileDTORows, int loadedFileId, String loadedFileType) {
 
-        return new FileResumeDTO();
+        int newRecords = 0;
+        int duplicatedRecords = 0;
+
+        for (ExitFileDTO exitFileDTORow : exitFileDTORows) {
+
+            if(exitFileDTORow.getInstitution() != null && exitFileDTORow.getInstitution() != "") {
+
+                String schoolName = fileUtilService.normalizeString(exitFileDTORow.getInstitution());
+
+                Optional<School> optionalSchool = schoolRepository.getSchoolByName(schoolName);
+
+                if (!optionalSchool.isPresent()) {
+                    int schoolId = schoolRepository.getNextSchoolId();
+                    int REGION_NOT_SPECIFIED = 16;
+
+                    School newSchool = new School(schoolId, schoolName, null, REGION_NOT_SPECIFIED, null);
+                    schoolRepository.insertSchool(newSchool);
+                }
+            }
+
+            String cleanedRut = fileUtilService.removeSymbolsFromRut(exitFileDTORow.getRut());
+            Optional<Teacher> optionalTeacher = teacherRepository.getTeacherByRut(cleanedRut);
+
+            if(optionalTeacher.isPresent()){
+                String department = exitFileDTORow.getDepartment();
+                optionalTeacher.get().setDepartment(department);
+                //TODO: teacherRepository.updateTeacher(optionalTeacher.get());
+            }
+
+            if(!optionalTeacher.isPresent()){
+                //TODO: Verificar caso cuando no existe docente en cuestionario salida
+                duplicatedRecords++;
+                continue;
+            }
+
+            int exitQuestionnaireCount = questionnaireRepository.getExitQuestionnaireCount(optionalTeacher.get().getId());
+
+            if(exitQuestionnaireCount < 1){
+
+
+                String answersJson = "{\"llave\":\"respuesta\"}";
+
+                int exitQuestionnaireId = questionnaireRepository.getNextExitQuestionnaireId();
+
+                System.out.println("FECHA: " + exitFileDTORow.getSendDate());
+                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date = null;
+                String fecha = exitFileDTORow.getSendDate().replaceAll("/","-");
+                System.out.println("FECHA REPLACE: " + fecha);
+                try {
+                    date = simpleDateFormat1.parse(fecha);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println("NUEVA FECHA: " + simpleDateFormat2.format(date));
+
+                ExitQuestionnaire newExitQuestionnaire = new ExitQuestionnaire(
+                        exitQuestionnaireId, loadedFileId, optionalTeacher.get().getId(),
+                        exitFileDTORow.getResponseId(), new Timestamp(date.getTime()), answersJson,
+                        exitFileDTORow.getId(), exitFileDTORow.getCourse(), exitFileDTORow.getGroup());
+
+
+                questionnaireRepository.insertExitQuestionnaire(newExitQuestionnaire);
+                newRecords++;
+            }
+
+            if(exitQuestionnaireCount >= 1){
+                duplicatedRecords++;
+            }
+
+
+        }
+        return new FileResumeDTO(exitFileDTORows.size(), newRecords, duplicatedRecords);
     }
 
-    public FileResumeDTO satisFile(LoadedFile loadedFile) {
-        //TODO validate load records by file's type
-        //TODO insert records if not exist
-
-        return new FileResumeDTO();
-    }
 }
