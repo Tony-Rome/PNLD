@@ -1,6 +1,7 @@
 package com.react.pnld;
 
 import com.react.pnld.dto.ScheduleFileLoadDTO;
+import com.react.pnld.dto.TrainingFileDTO;
 import com.react.pnld.services.FileUtilService;
 import org.postgresql.util.PGInterval;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,42 +134,58 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void getTrainingDuration_When_string_duration_MinsAndSecs(){
-        PGInterval duration = FileUtilService.getRequiredTrainingInterval("12 minutos 31 segundos");
+    public void getTrainingRequiredInterval_When_MinutesAndSeconds(){
+        TrainingFileDTO trainingFileDTO = new TrainingFileDTO();
+        trainingFileDTO.setStartIn(LocalDateTime.of(2021, 5,1,16,50, 00));
+        trainingFileDTO.setFinishIn(LocalDateTime.of(2021, 5,1,17,2, 31));
+
+        PGInterval duration = trainingFileDTO.getRequiredInterval();
         Assert.assertEquals(12, duration.getMinutes());
         Assert.assertEquals(31, duration.getSeconds());
     }
 
     @Test
-    public void getTrainingDuration_When_string_duration_HourAndMins(){
-        PGInterval duration = FileUtilService.getRequiredTrainingInterval("1 hora 32 minutos");
-        Assert.assertEquals(1, duration.getHours());
+    public void getTrainingRequiredInterval_When_HourAndMinutes(){
+        TrainingFileDTO trainingFileDTO = new TrainingFileDTO();
+        trainingFileDTO.setStartIn(LocalDateTime.of(2021, 5,1,10,00, 00));
+        trainingFileDTO.setFinishIn(LocalDateTime.of(2021, 5,1,11,32, 00));
+
+        PGInterval duration = trainingFileDTO.getRequiredInterval();
         Assert.assertEquals(32, duration.getMinutes());
+        Assert.assertEquals(1, duration.getHours());
     }
 
     @Test
-    public void getTrainingDuration_When_string_duration_DaysAndHours(){
-        PGInterval duration = FileUtilService.getRequiredTrainingInterval("6 días 19 horas");
+    public void getTrainingRequiredInterval_When_DaysAndHours(){
+        TrainingFileDTO trainingFileDTO = new TrainingFileDTO();
+        trainingFileDTO.setStartIn(LocalDateTime.of(2021, 5,1,1,00, 00));
+        trainingFileDTO.setFinishIn(LocalDateTime.of(2021, 5,7,20,00, 00));
+
+        PGInterval duration = trainingFileDTO.getRequiredInterval();
         Assert.assertEquals(6, duration.getDays());
         Assert.assertEquals(19, duration.getHours());
     }
 
     @Test
-    public void getTrainingDuration_When_string_duration_empty(){
-        PGInterval duration = FileUtilService.getRequiredTrainingInterval("");
+    public void getTrainingRequiredInterval_When_MonthsDaysAndHours(){
+        TrainingFileDTO trainingFileDTO = new TrainingFileDTO();
+        trainingFileDTO.setStartIn(LocalDateTime.of(2021, 5,6,10,00, 00));
+        trainingFileDTO.setFinishIn(LocalDateTime.of(2021, 6,5,9,00, 00));
+
+        PGInterval duration = trainingFileDTO.getRequiredInterval();
+        Assert.assertEquals(0, duration.getMonths());
+        Assert.assertEquals(29, duration.getDays());
+        Assert.assertEquals(23, duration.getHours());
+    }
+
+    @Test
+    public void getTrainingRequiredInterval_When_EqualsOrNotDifferences(){
+        TrainingFileDTO trainingFileDTO = new TrainingFileDTO();
+        trainingFileDTO.setStartIn(LocalDateTime.of(2021, 5,7,1,00, 00));
+        trainingFileDTO.setFinishIn(LocalDateTime.of(2021, 5,7,1,00, 00));
+
+        PGInterval duration = trainingFileDTO.getRequiredInterval();
         Assert.assertEquals(0, duration.getMinutes());
-        Assert.assertEquals(0, duration.getSeconds());
-    }
-
-    @Test
-    public void getTrainingDuration_When_string_duration_other_format(){
-        PGInterval duration = FileUtilService.getRequiredTrainingInterval("-- --");
-        Assert.assertEquals(0, duration.getSeconds());
-    }
-
-    @Test
-    public void getTrainingDuration_When_string_duration_unusual_format(){
-        PGInterval duration = FileUtilService.getRequiredTrainingInterval("2 houses 2 dogs");
         Assert.assertEquals(0, duration.getSeconds());
     }
 }

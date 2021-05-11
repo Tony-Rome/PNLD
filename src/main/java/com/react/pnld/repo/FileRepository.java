@@ -6,7 +6,6 @@ import com.react.pnld.model.LoadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -19,9 +18,8 @@ public class FileRepository {
         return loadedFileMapper.insertProcessFile(loadedFile);
     }
 
-    public List<LoadedFile> getLoadedFilesByStateAndTimestamps(int stateId, Timestamp initTime, Timestamp endTime) {
-
-        return loadedFileMapper.getLoadedFilesByStateAndTimestamps(stateId, initTime, endTime);
+    public List<LoadedFile> getLoadedFilesNotProcessed() {
+        return loadedFileMapper.getLoadedFilesNotProcessed();
     }
 
     public int updateFileLoaded(LoadedFile loadedFile) {

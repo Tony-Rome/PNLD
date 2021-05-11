@@ -9,7 +9,6 @@ import com.react.pnld.model.LoadedFile;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
-import org.postgresql.util.PGInterval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +16,13 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.text.Normalizer;
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class FileUtilService {
@@ -45,7 +48,7 @@ public class FileUtilService {
         csvParserSettings.setLineSeparatorDetectionEnabled(true);
     }
 
-    public String removeSymbols(String strToClean) {
+    public static String removeSymbols(String strToClean) {
         String strCleaned = strToClean.replaceAll("[^a-zA-Z0-9,]", "");
         return strCleaned.toLowerCase();
     }
@@ -207,42 +210,20 @@ public class FileUtilService {
         }
     }
 
-    public static PGInterval getRequiredTrainingInterval(String requiredInterval){
-        String DAY_LABEL = "dia";
-        String HOUR_LABEL = "hora";
-        String MINUTE_LABEL = "minuto";
-        String SECOND_LABEL = "segundo";
-
-        int yearZero = 0;
-        int monthZero = 0;
-        int days = 0;
-        int hour = 0;
-        int mins = 0;
-        int secs = 0;
-
-        String durationWithoutAccents = removeAccents(requiredInterval);
-        String onlyNumsString = durationWithoutAccents.trim().replaceAll("([ \\t\\n\\x0B\\f\\r][a-z]+)","");
-        String[] time = onlyNumsString.split("[ \\t\\n\\x0B\\f\\r]");
-
-        if(durationWithoutAccents.contains(DAY_LABEL) && durationWithoutAccents.contains(HOUR_LABEL)){
-            days = Integer.parseInt(time[0].trim());
-            hour = Integer.parseInt(time[1].trim());
-        }
-
-        if(durationWithoutAccents.contains(HOUR_LABEL) && durationWithoutAccents.contains(MINUTE_LABEL)){
-            hour = Integer.parseInt(time[0].trim());
-            mins = Integer.parseInt(time[1].trim());
-        }
-
-        if(durationWithoutAccents.contains(MINUTE_LABEL) && durationWithoutAccents.contains(SECOND_LABEL)) {
-            mins = Integer.parseInt(time[0].trim());
-            secs = Integer.parseInt(time[1].trim());
-        }
-
-        return new PGInterval(yearZero, monthZero, days, hour, mins, secs);
-    }
-
     public static String removeAccents(String toClean){
         return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+    }
+
+    public static LocalDateTime getLocalDateFrom(String stringDate){
+
+        String stringFormatted = stringDate.replaceAll(" de ", "/").replaceAll("\\s+|\\t", " ");;
+        String formatPattern = "d/MMMM/yyyy H:m";
+        try {
+            return LocalDateTime.parse(stringFormatted, DateTimeFormatter.ofPattern(formatPattern,
+                    new Locale("es", "ES")));
+        } catch (DateTimeException dateTimeException){
+            logger.error("getLocalDateFrom.", dateTimeException.getMessage(), dateTimeException);
+            return LocalDateTime.MIN;
+        }
     }
 }

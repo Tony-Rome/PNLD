@@ -2,61 +2,29 @@ package com.react.pnld.model;
 
 import java.io.Serializable;
 
-public class Teacher implements Serializable {
+public class Teacher extends Person implements Serializable {
 
-    private int id;
-    private String firstName;
-    private String paternalLastName;
-    private String maternalLastName;
+    private int teacherId;
     private String rut;
-    private String email;
-    private int genderId;
+    private int age;
+    private String department;
+    private boolean participatedInPNLD;
+    private String teachesSubjects;
+    private String teachesInLevels;
+    private String csResources;
+    private String roboticsResources;
+    private int trainingId;
 
     public Teacher() {
         super();
     }
 
-    public Teacher(int id, String firstName, String paternalLastName, String maternalLastName,
-                   String rut, String email, int genderId) {
-        this.id = id;
-        this.firstName = firstName;
-        this.paternalLastName = paternalLastName;
-        this.maternalLastName = maternalLastName;
-        this.rut = rut;
-        this.email = email;
-        this.genderId = genderId;
+    public int getTeacherId() {
+        return teacherId;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getPaternalLastName() {
-        return paternalLastName;
-    }
-
-    public void setPaternalLastName(String paternalLastName) {
-        this.paternalLastName = paternalLastName;
-    }
-
-    public String getMaternalLastName() {
-        return maternalLastName;
-    }
-
-    public void setMaternalLastName(String maternalLastName) {
-        this.maternalLastName = maternalLastName;
+    public void setTeacherId(int teacherId) {
+        this.teacherId = teacherId;
     }
 
     public String getRut() {
@@ -67,32 +35,83 @@ public class Teacher implements Serializable {
         this.rut = rut;
     }
 
-    public String getEmail() {
-        return email;
+    public int getAge() {
+        return age;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setAge(int age) {
+        this.age = age;
     }
 
-    public int getGenderId() {
-        return genderId;
+    public String getDepartment() {
+        return department;
     }
 
-    public void setGenderId(int genderId) {
-        this.genderId = genderId;
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public boolean isParticipatedInPNLD() {
+        return participatedInPNLD;
+    }
+
+    public void setParticipatedInPNLD(boolean participatedInPNLD) {
+        this.participatedInPNLD = participatedInPNLD;
+    }
+
+    public String getTeachesSubjects() {
+        return teachesSubjects;
+    }
+
+    public void setTeachesSubjects(String teachesSubjects) {
+        this.teachesSubjects = teachesSubjects;
+    }
+
+    public String getTeachesInLevels() {
+        return teachesInLevels;
+    }
+
+    public void setTeachesInLevels(String teachesInLevels) {
+        this.teachesInLevels = teachesInLevels;
+    }
+
+    public String getCsResources() {
+        return csResources;
+    }
+
+    public void setCsResources(String csResources) {
+        this.csResources = csResources;
+    }
+
+    public String getRoboticsResources() {
+        return roboticsResources;
+    }
+
+    public void setRoboticsResources(String roboticsResources) {
+        this.roboticsResources = roboticsResources;
+    }
+
+    public int getTrainingId() {
+        return trainingId;
+    }
+
+    public void setTrainingId(int trainingId) {
+        this.trainingId = trainingId;
     }
 
     @Override
     public String toString() {
         return "Teacher{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", paternalLastName='" + paternalLastName + '\'' +
-                ", maternalLastName='" + maternalLastName + '\'' +
+                "teacherId=" + teacherId +
                 ", rut='" + rut + '\'' +
-                ", email='" + email + '\'' +
-                ", genderId=" + genderId +
+                ", age=" + age +
+                ", department='" + department + '\'' +
+                ", participatedInPNLD=" + participatedInPNLD +
+                ", teachesSubjects='" + teachesSubjects + '\'' +
+                ", teachesInLevels='" + teachesInLevels + '\'' +
+                ", csResources='" + csResources + '\'' +
+                ", roboticsResources='" + roboticsResources + '\'' +
+                ", trainingId='" + trainingId + '\'' +
                 '}';
     }
 }
