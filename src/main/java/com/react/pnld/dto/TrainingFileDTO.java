@@ -11,7 +11,7 @@ import java.time.temporal.ChronoUnit;
 
 import static java.lang.Math.toIntExact;
 
-public class TrainingFileDTO {
+public class TrainingFileDTO implements TeacherPersonDTO{
 
     @Parsed(index = 0)
     @LowerCase
@@ -95,6 +95,7 @@ public class TrainingFileDTO {
         super();
     }
 
+    @Override
     public String getLastNames() {
         return lastNames;
     }
@@ -103,6 +104,7 @@ public class TrainingFileDTO {
         this.lastNames = lastNames;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -111,6 +113,7 @@ public class TrainingFileDTO {
         this.name = name;
     }
 
+    @Override
     public String getRut() {
         return rut;
     }
@@ -127,6 +130,7 @@ public class TrainingFileDTO {
         this.institution = institution;
     }
 
+    @Override
     public String getDepartment() {
         return department;
     }
@@ -298,6 +302,27 @@ public class TrainingFileDTO {
     public void setAnswerTen(String answerTen) {
         this.answerTen = answerTen;
     }
+
+    @Override
+    public int getAge(){return 0;}
+
+    @Override
+    public boolean getParticipatedInPNLD(){return true;}
+
+    @Override
+    public String getInLevels(){return null;}
+
+    @Override
+    public String getSubjects(){return null;}
+
+    @Override
+    public String getCsResources(){return null;}
+
+    @Override
+    public String getRoboticsResources(){return null;}
+
+    @Override
+    public String getGender(){return null;}
 
     @Override
     public String toString() {

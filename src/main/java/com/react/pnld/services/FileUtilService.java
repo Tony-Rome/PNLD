@@ -20,11 +20,18 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 @Service
 public class FileUtilService {
 
     private static final Logger logger = LoggerFactory.getLogger(FileUtilService.class);
+    public static final String DELIMITER_LAST_NAMES = " ";
+    public static final int GENDER_ID_NOT_SPECIFIED = 4;
+    public static final int RBD_ID_NOT_SPECIFIED = 0;
+    public static final String NOT_SPECIFIED = "no especificado";
+    public static final int REGION_ID_OTHER = 17;
+    public static final int RUT_NOT_SPECIFY = 0;
 
     @Autowired
     private CSVHeadersProperties csvHeadersProperties;
@@ -207,6 +214,19 @@ public class FileUtilService {
 
     public static String removeAccents(String toClean){
         return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+    }
+
+    public static String cleanRegionName(String name){
+        String normalizedName =Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+        return normalizedName.replaceAll("region | Region ", "");
+    }
+
+    public static String removeSymbolsFromRut(String rutToClean){ //TODO: Mejorar hacia validación de RUT
+
+        String cleanedRut = rutToClean.replaceAll("[^0-9k]","");
+        String rutPattern = "[0-9]{6,8}(k|[0-9])";
+        String newRut = Pattern.matches(rutPattern, cleanedRut) ? cleanedRut : null ;
+        return newRut;
     }
 
     public static LocalDateTime getLocalDateFrom(String stringDate){

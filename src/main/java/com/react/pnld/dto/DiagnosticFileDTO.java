@@ -3,7 +3,7 @@ package com.react.pnld.dto;
 import com.univocity.parsers.annotations.LowerCase;
 import com.univocity.parsers.annotations.Parsed;
 
-public class DiagnosticFileDTO {
+public class DiagnosticFileDTO implements TeacherPersonDTO{
 
     @Parsed(index = 0)
     private long respondentId;
@@ -24,11 +24,12 @@ public class DiagnosticFileDTO {
     @Parsed(index = 8)
     private String schoolName;
     @Parsed(index = 9)
+    @LowerCase
     private String email;
     @Parsed(index = 10)
     private String rut;
     @Parsed(index = 11)
-    private String names;
+    private String name;
     @Parsed(index = 12)
     private String lastNames;
     @Parsed(index = 13)
@@ -236,6 +237,9 @@ public class DiagnosticFileDTO {
     @Parsed(index = 114)
     private String usageOfAlgorithm;
 
+
+
+    // TODO: --------------
     public long getRespondentId() {
         return respondentId;
     }
@@ -308,6 +312,7 @@ public class DiagnosticFileDTO {
         this.schoolName = schoolName;
     }
 
+    @Override
     public String getEmail() {
         return email;
     }
@@ -316,6 +321,7 @@ public class DiagnosticFileDTO {
         this.email = email;
     }
 
+    @Override
     public String getRut() {
         return rut;
     }
@@ -324,14 +330,16 @@ public class DiagnosticFileDTO {
         this.rut = rut;
     }
 
-    public String getNames() {
-        return names;
+    @Override
+    public String getName() {
+        return name;
     }
 
-    public void setNames(String names) {
-        this.names = names;
+    public void setName(String name) {
+        this.name = name;
     }
 
+    @Override
     public String getLastNames() {
         return lastNames;
     }
@@ -340,6 +348,7 @@ public class DiagnosticFileDTO {
         this.lastNames = lastNames;
     }
 
+    @Override
     public int getAge() {
         return age;
     }
@@ -348,6 +357,7 @@ public class DiagnosticFileDTO {
         this.age = age;
     }
 
+    @Override
     public String getGender() {
         return gender;
     }
@@ -1155,4 +1165,24 @@ public class DiagnosticFileDTO {
     public void setUsageOfAlgorithm(String usageOfAlgorithm) {
         this.usageOfAlgorithm = usageOfAlgorithm;
     }
+
+
+    @Override
+    public String getDepartment(){return null;}
+
+    @Override
+    public boolean getParticipatedInPNLD(){return true;}
+
+    @Override
+    public String getInLevels(){return null;}
+
+    @Override
+    public String getSubjects(){return null;}
+
+    @Override
+    public String getCsResources(){return null;}
+
+    @Override
+    public String getRoboticsResources(){return null;}
+
 }
