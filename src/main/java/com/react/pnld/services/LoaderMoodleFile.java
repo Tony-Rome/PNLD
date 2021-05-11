@@ -28,6 +28,11 @@ public class LoaderMoodleFile {
     SchoolRepository schoolRepository;
     @Autowired
     RegionRepository regionRepository;
+    @Autowired
+    GenderRepository genderRepository;
+
+    @Autowired
+    FileUtilService fileUtilService;
 
     public FileResumeDTO processTrainingFileRows(List<TrainingFileDTO> postTrainingRows, int loadedFileId,
                                                  String testType) {
@@ -101,12 +106,26 @@ public class LoaderMoodleFile {
         Training training = this.trainingRepository.getTrainingByFacilitator(FileUtilService.NOT_SPECIFIED);
         teacher.setTrainingId(training.getId());
 
+        if(!optionalPerson.isPresent()){
+
+
+            String genderStandardized = fileUtilService.genderStandardization(diagnosticRow.getGender().toLowerCase());
+            int genderId = genderRepository.getGenderIdByType(genderStandardized);
+
+            Person newPerson = new Person(personId, diagnosticRow.getNames(), lastNames[0], lastNames[1], email, genderId, optionalSchool.get().getId());
+            personRepository.insertPerson(newPerson);
+
+            optionalPerson = Optional.of(newPerson);
+        }
+
         String[] lastNames = teacherPersonDTO.getLastNames().split(FileUtilService.DELIMITER_LAST_NAMES);//TODO validate when only one lastname
         teacher.setName(teacherPersonDTO.getName());
         teacher.setPaternalLastName(lastNames[0]);
         teacher.setMaternalLastName(lastNames[1]);
         teacher.setEmail(teacherPersonDTO.getEmail());
-        teacher.setGenderId(FileUtilService.GENDER_ID_NOT_SPECIFIED);
+
+        int genderId = genderRepository.getGenderIdByType(fileUtilService.genderStandardization(teacherPersonDTO.getGender()));
+        teacher.setGenderId(genderId);
 
         String schoolName = postTrainingRow.getInstitution(); //TODO: ESTO HAY QUE QUITARLO
         teacher.setSchoolId(getSchoolByName(schoolName).getId());
@@ -189,24 +208,21 @@ public class LoaderMoodleFile {
 
             if(rut == null) continue;
 
-            Optional<Teacher> teacherSelected = personRepository.getTeacherPerson(rut);
+            Optional<Teacher> teacherPearsonSelected = personRepository.getTeacherPerson(rut);
 
-            if(!teacherSelected.isPresent()){
-                buildTeacherFrom(diagnosticRows);
+            if (!teacherPearsonSelected.isPresent()) {
+                Teacher teacher = this.buildTeacherFrom(diagnosticRow);
+                this.personRepository.insertPerson(teacher);
+                this.personRepository.insertTeacher(teacher);
+                teacherPearsonSelected = Optional.of(teacher);
             }
 
-            if(!optionalPerson.isPresent()){
-                int personId = personRepository.getNextPersonId();
-                String[] lastNames = fileUtilService.splitLastNames(diagnosticRow.getLastNames()); //TODO: Ver nombre compuesto con 2+ palabras
 
-                String genderStandardized = fileUtilService.genderStandardization(diagnosticRow.getGender().toLowerCase());
-                int genderId = genderRepository.getGenderIdByType(genderStandardized);
+            //TODO: verificar y actualizar atributos de teacherPerson
 
-                Person newPerson = new Person(personId, diagnosticRow.getNames(), lastNames[0], lastNames[1], email, genderId, optionalSchool.get().getId());
-                personRepository.insertPerson(newPerson);
+            logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherPearsonSelected.get());
 
-                optionalPerson = Optional.of(newPerson);
-            }
+
 
             if(optionalPerson.isPresent()){
 

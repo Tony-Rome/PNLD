@@ -2,6 +2,7 @@ package com.react.pnld.services;
 
 import com.react.pnld.dto.*;
 import com.react.pnld.model.CSVHeadersProperties;
+import com.react.pnld.model.GenderProperties;
 import com.react.pnld.model.LoadedFile;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
@@ -35,6 +36,9 @@ public class FileUtilService {
 
     @Autowired
     private CSVHeadersProperties csvHeadersProperties;
+
+    @Autowired
+    private GenderProperties genderProperties;
 
     @Autowired
     private LoaderMoodleFile loaderMoodleFile;
@@ -227,6 +231,25 @@ public class FileUtilService {
         String rutPattern = "[0-9]{6,8}(k|[0-9])";
         String newRut = Pattern.matches(rutPattern, cleanedRut) ? cleanedRut : null ;
         return newRut;
+    }
+
+    public String genderStandardization(String gender){
+
+        String genderLowerCase = gender.toLowerCase();
+
+        if(genderProperties.getFemale().contains(genderLowerCase)){
+            return genderProperties.GENDER_TYPE_FEMALE;
+        }
+
+        if(genderProperties.getMale().contains(genderLowerCase)){
+            return genderProperties.GENDER_TYPE_MALE;
+        }
+
+        if(genderProperties.getOther().contains(genderLowerCase)){
+            return genderProperties.GENDER_TYPE_OTHER;
+        }
+
+        return genderProperties.GENDER_TYPE_NOT_ESPECIFY;
     }
 
     public static LocalDateTime getLocalDateFrom(String stringDate){
