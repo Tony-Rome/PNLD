@@ -1,5 +1,6 @@
 package com.react.pnld.mappers;
 
+import com.react.pnld.model.DiagnosticQuestionnaire;
 import com.react.pnld.model.ExitSatisfactionQuestionnaire;
 
 public interface QuestionnaireMapper {
@@ -8,9 +9,9 @@ public interface QuestionnaireMapper {
 
     int getNextDiagnosticQuestionnaireId();
 
-    void insertDiagnosticQuestionnaire();
+    void insertDiagnosticQuestionnaire(DiagnosticQuestionnaire newDiagnosticQuestionnaire);
 
-    int getExitSatisfactionQuestionnaireCount();
+    int getExitSatisfactionQuestionnaireCount(int teacherId);
 
     int getNextExitSatisfactionQuestionnaireId();
 

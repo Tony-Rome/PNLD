@@ -190,7 +190,7 @@ public class FileUtilService {
 
             case DIAGNOSIS:
                 List<DiagnosticFileDTO> diagnosticRows = parseRowsToBeans(loadedFileReader, DiagnosticFileDTO.class);
-                return this.loaderMoodleFile.diagnosticoFile(diagnosticRows, loadedFile.getId());
+                return this.loaderMoodleFile.diagnosticFile(diagnosticRows, loadedFile.getId());
 
             case PRE_TRAINING:
             case POST_TRAINING:
@@ -220,13 +220,16 @@ public class FileUtilService {
         return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
     }
 
-    public static String cleanRegionName(String name){
+    public static String normalizeStr(String name){
+        if(name == null || name.isEmpty()){
+            return null;
+        }
         String normalizedName =Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
-        return normalizedName.replaceAll("region | Region ", "");
+        return normalizedName.replaceAll("region |colegio ", "");
     }
 
-    public static String removeSymbolsFromRut(String rutToClean){ //TODO: Mejorar hacia validación de RUT
 
+    public static String removeSymbolsFromRut(String rutToClean){ //TODO: Mejorar validación de RUT
         String cleanedRut = rutToClean.replaceAll("[^0-9k]","");
         String rutPattern = "[0-9]{6,8}(k|[0-9])";
         String newRut = Pattern.matches(rutPattern, cleanedRut) ? cleanedRut : null ;
@@ -235,17 +238,15 @@ public class FileUtilService {
 
     public String genderStandardization(String gender){
 
-        String genderLowerCase = gender.toLowerCase();
-
-        if(genderProperties.getFemale().contains(genderLowerCase)){
+        if(genderProperties.getFemale().contains(gender)){
             return genderProperties.GENDER_TYPE_FEMALE;
         }
 
-        if(genderProperties.getMale().contains(genderLowerCase)){
+        if(genderProperties.getMale().contains(gender)){
             return genderProperties.GENDER_TYPE_MALE;
         }
 
-        if(genderProperties.getOther().contains(genderLowerCase)){
+        if(genderProperties.getOther().contains(gender)){
             return genderProperties.GENDER_TYPE_OTHER;
         }
 
@@ -264,9 +265,10 @@ public class FileUtilService {
         return newLastNamesArray;
     }
 
-    int strToInt(String rbdStr){ //TODO: Mover a otro archivo
-        String cleanedRbd = rbdStr.replaceAll("[^0-9]","");
-        return Integer.parseInt(rbdStr);
+    public static int strToInt(String rbdStr){ //TODO: Mover a otro archivo
+        String cleanedRbd = rbdStr.replaceAll("[^\\d]","");
+        if(cleanedRbd.isEmpty())return RBD_ID_NOT_SPECIFIED;
+        return Integer.parseInt(cleanedRbd);
     }
 
     public static LocalDateTime getLocalDateFrom(String stringDate){

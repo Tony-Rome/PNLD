@@ -15,7 +15,7 @@ public class GenderProperties {
     public static String GENDER_TYPE_FEMALE = "femenino";
     public static String GENDER_TYPE_MALE = "masculino";
     public static String GENDER_TYPE_OTHER = "otro";
-    public static String GENDER_TYPE_NOT_ESPECIFY = "no espeficiado";
+    public static String GENDER_TYPE_NOT_ESPECIFY = "no especificado";
 
     public List<String> getFemale() {
         return female;

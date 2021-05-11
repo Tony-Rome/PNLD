@@ -4,6 +4,8 @@ import com.univocity.parsers.annotations.LowerCase;
 import com.univocity.parsers.annotations.Parsed;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ExitSatisfactionFileDTO implements TeacherPersonDTO{
 
@@ -11,6 +13,7 @@ public class ExitSatisfactionFileDTO implements TeacherPersonDTO{
     private int responseId;
     private Timestamp sendDate;
     @Parsed(index = 2)
+    @LowerCase
     private String schoolName;
     @Parsed(index = 3)
     private String department;
@@ -23,6 +26,7 @@ public class ExitSatisfactionFileDTO implements TeacherPersonDTO{
     private String name;
     private String lastNames;
     @Parsed(index = 8)
+    @LowerCase
     private String rut;
     @Parsed(index = 9)
     private String q011;
@@ -97,8 +101,9 @@ public class ExitSatisfactionFileDTO implements TeacherPersonDTO{
 
     @Parsed(index = 1)
     public void setSendDate(String sendDate) {
-        System.out.println("SendDate: " + sendDate);
-        this.sendDate = Timestamp.valueOf(sendDate.replaceAll("/", "-"));
+        String sendDateFormat = sendDate.replaceAll("/","-");
+        LocalDateTime localDateTime = LocalDateTime.parse(sendDateFormat, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+        this.sendDate = Timestamp.valueOf(localDateTime);
     }
 
     @Override
@@ -155,17 +160,24 @@ public class ExitSatisfactionFileDTO implements TeacherPersonDTO{
 
         this.name = fullName[0];
 
-        if(fullName.length == 2){
-            setLastNames(fullName[1]);
-        }
-        if(fullName.length == 3){
-            setLastNames(fullName[1] +" "+ fullName[2]);
-        }
+        if(fullName.length == 2) setLastNames(fullName[1]);
+
+        if(fullName.length == 3) setLastNames(fullName[1] +" "+ fullName[2]);
+
         if(fullName.length == 4){
             this.name += " "+fullName[1];
             setLastNames(fullName[2] +" "+ fullName[3]);
         }
 
+        if(fullName.length == 5){
+            this.name += " "+fullName[1]+" "+fullName[2];
+            setLastNames(fullName[3] + " " + fullName[4]);
+        }
+
+        if(fullName.length == 6){
+            this.name += " "+fullName[1]+" "+fullName[2] + " "+fullName[3];
+            setLastNames(fullName[4] + " " + fullName[5]);
+        }
     }
 
     @Override

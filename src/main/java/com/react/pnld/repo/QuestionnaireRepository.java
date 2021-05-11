@@ -21,11 +21,11 @@ public class QuestionnaireRepository {
     }
 
     public void insertDiagnosticQuestionnaire(DiagnosticQuestionnaire newDiagnosticQuestionnaire) {
-        questionnaireMapper.insertDiagnosticQuestionnaire();
+        questionnaireMapper.insertDiagnosticQuestionnaire(newDiagnosticQuestionnaire);
     }
 
     public int getExitSatisfactionQuestionnaireCount(int teacherId) {
-        return questionnaireMapper.getExitSatisfactionQuestionnaireCount();
+        return questionnaireMapper.getExitSatisfactionQuestionnaireCount(teacherId);
     }
 
     public int getNextExitSatisfactionQuestionnaireId() {

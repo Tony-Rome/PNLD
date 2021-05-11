@@ -17,25 +17,31 @@ public class DiagnosticFileDTO implements TeacherPersonDTO{
     @Parsed(index = 4)
     private String ipAddress;
     @Parsed(index = 5)
+    @LowerCase
     private String region;
     @Parsed(index = 6)
+    @LowerCase
     private String commune;
     @Parsed(index = 7)
     private String rbd;
     @Parsed(index = 8)
+    @LowerCase
     private String schoolName;
     @Parsed(index = 9)
     @LowerCase
     private String email;
     @Parsed(index = 10)
+    @LowerCase
     private String rut;
     @Parsed(index = 11)
     private String name;
     @Parsed(index = 12)
+    @LowerCase
     private String lastNames;
     @Parsed(index = 13)
     private int age;
     @Parsed(index = 14)
+    @LowerCase
     private String gender;
     @Parsed(index = 15)
     private String job;
