@@ -1,15 +1,17 @@
 package com.react.pnld.dto;
 
+import com.univocity.parsers.annotations.LowerCase;
 import com.univocity.parsers.annotations.Parsed;
 
-public class ExitSatisfactionFileDTO {
+import java.sql.Timestamp;
+
+public class ExitSatisfactionFileDTO implements TeacherPersonDTO{
 
     @Parsed(index = 0)
     private int responseId;
-    @Parsed(index = 1)
-    private String sendDate;
+    private Timestamp sendDate;
     @Parsed(index = 2)
-    private String institution;
+    private String schoolName;
     @Parsed(index = 3)
     private String department;
     @Parsed(index = 4)
@@ -18,8 +20,8 @@ public class ExitSatisfactionFileDTO {
     private String group;
     @Parsed(index = 6)
     private int id;
-    @Parsed(index = 7)
-    private String fullName;
+    private String name;
+    private String lastNames;
     @Parsed(index = 8)
     private String rut;
     @Parsed(index = 9)
@@ -89,22 +91,25 @@ public class ExitSatisfactionFileDTO {
         this.responseId = responseId;
     }
 
-    public String getSendDate() {
+    public Timestamp getSendDate() {
         return sendDate;
     }
 
+    @Parsed(index = 1)
     public void setSendDate(String sendDate) {
-        this.sendDate = sendDate;
+        this.sendDate = Timestamp.valueOf(sendDate.replaceAll("/", "-"));
     }
 
-    public String getInstitution() {
-        return institution;
+    @Override
+    public String getSchoolName() {
+        return schoolName;
     }
 
-    public void setInstitution(String institution) {
-        this.institution = institution;
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
     }
 
+    @Override
     public String getDepartment() {
         return department;
     }
@@ -137,14 +142,37 @@ public class ExitSatisfactionFileDTO {
         this.id = id;
     }
 
-    public String getFullName() {
-        return fullName;
+    @Override
+    public String getName() {
+        return name;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    @Parsed(index = 7)
+    @LowerCase
+    public void setName(String name) {
+        String[] fullName = name.split(" ");
+
+        this.name = fullName[0];
+
+        if(fullName.length == 2){
+            setLastNames(fullName[1]);
+        }
+        if(fullName.length == 3){
+            setLastNames(fullName[1] +" "+ fullName[2]);
+        }
+        if(fullName.length == 4){
+            this.name += " "+fullName[1];
+            setLastNames(fullName[2] +" "+ fullName[3]);
+        }
+
     }
 
+    @Override
+    public String getLastNames(){return lastNames;}
+
+    public void setLastNames(String lastNames){ this.lastNames = lastNames;}
+
+    @Override
     public String getRut() {
         return rut;
     }
@@ -384,4 +412,29 @@ public class ExitSatisfactionFileDTO {
     public void setQ10(String q10) {
         this.q10 = q10;
     }
+
+    @Override
+    public int getAge(){return 0;}
+
+    @Override
+    public boolean getParticipatedInPNLD(){return true;}
+
+    @Override
+    public String getInLevels(){return null;}
+
+    @Override
+    public String getSubjects(){return null;}
+
+    @Override
+    public String getCsResources(){return null;}
+
+    @Override
+    public String getRoboticsResources(){return null;}
+
+    @Override
+    public String getEmail(){return null;}
+
+    @Override
+    public String getGender(){return null;}
+
 }

@@ -27,7 +27,7 @@ public class TrainingFileDTO implements TeacherPersonDTO{
 
     @Parsed(index = 3)
     @LowerCase
-    private String institution;
+    private String schoolName;
 
     @Parsed(index = 4)
     @LowerCase
@@ -122,12 +122,13 @@ public class TrainingFileDTO implements TeacherPersonDTO{
         this.rut = rut;
     }
 
-    public String getInstitution() {
-        return institution;
+    @Override
+    public String getSchoolName() {
+        return schoolName;
     }
 
-    public void setInstitution(String institution) {
-        this.institution = institution;
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
     }
 
     @Override
@@ -330,7 +331,7 @@ public class TrainingFileDTO implements TeacherPersonDTO{
                 "lastNames='" + lastNames + '\'' +
                 ", name='" + name + '\'' +
                 ", rut='" + rut + '\'' +
-                ", institution='" + institution + '\'' +
+                ", institution='" + schoolName + '\'' +
                 ", department='" + department + '\'' +
                 ", email='" + email + '\'' +
                 ", testState='" + testState + '\'' +

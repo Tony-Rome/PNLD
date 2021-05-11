@@ -48,11 +48,14 @@ public class LoaderMoodleFile {
         for (TrainingFileDTO postTrainingRow : postTrainingRows) {
             logger.info("processTrainingFileRows. postTrainingRow={}", postTrainingRow);
 
+            School school = getSchoolByName(FileUtilService.removeAccents(postTrainingRow.getSchoolName()));
+
             Optional<Teacher> teacherSelected = personRepository.getTeacherPerson(FileUtilService.
                     removeSymbols(postTrainingRow.getRut()));
 
             if (!teacherSelected.isPresent()) {
                 Teacher teacher = this.buildTeacherFrom(postTrainingRow);
+                teacher.setSchoolId(school.getId());
                 this.personRepository.insertPerson(teacher);
                 this.personRepository.insertTeacher(teacher);
                 teacherSelected = Optional.of(teacher);
@@ -117,8 +120,6 @@ public class LoaderMoodleFile {
         int genderId = genderRepository.getGenderIdByType(fileUtilService.genderStandardization(teacherPersonDTO.getGender()));
         teacher.setGenderId(genderId);
 
-        String schoolName = postTrainingRow.getInstitution(); //TODO: ESTO HAY QUE QUITARLO
-        teacher.setSchoolId(getSchoolByName(schoolName).getId());
         return teacher;
     }
 
@@ -126,14 +127,16 @@ public class LoaderMoodleFile {
 
         if (schoolName == null || schoolName.isEmpty()) {
             return schoolRepository.getSchoolByName(FileUtilService.NOT_SPECIFIED).get();
-        } else {
-            Optional<School> schoolSelected = schoolRepository.getSchoolByName(schoolName);
-            if(!schoolSelected.isPresent()){
-                School newSchool = createNewSchool(schoolName, null, FileUtilService.REGION_ID_OTHER, FileUtilService.RBD_ID_NOT_SPECIFIED);
-                schoolSelected = Optional.of(newSchool);
-            }
-            return schoolSelected.get();
         }
+
+        Optional<School> schoolSelected = schoolRepository.getSchoolByName(schoolName);
+
+        if(!schoolSelected.isPresent()){
+            School newSchool = createNewSchool(schoolName, null, FileUtilService.REGION_ID_OTHER, FileUtilService.RBD_ID_NOT_SPECIFIED);
+            schoolSelected = Optional.of(newSchool);
+        }
+        return schoolSelected.get();
+
     }
 
     School createNewSchool(String name, String city, int regionId, int rbd){ //TODO: Mover a otro archivo
@@ -161,7 +164,7 @@ public class LoaderMoodleFile {
             school.setRbd(rbd);
         }
 
-        //TODO: UPDATE SCHOOL
+        //TODO Actualizar colegio
     }
 
     int getRegionId(String name){ //TODO: Mover a otro archivo
@@ -172,9 +175,7 @@ public class LoaderMoodleFile {
         return regionRepository.getRegionIdByName(cleanedName); //TODO Verificar cuando no existe nombre region
     }
 
-
-
-    public FileResumeDTO diagnosticoFile(List<DiagnosticFileDTO> diagnosticRows, int loadedFileId, String loadedFileType) {
+    public FileResumeDTO diagnosticoFile(List<DiagnosticFileDTO> diagnosticRows, int loadedFileId) {
 
         int newRecords = 0;
         int duplicatedRecords = 0;
@@ -186,31 +187,32 @@ public class LoaderMoodleFile {
 
             School school = getSchoolByName(FileUtilService.removeAccents(diagnosticRow.getSchoolName()));
 
-            if(school.getName() != FileUtilService.NOT_SPECIFIED){ //TODO: Si no es epscificado igual s eregistra con los otros valores??
+            if(school.getName() != FileUtilService.NOT_SPECIFIED){
                 int rbd = fileUtilService.strToInt(diagnosticRow.getRbd());
                 verifySchool(school, diagnosticRow.getCommune(), regionId, rbd);
             }
 
             String rut = FileUtilService.removeSymbolsFromRut(diagnosticRow.getRut());
 
-            if(rut == null) continue;
+            if(rut == null) continue; //TODO: Contar registros inválidos
 
-            Optional<Teacher> teacherPearsonSelected = personRepository.getTeacherPerson(rut);
+            Optional<Teacher> teacherPersonSelected = personRepository.getTeacherPerson(rut);
 
-            if (!teacherPearsonSelected.isPresent()) {
+            if (!teacherPersonSelected.isPresent()) {
                 Teacher teacher = this.buildTeacherFrom(diagnosticRow);
+                teacher.setSchoolId(school.getId());
                 this.personRepository.insertPerson(teacher);
                 this.personRepository.insertTeacher(teacher);
-                teacherPearsonSelected = Optional.of(teacher);
+                teacherPersonSelected = Optional.of(teacher);
             }
 
 
             //TODO: verificar y actualizar atributos de teacherPerson
             //TODO: Person verificar: genderId & SchoolId
 
-            logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherPearsonSelected.get());
+            logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherPersonSelected.get());
 
-            int diagnosticQuestionnaireCount = questionnaireRepository.getDiagnosticQuestionnaireCount(teacherPearsonSelected.get().getTeacherId());
+            int diagnosticQuestionnaireCount = questionnaireRepository.getDiagnosticQuestionnaireCount(teacherPersonSelected.get().getTeacherId());
 
             if(diagnosticQuestionnaireCount < 1){
 
@@ -219,7 +221,7 @@ public class LoaderMoodleFile {
                 int diagnosticQuestionnaireId = questionnaireRepository.getNextDiagnosticQuestionnaireId();
 
                 DiagnosticQuestionnaire newDiagnosticQuestionnaire = new DiagnosticQuestionnaire(
-                        diagnosticQuestionnaireId, loadedFileId, teacherPearsonSelected.get().getTeacherId(),
+                        diagnosticQuestionnaireId, loadedFileId, teacherPersonSelected.get().getTeacherId(),
                         diagnosticRow.getRespondentId(), diagnosticRow.getCollectorId(),
                         diagnosticRow.getCreatedDate(),diagnosticRow.getModifiedDate(), answersJson);
 
@@ -237,73 +239,47 @@ public class LoaderMoodleFile {
         return new FileResumeDTO(diagnosticRows.size(), newRecords, duplicatedRecords);
     }
 
-    public FileResumeDTO exitSatisfactionFile(List<ExitSatisfactionFileDTO> exitSatisfactionRows, int loadedFileId, String loadedFileType) {
+    public FileResumeDTO exitSatisfactionFile(List<ExitSatisfactionFileDTO> exitSatisfactionRows, int loadedFileId) {
 
         int newRecords = 0;
         int duplicatedRecords = 0;
 
-        for (ExitFileDTO exitFileDTORow : exitFileDTORows) {
+        for (ExitSatisfactionFileDTO exitSatisfactionRow : exitSatisfactionRows) {
 
-            if(exitFileDTORow.getInstitution() != null && exitFileDTORow.getInstitution() != "") {
+            School school = getSchoolByName(FileUtilService.removeAccents(exitSatisfactionRow.getSchoolName()));
 
-                String schoolName = fileUtilService.normalizeString(exitFileDTORow.getInstitution());
+            String rut = FileUtilService.removeSymbolsFromRut(exitSatisfactionRow.getRut());
 
-                Optional<School> optionalSchool = schoolRepository.getSchoolByName(schoolName);
+            if(rut == null) continue; //TODO: Contar registros inválidos
 
-                if (!optionalSchool.isPresent()) {
-                    int schoolId = schoolRepository.getNextSchoolId();
-                    int REGION_NOT_SPECIFIED = 16;
+            Optional<Teacher> teacherPersonSelected = personRepository.getTeacherPerson(rut);
 
-                    School newSchool = new School(schoolId, schoolName, null, REGION_NOT_SPECIFIED, null);
-                    schoolRepository.insertSchool(newSchool);
-                }
+            if (!teacherPersonSelected.isPresent()) {
+                Teacher teacher = this.buildTeacherFrom(exitSatisfactionRow);
+                this.personRepository.insertPerson(teacher);
+                this.personRepository.insertTeacher(teacher);
+                teacherPersonSelected = Optional.of(teacher);
             }
 
-            String cleanedRut = fileUtilService.removeSymbolsFromRut(exitFileDTORow.getRut());
-            Optional<Teacher> optionalTeacher = teacherRepository.getTeacherByRut(cleanedRut);
+            //TODO: Si existe TeacherPerson, se actualiza departamento y nombre
 
-            if(optionalTeacher.isPresent()){
-                String department = exitFileDTORow.getDepartment();
-                optionalTeacher.get().setDepartment(department);
-                //TODO: teacherRepository.updateTeacher(optionalTeacher.get());
-            }
 
-            if(!optionalTeacher.isPresent()){
-                //TODO: Verificar caso cuando no existe docente en cuestionario salida
-                duplicatedRecords++;
-                continue;
-            }
-
-            int exitQuestionnaireCount = questionnaireRepository.getExitQuestionnaireCount(optionalTeacher.get().getId());
+            int exitQuestionnaireCount = questionnaireRepository.getExitSatisfactionQuestionnaireCount(teacherPersonSelected.get().getTeacherId());
 
             if(exitQuestionnaireCount < 1){
 
 
                 String answersJson = "{\"llave\":\"respuesta\"}";
 
-                int exitQuestionnaireId = questionnaireRepository.getNextExitQuestionnaireId();
+                int exitSatisfactionQuestionnaireId = questionnaireRepository.getNextExitSatisfactionQuestionnaireId();
 
-                System.out.println("FECHA: " + exitFileDTORow.getSendDate());
-                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date date = null;
-                String fecha = exitFileDTORow.getSendDate().replaceAll("/","-");
-                System.out.println("FECHA REPLACE: " + fecha);
-                try {
-                    date = simpleDateFormat1.parse(fecha);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                System.out.println("NUEVA FECHA: " + simpleDateFormat2.format(date));
-
-                ExitQuestionnaire newExitQuestionnaire = new ExitQuestionnaire(
-                        exitQuestionnaireId, loadedFileId, optionalTeacher.get().getId(),
-                        exitFileDTORow.getResponseId(), new Timestamp(date.getTime()), answersJson,
-                        exitFileDTORow.getId(), exitFileDTORow.getCourse(), exitFileDTORow.getGroup());
+                ExitSatisfactionQuestionnaire newExitQuestionnaire = new ExitSatisfactionQuestionnaire(
+                        exitSatisfactionQuestionnaireId, loadedFileId, teacherPersonSelected.get().getTeacherId(),
+                        exitSatisfactionRow.getResponseId(),exitSatisfactionRow.getSendDate(), answersJson,
+                        exitSatisfactionRow.getId(), exitSatisfactionRow.getCourse(), exitSatisfactionRow.getGroup());
 
 
-                questionnaireRepository.insertExitQuestionnaire(newExitQuestionnaire);
+                questionnaireRepository.insertExitSatisfactionQuestionnaire(newExitQuestionnaire);
                 newRecords++;
             }
 
@@ -313,7 +289,7 @@ public class LoaderMoodleFile {
 
 
         }
-        return new FileResumeDTO(exitFileDTORows.size(), newRecords, duplicatedRecords);
+        return new FileResumeDTO(exitSatisfactionRows.size(), newRecords, duplicatedRecords);
     }
 
 }

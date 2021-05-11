@@ -1,9 +1,5 @@
 package com.react.pnld.dto;
 
-import com.react.pnld.model.Teacher;
-import com.react.pnld.model.Training;
-import com.react.pnld.services.FileUtilService;
-
  public interface TeacherPersonDTO {
 
      String getRut();
@@ -29,6 +25,8 @@ import com.react.pnld.services.FileUtilService;
      String getEmail();
 
      String getGender();
+
+     String getSchoolName();
 
 
 }

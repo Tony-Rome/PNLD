@@ -190,7 +190,7 @@ public class FileUtilService {
 
             case DIAGNOSIS:
                 List<DiagnosticFileDTO> diagnosticRows = parseRowsToBeans(loadedFileReader, DiagnosticFileDTO.class);
-                return this.loaderMoodleFile.diagnosticoFile(diagnosticRows, loadedFile.getId(), loadedFile.getType());
+                return this.loaderMoodleFile.diagnosticoFile(diagnosticRows, loadedFile.getId());
 
             case PRE_TRAINING:
             case POST_TRAINING:
@@ -200,7 +200,7 @@ public class FileUtilService {
             case SALIDA:
             case SATISFACTION:
                 List<ExitSatisfactionFileDTO> exitSatisfactionRows = parseRowsToBeans(loadedFileReader, ExitSatisfactionFileDTO.class);
-                return this.loaderMoodleFile.exitSatisfactionFile(exitSatisfactionRows, loadedFile.getId(), loadedFile.getType());
+                return this.loaderMoodleFile.exitSatisfactionFile(exitSatisfactionRows, loadedFile.getId());
 
             case TEST_CT_1:
                 return this.loaderCPFile.testPCOneFile(loadedFile);

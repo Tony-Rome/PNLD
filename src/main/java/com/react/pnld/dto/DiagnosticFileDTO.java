@@ -305,6 +305,7 @@ public class DiagnosticFileDTO implements TeacherPersonDTO{
         this.rbd = rbd;
     }
 
+    @Override
     public String getSchoolName() {
         return schoolName;
     }
