@@ -172,7 +172,9 @@ public class LoaderMoodleFile {
             return FileUtilService.REGION_ID_OTHER;
         }
         String cleanedName = FileUtilService.cleanRegionName(name); //TODO: Agregar unit test
-        return regionRepository.getRegionIdByName(cleanedName); //TODO Verificar cuando no existe nombre region
+        Optional<Integer> regionIdSelected = regionRepository.getRegionIdByName(cleanedName);
+
+        return (!regionIdSelected.isPresent()) ? FileUtilService.REGION_ID_OTHER : regionIdSelected.get().intValue();
     }
 
     public FileResumeDTO diagnosticoFile(List<DiagnosticFileDTO> diagnosticRows, int loadedFileId) {
@@ -208,7 +210,6 @@ public class LoaderMoodleFile {
 
 
             //TODO: verificar y actualizar atributos de teacherPerson
-            //TODO: Person verificar: genderId & SchoolId
 
             logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherPersonSelected.get());
 

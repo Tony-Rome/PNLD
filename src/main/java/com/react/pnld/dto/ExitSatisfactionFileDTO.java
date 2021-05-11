@@ -97,6 +97,7 @@ public class ExitSatisfactionFileDTO implements TeacherPersonDTO{
 
     @Parsed(index = 1)
     public void setSendDate(String sendDate) {
+        System.out.println("SendDate: " + sendDate);
         this.sendDate = Timestamp.valueOf(sendDate.replaceAll("/", "-"));
     }
 
