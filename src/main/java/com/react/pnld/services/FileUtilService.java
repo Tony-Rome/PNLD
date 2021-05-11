@@ -1,9 +1,6 @@
 package com.react.pnld.services;
 
-import com.react.pnld.dto.FileResumeDTO;
-import com.react.pnld.dto.FileTypes;
-import com.react.pnld.dto.ScheduleFileLoadDTO;
-import com.react.pnld.dto.TrainingFileDTO;
+import com.react.pnld.dto.*;
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.model.LoadedFile;
 import com.univocity.parsers.common.processor.BeanListProcessor;
@@ -91,10 +88,8 @@ public class FileUtilService {
                 return csvHeadersProperties.getTestCT3();
 
             case SALIDA:
-                return csvHeadersProperties.getSalida();
-
             case SATISFACTION:
-                return csvHeadersProperties.getSatisfaction();
+                return csvHeadersProperties.getExitSatisfaction();
 
             default:
                 return new String[1];
@@ -183,7 +178,8 @@ public class FileUtilService {
                 return this.loaderCodeFile.processSignInsFile(loadedFile);
 
             case DIAGNOSIS:
-                return this.loaderMoodleFile.diagnosticoFile(loadedFile);
+                List<DiagnosticFileDTO> diagnosticRows = parseRowsToBeans(loadedFileReader, DiagnosticFileDTO.class);
+                return this.loaderMoodleFile.diagnosticoFile(diagnosticRows, loadedFile.getId(), loadedFile.getType());
 
             case PRE_TRAINING:
             case POST_TRAINING:
@@ -191,10 +187,9 @@ public class FileUtilService {
                 return loaderMoodleFile.processTrainingFileRows(trainingRows, loadedFile.getId(), loadedFile.getType());
 
             case SALIDA:
-                return this.loaderMoodleFile.salidaFile(loadedFile);
-
             case SATISFACTION:
-                return this.loaderMoodleFile.satisFile(loadedFile);
+                List<ExitSatisfactionFileDTO> exitSatisfactionRows = parseRowsToBeans(loadedFileReader, ExitSatisfactionFileDTO.class);
+                return this.loaderMoodleFile.exitSatisfactionFile(exitSatisfactionRows, loadedFile.getId(), loadedFile.getType());
 
             case TEST_CT_1:
                 return this.loaderCPFile.testPCOneFile(loadedFile);

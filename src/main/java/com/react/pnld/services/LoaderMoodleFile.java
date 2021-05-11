@@ -1,12 +1,10 @@
 package com.react.pnld.services;
 
+import com.react.pnld.dto.DiagnosticFileDTO;
 import com.react.pnld.dto.FileResumeDTO;
 import com.react.pnld.dto.TrainingFileDTO;
 import com.react.pnld.model.*;
-import com.react.pnld.repo.PersonRepository;
-import com.react.pnld.repo.SchoolRepository;
-import com.react.pnld.repo.TestRepository;
-import com.react.pnld.repo.TrainingRepository;
+import com.react.pnld.repo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +25,17 @@ public class LoaderMoodleFile {
 
     @Autowired
     PersonRepository personRepository;
-
     @Autowired
     TestRepository testRepository;
-
     @Autowired
     TrainingRepository trainingRepository;
-
     @Autowired
     SchoolRepository schoolRepository;
+    @Autowired
+    RegionRepository regionRepository;
+
+    @Autowired
+    FileUtilService fileUtilService;
 
     public FileResumeDTO processTrainingFileRows(List<TrainingFileDTO> postTrainingRows, int loadedFileId,
                                                  String testType) {
@@ -243,30 +243,7 @@ public class LoaderMoodleFile {
 
             if(diagnosticQuestionnaireCount < 1){
 
-                String[] splitDiagnosticRow = diagnosticRow.toString().split("\',|(?<=[0-9]),");
-
-                List<String> splitDiagnosticRowCleaned = Arrays.stream(splitDiagnosticRow)
-                        .map(element -> element.replaceAll(".*=|\'|[}{]",""))
-                        .collect(Collectors.toList());
-
-                Map<String, String> jsonRaw = new LinkedHashMap();
-
-                int ANSWERS_BASE_INDEX = 15;
-
-                for(int i = ANSWERS_BASE_INDEX; i < headers.length; i++){
-                    String key = headers[i];
-                    String value = splitDiagnosticRowCleaned.get(i);
-
-                    jsonRaw.put(key, value);
-                }
-
-                String answersJson = "";
-                try {
-                    answersJson = new ObjectMapper().writeValueAsString(jsonRaw);
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
-
+                String answersJson = "{\"clave\":\"valor\"}";
 
                 int diagnosticQuestionnaireId = questionnaireRepository.getNextDiagnosticQuestionnaireId();
 

@@ -16,8 +16,7 @@ public class CSVHeadersProperties {
     private String [] testCT1;
     private String [] testCT2;
     private String [] testCT3;
-    private String [] salida;//TODO remove
-    private String [] satisfaction;
+    private String [] exitSatisfaction;
 
     public String[] getTeacherRoster() {
         return teacherRoster;
@@ -107,19 +106,11 @@ public class CSVHeadersProperties {
         this.testCT3 = testCT3;
     }
 
-    public String[] getSalida() {
-        return salida;
+    public String[] getExitSatisfaction() {
+        return exitSatisfaction;
     }
 
-    public void setSalida(String[] salida) {
-        this.salida = salida;
-    }
-
-    public String[] getSatisfaction() {
-        return satisfaction;
-    }
-
-    public void setSatisfaction(String[] satisfaction) {
-        this.satisfaction = satisfaction;
+    public void setExitSatisfaction(String[] exitSatisfaction) {
+        this.exitSatisfaction = exitSatisfaction;
     }
 }
