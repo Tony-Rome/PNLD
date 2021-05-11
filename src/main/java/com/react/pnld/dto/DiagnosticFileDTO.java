@@ -3,16 +3,17 @@ package com.react.pnld.dto;
 import com.univocity.parsers.annotations.LowerCase;
 import com.univocity.parsers.annotations.Parsed;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+
 public class DiagnosticFileDTO implements TeacherPersonDTO{
 
     @Parsed(index = 0)
     private long respondentId;
     @Parsed(index = 1)
     private long collectorId;
-    @Parsed(index = 2)
-    private String createdDate;
-    @Parsed(index = 3)
-    private String modifiedDate;
+    private Timestamp createdDate;
+    private Timestamp modifiedDate;
     @Parsed(index = 4)
     private String ipAddress;
     @Parsed(index = 5)
@@ -237,9 +238,6 @@ public class DiagnosticFileDTO implements TeacherPersonDTO{
     @Parsed(index = 114)
     private String usageOfAlgorithm;
 
-
-
-    // TODO: --------------
     public long getRespondentId() {
         return respondentId;
     }
@@ -256,20 +254,23 @@ public class DiagnosticFileDTO implements TeacherPersonDTO{
         this.collectorId = collectorId;
     }
 
-    public String getCreatedDate() {
+    public Timestamp getCreatedDate() {
         return createdDate;
     }
 
+    @Parsed(index = 2)
     public void setCreatedDate(String createdDate) {
-        this.createdDate = createdDate;
+
+        this.createdDate = Timestamp.valueOf(createdDate);
     }
 
-    public String getModifiedDate() {
+    public Timestamp getModifiedDate() {
         return modifiedDate;
     }
 
+    @Parsed(index = 3)
     public void setModifiedDate(String modifiedDate) {
-        this.modifiedDate = modifiedDate;
+        this.modifiedDate = Timestamp.valueOf(modifiedDate);
     }
 
     public String getIpAddress() {

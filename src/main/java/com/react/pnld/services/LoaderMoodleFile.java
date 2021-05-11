@@ -30,6 +30,8 @@ public class LoaderMoodleFile {
     RegionRepository regionRepository;
     @Autowired
     GenderRepository genderRepository;
+    @Autowired
+    QuestionnaireRepository questionnaireRepository;
 
     @Autowired
     FileUtilService fileUtilService;
@@ -170,10 +172,7 @@ public class LoaderMoodleFile {
         return regionRepository.getRegionIdByName(cleanedName); //TODO Verificar cuando no existe nombre region
     }
 
-    int strToInt(String rbdStr){ //TODO: Mover a otro archivo
-        String cleanedRbd = rbdStr.replaceAll("[^0-9]","");
-        return Integer.parseInt(rbdStr);
-    }
+
 
     public FileResumeDTO diagnosticoFile(List<DiagnosticFileDTO> diagnosticRows, int loadedFileId, String loadedFileType) {
 
@@ -188,7 +187,7 @@ public class LoaderMoodleFile {
             School school = getSchoolByName(FileUtilService.removeAccents(diagnosticRow.getSchoolName()));
 
             if(school.getName() != FileUtilService.NOT_SPECIFIED){ //TODO: Si no es epscificado igual s eregistra con los otros valores??
-                int rbd = strToInt(diagnosticRow.getRbd());
+                int rbd = fileUtilService.strToInt(diagnosticRow.getRbd());
                 verifySchool(school, diagnosticRow.getCommune(), regionId, rbd);
             }
 
@@ -211,18 +210,7 @@ public class LoaderMoodleFile {
 
             logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherPearsonSelected.get());
 
-
-            String cleanedRut = fileUtilService.removeSymbolsFromRut(diagnosticRow.getRut());
-            Optional<Teacher> optionalTeacher = teacherRepository.getTeacherByRut(cleanedRut);
-
-            if(!optionalTeacher.isPresent()){
-                int teacherId = teacherRepository.getNextTeacherId();
-                Teacher newTeacher = new Teacher(teacherId, optionalPerson.get().getId(), cleanedRut, diagnosticRow.getAge(), null, true, null);
-                teacherRepository.insertTeacher(newTeacher);
-                optionalTeacher = Optional.of(newTeacher);
-            }
-
-            int diagnosticQuestionnaireCount = questionnaireRepository.getDiagnosticQuestionnaireCount(optionalTeacher.get().getId());
+            int diagnosticQuestionnaireCount = questionnaireRepository.getDiagnosticQuestionnaireCount(teacherPearsonSelected.get().getTeacherId());
 
             if(diagnosticQuestionnaireCount < 1){
 
@@ -233,8 +221,7 @@ public class LoaderMoodleFile {
                 DiagnosticQuestionnaire newDiagnosticQuestionnaire = new DiagnosticQuestionnaire(
                         diagnosticQuestionnaireId, loadedFileId, optionalTeacher.get().getId(),
                         diagnosticRow.getRespondentId(), diagnosticRow.getCollectorId(),
-                        Timestamp.valueOf(diagnosticRow.getCreatedDate()),
-                        Timestamp.valueOf(diagnosticRow.getModifiedDate()), answersJson);
+                        diagnosticRow.getCreatedDate(),diagnosticRow.getModifiedDate(), answersJson);
 
 
                 questionnaireRepository.insertDiagnosticQuestionnaire(newDiagnosticQuestionnaire);

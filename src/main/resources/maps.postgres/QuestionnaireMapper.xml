@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.react.pnld.mappers.QuestionnaireMapper">
+
+    <select id="getDiagnosticQuestionnaireCount" resultType="int" parameterType="int">
+        SELECT COUNT(id) FROM pnld.pnld.cuestionario_diagnostico WHERE id_docente = #{teacherId}
+    </select>
+
+    <insert id="insertDiagnosticQuestionnaire">
+        INSERT INTO pnld.cuestionario_diagnostico
+        (id, id_archivo_cargado, id_docente, id_respuesta, id_coleccion, fecha_creada, fecha_modificada, respuestas)
+        VALUES
+        (#{id}, #{loadedFileId}, #{teacherId}, #{respondentId}, #{collectorId}, #{createdDate}, #{modifiedDate}, #{answers}::json)
+    </insert>
+
+    <select id="getNextDiagnosticQuestionnaireId" resultType="int">
+        SELECT nextval(pg_get_serial_sequence('pnld.cuestionario_diagnostico', 'id'))
+    </select>
+
+    <select id="getExitSatisfactionQuestionnaireCount" resultType="int" parameterType="int">
+        SELECT COUNT(id) FROM pnld.pnld.cuestionario_salida WHERE id_docente = #{teacherId}
+    </select>
+
+    <select id="getNextExitSatisfactionQuestionnaireId" resultType="int">
+        SELECT nextval(pg_get_serial_sequence('pnld.cuestionario_salida', 'id'))
+    </select>
+
+    <insert id="insertExitSatisfactionQuestionnaire">
+        INSERT INTO pnld.cuestionario_salida
+        (id, id_archivo_cargado, id_docente, id_respuesta, fecha_enviada, respuestas, numero_id, curso, grupo)
+        VALUES
+        (#{id}, #{loadedFileId}, #{teacherId}, #{responseId}, #{sendDate}, #{answers}::json, #{numberId}, #{course}, #{group})
+    </insert>
+
+</mapper>

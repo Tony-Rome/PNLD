@@ -264,6 +264,11 @@ public class FileUtilService {
         return newLastNamesArray;
     }
 
+    int strToInt(String rbdStr){ //TODO: Mover a otro archivo
+        String cleanedRbd = rbdStr.replaceAll("[^0-9]","");
+        return Integer.parseInt(rbdStr);
+    }
+
     public static LocalDateTime getLocalDateFrom(String stringDate){
 
         String stringFormatted = stringDate.replaceAll(" de ", "/").replaceAll("\\s+|\\t", " ");;
