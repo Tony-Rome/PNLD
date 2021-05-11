@@ -219,7 +219,7 @@ public class LoaderMoodleFile {
                 int diagnosticQuestionnaireId = questionnaireRepository.getNextDiagnosticQuestionnaireId();
 
                 DiagnosticQuestionnaire newDiagnosticQuestionnaire = new DiagnosticQuestionnaire(
-                        diagnosticQuestionnaireId, loadedFileId, optionalTeacher.get().getId(),
+                        diagnosticQuestionnaireId, loadedFileId, teacherPearsonSelected.get().getTeacherId(),
                         diagnosticRow.getRespondentId(), diagnosticRow.getCollectorId(),
                         diagnosticRow.getCreatedDate(),diagnosticRow.getModifiedDate(), answersJson);
 
