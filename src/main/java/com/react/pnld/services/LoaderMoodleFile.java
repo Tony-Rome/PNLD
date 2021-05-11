@@ -106,19 +106,7 @@ public class LoaderMoodleFile {
         Training training = this.trainingRepository.getTrainingByFacilitator(FileUtilService.NOT_SPECIFIED);
         teacher.setTrainingId(training.getId());
 
-        if(!optionalPerson.isPresent()){
-
-
-            String genderStandardized = fileUtilService.genderStandardization(diagnosticRow.getGender().toLowerCase());
-            int genderId = genderRepository.getGenderIdByType(genderStandardized);
-
-            Person newPerson = new Person(personId, diagnosticRow.getNames(), lastNames[0], lastNames[1], email, genderId, optionalSchool.get().getId());
-            personRepository.insertPerson(newPerson);
-
-            optionalPerson = Optional.of(newPerson);
-        }
-
-        String[] lastNames = teacherPersonDTO.getLastNames().split(FileUtilService.DELIMITER_LAST_NAMES);//TODO validate when only one lastname
+        String[] lastNames = FileUtilService.splitLastNames(teacherPersonDTO.getLastNames());
         teacher.setName(teacherPersonDTO.getName());
         teacher.setPaternalLastName(lastNames[0]);
         teacher.setMaternalLastName(lastNames[1]);
@@ -219,25 +207,10 @@ public class LoaderMoodleFile {
 
 
             //TODO: verificar y actualizar atributos de teacherPerson
+            //TODO: Person verificar: genderId & SchoolId
 
             logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherPearsonSelected.get());
 
-
-
-            if(optionalPerson.isPresent()){
-
-                if( optionalPerson.get().getGenderId() < 1){
-                    String genderStandardized = fileUtilService.genderStandardization(diagnosticRow.getGender().toLowerCase());
-                    int genderId = genderRepository.getGenderIdByType(genderStandardized);
-                    optionalPerson.get().setGenderId(genderId);
-                }
-                if( optionalPerson.get().getSchoolId() <= 0){
-                    optionalPerson.get().setSchoolId(optionalSchool.get().getId());
-                }
-
-                personRepository.updatePerson(optionalPerson.get());
-
-            }
 
             String cleanedRut = fileUtilService.removeSymbolsFromRut(diagnosticRow.getRut());
             Optional<Teacher> optionalTeacher = teacherRepository.getTeacherByRut(cleanedRut);

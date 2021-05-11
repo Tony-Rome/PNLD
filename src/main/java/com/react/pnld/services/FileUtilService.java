@@ -252,6 +252,18 @@ public class FileUtilService {
         return genderProperties.GENDER_TYPE_NOT_ESPECIFY;
     }
 
+    public static String[] splitLastNames(String lastNames){
+
+        String[] newLastNamesArray = new String[2];
+
+        String[] lastNamesArray = lastNames.split(" ",2);
+
+        newLastNamesArray[0] = lastNamesArray[0];
+        newLastNamesArray[1] = (lastNamesArray.length == 1) ? null: lastNamesArray[1];
+
+        return newLastNamesArray;
+    }
+
     public static LocalDateTime getLocalDateFrom(String stringDate){
 
         String stringFormatted = stringDate.replaceAll(" de ", "/").replaceAll("\\s+|\\t", " ");;
