@@ -36,7 +36,7 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
 
     @Test
     void removeSymbols(){
-        String input = "First Name,Pref Name, # Students in Course,Highest Unit (Students),Online CSF  Course";
+        String input = "First Name,Pref Name,# Students in Course,Highest Unit (Students),Online CSF  Course";
         String expected = "firstname,prefname,studentsincourse,highestunitstudents,onlinecsfcourse";
         Assert.assertEquals(fileUtilService.removeSymbols(input), expected);
     }

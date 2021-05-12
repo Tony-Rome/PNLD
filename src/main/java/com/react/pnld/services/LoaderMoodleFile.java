@@ -1,14 +1,18 @@
 package com.react.pnld.services;
 
-import com.react.pnld.dto.*;
+import com.react.pnld.dto.DiagnosticFileDTO;
+import com.react.pnld.dto.ExitSatisfactionFileDTO;
+import com.react.pnld.dto.FileResumeDTO;
+import com.react.pnld.dto.TrainingFileDTO;
 import com.react.pnld.model.*;
-import com.react.pnld.repo.*;
+import com.react.pnld.repo.PersonRepository;
+import com.react.pnld.repo.QuestionnaireRepository;
+import com.react.pnld.repo.TestRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,19 +26,12 @@ public class LoaderMoodleFile {
     PersonRepository personRepository;
     @Autowired
     TestRepository testRepository;
-    @Autowired
-    TrainingRepository trainingRepository;
-    @Autowired
-    SchoolRepository schoolRepository;
-    @Autowired
-    RegionRepository regionRepository;
-    @Autowired
-    GenderRepository genderRepository;
+
     @Autowired
     QuestionnaireRepository questionnaireRepository;
 
     @Autowired
-    FileUtilService fileUtilService;
+    EntitiesUtilService entitiesUtilService;
 
     public FileResumeDTO processTrainingFileRows(List<TrainingFileDTO> postTrainingRows, int loadedFileId,
                                                  String testType) {
@@ -48,16 +45,16 @@ public class LoaderMoodleFile {
         for (TrainingFileDTO postTrainingRow : postTrainingRows) {
             logger.info("processTrainingFileRows. postTrainingRow={}", postTrainingRow);
 
-            School school = getSchoolByName(FileUtilService.normalizeStr(postTrainingRow.getSchoolName()));
+            School school = entitiesUtilService.getSchoolByName(FileUtilService.normalizeStr(postTrainingRow.getSchoolName()));
 
-            String rut = FileUtilService.removeSymbolsFromRut(postTrainingRow.getRut());
+            String rut = FileUtilService.rutValidator(postTrainingRow.getRut());
 
-            if(rut == null) continue; //TODO: Contar registros inválidos
+            if (rut == null) continue; //TODO: Contar registros inválidos
 
             Optional<Teacher> teacherSelected = personRepository.getTeacherPerson(rut);
 
             if (!teacherSelected.isPresent()) {
-                Teacher teacher = this.buildTeacherFrom(postTrainingRow);
+                Teacher teacher = entitiesUtilService.buildTeacherFrom(postTrainingRow);
                 teacher.setSchoolId(school.getId());
                 this.personRepository.insertPerson(teacher);
                 this.personRepository.insertTeacher(teacher);
@@ -94,94 +91,6 @@ public class LoaderMoodleFile {
         return new FileResumeDTO(postTrainingRows.size(), newRecords, duplicatedRecords);
     }
 
-    Teacher buildTeacherFrom(TeacherPersonDTO teacherPersonDTO) { //TODO: Mover a otro archivo
-
-        Teacher teacher = new Teacher();
-        teacher.setTeacherId(this.personRepository.getNextTeacherId());
-        teacher.setPersonId(this.personRepository.getNextPersonId());
-        teacher.setRut(FileUtilService.removeSymbols(teacherPersonDTO.getRut().trim()));
-        teacher.setAge(0);
-        teacher.setParticipatedInPNLD(false);
-        teacher.setTeachesInLevels(null);
-        teacher.setTeachesSubjects(null);
-        teacher.setCsResources(null);
-        teacher.setRoboticsResources(null);
-
-        String department = (teacherPersonDTO.getDepartment() == null || teacherPersonDTO.getDepartment().isEmpty())?
-                FileUtilService.NOT_SPECIFIED : teacherPersonDTO.getDepartment();
-        teacher.setDepartment(department);
-
-        Training training = this.trainingRepository.getTrainingByFacilitator(FileUtilService.NOT_SPECIFIED);
-        teacher.setTrainingId(training.getId());
-
-        String[] lastNames = FileUtilService.splitLastNames(teacherPersonDTO.getLastNames());
-        teacher.setName(teacherPersonDTO.getName());
-        teacher.setPaternalLastName(lastNames[0]);
-        teacher.setMaternalLastName(lastNames[1]);
-        teacher.setEmail(teacherPersonDTO.getEmail());
-
-        int genderId = genderRepository.getGenderIdByType(fileUtilService.genderStandardization(teacherPersonDTO.getGender()));
-        teacher.setGenderId(genderId);
-
-        return teacher;
-    }
-
-    private School getSchoolByName(String schoolName){ //TODO: Mover a otro archivo
-
-        if (schoolName == null || schoolName.isEmpty()) {
-            return schoolRepository.getSchoolByName(FileUtilService.NOT_SPECIFIED).get();
-        }
-
-        Optional<School> schoolSelected = schoolRepository.getSchoolByName(schoolName);
-
-        if(!schoolSelected.isPresent()){
-            School newSchool = createNewSchool(schoolName, null, FileUtilService.REGION_ID_OTHER, FileUtilService.RBD_ID_NOT_SPECIFIED);
-            schoolSelected = Optional.of(newSchool);
-        }
-        return schoolSelected.get();
-
-    }
-
-    School createNewSchool(String name, String city, int regionId, int rbd){ //TODO: Mover a otro archivo
-        School newSchool = new School();
-        newSchool.setId(schoolRepository.getNextSchoolId());
-        newSchool.setName(name);
-        newSchool.setCity(city);
-        newSchool.setRegionId(regionId);
-        newSchool.setRbd(rbd);
-
-        int resultInsertSchool = this.schoolRepository.insertSchool(newSchool);
-        logger.info("createNewSchool. resultInsertSchool={}", resultInsertSchool);
-        return newSchool;
-    }
-
-    void verifySchool(School school, String city, int regionId, int rbd){ //TODO: Mover a otro archivo
-
-        if((school.getCity() == null || school.getCity().isEmpty()) && (city != null)){
-            school.setCity(city);
-        }
-        if((school.getRegionId() == FileUtilService.REGION_ID_OTHER) && (regionId != FileUtilService.REGION_ID_OTHER)){
-            school.setRegionId(regionId);
-        }
-        if((school.getRbd() == FileUtilService.RBD_ID_NOT_SPECIFIED) && (rbd != FileUtilService.RBD_ID_NOT_SPECIFIED)){
-            school.setRbd(rbd);
-        }
-
-        //TODO Actualizar colegio
-    }
-
-    int getRegionId(String name){ //TODO: Mover a otro archivo
-        if(name == null || name.isEmpty()){
-            return FileUtilService.REGION_ID_OTHER;
-        }
-        String cleanedName = FileUtilService.normalizeStr(name); //TODO: Agregar unit test
-        Optional<Integer> regionIdSelected = regionRepository.getRegionIdByName(cleanedName);
-
-        logger.info("getRegionId. regionIdSelected={}", regionIdSelected.get());
-
-        return (!regionIdSelected.isPresent()) ? FileUtilService.REGION_ID_OTHER : regionIdSelected.get().intValue();
-    }
-
     public FileResumeDTO diagnosticFile(List<DiagnosticFileDTO> diagnosticRows, int loadedFileId) {
 
         int newRecords = 0;
@@ -190,25 +99,27 @@ public class LoaderMoodleFile {
         for (DiagnosticFileDTO diagnosticRow : diagnosticRows) {
 
 
-            int regionId = getRegionId(diagnosticRow.getRegion());
+            int regionId = entitiesUtilService.getRegionId(diagnosticRow.getRegion());
 
-            School school = getSchoolByName(FileUtilService.normalizeStr(diagnosticRow.getSchoolName()));
+            School school = entitiesUtilService.getSchoolByName(FileUtilService.normalizeStr(diagnosticRow.getSchoolName()));
 
-            if(school.getName() != FileUtilService.NOT_SPECIFIED){
+            if (school.getName() != FileUtilService.NOT_SPECIFIED) {
                 int rbd = FileUtilService.strToInt(diagnosticRow.getRbd());
-                verifySchool(school, diagnosticRow.getCommune(), regionId, rbd);
+                entitiesUtilService.verifySchool(school, diagnosticRow.getCommune(), regionId, rbd);
             }
 
-            String rut = FileUtilService.removeSymbolsFromRut(diagnosticRow.getRut());
+            diagnosticRow.setRut(FileUtilService.rutValidator(diagnosticRow.getRut()));
 
-            if(rut == null) continue; //TODO: Contar registros inválidos
-            System.out.println("RUT A PERSISITR: " + rut);
+            String rut = diagnosticRow.getRut();
+            boolean emailPresent = personRepository.checkIfEmailExists(diagnosticRow.getEmail());
+
+            if (rut == null || emailPresent) continue; //TODO: Contar registros inválidos
+
             Optional<Teacher> teacherPersonSelected = personRepository.getTeacherPerson(rut);
 
             if (!teacherPersonSelected.isPresent()) {
-                Teacher teacher = this.buildTeacherFrom(diagnosticRow);
+                Teacher teacher = entitiesUtilService.buildTeacherFrom(diagnosticRow);
                 teacher.setSchoolId(school.getId());
-                System.out.println("Persona a registrar: " + teacher.toString());
                 this.personRepository.insertPerson(teacher);
                 this.personRepository.insertTeacher(teacher);
                 teacherPersonSelected = Optional.of(teacher);
@@ -221,7 +132,7 @@ public class LoaderMoodleFile {
 
             int diagnosticQuestionnaireCount = questionnaireRepository.getDiagnosticQuestionnaireCount(teacherPersonSelected.get().getTeacherId());
 
-            if(diagnosticQuestionnaireCount < 1){
+            if (diagnosticQuestionnaireCount < 1) {
 
                 String answersJson = "{\"clave\":\"valor\"}";
 
@@ -230,19 +141,18 @@ public class LoaderMoodleFile {
                 DiagnosticQuestionnaire newDiagnosticQuestionnaire = new DiagnosticQuestionnaire(
                         diagnosticQuestionnaireId, loadedFileId, teacherPersonSelected.get().getTeacherId(),
                         diagnosticRow.getRespondentId(), diagnosticRow.getCollectorId(),
-                        diagnosticRow.getCreatedDate(),diagnosticRow.getModifiedDate(), answersJson);
+                        diagnosticRow.getCreatedDate(), diagnosticRow.getModifiedDate(), answersJson);
 
 
                 questionnaireRepository.insertDiagnosticQuestionnaire(newDiagnosticQuestionnaire);
                 newRecords++;
             }
 
-            if(diagnosticQuestionnaireCount >= 1){
+            if (diagnosticQuestionnaireCount >= 1) {
                 duplicatedRecords++;
             }
 
         }
-        System.out.println("Valores: " + newRecords + " - " + duplicatedRecords);
         return new FileResumeDTO(diagnosticRows.size(), newRecords, duplicatedRecords);
     }
 
@@ -253,17 +163,17 @@ public class LoaderMoodleFile {
 
         for (ExitSatisfactionFileDTO exitSatisfactionRow : exitSatisfactionRows) {
 
-            School school = getSchoolByName(FileUtilService.normalizeStr(exitSatisfactionRow.getSchoolName()));
+            School school = entitiesUtilService.getSchoolByName(FileUtilService.normalizeStr(exitSatisfactionRow.getSchoolName()));
 
-            String rut = FileUtilService.removeSymbolsFromRut(exitSatisfactionRow.getRut());
+            String rut = FileUtilService.rutValidator(exitSatisfactionRow.getRut());
 
-            if(rut == null) continue; //TODO: Contar registros inválidos
+            if (rut == null) continue; //TODO: Contar registros inválidos
 
             Optional<Teacher> teacherPersonSelected = personRepository.getTeacherPerson(rut);
 
             if (!teacherPersonSelected.isPresent()) {
 
-                Teacher teacher = this.buildTeacherFrom(exitSatisfactionRow);
+                Teacher teacher = entitiesUtilService.buildTeacherFrom(exitSatisfactionRow);
                 teacher.setSchoolId(school.getId());
                 this.personRepository.insertPerson(teacher);
                 this.personRepository.insertTeacher(teacher);
@@ -275,7 +185,7 @@ public class LoaderMoodleFile {
 
             int exitSatisfactionQuestionnaireCount = questionnaireRepository.getExitSatisfactionQuestionnaireCount(teacherPersonSelected.get().getTeacherId());
 
-            if(exitSatisfactionQuestionnaireCount < 1){
+            if (exitSatisfactionQuestionnaireCount < 1) {
 
 
                 String answersJson = "{\"llave\":\"respuesta\"}";
@@ -284,7 +194,7 @@ public class LoaderMoodleFile {
 
                 ExitSatisfactionQuestionnaire newExitQuestionnaire = new ExitSatisfactionQuestionnaire(
                         exitSatisfactionQuestionnaireId, loadedFileId, teacherPersonSelected.get().getTeacherId(),
-                        exitSatisfactionRow.getResponseId(),exitSatisfactionRow.getSendDate(), answersJson,
+                        exitSatisfactionRow.getResponseId(), exitSatisfactionRow.getSendDate(), answersJson,
                         exitSatisfactionRow.getId(), exitSatisfactionRow.getCourse(), exitSatisfactionRow.getGroup());
 
 
@@ -292,7 +202,7 @@ public class LoaderMoodleFile {
                 newRecords++;
             }
 
-            if(exitSatisfactionQuestionnaireCount >= 1){
+            if (exitSatisfactionQuestionnaireCount >= 1) {
                 duplicatedRecords++;
             }
 

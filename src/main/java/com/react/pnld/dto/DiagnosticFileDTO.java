@@ -3,10 +3,9 @@ package com.react.pnld.dto;
 import com.univocity.parsers.annotations.LowerCase;
 import com.univocity.parsers.annotations.Parsed;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 
-public class DiagnosticFileDTO implements TeacherPersonDTO{
+public class DiagnosticFileDTO implements TeacherPersonDTO {
 
     @Parsed(index = 0)
     private long respondentId;
@@ -34,6 +33,7 @@ public class DiagnosticFileDTO implements TeacherPersonDTO{
     @LowerCase
     private String rut;
     @Parsed(index = 11)
+    @LowerCase
     private String name;
     @Parsed(index = 12)
     @LowerCase
@@ -1176,21 +1176,33 @@ public class DiagnosticFileDTO implements TeacherPersonDTO{
 
 
     @Override
-    public String getDepartment(){return null;}
+    public String getDepartment() {
+        return null;
+    }
 
     @Override
-    public boolean getParticipatedInPNLD(){return true;}
+    public boolean getParticipatedInPNLD() {
+        return true;
+    }
 
     @Override
-    public String getInLevels(){return null;}
+    public String getInLevels() {
+        return null;
+    }
 
     @Override
-    public String getSubjects(){return null;}
+    public String getSubjects() {
+        return null;
+    }
 
     @Override
-    public String getCsResources(){return null;}
+    public String getCsResources() {
+        return null;
+    }
 
     @Override
-    public String getRoboticsResources(){return null;}
+    public String getRoboticsResources() {
+        return null;
+    }
 
 }

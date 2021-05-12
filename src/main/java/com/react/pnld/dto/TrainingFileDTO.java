@@ -11,7 +11,7 @@ import java.time.temporal.ChronoUnit;
 
 import static java.lang.Math.toIntExact;
 
-public class TrainingFileDTO implements TeacherPersonDTO{
+public class TrainingFileDTO implements TeacherPersonDTO {
 
     @Parsed(index = 0)
     @LowerCase
@@ -47,7 +47,7 @@ public class TrainingFileDTO implements TeacherPersonDTO{
 
     private PGInterval requiredInterval;
 
-    @Parsed(index = 10 )
+    @Parsed(index = 10)
     @Format(formats = {"#0,00"}, options = "decimalSeparator=,")
     private float score;
 
@@ -185,7 +185,7 @@ public class TrainingFileDTO implements TeacherPersonDTO{
     }
 
     public PGInterval getRequiredInterval() {
-        if(requiredInterval == null) this.buildPGIntervalFrom();
+        if (requiredInterval == null) this.buildPGIntervalFrom();
         return requiredInterval;
     }
 
@@ -193,7 +193,7 @@ public class TrainingFileDTO implements TeacherPersonDTO{
         this.requiredInterval = requiredInterval;
     }
 
-    private void buildPGIntervalFrom(){
+    private void buildPGIntervalFrom() {
         LocalDateTime tempDateTime = LocalDateTime.from(this.startIn);
 
         int years = toIntExact(tempDateTime.until(this.finishIn, ChronoUnit.YEARS));
@@ -211,7 +211,7 @@ public class TrainingFileDTO implements TeacherPersonDTO{
         int minutes = toIntExact(tempDateTime.until(this.finishIn, ChronoUnit.MINUTES));
         tempDateTime = tempDateTime.plusMinutes(minutes);
 
-        int seconds = toIntExact(tempDateTime.until( this.finishIn, ChronoUnit.SECONDS));
+        int seconds = toIntExact(tempDateTime.until(this.finishIn, ChronoUnit.SECONDS));
 
         this.requiredInterval = new PGInterval(years, months, days, hours, minutes, seconds);
     }
@@ -305,25 +305,39 @@ public class TrainingFileDTO implements TeacherPersonDTO{
     }
 
     @Override
-    public int getAge(){return 0;}
+    public int getAge() {
+        return 0;
+    }
 
     @Override
-    public boolean getParticipatedInPNLD(){return true;}
+    public boolean getParticipatedInPNLD() {
+        return true;
+    }
 
     @Override
-    public String getInLevels(){return null;}
+    public String getInLevels() {
+        return null;
+    }
 
     @Override
-    public String getSubjects(){return null;}
+    public String getSubjects() {
+        return null;
+    }
 
     @Override
-    public String getCsResources(){return null;}
+    public String getCsResources() {
+        return null;
+    }
 
     @Override
-    public String getRoboticsResources(){return null;}
+    public String getRoboticsResources() {
+        return null;
+    }
 
     @Override
-    public String getGender(){return null;}
+    public String getGender() {
+        return null;
+    }
 
     @Override
     public String toString() {

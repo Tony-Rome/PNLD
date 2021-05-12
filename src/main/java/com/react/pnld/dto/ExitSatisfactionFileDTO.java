@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class ExitSatisfactionFileDTO implements TeacherPersonDTO{
+public class ExitSatisfactionFileDTO implements TeacherPersonDTO {
 
     @Parsed(index = 0)
     private int responseId;
@@ -101,7 +101,7 @@ public class ExitSatisfactionFileDTO implements TeacherPersonDTO{
 
     @Parsed(index = 1)
     public void setSendDate(String sendDate) {
-        String sendDateFormat = sendDate.replaceAll("/","-");
+        String sendDateFormat = sendDate.replaceAll("/", "-");
         LocalDateTime localDateTime = LocalDateTime.parse(sendDateFormat, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
         this.sendDate = Timestamp.valueOf(localDateTime);
     }
@@ -160,30 +160,34 @@ public class ExitSatisfactionFileDTO implements TeacherPersonDTO{
 
         this.name = fullName[0];
 
-        if(fullName.length == 2) setLastNames(fullName[1]);
+        if (fullName.length == 2) setLastNames(fullName[1]);
 
-        if(fullName.length == 3) setLastNames(fullName[1] +" "+ fullName[2]);
+        if (fullName.length == 3) setLastNames(fullName[1] + " " + fullName[2]);
 
-        if(fullName.length == 4){
-            this.name += " "+fullName[1];
-            setLastNames(fullName[2] +" "+ fullName[3]);
+        if (fullName.length == 4) {
+            this.name += " " + fullName[1];
+            setLastNames(fullName[2] + " " + fullName[3]);
         }
 
-        if(fullName.length == 5){
-            this.name += " "+fullName[1]+" "+fullName[2];
+        if (fullName.length == 5) {
+            this.name += " " + fullName[1] + " " + fullName[2];
             setLastNames(fullName[3] + " " + fullName[4]);
         }
 
-        if(fullName.length == 6){
-            this.name += " "+fullName[1]+" "+fullName[2] + " "+fullName[3];
+        if (fullName.length == 6) {
+            this.name += " " + fullName[1] + " " + fullName[2] + " " + fullName[3];
             setLastNames(fullName[4] + " " + fullName[5]);
         }
     }
 
     @Override
-    public String getLastNames(){return lastNames;}
+    public String getLastNames() {
+        return lastNames;
+    }
 
-    public void setLastNames(String lastNames){ this.lastNames = lastNames;}
+    public void setLastNames(String lastNames) {
+        this.lastNames = lastNames;
+    }
 
     @Override
     public String getRut() {
@@ -427,27 +431,43 @@ public class ExitSatisfactionFileDTO implements TeacherPersonDTO{
     }
 
     @Override
-    public int getAge(){return 0;}
+    public int getAge() {
+        return 0;
+    }
 
     @Override
-    public boolean getParticipatedInPNLD(){return true;}
+    public boolean getParticipatedInPNLD() {
+        return true;
+    }
 
     @Override
-    public String getInLevels(){return null;}
+    public String getInLevels() {
+        return null;
+    }
 
     @Override
-    public String getSubjects(){return null;}
+    public String getSubjects() {
+        return null;
+    }
 
     @Override
-    public String getCsResources(){return null;}
+    public String getCsResources() {
+        return null;
+    }
 
     @Override
-    public String getRoboticsResources(){return null;}
+    public String getRoboticsResources() {
+        return null;
+    }
 
     @Override
-    public String getEmail(){return null;}
+    public String getEmail() {
+        return null;
+    }
 
     @Override
-    public String getGender(){return null;}
+    public String getGender() {
+        return null;
+    }
 
 }

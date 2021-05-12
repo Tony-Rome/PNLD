@@ -5,18 +5,18 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "csv.headers")
 public class CSVHeadersProperties {
 
-    private String [] teacherRoster;
-    private String [] teacherOptIn;
-    private String [] studentLevel;
-    private String [] signInPerCourse;
-    private String [] signIns;
-    private String [] diagnosis;
-    private String [] preTraining;
-    private String [] postTraining;
-    private String [] testCT1;
-    private String [] testCT2;
-    private String [] testCT3;
-    private String [] exitSatisfaction;
+    private String[] teacherRoster;
+    private String[] teacherOptIn;
+    private String[] studentLevel;
+    private String[] signInPerCourse;
+    private String[] signIns;
+    private String[] diagnosis;
+    private String[] preTraining;
+    private String[] postTraining;
+    private String[] testCT1;
+    private String[] testCT2;
+    private String[] testCT3;
+    private String[] exitSatisfaction;
 
     public String[] getTeacherRoster() {
         return teacherRoster;

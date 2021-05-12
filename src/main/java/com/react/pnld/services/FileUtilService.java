@@ -57,7 +57,7 @@ public class FileUtilService {
     }
 
     public static String removeSymbols(String strToClean) {
-        String strCleaned = strToClean.replaceAll("[^a-zA-Z0-9,]", "");
+        String strCleaned = strToClean.replaceAll("(, |[^a-zA-Z0-9,])", "");
         return strCleaned.toLowerCase();
     }
 
@@ -216,69 +216,85 @@ public class FileUtilService {
         }
     }
 
-    public static String removeAccents(String toClean){
+    public static String removeAccents(String toClean) {
         return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
     }
 
-    public static String normalizeStr(String name){
-        if(name == null || name.isEmpty()){
+    public static String normalizeStr(String name) {
+        if (name == null || name.isEmpty()) {
             return null;
         }
-        String normalizedName =Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+        String normalizedName = Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
         return normalizedName.replaceAll("region |colegio ", "");
     }
 
 
-    public static String removeSymbolsFromRut(String rutToClean){ //TODO: Mejorar validación de RUT
-        String cleanedRut = rutToClean.replaceAll("[^0-9k]","");
+    public static String rutValidator(String rutToClean) {
+        String cleanedRut = rutToClean.replaceAll("[^0-9k]", "");
         String rutPattern = "[0-9]{6,8}(k|[0-9])";
-        String newRut = Pattern.matches(rutPattern, cleanedRut) ? cleanedRut : null ;
-        return newRut;
+        String rut = Pattern.matches(rutPattern, cleanedRut) ? cleanedRut : null;
+
+        if (rut == null) return null;
+
+        String rutWithoutCheckDigit = rut.substring(0, rut.length() - 1);
+
+        Integer numericalSeries = 0, sum = 1, rutAsInt = Integer.parseInt(rutWithoutCheckDigit);
+
+        for (; rutAsInt != 0; rutAsInt = (int) Math.floor(rutAsInt /= 10))
+            sum = (sum + rutAsInt % 10 * (9 - numericalSeries++ % 6)) % 11;
+
+        String checkDigitVerifier = (sum > 0) ? String.valueOf(sum - 1) : "k";
+
+        String newRut = rutWithoutCheckDigit + checkDigitVerifier;
+
+        return (rut.equals(newRut)) ? newRut : null;
+
     }
 
-    public String genderStandardization(String gender){
+    public String genderStandardization(String gender) {
 
-        if(genderProperties.getFemale().contains(gender)){
+        if (genderProperties.getFemale().contains(gender)) {
             return genderProperties.GENDER_TYPE_FEMALE;
         }
 
-        if(genderProperties.getMale().contains(gender)){
+        if (genderProperties.getMale().contains(gender)) {
             return genderProperties.GENDER_TYPE_MALE;
         }
 
-        if(genderProperties.getOther().contains(gender)){
+        if (genderProperties.getOther().contains(gender)) {
             return genderProperties.GENDER_TYPE_OTHER;
         }
 
         return genderProperties.GENDER_TYPE_NOT_ESPECIFY;
     }
 
-    public static String[] splitLastNames(String lastNames){
+    public static String[] splitLastNames(String lastNames) {
 
         String[] newLastNamesArray = new String[2];
 
-        String[] lastNamesArray = lastNames.split(" ",2);
+        String[] lastNamesArray = lastNames.split(" ", 2);
 
         newLastNamesArray[0] = lastNamesArray[0];
-        newLastNamesArray[1] = (lastNamesArray.length == 1) ? null: lastNamesArray[1];
+        newLastNamesArray[1] = (lastNamesArray.length == 1) ? null : lastNamesArray[1];
 
         return newLastNamesArray;
     }
 
-    public static int strToInt(String rbdStr){ //TODO: Mover a otro archivo
-        String cleanedRbd = rbdStr.replaceAll("[^\\d]","");
-        if(cleanedRbd.isEmpty())return RBD_ID_NOT_SPECIFIED;
+    public static int strToInt(String rbdStr) { //TODO: Mover a otro archivo
+        String cleanedRbd = rbdStr.replaceAll("[^\\d]", "");
+        if (cleanedRbd.isEmpty() || cleanedRbd.length() > 8) return RBD_ID_NOT_SPECIFIED;
         return Integer.parseInt(cleanedRbd);
     }
 
-    public static LocalDateTime getLocalDateFrom(String stringDate){
+    public static LocalDateTime getLocalDateFrom(String stringDate) {
 
-        String stringFormatted = stringDate.replaceAll(" de ", "/").replaceAll("\\s+|\\t", " ");;
+        String stringFormatted = stringDate.replaceAll(" de ", "/").replaceAll("\\s+|\\t", " ");
+        ;
         String formatPattern = "d/MMMM/yyyy H:m";
         try {
             return LocalDateTime.parse(stringFormatted, DateTimeFormatter.ofPattern(formatPattern,
                     new Locale("es", "ES")));
-        } catch (DateTimeException dateTimeException){
+        } catch (DateTimeException dateTimeException) {
             logger.error("getLocalDateFrom.", dateTimeException.getMessage(), dateTimeException);
             return LocalDateTime.MIN;
         }

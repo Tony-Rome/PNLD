@@ -1,32 +1,32 @@
 package com.react.pnld.dto;
 
- public interface TeacherPersonDTO {
+public interface TeacherPersonDTO {
 
-     String getRut();
+    String getRut();
 
-     int getAge();
+    int getAge();
 
-     String getDepartment();
+    String getDepartment();
 
-     boolean getParticipatedInPNLD();
+    boolean getParticipatedInPNLD();
 
-     String getInLevels();
+    String getInLevels();
 
-     String getSubjects();
+    String getSubjects();
 
-     String getCsResources();
+    String getCsResources();
 
-     String getRoboticsResources();
+    String getRoboticsResources();
 
-     String getName();
+    String getName();
 
-     String getLastNames();
+    String getLastNames();
 
-     String getEmail();
+    String getEmail();
 
-     String getGender();
+    String getGender();
 
-     String getSchoolName();
+    String getSchoolName();
 
 
 }

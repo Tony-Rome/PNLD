@@ -15,7 +15,7 @@ public class TrainingRepository {
     @Autowired
     private TrainingMapper trainingMapper;
 
-    public Training getTrainingByFacilitator(String facilitatorName){
+    public Training getTrainingByFacilitator(String facilitatorName) {
         return trainingMapper.getTrainingByFacilitator(facilitatorName);
     }
 }

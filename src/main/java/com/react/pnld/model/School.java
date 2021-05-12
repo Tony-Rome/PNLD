@@ -10,7 +10,7 @@ public class School implements Serializable {
     private int regionId;
     private int rbd;
 
-    public School(){
+    public School() {
         super();
     }
 

@@ -9,7 +9,7 @@ public class Training implements Serializable {
     private String facilitator;
     private LocalDateTime trainingDate;
 
-    public Training(){
+    public Training() {
         super();
     }
 
