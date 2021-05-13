@@ -66,7 +66,7 @@ public class EntitiesUtilService {
         return teacher;
     }
 
-    public School getSchoolByName(String schoolName) { //TODO: Mover a otro archivo
+    public School getSchoolByName(String schoolName) {
 
         if (schoolName == null || schoolName.isEmpty()) {
             return schoolRepository.getSchoolByName(FileUtilService.NOT_SPECIFIED).get();
@@ -82,7 +82,7 @@ public class EntitiesUtilService {
 
     }
 
-    School createNewSchool(String name, String city, int regionId, int rbd) { //TODO: Mover a otro archivo
+    School createNewSchool(String name, String city, int regionId, int rbd) {
         School newSchool = new School();
         newSchool.setId(schoolRepository.getNextSchoolId());
         newSchool.setName(name);
@@ -95,11 +95,11 @@ public class EntitiesUtilService {
         return newSchool;
     }
 
-    public int getRegionId(String name) { //TODO: Mover a otro archivo
+    public int getRegionId(String name) {
         if (name == null || name.isEmpty()) {
             return FileUtilService.REGION_ID_OTHER;
         }
-        String cleanedName = FileUtilService.normalizeStr(name); //TODO: Agregar unit test
+        String cleanedName = FileUtilService.normalizeStr(name);
         Optional<Integer> regionIdSelected = regionRepository.getRegionIdByName(cleanedName);
 
         logger.info("getRegionId. regionIdSelected={}", regionIdSelected.get());
@@ -107,7 +107,7 @@ public class EntitiesUtilService {
         return (!regionIdSelected.isPresent()) ? FileUtilService.REGION_ID_OTHER : regionIdSelected.get().intValue();
     }
 
-    public void verifySchool(School school, String city, int regionId, int rbd) { //TODO: Mover a otro archivo
+    public void verifySchool(School school, String city, int regionId, int rbd) {
 
         if ((school.getCity() == null || school.getCity().isEmpty()) && (city != null)) {
             school.setCity(city);
@@ -120,5 +120,9 @@ public class EntitiesUtilService {
         }
 
         //TODO Actualizar colegio
+    }
+
+    public void verifyPersonTeacher(){
+        //TODO Actualizar persona-docente
     }
 }

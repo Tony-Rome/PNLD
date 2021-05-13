@@ -163,7 +163,7 @@ public class FileService {
 
         for (LoadedFile loadedFile : filesLoadedScheduled) {
             loadedFile.setStateId(FileTypes.STATE_IN_PROCESS);
-            this.fileRepository.updateFileLoaded(loadedFile);
+            //this.fileRepository.updateFileLoaded(loadedFile);
 
             FileResumeDTO resume = fileUtilService.processLoadedFile(loadedFile);
 
@@ -172,7 +172,8 @@ public class FileService {
             loadedFile.setTotalRecords(resume.getTotalRecords());
             loadedFile.setNewRecords(resume.getNewRecords());
             loadedFile.setDuplicateRecords(resume.getDuplicatedRecords());
-            
+
+            //this.fileRepository.updateFileLoaded(loadedFile);
             logger.info("executeFileLoadScheduled. updated loadedFile={}", loadedFile);
         }
     }

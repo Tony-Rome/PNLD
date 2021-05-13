@@ -225,7 +225,7 @@ public class FileUtilService {
             return null;
         }
         String normalizedName = Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
-        return normalizedName.replaceAll("region |colegio ", "");
+        return normalizedName.replaceAll("region( de | del | )|colegio ", "");
     }
 
 

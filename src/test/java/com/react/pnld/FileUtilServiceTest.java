@@ -188,4 +188,19 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(0, duration.getMinutes());
         Assert.assertEquals(0, duration.getSeconds());
     }
+
+    @Test
+    public void normalizeRegion(){
+        String valparaiso = "región de valparaíso";
+        String valparaisoExpected = "valparaiso";
+        Assert.assertEquals(FileUtilService.normalizeStr(valparaiso), valparaisoExpected);
+
+        String maule = "región del maule";
+        String mauleExpected = "maule";
+        Assert.assertEquals(FileUtilService.normalizeStr(maule), mauleExpected);
+
+        String rm = "región metropolitana";
+        String rmExpected = "metropolitana";
+        Assert.assertEquals(FileUtilService.normalizeStr(rm),rmExpected);
+    }
 }
