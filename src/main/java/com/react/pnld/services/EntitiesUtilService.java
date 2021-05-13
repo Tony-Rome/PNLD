@@ -66,6 +66,31 @@ public class EntitiesUtilService {
         return teacher;
     }
 
+    public void verifyTeacherPerson(Teacher teacher, TeacherPersonDTO teacherPersonDTO) {
+
+
+        if(teacher.getAge() == 0){
+            teacher.setAge(teacherPersonDTO.getAge());
+        }
+        if(teacher.getDepartment().isEmpty() || teacher.getDepartment() == null){
+            teacher.setDepartment(teacherPersonDTO.getDepartment());
+        }
+        if(teacher.getName().isEmpty() || teacher.getName() == null){
+            teacher.setName(teacher.getName());
+        }
+        if(teacher.getPaternalLastName().isEmpty() || teacher.getPaternalLastName() == null){
+            teacher.setPaternalLastName(teacher.getPaternalLastName());
+        }
+        if(teacher.getMaternalLastName().isEmpty() || teacher.getMaternalLastName() == null){
+            teacher.setMaternalLastName(teacher.getMaternalLastName());
+        }
+        if(teacher.getEmail().isEmpty() || teacher.getEmail() == null){
+            teacher.setEmail(teacherPersonDTO.getEmail());
+        }
+
+        //TODO Actualizar teacherPerson
+    }
+
     public School getSchoolByName(String schoolName) {
 
         if (schoolName == null || schoolName.isEmpty()) {
@@ -119,11 +144,6 @@ public class EntitiesUtilService {
         if ((school.getRbd() == FileUtilService.RBD_ID_NOT_SPECIFIED) && (rbd != FileUtilService.RBD_ID_NOT_SPECIFIED)) {
             school.setRbd(rbd);
         }
-
         //TODO Actualizar colegio
-    }
-
-    public void verifyPersonTeacher(){
-        //TODO Actualizar persona-docente
     }
 }

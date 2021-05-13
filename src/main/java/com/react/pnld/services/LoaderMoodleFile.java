@@ -120,7 +120,9 @@ public class LoaderMoodleFile {
                 teacherPersonSelected = Optional.of(teacher);
             }
 
-            //TODO: verificar y actualizar atributos de teacherPerson
+            if(teacherPersonSelected.isPresent()){
+                //TODO: Actualizar
+            }
 
             logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherPersonSelected.get());
 
