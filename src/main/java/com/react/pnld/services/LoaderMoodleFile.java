@@ -22,16 +22,12 @@ public class LoaderMoodleFile {
     private static final Logger logger = LoggerFactory.getLogger(LoaderMoodleFile.class);
 
     @Autowired
-    PersonRepository personRepository;
-    @Autowired
     TestRepository testRepository;
     @Autowired
     QuestionnaireRepository questionnaireRepository;
 
     @Autowired
     EntitiesUtilService entitiesUtilService;
-    @Autowired
-    FileUtilService fileUtilService;
 
     public FileResumeDTO processTrainingFileRows(List<TrainingFileDTO> postTrainingRows, int loadedFileId,
                                                  String testType) {
@@ -45,45 +41,46 @@ public class LoaderMoodleFile {
         for (TrainingFileDTO postTrainingRow : postTrainingRows) {
             logger.info("processTrainingFileRows. postTrainingRow={}", postTrainingRow);
 
-            School school = entitiesUtilService.getSchoolByName(FileUtilService.normalizeStr(postTrainingRow.getSchoolName()));
+            School school = entitiesUtilService.getSchoolByName(postTrainingRow.getSchoolName());
 
-            String rut = FileUtilService.rutValidator(postTrainingRow.getRut());
+            String rut = FileAttributeUtilService.rutValidator(postTrainingRow.getRut()); //TODO: SACAR DE AQUÏ
 
-            if (rut == null) continue;
+            if (rut == null) {
+                Optional<Teacher> teacherSelected = entitiesUtilService.getTeacherPersonByRut(rut);
 
-            Optional<Teacher> teacherSelected = personRepository.getTeacherPerson(rut);
+                if (!teacherSelected.isPresent()) {
+                    Teacher teacher = entitiesUtilService.buildTeacherFrom(postTrainingRow);
+                    teacher.setSchoolId(school.getId());
+                    entitiesUtilService.createPerson(teacher);
+                    entitiesUtilService.createTeacher(teacher);
 
-            if (!teacherSelected.isPresent()) {
-                Teacher teacher = entitiesUtilService.buildTeacherFrom(postTrainingRow);
-                teacher.setSchoolId(school.getId());
-                this.personRepository.insertPerson(teacher);
-                this.personRepository.insertTeacher(teacher);
-                teacherSelected = Optional.of(teacher);
-            }
+                    teacherSelected = Optional.of(teacher);
+                }
 
-            logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherSelected.get());
+                logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherSelected.get());
 
-            Optional<TrainingTest> trainingTest = testRepository.getTrainingTest(teacherSelected.get().getTeacherId(),
-                    testType);
+                Optional<TrainingTest> trainingTest = testRepository.getTrainingTest(teacherSelected.get().getTeacherId(),
+                        testType);
 
-            if (!trainingTest.isPresent()) {
-                TrainingTest newTrainingTest = new TrainingTest();
-                newTrainingTest.setId(this.testRepository.getNextTrainingTestId());
-                newTrainingTest.setType(testType);
-                newTrainingTest.setLoadedFileId(loadedFileId);
-                newTrainingTest.setTeacherId(teacherSelected.get().getTeacherId());
-                newTrainingTest.setInitDate(postTrainingRow.getStartIn());
-                newTrainingTest.setEndDate(postTrainingRow.getFinishIn());
-                newTrainingTest.setRequiredInterval(postTrainingRow.getRequiredInterval());
-                newTrainingTest.setState(postTrainingRow.getTestState());
-                newTrainingTest.setScore(postTrainingRow.getScore());
-                newTrainingTest.setAnswers(null);//TODO set answers list
+                if (!trainingTest.isPresent()) {
+                    TrainingTest newTrainingTest = new TrainingTest();
+                    newTrainingTest.setId(this.testRepository.getNextTrainingTestId());
+                    newTrainingTest.setType(testType);
+                    newTrainingTest.setLoadedFileId(loadedFileId);
+                    newTrainingTest.setTeacherId(teacherSelected.get().getTeacherId());
+                    newTrainingTest.setInitDate(postTrainingRow.getStartIn());
+                    newTrainingTest.setEndDate(postTrainingRow.getFinishIn());
+                    newTrainingTest.setRequiredInterval(postTrainingRow.getRequiredInterval());
+                    newTrainingTest.setState(postTrainingRow.getTestState());
+                    newTrainingTest.setScore(postTrainingRow.getScore());
+                    newTrainingTest.setAnswers(null);//TODO set answers list
 
-                int resultInsertTest = this.testRepository.insertTrainingTest(newTrainingTest);
-                logger.info("processTrainingFileRows. resultInsertTest={}", resultInsertTest);
-                newRecords++;
-            } else {
-                duplicatedRecords++;
+                    int resultInsertTest = this.testRepository.insertTrainingTest(newTrainingTest);
+                    logger.info("processTrainingFileRows. resultInsertTest={}", resultInsertTest);
+                    newRecords++;
+                } else {
+                    duplicatedRecords++;
+                }
             }
         }
         return new FileResumeDTO(postTrainingRows.size(), newRecords, duplicatedRecords);
@@ -98,27 +95,25 @@ public class LoaderMoodleFile {
 
             int regionId = entitiesUtilService.getRegionId(diagnosticRow.getRegion());
 
-            School school = entitiesUtilService.getSchoolByName(FileUtilService.normalizeStr(diagnosticRow.getSchoolName()));
+            School school = entitiesUtilService.getSchoolByName(diagnosticRow.getSchoolName());
 
-            if (school.getName() != FileUtilService.NOT_SPECIFIED) {
-                int rbd = FileUtilService.strToInt(diagnosticRow.getRbd());
-                entitiesUtilService.verifySchool(school, diagnosticRow.getCommune(), regionId, rbd);
-            }
+            if (!school.getName().equals(entitiesUtilService.NOT_SPECIFIED))
+                entitiesUtilService.verifySchool(school, diagnosticRow.getCommune(), regionId, diagnosticRow.getRbd());
 
-            diagnosticRow.setRut(FileUtilService.rutValidator(diagnosticRow.getRut()));
 
-            String rut = diagnosticRow.getRut();
-            boolean emailPresent = personRepository.checkIfEmailExists(diagnosticRow.getEmail());
 
-            if (rut != null && !emailPresent){
+            String rut = entitiesUtilService.validateTeacherByRut(diagnosticRow.getRut());
+            boolean email = entitiesUtilService.validatePersonByEmail(diagnosticRow.getEmail());
 
-                Optional<Teacher> teacherPersonSelected = personRepository.getTeacherPerson(rut);
+            if (rut != null && !email){
+
+                Optional<Teacher> teacherPersonSelected = entitiesUtilService.getTeacherPersonByRut(rut);
 
                 if (!teacherPersonSelected.isPresent()) {
                     Teacher teacher = entitiesUtilService.buildTeacherFrom(diagnosticRow);
                     teacher.setSchoolId(school.getId());
-                    this.personRepository.insertPerson(teacher);
-                    this.personRepository.insertTeacher(teacher);
+                    entitiesUtilService.createPerson(teacher);
+                    entitiesUtilService.createTeacher(teacher);
                     teacherPersonSelected = Optional.of(teacher);
                 }
 
@@ -161,21 +156,19 @@ public class LoaderMoodleFile {
 
         for (ExitSatisfactionFileDTO exitSatisfactionRow : exitSatisfactionRows) {
 
-            School school = entitiesUtilService.getSchoolByName(FileUtilService.normalizeStr(exitSatisfactionRow.getSchoolName()));
+            School school = entitiesUtilService.getSchoolByName(FileAttributeUtilService.removeSymbols(exitSatisfactionRow.getSchoolName()));
 
-            String rut = FileUtilService.rutValidator(exitSatisfactionRow.getRut());
+            String rut = FileAttributeUtilService.rutValidator(exitSatisfactionRow.getRut()); //TODO: SACAR DE AQUÏ
 
             if (rut != null) {
 
-                Optional<Teacher> teacherPersonSelected = personRepository.getTeacherPerson(rut);
+                Optional<Teacher> teacherPersonSelected = entitiesUtilService.getTeacherPersonByRut(rut);
 
                 if (!teacherPersonSelected.isPresent()) {
-
                     Teacher teacher = entitiesUtilService.buildTeacherFrom(exitSatisfactionRow);
                     teacher.setSchoolId(school.getId());
-                    this.personRepository.insertPerson(teacher);
-                    this.personRepository.insertTeacher(teacher);
-
+                    entitiesUtilService.createPerson(teacher);
+                    entitiesUtilService.createTeacher(teacher);
                     teacherPersonSelected = Optional.of(teacher);
                 }
 

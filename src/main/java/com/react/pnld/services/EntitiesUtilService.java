@@ -1,6 +1,7 @@
 package com.react.pnld.services;
 
 import com.react.pnld.dto.TeacherPersonDTO;
+import com.react.pnld.model.GenderProperties;
 import com.react.pnld.model.School;
 import com.react.pnld.model.Teacher;
 import com.react.pnld.model.Training;
@@ -17,6 +18,13 @@ public class EntitiesUtilService {
 
     private static final Logger logger = LoggerFactory.getLogger(EntitiesUtilService.class);
 
+    public static final int GENDER_ID_NOT_SPECIFIED = 4;
+    public static final int REGION_ID_OTHER = 17;
+    public static final String NOT_SPECIFIED = "no especificado";
+
+    @Autowired
+    private GenderProperties genderProperties;
+
     @Autowired
     PersonRepository personRepository;
     @Autowired
@@ -27,15 +35,25 @@ public class EntitiesUtilService {
     GenderRepository genderRepository;
     @Autowired
     RegionRepository regionRepository;
-    @Autowired
-    FileUtilService fileUtilService;
+
+    public Optional<Teacher> getTeacherPersonByRut(String rut) {
+        return personRepository.getTeacherPerson(rut);
+    }
+
+    public int createPerson(Teacher teacher){
+        return this.personRepository.insertPerson(teacher);
+
+    }
+    public int createTeacher(Teacher teacher){
+        return this.personRepository.insertTeacher(teacher);
+    }
 
     public Teacher buildTeacherFrom(TeacherPersonDTO teacherPersonDTO) {
 
         Teacher teacher = new Teacher();
         teacher.setTeacherId(this.personRepository.getNextTeacherId());
         teacher.setPersonId(this.personRepository.getNextPersonId());
-        teacher.setRut(FileUtilService.removeSymbols(teacherPersonDTO.getRut().trim()));
+        teacher.setRut(FileAttributeUtilService.removeSymbols(teacherPersonDTO.getRut().trim()));
         teacher.setAge(0);
         teacher.setParticipatedInPNLD(false);
         teacher.setTeachesInLevels(null);
@@ -44,19 +62,19 @@ public class EntitiesUtilService {
         teacher.setRoboticsResources(null);
 
         String department = (teacherPersonDTO.getDepartment() == null || teacherPersonDTO.getDepartment().isEmpty()) ?
-                FileUtilService.NOT_SPECIFIED : teacherPersonDTO.getDepartment();
+                NOT_SPECIFIED : teacherPersonDTO.getDepartment();
         teacher.setDepartment(department);
 
-        Training training = this.trainingRepository.getTrainingByFacilitator(FileUtilService.NOT_SPECIFIED);
+        Training training = this.trainingRepository.getTrainingByFacilitator(NOT_SPECIFIED);
         teacher.setTrainingId(training.getId());
 
-        String[] lastNames = FileUtilService.splitLastNames(teacherPersonDTO.getLastNames());
+        String[] lastNames = FileAttributeUtilService.splitLastNames(teacherPersonDTO.getLastNames());
         teacher.setName(teacherPersonDTO.getName());
         teacher.setPaternalLastName(lastNames[0]);
         teacher.setMaternalLastName(lastNames[1]);
         teacher.setEmail(teacherPersonDTO.getEmail());
 
-        int genderId = genderRepository.getGenderIdByType(fileUtilService.genderStandardization(teacherPersonDTO.getGender()));
+        int genderId = genderRepository.getGenderIdByType(this.genderStandardization(teacherPersonDTO.getGender()));
         teacher.setGenderId(genderId);
 
         return teacher;
@@ -75,7 +93,7 @@ public class EntitiesUtilService {
 
         if(teacherPersonDTO.getLastNames() != null){
 
-            String[] lastNames = FileUtilService.splitLastNames(teacherPersonDTO.getLastNames());
+            String[] lastNames = FileAttributeUtilService.splitLastNames(teacherPersonDTO.getLastNames());
 
            if(teacher.getPaternalLastName() == null || teacher.getPaternalLastName().isEmpty())
                teacher.setPaternalLastName(lastNames[0]);
@@ -89,16 +107,27 @@ public class EntitiesUtilService {
         //TODO Actualizar teacherPerson
     }
 
+    public String validateTeacherByRut(String rut){
+        return FileAttributeUtilService.rutValidator(rut);
+    }
+
+    public boolean validatePersonByEmail(String email){
+        return personRepository.checkIfEmailExists(email);
+    }
+
     public School getSchoolByName(String schoolName) {
 
-        if (schoolName == null || schoolName.isEmpty()) {
-            return schoolRepository.getSchoolByName(FileUtilService.NOT_SPECIFIED).get();
+        String schoolNameNormalized = FileAttributeUtilService.removeAccents(schoolName);
+
+        if (schoolNameNormalized == null || schoolNameNormalized.isEmpty()) {
+            return schoolRepository.getSchoolByName(NOT_SPECIFIED).get();
         }
 
-        Optional<School> schoolSelected = schoolRepository.getSchoolByName(schoolName);
+        Optional<School> schoolSelected = schoolRepository.getSchoolByName(schoolNameNormalized);
 
         if (!schoolSelected.isPresent()) {
-            School newSchool = createNewSchool(schoolName, null, FileUtilService.REGION_ID_OTHER, FileUtilService.RBD_ID_NOT_SPECIFIED);
+            School newSchool = createNewSchool(schoolNameNormalized, null,
+                    REGION_ID_OTHER, FileAttributeUtilService.RBD_ID_NOT_SPECIFIED);
             schoolSelected = Optional.of(newSchool);
         }
         return schoolSelected.get();
@@ -118,30 +147,60 @@ public class EntitiesUtilService {
         return newSchool;
     }
 
-    public int getRegionId(String name) {
+    public void verifySchool(School school, String city, int regionId, String rbdAsStr) {
 
-        if (name == null || name.isEmpty()) {
-            return FileUtilService.REGION_ID_OTHER;
-        }
-        String cleanedName = FileUtilService.normalizeStr(name);
-        Optional<Integer> regionIdSelected = regionRepository.getRegionIdByName(cleanedName);
-
-        logger.info("getRegionId. regionIdSelected={}", regionIdSelected.get());
-
-        return (regionIdSelected.isPresent()) ? regionIdSelected.get().intValue() : FileUtilService.REGION_ID_OTHER;
-    }
-
-    public void verifySchool(School school, String city, int regionId, int rbd) {
+        int rbd = FileAttributeUtilService.rbdToInt(rbdAsStr);
 
         if ((school.getCity() == null || school.getCity().isEmpty()) && (city != null)) {
             school.setCity(city);
         }
-        if ((school.getRegionId() == FileUtilService.REGION_ID_OTHER) && (regionId != FileUtilService.REGION_ID_OTHER)) {
+        if ((school.getRegionId() == REGION_ID_OTHER) && (regionId != REGION_ID_OTHER)) {
             school.setRegionId(regionId);
         }
-        if ((school.getRbd() == FileUtilService.RBD_ID_NOT_SPECIFIED) && (rbd != FileUtilService.RBD_ID_NOT_SPECIFIED)) {
+        if ((school.getRbd() == FileAttributeUtilService.RBD_ID_NOT_SPECIFIED) && (rbd != FileAttributeUtilService.RBD_ID_NOT_SPECIFIED)) {
             school.setRbd(rbd);
         }
         //TODO Actualizar colegio
     }
+
+    public int getRegionId(String name) {
+
+        if (name == null || name.isEmpty()) {
+            return REGION_ID_OTHER;
+        }
+        String cleanedName = FileAttributeUtilService.normalizeRegion(name);
+        Optional<Integer> regionIdSelected = regionRepository.getRegionIdByName(cleanedName);
+
+        logger.info("getRegionId. regionIdSelected={}", regionIdSelected.get());
+
+        return (regionIdSelected.isPresent()) ? regionIdSelected.get().intValue() : REGION_ID_OTHER;
+    }
+
+    public String genderStandardization(String gender) {
+
+        if (genderProperties.getFemale().contains(gender)) {
+            return genderProperties.GENDER_TYPE_FEMALE;
+        }
+
+        if (genderProperties.getMale().contains(gender)) {
+            return genderProperties.GENDER_TYPE_MALE;
+        }
+
+        if (genderProperties.getOther().contains(gender)) {
+            return genderProperties.GENDER_TYPE_OTHER;
+        }
+
+        return genderProperties.GENDER_TYPE_NOT_ESPECIFY;
+    }
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -27,18 +27,9 @@ import java.util.regex.Pattern;
 public class FileUtilService {
 
     private static final Logger logger = LoggerFactory.getLogger(FileUtilService.class);
-    public static final String DELIMITER_LAST_NAMES = " ";
-    public static final int GENDER_ID_NOT_SPECIFIED = 4;
-    public static final int RBD_ID_NOT_SPECIFIED = 0;
-    public static final String NOT_SPECIFIED = "no especificado";
-    public static final int REGION_ID_OTHER = 17;
-    public static final int RUT_NOT_SPECIFY = 0;
 
     @Autowired
     private CSVHeadersProperties csvHeadersProperties;
-
-    @Autowired
-    private GenderProperties genderProperties;
 
     @Autowired
     private LoaderMoodleFile loaderMoodleFile;
@@ -54,11 +45,6 @@ public class FileUtilService {
     public FileUtilService() {
         csvParserSettings = new CsvParserSettings();
         csvParserSettings.setLineSeparatorDetectionEnabled(true);
-    }
-
-    public static String removeSymbols(String strToClean) {
-        String strCleaned = strToClean.replaceAll("(, |[^a-zA-Z0-9,])", "");
-        return strCleaned.toLowerCase();
     }
 
     public String[] selectedHeadersArray(String selectedType) {
@@ -214,76 +200,6 @@ public class FileUtilService {
             default:
                 return new FileResumeDTO(0, 0, 0);
         }
-    }
-
-    public static String removeAccents(String toClean) {
-        return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
-    }
-
-    public static String normalizeStr(String name) {
-        if (name == null || name.isEmpty()) {
-            return null;
-        }
-        String normalizedName = Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
-        return normalizedName.replaceAll("region( de( la | )| del | )", "");
-    }
-
-
-    public static String rutValidator(String rutToClean) {
-        String cleanedRut = rutToClean.replaceAll("[^0-9k]", "");
-        String rutPattern = "[0-9]{6,8}(k|[0-9])";
-        String rut = Pattern.matches(rutPattern, cleanedRut) ? cleanedRut : null;
-
-        if (rut == null) return null;
-
-        String rutWithoutCheckDigit = rut.substring(0, rut.length() - 1);
-
-        Integer numericalSeries = 0, sum = 1, rutAsInt = Integer.parseInt(rutWithoutCheckDigit);
-
-        for (; rutAsInt != 0; rutAsInt = (int) Math.floor(rutAsInt /= 10))
-            sum = (sum + rutAsInt % 10 * (9 - numericalSeries++ % 6)) % 11;
-
-        String checkDigitVerifier = (sum > 0) ? String.valueOf(sum - 1) : "k";
-
-        String newRut = rutWithoutCheckDigit + checkDigitVerifier;
-
-        return (rut.equals(newRut)) ? newRut : null;
-
-    }
-
-    public String genderStandardization(String gender) {
-
-        if (genderProperties.getFemale().contains(gender)) {
-            return genderProperties.GENDER_TYPE_FEMALE;
-        }
-
-        if (genderProperties.getMale().contains(gender)) {
-            return genderProperties.GENDER_TYPE_MALE;
-        }
-
-        if (genderProperties.getOther().contains(gender)) {
-            return genderProperties.GENDER_TYPE_OTHER;
-        }
-
-        return genderProperties.GENDER_TYPE_NOT_ESPECIFY;
-    }
-
-    public static String[] splitLastNames(String lastNames) {
-
-        String[] newLastNamesArray = new String[2];
-
-        String[] lastNamesArray = lastNames.split(" ", 2);
-
-        newLastNamesArray[0] = lastNamesArray[0];
-        newLastNamesArray[1] = (lastNamesArray.length == 1) ? null : lastNamesArray[1];
-
-        return newLastNamesArray;
-    }
-
-    public static int strToInt(String rbdStr) {
-        String cleanedRbd = rbdStr.replaceAll("[^\\d]", "");
-        if (cleanedRbd.isEmpty() || cleanedRbd.length() > 8) return RBD_ID_NOT_SPECIFIED;
-        return Integer.parseInt(cleanedRbd);
     }
 
     public static LocalDateTime getLocalDateFrom(String stringDate) {

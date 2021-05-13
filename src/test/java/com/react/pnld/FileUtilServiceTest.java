@@ -2,6 +2,7 @@ package com.react.pnld;
 
 import com.react.pnld.dto.ScheduleFileLoadDTO;
 import com.react.pnld.dto.TrainingFileDTO;
+import com.react.pnld.services.FileAttributeUtilService;
 import com.react.pnld.services.FileUtilService;
 import org.postgresql.util.PGInterval;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     void removeSymbols(){
         String input = "First Name,Pref Name,# Students in Course,Highest Unit (Students),Online CSF  Course";
         String expected = "firstname,prefname,studentsincourse,highestunitstudents,onlinecsfcourse";
-        Assert.assertEquals(fileUtilService.removeSymbols(input), expected);
+        Assert.assertEquals(FileAttributeUtilService.removeSymbols(input), expected);
     }
 
     @Test
@@ -193,18 +194,18 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     public void normalizeRegion(){
         String valparaiso = "región de valparaíso";
         String valparaisoExpected = "valparaiso";
-        Assert.assertEquals(FileUtilService.normalizeStr(valparaiso), valparaisoExpected);
+        Assert.assertEquals(FileAttributeUtilService.normalizeRegion(valparaiso), valparaisoExpected);
 
         String maule = "región del maule";
         String mauleExpected = "maule";
-        Assert.assertEquals(FileUtilService.normalizeStr(maule), mauleExpected);
+        Assert.assertEquals(FileAttributeUtilService.normalizeRegion(maule), mauleExpected);
 
         String rm = "región metropolitana";
         String rmExpected = "metropolitana";
-        Assert.assertEquals(FileUtilService.normalizeStr(rm),rmExpected);
+        Assert.assertEquals(FileAttributeUtilService.normalizeRegion(rm),rmExpected);
 
         String a = "región de la araucanía";
         String aExpected = "araucania";
-        Assert.assertEquals(FileUtilService.normalizeStr(a),aExpected);
+        Assert.assertEquals(FileAttributeUtilService.normalizeRegion(a),aExpected);
     }
 }
