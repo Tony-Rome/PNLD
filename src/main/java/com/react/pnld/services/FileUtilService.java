@@ -280,7 +280,7 @@ public class FileUtilService {
         return newLastNamesArray;
     }
 
-    public static int strToInt(String rbdStr) { //TODO: Mover a otro archivo
+    public static int strToInt(String rbdStr) {
         String cleanedRbd = rbdStr.replaceAll("[^\\d]", "");
         if (cleanedRbd.isEmpty() || cleanedRbd.length() > 8) return RBD_ID_NOT_SPECIFIED;
         return Integer.parseInt(cleanedRbd);

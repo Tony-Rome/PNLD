@@ -30,6 +30,8 @@ public class LoaderMoodleFile {
 
     @Autowired
     EntitiesUtilService entitiesUtilService;
+    @Autowired
+    FileUtilService fileUtilService;
 
     public FileResumeDTO processTrainingFileRows(List<TrainingFileDTO> postTrainingRows, int loadedFileId,
                                                  String testType) {
@@ -95,7 +97,7 @@ public class LoaderMoodleFile {
         for (DiagnosticFileDTO diagnosticRow : diagnosticRows) {
 
             int regionId = entitiesUtilService.getRegionId(diagnosticRow.getRegion());
-            System.out.println("REGION ID: " + regionId);
+
             School school = entitiesUtilService.getSchoolByName(FileUtilService.normalizeStr(diagnosticRow.getSchoolName()));
 
             if (school.getName() != FileUtilService.NOT_SPECIFIED) {
@@ -108,44 +110,46 @@ public class LoaderMoodleFile {
             String rut = diagnosticRow.getRut();
             boolean emailPresent = personRepository.checkIfEmailExists(diagnosticRow.getEmail());
 
-            if (rut == null || emailPresent) continue;
+            if (rut != null && !emailPresent){
 
-            Optional<Teacher> teacherPersonSelected = personRepository.getTeacherPerson(rut);
+                Optional<Teacher> teacherPersonSelected = personRepository.getTeacherPerson(rut);
 
-            if (!teacherPersonSelected.isPresent()) {
-                Teacher teacher = entitiesUtilService.buildTeacherFrom(diagnosticRow);
-                teacher.setSchoolId(school.getId());
-                this.personRepository.insertPerson(teacher);
-                this.personRepository.insertTeacher(teacher);
-                teacherPersonSelected = Optional.of(teacher);
+                if (!teacherPersonSelected.isPresent()) {
+                    Teacher teacher = entitiesUtilService.buildTeacherFrom(diagnosticRow);
+                    teacher.setSchoolId(school.getId());
+                    this.personRepository.insertPerson(teacher);
+                    this.personRepository.insertTeacher(teacher);
+                    teacherPersonSelected = Optional.of(teacher);
+                }
+
+                if(teacherPersonSelected.isPresent())
+                    entitiesUtilService.verifyTeacherPerson(teacherPersonSelected.get(), diagnosticRow);
+
+                logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherPersonSelected.get());
+
+                int diagnosticQuestionnaireCount = questionnaireRepository.getDiagnosticQuestionnaireCount(teacherPersonSelected.get().getTeacherId());
+
+                if (diagnosticQuestionnaireCount < 1) {
+
+                    String answersJson = "{\"clave\":\"valor\"}";
+
+                    int diagnosticQuestionnaireId = questionnaireRepository.getNextDiagnosticQuestionnaireId();
+
+                    DiagnosticQuestionnaire newDiagnosticQuestionnaire = new DiagnosticQuestionnaire(
+                            diagnosticQuestionnaireId, loadedFileId, teacherPersonSelected.get().getTeacherId(),
+                            diagnosticRow.getRespondentId(), diagnosticRow.getCollectorId(),
+                            diagnosticRow.getCreatedDate(), diagnosticRow.getModifiedDate(), answersJson);
+
+
+                    questionnaireRepository.insertDiagnosticQuestionnaire(newDiagnosticQuestionnaire);
+                    newRecords++;
+                }
+                if (diagnosticQuestionnaireCount >= 1) {
+                    duplicatedRecords++;
+                }
             }
 
-            if(teacherPersonSelected.isPresent()){
-                //TODO: Actualizar
-            }
 
-            logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherPersonSelected.get());
-
-            int diagnosticQuestionnaireCount = questionnaireRepository.getDiagnosticQuestionnaireCount(teacherPersonSelected.get().getTeacherId());
-
-            if (diagnosticQuestionnaireCount < 1) {
-
-                String answersJson = "{\"clave\":\"valor\"}";
-
-                int diagnosticQuestionnaireId = questionnaireRepository.getNextDiagnosticQuestionnaireId();
-
-                DiagnosticQuestionnaire newDiagnosticQuestionnaire = new DiagnosticQuestionnaire(
-                        diagnosticQuestionnaireId, loadedFileId, teacherPersonSelected.get().getTeacherId(),
-                        diagnosticRow.getRespondentId(), diagnosticRow.getCollectorId(),
-                        diagnosticRow.getCreatedDate(), diagnosticRow.getModifiedDate(), answersJson);
-
-
-                questionnaireRepository.insertDiagnosticQuestionnaire(newDiagnosticQuestionnaire);
-                newRecords++;
-            }
-            if (diagnosticQuestionnaireCount >= 1) {
-                duplicatedRecords++;
-            }
         }
         return new FileResumeDTO(diagnosticRows.size(), newRecords, duplicatedRecords);
     }
@@ -161,39 +165,42 @@ public class LoaderMoodleFile {
 
             String rut = FileUtilService.rutValidator(exitSatisfactionRow.getRut());
 
-            if (rut == null) continue;
+            if (rut != null) {
 
-            Optional<Teacher> teacherPersonSelected = personRepository.getTeacherPerson(rut);
+                Optional<Teacher> teacherPersonSelected = personRepository.getTeacherPerson(rut);
 
-            if (!teacherPersonSelected.isPresent()) {
+                if (!teacherPersonSelected.isPresent()) {
 
-                Teacher teacher = entitiesUtilService.buildTeacherFrom(exitSatisfactionRow);
-                teacher.setSchoolId(school.getId());
-                this.personRepository.insertPerson(teacher);
-                this.personRepository.insertTeacher(teacher);
+                    Teacher teacher = entitiesUtilService.buildTeacherFrom(exitSatisfactionRow);
+                    teacher.setSchoolId(school.getId());
+                    this.personRepository.insertPerson(teacher);
+                    this.personRepository.insertTeacher(teacher);
 
-                teacherPersonSelected = Optional.of(teacher);
-            }
-            //TODO: Si existe TeacherPerson, se actualiza departamento y nombre
+                    teacherPersonSelected = Optional.of(teacher);
+                }
 
-            int exitSatisfactionQuestionnaireCount = questionnaireRepository.getExitSatisfactionQuestionnaireCount(teacherPersonSelected.get().getTeacherId());
+                if(teacherPersonSelected.isPresent())
+                    entitiesUtilService.verifyTeacherPerson(teacherPersonSelected.get(), exitSatisfactionRow);
 
-            if (exitSatisfactionQuestionnaireCount < 1) {
+                int exitSatisfactionQuestionnaireCount = questionnaireRepository.getExitSatisfactionQuestionnaireCount(teacherPersonSelected.get().getTeacherId());
 
-                String answersJson = "{\"llave\":\"respuesta\"}";
+                if (exitSatisfactionQuestionnaireCount < 1) {
 
-                int exitSatisfactionQuestionnaireId = questionnaireRepository.getNextExitSatisfactionQuestionnaireId();
+                    String answersJson = "{\"llave\":\"respuesta\"}";
 
-                ExitSatisfactionQuestionnaire newExitQuestionnaire = new ExitSatisfactionQuestionnaire(
-                        exitSatisfactionQuestionnaireId, loadedFileId, teacherPersonSelected.get().getTeacherId(),
-                        exitSatisfactionRow.getResponseId(), exitSatisfactionRow.getSendDate(), answersJson,
-                        exitSatisfactionRow.getId(), exitSatisfactionRow.getCourse(), exitSatisfactionRow.getGroup());
+                    int exitSatisfactionQuestionnaireId = questionnaireRepository.getNextExitSatisfactionQuestionnaireId();
 
-                questionnaireRepository.insertExitSatisfactionQuestionnaire(newExitQuestionnaire);
-                newRecords++;
-            }
-            if (exitSatisfactionQuestionnaireCount >= 1) {
-                duplicatedRecords++;
+                    ExitSatisfactionQuestionnaire newExitQuestionnaire = new ExitSatisfactionQuestionnaire(
+                            exitSatisfactionQuestionnaireId, loadedFileId, teacherPersonSelected.get().getTeacherId(),
+                            exitSatisfactionRow.getResponseId(), exitSatisfactionRow.getSendDate(), answersJson,
+                            exitSatisfactionRow.getId(), exitSatisfactionRow.getCourse(), exitSatisfactionRow.getGroup());
+
+                    questionnaireRepository.insertExitSatisfactionQuestionnaire(newExitQuestionnaire);
+                    newRecords++;
+                }
+                if (exitSatisfactionQuestionnaireCount >= 1) {
+                    duplicatedRecords++;
+                }
             }
         }
         return new FileResumeDTO(exitSatisfactionRows.size(), newRecords, duplicatedRecords);

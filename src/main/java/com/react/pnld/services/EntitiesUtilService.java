@@ -19,18 +19,14 @@ public class EntitiesUtilService {
 
     @Autowired
     PersonRepository personRepository;
-
     @Autowired
     TrainingRepository trainingRepository;
     @Autowired
     SchoolRepository schoolRepository;
-
     @Autowired
     GenderRepository genderRepository;
-
     @Autowired
     RegionRepository regionRepository;
-
     @Autowired
     FileUtilService fileUtilService;
 
@@ -69,24 +65,26 @@ public class EntitiesUtilService {
     public void verifyTeacherPerson(Teacher teacher, TeacherPersonDTO teacherPersonDTO) {
 
 
-        if(teacher.getAge() == 0){
-            teacher.setAge(teacherPersonDTO.getAge());
-        }
-        if(teacher.getDepartment().isEmpty() || teacher.getDepartment() == null){
+        if(teacher.getAge() == 0 && teacherPersonDTO.getAge() != 0) teacher.setAge(teacherPersonDTO.getAge());
+
+        if((teacher.getDepartment() == null || teacher.getDepartment().isEmpty()) && teacherPersonDTO.getDepartment() != null)
             teacher.setDepartment(teacherPersonDTO.getDepartment());
+
+        if((teacher.getName() == null || teacher.getName().isEmpty()) && teacherPersonDTO.getName() != null)
+            teacher.setName(teacherPersonDTO.getName());
+
+        if(teacherPersonDTO.getLastNames() != null){
+
+            String[] lastNames = FileUtilService.splitLastNames(teacherPersonDTO.getLastNames());
+
+           if(teacher.getPaternalLastName() == null || teacher.getPaternalLastName().isEmpty())
+               teacher.setPaternalLastName(lastNames[0]);
+           if(teacher.getMaternalLastName() == null || teacher.getMaternalLastName().isEmpty())
+               teacher.setMaternalLastName(lastNames[1]);
         }
-        if(teacher.getName().isEmpty() || teacher.getName() == null){
-            teacher.setName(teacher.getName());
-        }
-        if(teacher.getPaternalLastName().isEmpty() || teacher.getPaternalLastName() == null){
-            teacher.setPaternalLastName(teacher.getPaternalLastName());
-        }
-        if(teacher.getMaternalLastName().isEmpty() || teacher.getMaternalLastName() == null){
-            teacher.setMaternalLastName(teacher.getMaternalLastName());
-        }
-        if(teacher.getEmail().isEmpty() || teacher.getEmail() == null){
+
+        if((teacher.getEmail() == null || teacher.getEmail().isEmpty()) && teacherPersonDTO.getEmail() != null)
             teacher.setEmail(teacherPersonDTO.getEmail());
-        }
 
         //TODO Actualizar teacherPerson
     }
