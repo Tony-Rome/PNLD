@@ -202,5 +202,9 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
         String rm = "región metropolitana";
         String rmExpected = "metropolitana";
         Assert.assertEquals(FileUtilService.normalizeStr(rm),rmExpected);
+
+        String a = "región de la araucanía";
+        String aExpected = "araucania";
+        Assert.assertEquals(FileUtilService.normalizeStr(a),aExpected);
     }
 }

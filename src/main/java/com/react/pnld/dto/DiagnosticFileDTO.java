@@ -81,9 +81,7 @@ public class DiagnosticFileDTO implements TeacherPersonDTO {
         this.ipAddress = ipAddress;
     }
 
-    public String getRegion() {
-        return region;
-    }
+    public String getRegion() {return region; }
     public void setRegion(String region) {
         this.region = region;
     }

@@ -95,7 +95,7 @@ public class LoaderMoodleFile {
         for (DiagnosticFileDTO diagnosticRow : diagnosticRows) {
 
             int regionId = entitiesUtilService.getRegionId(diagnosticRow.getRegion());
-
+            System.out.println("REGION ID: " + regionId);
             School school = entitiesUtilService.getSchoolByName(FileUtilService.normalizeStr(diagnosticRow.getSchoolName()));
 
             if (school.getName() != FileUtilService.NOT_SPECIFIED) {

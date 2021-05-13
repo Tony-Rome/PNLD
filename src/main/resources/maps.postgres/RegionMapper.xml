@@ -6,8 +6,8 @@
     <cache/>
 
     <select id="getRegionIdByName" resultType="int" parameterType="String">
-        SELECT
-        COALESCE( (SELECT id FROM pnld.region WHERE nombre = #{nombre}), 17)
+        <bind name="pattern" value="'%' + name + '%'"/>
+        SELECT id FROM pnld.region WHERE nombre LIKE #{pattern}
     </select>
 
 </mapper>

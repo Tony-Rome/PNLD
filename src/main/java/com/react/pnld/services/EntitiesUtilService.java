@@ -96,6 +96,7 @@ public class EntitiesUtilService {
     }
 
     public int getRegionId(String name) {
+
         if (name == null || name.isEmpty()) {
             return FileUtilService.REGION_ID_OTHER;
         }
@@ -104,7 +105,7 @@ public class EntitiesUtilService {
 
         logger.info("getRegionId. regionIdSelected={}", regionIdSelected.get());
 
-        return (!regionIdSelected.isPresent()) ? FileUtilService.REGION_ID_OTHER : regionIdSelected.get().intValue();
+        return (regionIdSelected.isPresent()) ? regionIdSelected.get().intValue() : FileUtilService.REGION_ID_OTHER;
     }
 
     public void verifySchool(School school, String city, int regionId, int rbd) {

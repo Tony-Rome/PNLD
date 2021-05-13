@@ -1,6 +1,8 @@
 package com.react.pnld.mappers;
 
+import org.apache.ibatis.annotations.Param;
+
 public interface RegionMapper {
 
-    int getRegionIdByName(String name);
+    int getRegionIdByName(@Param("name") String name);
 }
