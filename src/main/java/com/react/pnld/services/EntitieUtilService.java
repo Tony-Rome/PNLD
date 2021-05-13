@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class EntitiesUtilService {
+public class EntitieUtilService {
 
-    private static final Logger logger = LoggerFactory.getLogger(EntitiesUtilService.class);
+    private static final Logger logger = LoggerFactory.getLogger(EntitieUtilService.class);
 
     public static final int GENDER_ID_NOT_SPECIFIED = 4;
     public static final int REGION_ID_OTHER = 17;

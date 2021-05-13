@@ -208,4 +208,14 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
         String aExpected = "araucania";
         Assert.assertEquals(FileAttributeUtilService.normalizeRegion(a),aExpected);
     }
+
+    @Test
+    public void validateEmail(){
+        String email1 = "correo.prueba.valido@gmail.com";
+        Assert.assertEquals(FileAttributeUtilService.emailValidator(email1), email1);
+        String email2 = "emai123.456@dominio";
+        Assert.assertEquals(FileAttributeUtilService.emailValidator(email2), null);
+        String email3 = "correono@valido@";
+        Assert.assertEquals(FileAttributeUtilService.emailValidator(email3), null);
+    }
 }

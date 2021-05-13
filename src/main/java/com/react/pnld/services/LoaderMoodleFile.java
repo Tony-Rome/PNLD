@@ -5,7 +5,6 @@ import com.react.pnld.dto.ExitSatisfactionFileDTO;
 import com.react.pnld.dto.FileResumeDTO;
 import com.react.pnld.dto.TrainingFileDTO;
 import com.react.pnld.model.*;
-import com.react.pnld.repo.PersonRepository;
 import com.react.pnld.repo.QuestionnaireRepository;
 import com.react.pnld.repo.TestRepository;
 import org.slf4j.Logger;
@@ -27,7 +26,7 @@ public class LoaderMoodleFile {
     QuestionnaireRepository questionnaireRepository;
 
     @Autowired
-    EntitiesUtilService entitiesUtilService;
+    EntitieUtilService entitiesUtilService;
 
     public FileResumeDTO processTrainingFileRows(List<TrainingFileDTO> postTrainingRows, int loadedFileId,
                                                  String testType) {

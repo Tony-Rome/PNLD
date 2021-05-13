@@ -65,5 +65,9 @@ public class FileAttributeUtilService {
 
     }
 
+    public static String emailValidator(String email){
+        String emailPattern = "^[\\w-\\.]+@([\\w-]+\\.[com]{3})$";
+        return (Pattern.matches(emailPattern, email)) ? email : null;
+    }
 
 }
