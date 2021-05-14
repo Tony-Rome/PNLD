@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class EntitieUtilService {
+public class EntityUtilService {
 
-    private static final Logger logger = LoggerFactory.getLogger(EntitieUtilService.class);
+    private static final Logger logger = LoggerFactory.getLogger(EntityUtilService.class);
 
     public static final int GENDER_ID_NOT_SPECIFIED = 4;
     public static final int REGION_ID_OTHER = 17;
@@ -53,7 +53,7 @@ public class EntitieUtilService {
         Teacher teacher = new Teacher();
         teacher.setTeacherId(this.personRepository.getNextTeacherId());
         teacher.setPersonId(this.personRepository.getNextPersonId());
-        teacher.setRut(FileAttributeUtilService.removeSymbols(teacherPersonDTO.getRut().trim()));
+        teacher.setRut(EntityAttributeUtilService.removeSymbols(teacherPersonDTO.getRut().trim()));
         teacher.setAge(0);
         teacher.setParticipatedInPNLD(false);
         teacher.setTeachesInLevels(null);
@@ -68,7 +68,7 @@ public class EntitieUtilService {
         Training training = this.trainingRepository.getTrainingByFacilitator(NOT_SPECIFIED);
         teacher.setTrainingId(training.getId());
 
-        String[] lastNames = FileAttributeUtilService.splitLastNames(teacherPersonDTO.getLastNames());
+        String[] lastNames = EntityAttributeUtilService.splitLastNames(teacherPersonDTO.getLastNames());
         teacher.setName(teacherPersonDTO.getName());
         teacher.setPaternalLastName(lastNames[0]);
         teacher.setMaternalLastName(lastNames[1]);
@@ -93,7 +93,7 @@ public class EntitieUtilService {
 
         if(teacherPersonDTO.getLastNames() != null){
 
-            String[] lastNames = FileAttributeUtilService.splitLastNames(teacherPersonDTO.getLastNames());
+            String[] lastNames = EntityAttributeUtilService.splitLastNames(teacherPersonDTO.getLastNames());
 
            if(teacher.getPaternalLastName() == null || teacher.getPaternalLastName().isEmpty())
                teacher.setPaternalLastName(lastNames[0]);
@@ -108,29 +108,29 @@ public class EntitieUtilService {
     }
 
     public String validateTeacherByRut(String rut){
-        return FileAttributeUtilService.rutValidator(rut);
+        return EntityAttributeUtilService.rutValidator(rut);
     }
 
     public String validatePersonByEmail(String email){
 
-        if(!FileAttributeUtilService.emailValidator(email)) return null;
+        if(!EntityAttributeUtilService.emailValidator(email)) return null;
 
         return (!personRepository.checkIfEmailExists(email)) ? email : null;
     }
 
     public School getSchoolByName(String schoolName) {
 
-        String schoolNameNormalized = FileAttributeUtilService.removeAccents(schoolName);
-
-        if (schoolNameNormalized == null || schoolNameNormalized.isEmpty()) {
+        if (schoolName == null || schoolName.isEmpty()) {
             return schoolRepository.getSchoolByName(NOT_SPECIFIED).get();
         }
+
+        String schoolNameNormalized = EntityAttributeUtilService.removeAccents(schoolName);
 
         Optional<School> schoolSelected = schoolRepository.getSchoolByName(schoolNameNormalized);
 
         if (!schoolSelected.isPresent()) {
             School newSchool = createNewSchool(schoolNameNormalized, null,
-                    REGION_ID_OTHER, FileAttributeUtilService.RBD_ID_NOT_SPECIFIED);
+                    REGION_ID_OTHER, EntityAttributeUtilService.RBD_ID_NOT_SPECIFIED);
             schoolSelected = Optional.of(newSchool);
         }
         return schoolSelected.get();
@@ -152,7 +152,7 @@ public class EntitieUtilService {
 
     public void verifySchool(School school, String city, int regionId, String rbdAsStr) {
 
-        int rbd = FileAttributeUtilService.rbdToInt(rbdAsStr);
+        int rbd = EntityAttributeUtilService.rbdToInt(rbdAsStr);
 
         if ((school.getCity() == null || school.getCity().isEmpty()) && (city != null)) {
             school.setCity(city);
@@ -160,7 +160,7 @@ public class EntitieUtilService {
         if ((school.getRegionId() == REGION_ID_OTHER) && (regionId != REGION_ID_OTHER)) {
             school.setRegionId(regionId);
         }
-        if ((school.getRbd() == FileAttributeUtilService.RBD_ID_NOT_SPECIFIED) && (rbd != FileAttributeUtilService.RBD_ID_NOT_SPECIFIED)) {
+        if ((school.getRbd() == EntityAttributeUtilService.RBD_ID_NOT_SPECIFIED) && (rbd != EntityAttributeUtilService.RBD_ID_NOT_SPECIFIED)) {
             school.setRbd(rbd);
         }
         //TODO Actualizar colegio
@@ -171,7 +171,7 @@ public class EntitieUtilService {
         if (name == null || name.isEmpty()) {
             return REGION_ID_OTHER;
         }
-        String cleanedName = FileAttributeUtilService.normalizeRegion(name);
+        String cleanedName = EntityAttributeUtilService.normalizeRegion(name);
         Optional<Integer> regionIdSelected = regionRepository.getRegionIdByName(cleanedName);
 
         logger.info("getRegionId. regionIdSelected={}", regionIdSelected.get());

@@ -2,7 +2,7 @@ package com.react.pnld;
 
 import com.react.pnld.dto.ScheduleFileLoadDTO;
 import com.react.pnld.dto.TrainingFileDTO;
-import com.react.pnld.services.FileAttributeUtilService;
+import com.react.pnld.services.EntityAttributeUtilService;
 import com.react.pnld.services.FileUtilService;
 import org.postgresql.util.PGInterval;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     void removeSymbols(){
         String input = "First Name,Pref Name,# Students in Course,Highest Unit (Students),Online CSF  Course";
         String expected = "firstname,prefname,studentsincourse,highestunitstudents,onlinecsfcourse";
-        Assert.assertEquals(FileAttributeUtilService.removeSymbols(input), expected);
+        Assert.assertEquals(EntityAttributeUtilService.removeSymbols(input), expected);
     }
 
     @Test
@@ -194,28 +194,28 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     public void normalizeRegion(){
         String valparaiso = "región de valparaíso";
         String valparaisoExpected = "valparaiso";
-        Assert.assertEquals(FileAttributeUtilService.normalizeRegion(valparaiso), valparaisoExpected);
+        Assert.assertEquals(EntityAttributeUtilService.normalizeRegion(valparaiso), valparaisoExpected);
 
         String maule = "región del maule";
         String mauleExpected = "maule";
-        Assert.assertEquals(FileAttributeUtilService.normalizeRegion(maule), mauleExpected);
+        Assert.assertEquals(EntityAttributeUtilService.normalizeRegion(maule), mauleExpected);
 
         String rm = "región metropolitana";
         String rmExpected = "metropolitana";
-        Assert.assertEquals(FileAttributeUtilService.normalizeRegion(rm),rmExpected);
+        Assert.assertEquals(EntityAttributeUtilService.normalizeRegion(rm),rmExpected);
 
         String a = "región de la araucanía";
         String aExpected = "araucania";
-        Assert.assertEquals(FileAttributeUtilService.normalizeRegion(a),aExpected);
+        Assert.assertEquals(EntityAttributeUtilService.normalizeRegion(a),aExpected);
     }
 
     @Test
     public void validateEmail(){
         String email1 = "correo.prueba.valido@gmail.com";
-        Assert.assertEquals(FileAttributeUtilService.emailValidator(email1), email1);
+        Assert.assertEquals(EntityAttributeUtilService.emailValidator(email1), email1);
         String email2 = "emai123.456@dominio";
-        Assert.assertEquals(FileAttributeUtilService.emailValidator(email2), null);
+        Assert.assertEquals(EntityAttributeUtilService.emailValidator(email2), null);
         String email3 = "correono@valido@";
-        Assert.assertEquals(FileAttributeUtilService.emailValidator(email3), null);
+        Assert.assertEquals(EntityAttributeUtilService.emailValidator(email3), null);
     }
 }

@@ -3,7 +3,7 @@ package com.react.pnld.services;
 import java.text.Normalizer;
 import java.util.regex.Pattern;
 
-public class FileAttributeUtilService {
+public class EntityAttributeUtilService {
 
     public static final int RBD_ID_NOT_SPECIFIED = 0;
 

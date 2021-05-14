@@ -26,7 +26,7 @@ public class LoaderMoodleFile {
     QuestionnaireRepository questionnaireRepository;
 
     @Autowired
-    EntitieUtilService entitiesUtilService;
+    EntityUtilService entityUtilService;
 
     public FileResumeDTO processTrainingFileRows(List<TrainingFileDTO> postTrainingRows, int loadedFileId,
                                                  String testType) {
@@ -40,18 +40,18 @@ public class LoaderMoodleFile {
         for (TrainingFileDTO postTrainingRow : postTrainingRows) {
             logger.info("processTrainingFileRows. postTrainingRow={}", postTrainingRow);
 
-            School school = entitiesUtilService.getSchoolByName(postTrainingRow.getSchoolName());
+            School school = entityUtilService.getSchoolByName(postTrainingRow.getSchoolName());
 
-            String rut = entitiesUtilService.validateTeacherByRut(postTrainingRow.getRut());
+            String rut = entityUtilService.validateTeacherByRut(postTrainingRow.getRut());
 
             if (rut != null) {
-                Optional<Teacher> teacherSelected = entitiesUtilService.getTeacherPersonByRut(rut);
+                Optional<Teacher> teacherSelected = entityUtilService.getTeacherPersonByRut(rut);
 
                 if (!teacherSelected.isPresent()) {
-                    Teacher teacher = entitiesUtilService.buildTeacherFrom(postTrainingRow);
+                    Teacher teacher = entityUtilService.buildTeacherFrom(postTrainingRow);
                     teacher.setSchoolId(school.getId());
-                    entitiesUtilService.createPerson(teacher);
-                    entitiesUtilService.createTeacher(teacher);
+                    entityUtilService.createPerson(teacher);
+                    entityUtilService.createTeacher(teacher);
 
                     teacherSelected = Optional.of(teacher);
                 }
@@ -92,30 +92,30 @@ public class LoaderMoodleFile {
 
         for (DiagnosticFileDTO diagnosticRow : diagnosticRows) {
 
-            int regionId = entitiesUtilService.getRegionId(diagnosticRow.getRegion());
+            int regionId = entityUtilService.getRegionId(diagnosticRow.getRegion());
 
-            School school = entitiesUtilService.getSchoolByName(diagnosticRow.getSchoolName());
+            School school = entityUtilService.getSchoolByName(diagnosticRow.getSchoolName());
 
-            if (!school.getName().equals(entitiesUtilService.NOT_SPECIFIED))
-                entitiesUtilService.verifySchool(school, diagnosticRow.getCommune(), regionId, diagnosticRow.getRbd());
+            if (!school.getName().equals(entityUtilService.NOT_SPECIFIED))
+                entityUtilService.verifySchool(school, diagnosticRow.getCommune(), regionId, diagnosticRow.getRbd());
 
-            String rut = entitiesUtilService.validateTeacherByRut(diagnosticRow.getRut());
-            String email = entitiesUtilService.validatePersonByEmail(diagnosticRow.getEmail());
+            String rut = entityUtilService.validateTeacherByRut(diagnosticRow.getRut());
+            String email = entityUtilService.validatePersonByEmail(diagnosticRow.getEmail());
 
             if (rut != null && email!= null){
 
-                Optional<Teacher> teacherPersonSelected = entitiesUtilService.getTeacherPersonByRut(rut);
+                Optional<Teacher> teacherPersonSelected = entityUtilService.getTeacherPersonByRut(rut);
 
                 if (!teacherPersonSelected.isPresent()) {
-                    Teacher teacher = entitiesUtilService.buildTeacherFrom(diagnosticRow);
+                    Teacher teacher = entityUtilService.buildTeacherFrom(diagnosticRow);
                     teacher.setSchoolId(school.getId());
-                    entitiesUtilService.createPerson(teacher);
-                    entitiesUtilService.createTeacher(teacher);
+                    entityUtilService.createPerson(teacher);
+                    entityUtilService.createTeacher(teacher);
                     teacherPersonSelected = Optional.of(teacher);
                 }
 
                 if(teacherPersonSelected.isPresent())
-                    entitiesUtilService.verifyTeacherPerson(teacherPersonSelected.get(), diagnosticRow);
+                    entityUtilService.verifyTeacherPerson(teacherPersonSelected.get(), diagnosticRow);
 
                 logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherPersonSelected.get());
 
@@ -153,24 +153,24 @@ public class LoaderMoodleFile {
 
         for (ExitSatisfactionFileDTO exitSatisfactionRow : exitSatisfactionRows) {
 
-            School school = entitiesUtilService.getSchoolByName(FileAttributeUtilService.removeSymbols(exitSatisfactionRow.getSchoolName()));
+            School school = entityUtilService.getSchoolByName(EntityAttributeUtilService.removeSymbols(exitSatisfactionRow.getSchoolName()));
 
-            String rut = entitiesUtilService.validateTeacherByRut(exitSatisfactionRow.getRut());
+            String rut = entityUtilService.validateTeacherByRut(exitSatisfactionRow.getRut());
 
             if (rut != null) {
 
-                Optional<Teacher> teacherPersonSelected = entitiesUtilService.getTeacherPersonByRut(rut);
+                Optional<Teacher> teacherPersonSelected = entityUtilService.getTeacherPersonByRut(rut);
 
                 if (!teacherPersonSelected.isPresent()) {
-                    Teacher teacher = entitiesUtilService.buildTeacherFrom(exitSatisfactionRow);
+                    Teacher teacher = entityUtilService.buildTeacherFrom(exitSatisfactionRow);
                     teacher.setSchoolId(school.getId());
-                    entitiesUtilService.createPerson(teacher);
-                    entitiesUtilService.createTeacher(teacher);
+                    entityUtilService.createPerson(teacher);
+                    entityUtilService.createTeacher(teacher);
                     teacherPersonSelected = Optional.of(teacher);
                 }
 
                 if(teacherPersonSelected.isPresent())
-                    entitiesUtilService.verifyTeacherPerson(teacherPersonSelected.get(), exitSatisfactionRow);
+                    entityUtilService.verifyTeacherPerson(teacherPersonSelected.get(), exitSatisfactionRow);
 
                 int exitSatisfactionQuestionnaireCount = questionnaireRepository.getExitSatisfactionQuestionnaireCount(teacherPersonSelected.get().getTeacherId());
 
