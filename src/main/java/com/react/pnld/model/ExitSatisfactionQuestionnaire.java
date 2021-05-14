@@ -14,16 +14,7 @@ public class ExitSatisfactionQuestionnaire {
     private String course;
     private String group;
 
-    public ExitSatisfactionQuestionnaire(int id, int loadedFileId, int teacherId, int responseId, Timestamp sendDate, String answers, int numberId, String course, String group) {
-        this.id = id;
-        this.loadedFileId = loadedFileId;
-        this.teacherId = teacherId;
-        this.responseId = responseId;
-        this.sendDate = sendDate;
-        this.answers = answers;
-        this.numberId = numberId;
-        this.course = course;
-        this.group = group;
+    public ExitSatisfactionQuestionnaire() {
     }
 
     public int getId() {

@@ -2,7 +2,6 @@ package com.react.pnld.services;
 
 import com.react.pnld.dto.*;
 import com.react.pnld.model.CSVHeadersProperties;
-import com.react.pnld.model.GenderProperties;
 import com.react.pnld.model.LoadedFile;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.text.Normalizer;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,7 +19,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Pattern;
 
 @Service
 public class FileUtilService {

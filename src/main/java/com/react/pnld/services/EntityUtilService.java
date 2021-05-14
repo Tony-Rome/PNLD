@@ -1,6 +1,8 @@
 package com.react.pnld.services;
 
-import com.react.pnld.dto.TeacherPersonDTO;
+import com.react.pnld.dto.DiagnosticFileDTO;
+import com.react.pnld.dto.ExitSatisfactionFileDTO;
+import com.react.pnld.dto.TrainingFileDTO;
 import com.react.pnld.model.GenderProperties;
 import com.react.pnld.model.School;
 import com.react.pnld.model.Teacher;
@@ -37,23 +39,87 @@ public class EntityUtilService {
     RegionRepository regionRepository;
 
     public Optional<Teacher> getTeacherPersonByRut(String rut) {
-        return personRepository.getTeacherPerson(rut);
+        return personRepository.getTeacherPerson(EntityAttributeUtilService.clearRut(rut));
     }
 
-    public int createPerson(Teacher teacher){
+    public int createPerson(Teacher teacher) {
         return this.personRepository.insertPerson(teacher);
 
     }
-    public int createTeacher(Teacher teacher){
+
+    public int createTeacher(Teacher teacher) {
         return this.personRepository.insertTeacher(teacher);
     }
 
-    public Teacher buildTeacherFrom(TeacherPersonDTO teacherPersonDTO) {
+    public Teacher buildTeacherFrom(TrainingFileDTO trainingFileDTO, int schoolId) {
 
         Teacher teacher = new Teacher();
         teacher.setTeacherId(this.personRepository.getNextTeacherId());
         teacher.setPersonId(this.personRepository.getNextPersonId());
-        teacher.setRut(EntityAttributeUtilService.removeSymbols(teacherPersonDTO.getRut().trim()));
+        teacher.setRut(EntityAttributeUtilService.clearRut(trainingFileDTO.getRut()));
+        teacher.setAge(0);
+        teacher.setSchoolId(schoolId);
+        teacher.setParticipatedInPNLD(false);
+        teacher.setTeachesInLevels(null);
+        teacher.setTeachesSubjects(null);
+        teacher.setCsResources(null);
+        teacher.setRoboticsResources(null);
+
+        String department = (trainingFileDTO.getDepartment() == null || trainingFileDTO.getDepartment().isEmpty()) ?
+                NOT_SPECIFIED : trainingFileDTO.getDepartment();
+        teacher.setDepartment(department);
+
+        Training training = this.trainingRepository.getTrainingByFacilitator(NOT_SPECIFIED);
+        teacher.setTrainingId(training.getId());
+
+        String[] lastNames = EntityAttributeUtilService.splitLastNames(trainingFileDTO.getLastNames());
+        teacher.setName(trainingFileDTO.getName());
+        teacher.setPaternalLastName(lastNames[0]);
+        teacher.setMaternalLastName(lastNames[1]);
+        teacher.setEmail(trainingFileDTO.getEmail());
+        teacher.setGenderId(GENDER_ID_NOT_SPECIFIED);
+
+        return teacher;
+    }
+
+    public Teacher buildTeacherFromDiagnostic(DiagnosticFileDTO diagnosticFileDTO, int schoolId) {
+
+        Teacher teacher = new Teacher();
+        teacher.setTeacherId(this.personRepository.getNextTeacherId());
+        teacher.setPersonId(this.personRepository.getNextPersonId());
+        teacher.setRut(EntityAttributeUtilService.clearRut(diagnosticFileDTO.getRut()));
+        teacher.setAge(diagnosticFileDTO.getAge());
+        teacher.setSchoolId(schoolId);
+        teacher.setParticipatedInPNLD(false);
+        teacher.setTeachesInLevels(null);
+        teacher.setTeachesSubjects(null);
+        teacher.setCsResources(null);
+        teacher.setRoboticsResources(null);
+
+        teacher.setDepartment(NOT_SPECIFIED);
+
+        Training training = this.trainingRepository.getTrainingByFacilitator(NOT_SPECIFIED);
+        teacher.setTrainingId(training.getId());
+
+        String[] lastNames = EntityAttributeUtilService.splitLastNames(diagnosticFileDTO.getLastNames());
+        teacher.setName(diagnosticFileDTO.getName());
+        teacher.setPaternalLastName(lastNames[0]);
+        teacher.setMaternalLastName(lastNames[1]);
+        teacher.setEmail(diagnosticFileDTO.getEmail());
+
+        int genderId = genderRepository.getGenderIdByType(this.genderStandardization(diagnosticFileDTO.getGender()));
+        teacher.setGenderId(genderId);
+
+        return teacher;
+    }
+
+    public Teacher buildTeacherFromExitSatisfaction(ExitSatisfactionFileDTO exitSatisfactionFileDTO, int schoolId) {
+
+        Teacher teacher = new Teacher();
+        teacher.setTeacherId(this.personRepository.getNextTeacherId());
+        teacher.setPersonId(this.personRepository.getNextPersonId());
+        teacher.setRut(EntityAttributeUtilService.clearRut(exitSatisfactionFileDTO.getRut()));
+        teacher.setSchoolId(schoolId);
         teacher.setAge(0);
         teacher.setParticipatedInPNLD(false);
         teacher.setTeachesInLevels(null);
@@ -61,61 +127,77 @@ public class EntityUtilService {
         teacher.setCsResources(null);
         teacher.setRoboticsResources(null);
 
-        String department = (teacherPersonDTO.getDepartment() == null || teacherPersonDTO.getDepartment().isEmpty()) ?
-                NOT_SPECIFIED : teacherPersonDTO.getDepartment();
+        String department = (exitSatisfactionFileDTO.getDepartment() == null || exitSatisfactionFileDTO.getDepartment().isEmpty()) ?
+                NOT_SPECIFIED : exitSatisfactionFileDTO.getDepartment();
         teacher.setDepartment(department);
 
         Training training = this.trainingRepository.getTrainingByFacilitator(NOT_SPECIFIED);
         teacher.setTrainingId(training.getId());
 
-        String[] lastNames = EntityAttributeUtilService.splitLastNames(teacherPersonDTO.getLastNames());
-        teacher.setName(teacherPersonDTO.getName());
+        String[] lastNames = EntityAttributeUtilService.splitLastNames(exitSatisfactionFileDTO.getLastNames());
+        teacher.setName(exitSatisfactionFileDTO.getName());
         teacher.setPaternalLastName(lastNames[0]);
         teacher.setMaternalLastName(lastNames[1]);
-        teacher.setEmail(teacherPersonDTO.getEmail());
-
-        int genderId = genderRepository.getGenderIdByType(this.genderStandardization(teacherPersonDTO.getGender()));
-        teacher.setGenderId(genderId);
+        teacher.setEmail(null);
+        teacher.setGenderId(GENDER_ID_NOT_SPECIFIED);
 
         return teacher;
     }
 
-    public void verifyTeacherPerson(Teacher teacher, TeacherPersonDTO teacherPersonDTO) {
 
+    public void verifyTeacherPersonFromDiagnostic(Teacher teacher, DiagnosticFileDTO diagnosticFileDTO) {
 
-        if(teacher.getAge() == 0 && teacherPersonDTO.getAge() != 0) teacher.setAge(teacherPersonDTO.getAge());
+        if (teacher.getAge() == 0 && diagnosticFileDTO.getAge() != 0) teacher.setAge(diagnosticFileDTO.getAge());
 
-        if((teacher.getDepartment() == null || teacher.getDepartment().isEmpty()) && teacherPersonDTO.getDepartment() != null)
-            teacher.setDepartment(teacherPersonDTO.getDepartment());
+        if ((teacher.getName() == null || teacher.getName().isEmpty()) && diagnosticFileDTO.getName() != null)
+            teacher.setName(diagnosticFileDTO.getName());
 
-        if((teacher.getName() == null || teacher.getName().isEmpty()) && teacherPersonDTO.getName() != null)
-            teacher.setName(teacherPersonDTO.getName());
+        if (diagnosticFileDTO.getLastNames() != null) {
 
-        if(teacherPersonDTO.getLastNames() != null){
+            String[] lastNames = EntityAttributeUtilService.splitLastNames(diagnosticFileDTO.getLastNames());
 
-            String[] lastNames = EntityAttributeUtilService.splitLastNames(teacherPersonDTO.getLastNames());
-
-           if(teacher.getPaternalLastName() == null || teacher.getPaternalLastName().isEmpty())
-               teacher.setPaternalLastName(lastNames[0]);
-           if(teacher.getMaternalLastName() == null || teacher.getMaternalLastName().isEmpty())
-               teacher.setMaternalLastName(lastNames[1]);
+            if (teacher.getPaternalLastName() == null || teacher.getPaternalLastName().isEmpty())
+                teacher.setPaternalLastName(lastNames[0]);
+            if (teacher.getMaternalLastName() == null || teacher.getMaternalLastName().isEmpty())
+                teacher.setMaternalLastName(lastNames[1]);
         }
 
-        if((teacher.getEmail() == null || teacher.getEmail().isEmpty()) && teacherPersonDTO.getEmail() != null)
-            teacher.setEmail(teacherPersonDTO.getEmail());
+        if ((teacher.getEmail() == null || teacher.getEmail().isEmpty()) && diagnosticFileDTO.getEmail() != null)
+            teacher.setEmail(diagnosticFileDTO.getEmail());
 
         //TODO Actualizar teacherPerson
     }
 
-    public String validateTeacherByRut(String rut){
+    public void verifyTeacherPersonFromExistSatisfaction(Teacher teacher, ExitSatisfactionFileDTO exitSatisfactionFileDTO) {
+
+        if ((teacher.getDepartment() == null || teacher.getDepartment().isEmpty()) && exitSatisfactionFileDTO.getDepartment() != null)
+            teacher.setDepartment(exitSatisfactionFileDTO.getDepartment());
+
+        if ((teacher.getName() == null || teacher.getName().isEmpty()) && exitSatisfactionFileDTO.getName() != null)
+            teacher.setName(exitSatisfactionFileDTO.getName());
+
+        if (exitSatisfactionFileDTO.getLastNames() != null) {
+
+            String[] lastNames = EntityAttributeUtilService.splitLastNames(exitSatisfactionFileDTO.getLastNames());
+
+            if (teacher.getPaternalLastName() == null || teacher.getPaternalLastName().isEmpty())
+                teacher.setPaternalLastName(lastNames[0]);
+            if (teacher.getMaternalLastName() == null || teacher.getMaternalLastName().isEmpty())
+                teacher.setMaternalLastName(lastNames[1]);
+        }
+
+        //TODO Actualizar teacherPerson
+    }
+
+    public boolean validateTeacherByRut(String rut) {
         return EntityAttributeUtilService.rutValidator(rut);
     }
 
-    public String validatePersonByEmail(String email){
+    public boolean validatePersonByEmail(String email) {
 
-        if(!EntityAttributeUtilService.emailValidator(email)) return null;
+        if (!EntityAttributeUtilService.emailValidator(email)) return false;
 
-        return (!personRepository.checkIfEmailExists(email)) ? email : null;
+        return (!personRepository.checkIfEmailExists(email)) ? true : false;
     }
 
     public School getSchoolByName(String schoolName) {
@@ -195,15 +277,6 @@ public class EntityUtilService {
 
         return genderProperties.GENDER_TYPE_NOT_ESPECIFY;
     }
-
-
-
-
-
-
-
-
-
 
 
 }

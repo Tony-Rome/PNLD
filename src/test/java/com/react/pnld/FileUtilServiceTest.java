@@ -211,11 +211,12 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void validateEmail(){
-        String email1 = "correo.prueba.valido@gmail.com";
-        Assert.assertEquals(EntityAttributeUtilService.emailValidator(email1), email1);
+        String email1 = "correoprueba@test.es";
+        Assert.assertEquals(EntityAttributeUtilService.emailValidator(email1), true);
         String email2 = "emai123.456@dominio";
-        Assert.assertEquals(EntityAttributeUtilService.emailValidator(email2), null);
+        Assert.assertEquals(EntityAttributeUtilService.emailValidator(email2), false);
         String email3 = "correono@valido@";
-        Assert.assertEquals(EntityAttributeUtilService.emailValidator(email3), null);
+        Assert.assertEquals(EntityAttributeUtilService.emailValidator(email3), false);
     }
+
 }

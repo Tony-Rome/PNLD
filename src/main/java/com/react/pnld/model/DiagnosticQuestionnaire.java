@@ -13,15 +13,7 @@ public class DiagnosticQuestionnaire {
     private Timestamp modifiedDate;
     private String answers;
 
-    public DiagnosticQuestionnaire(int id, int loadedFileId, int teacherId, long respondentId, long collectorId, Timestamp createdDate, Timestamp modifiedDate, String answers) {
-        this.id = id;
-        this.loadedFileId = loadedFileId;
-        this.teacherId = teacherId;
-        this.respondentId = respondentId;
-        this.collectorId = collectorId;
-        this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
-        this.answers = answers;
+    public DiagnosticQuestionnaire() {
     }
 
     public int getId() {

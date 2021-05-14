@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class ExitSatisfactionFileDTO implements TeacherPersonDTO {
+public class ExitSatisfactionFileDTO {
 
     @Parsed(index = 0)
     private int responseId;
@@ -49,7 +49,7 @@ public class ExitSatisfactionFileDTO implements TeacherPersonDTO {
         this.sendDate = Timestamp.valueOf(localDateTime);
     }
 
-    @Override
+
     public String getSchoolName() {
         return schoolName;
     }
@@ -58,7 +58,7 @@ public class ExitSatisfactionFileDTO implements TeacherPersonDTO {
         this.schoolName = schoolName;
     }
 
-    @Override
+
     public String getDepartment() {
         return department;
     }
@@ -91,7 +91,6 @@ public class ExitSatisfactionFileDTO implements TeacherPersonDTO {
         this.id = id;
     }
 
-    @Override
     public String getName() {
         return name;
     }
@@ -123,7 +122,6 @@ public class ExitSatisfactionFileDTO implements TeacherPersonDTO {
         }
     }
 
-    @Override
     public String getLastNames() {
         return lastNames;
     }
@@ -132,49 +130,9 @@ public class ExitSatisfactionFileDTO implements TeacherPersonDTO {
         this.lastNames = lastNames;
     }
 
-    @Override
     public String getRut() {
         return rut;
     }
 
-    @Override
-    public int getAge() {
-        return 0;
-    }
-
-    @Override
-    public boolean getParticipatedInPNLD() {
-        return true;
-    }
-
-    @Override
-    public String getInLevels() {
-        return null;
-    }
-
-    @Override
-    public String getSubjects() {
-        return null;
-    }
-
-    @Override
-    public String getCsResources() {
-        return null;
-    }
-
-    @Override
-    public String getRoboticsResources() {
-        return null;
-    }
-
-    @Override
-    public String getEmail() {
-        return null;
-    }
-
-    @Override
-    public String getGender() {
-        return null;
-    }
 
 }

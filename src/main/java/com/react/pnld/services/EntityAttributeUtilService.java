@@ -42,12 +42,16 @@ public class EntityAttributeUtilService {
         return strCleaned.toLowerCase();
     }
 
-    public static String rutValidator(String rutToClean) {
-        String cleanedRut = rutToClean.replaceAll("[^0-9k]", "");
+    public static String clearRut(String rut) {
+        return rut.replaceAll("[^0-9k]", "");
+    }
+
+    public static boolean rutValidator(String rutToClean) {
+        String cleanedRut = clearRut(rutToClean);
         String rutPattern = "[0-9]{6,8}(k|[0-9])";
         String rut = Pattern.matches(rutPattern, cleanedRut) ? cleanedRut : null;
 
-        if (rut == null) return null;
+        if (rut == null) return false;
 
         String rutWithoutCheckDigit = rut.substring(0, rut.length() - 1);
 
@@ -60,12 +64,12 @@ public class EntityAttributeUtilService {
 
         String newRut = rutWithoutCheckDigit + checkDigitVerifier;
 
-        return (rut.equals(newRut)) ? newRut : null;
+        return (rut.equals(newRut)) ? true : false;
 
     }
 
-    public static boolean emailValidator(String email){
-        String emailPattern = "^[\\w-\\.]+@([\\w-]+\\.[com]{3})$";
+    public static boolean emailValidator(String email) {
+        String emailPattern = "^[\\w-\\.\\d]+@([\\w-\\d]+\\.[\\w]+)$";
         return (Pattern.matches(emailPattern, email)) ? true : false;
     }
 

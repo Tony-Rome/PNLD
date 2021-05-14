@@ -42,14 +42,15 @@ public class LoaderMoodleFile {
 
             School school = entityUtilService.getSchoolByName(postTrainingRow.getSchoolName());
 
-            String rut = entityUtilService.validateTeacherByRut(postTrainingRow.getRut());
+            boolean rut = entityUtilService.validateTeacherByRut(postTrainingRow.getRut());
+            boolean email = entityUtilService.validatePersonByEmail(postTrainingRow.getEmail());
 
-            if (rut != null) {
-                Optional<Teacher> teacherSelected = entityUtilService.getTeacherPersonByRut(rut);
+            if (rut && email) {
+
+                Optional<Teacher> teacherSelected = entityUtilService.getTeacherPersonByRut(postTrainingRow.getRut());
 
                 if (!teacherSelected.isPresent()) {
-                    Teacher teacher = entityUtilService.buildTeacherFrom(postTrainingRow);
-                    teacher.setSchoolId(school.getId());
+                    Teacher teacher = entityUtilService.buildTeacherFrom(postTrainingRow, school.getId());
                     entityUtilService.createPerson(teacher);
                     entityUtilService.createTeacher(teacher);
 
@@ -99,23 +100,22 @@ public class LoaderMoodleFile {
             if (!school.getName().equals(entityUtilService.NOT_SPECIFIED))
                 entityUtilService.verifySchool(school, diagnosticRow.getCommune(), regionId, diagnosticRow.getRbd());
 
-            String rut = entityUtilService.validateTeacherByRut(diagnosticRow.getRut());
-            String email = entityUtilService.validatePersonByEmail(diagnosticRow.getEmail());
+            boolean rut = entityUtilService.validateTeacherByRut(diagnosticRow.getRut());
+            boolean email = entityUtilService.validatePersonByEmail(diagnosticRow.getEmail());
 
-            if (rut != null && email!= null){
+            if (rut && email) {
 
-                Optional<Teacher> teacherPersonSelected = entityUtilService.getTeacherPersonByRut(rut);
+                Optional<Teacher> teacherPersonSelected = entityUtilService.getTeacherPersonByRut(diagnosticRow.getRut());
 
                 if (!teacherPersonSelected.isPresent()) {
-                    Teacher teacher = entityUtilService.buildTeacherFrom(diagnosticRow);
-                    teacher.setSchoolId(school.getId());
+                    Teacher teacher = entityUtilService.buildTeacherFromDiagnostic(diagnosticRow, school.getId());
                     entityUtilService.createPerson(teacher);
                     entityUtilService.createTeacher(teacher);
                     teacherPersonSelected = Optional.of(teacher);
                 }
 
-                if(teacherPersonSelected.isPresent())
-                    entityUtilService.verifyTeacherPerson(teacherPersonSelected.get(), diagnosticRow);
+                if (teacherPersonSelected.isPresent())
+                    entityUtilService.verifyTeacherPersonFromDiagnostic(teacherPersonSelected.get(), diagnosticRow);
 
                 logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherPersonSelected.get());
 
@@ -127,11 +127,15 @@ public class LoaderMoodleFile {
 
                     int diagnosticQuestionnaireId = questionnaireRepository.getNextDiagnosticQuestionnaireId();
 
-                    DiagnosticQuestionnaire newDiagnosticQuestionnaire = new DiagnosticQuestionnaire(
-                            diagnosticQuestionnaireId, loadedFileId, teacherPersonSelected.get().getTeacherId(),
-                            diagnosticRow.getRespondentId(), diagnosticRow.getCollectorId(),
-                            diagnosticRow.getCreatedDate(), diagnosticRow.getModifiedDate(), answersJson);
-
+                    DiagnosticQuestionnaire newDiagnosticQuestionnaire = new DiagnosticQuestionnaire();
+                    newDiagnosticQuestionnaire.setId(diagnosticQuestionnaireId);
+                    newDiagnosticQuestionnaire.setLoadedFileId(loadedFileId);
+                    newDiagnosticQuestionnaire.setTeacherId(teacherPersonSelected.get().getTeacherId());
+                    newDiagnosticQuestionnaire.setRespondentId(diagnosticRow.getRespondentId());
+                    newDiagnosticQuestionnaire.setCollectorId(diagnosticRow.getCollectorId());
+                    newDiagnosticQuestionnaire.setCreatedDate(diagnosticRow.getCreatedDate());
+                    newDiagnosticQuestionnaire.setModifiedDate(diagnosticRow.getModifiedDate());
+                    newDiagnosticQuestionnaire.setAnswers(answersJson);
 
                     questionnaireRepository.insertDiagnosticQuestionnaire(newDiagnosticQuestionnaire);
                     newRecords++;
@@ -153,24 +157,23 @@ public class LoaderMoodleFile {
 
         for (ExitSatisfactionFileDTO exitSatisfactionRow : exitSatisfactionRows) {
 
-            School school = entityUtilService.getSchoolByName(EntityAttributeUtilService.removeSymbols(exitSatisfactionRow.getSchoolName()));
+            School school = entityUtilService.getSchoolByName(exitSatisfactionRow.getSchoolName());
 
-            String rut = entityUtilService.validateTeacherByRut(exitSatisfactionRow.getRut());
+            boolean rut = entityUtilService.validateTeacherByRut(exitSatisfactionRow.getRut());
 
-            if (rut != null) {
+            if (rut) {
 
-                Optional<Teacher> teacherPersonSelected = entityUtilService.getTeacherPersonByRut(rut);
+                Optional<Teacher> teacherPersonSelected = entityUtilService.getTeacherPersonByRut(exitSatisfactionRow.getRut());
 
                 if (!teacherPersonSelected.isPresent()) {
-                    Teacher teacher = entityUtilService.buildTeacherFrom(exitSatisfactionRow);
-                    teacher.setSchoolId(school.getId());
+                    Teacher teacher = entityUtilService.buildTeacherFromExitSatisfaction(exitSatisfactionRow, school.getId());
                     entityUtilService.createPerson(teacher);
                     entityUtilService.createTeacher(teacher);
                     teacherPersonSelected = Optional.of(teacher);
                 }
 
-                if(teacherPersonSelected.isPresent())
-                    entityUtilService.verifyTeacherPerson(teacherPersonSelected.get(), exitSatisfactionRow);
+                if (teacherPersonSelected.isPresent())
+                    entityUtilService.verifyTeacherPersonFromExistSatisfaction(teacherPersonSelected.get(), exitSatisfactionRow);
 
                 int exitSatisfactionQuestionnaireCount = questionnaireRepository.getExitSatisfactionQuestionnaireCount(teacherPersonSelected.get().getTeacherId());
 
@@ -180,10 +183,16 @@ public class LoaderMoodleFile {
 
                     int exitSatisfactionQuestionnaireId = questionnaireRepository.getNextExitSatisfactionQuestionnaireId();
 
-                    ExitSatisfactionQuestionnaire newExitQuestionnaire = new ExitSatisfactionQuestionnaire(
-                            exitSatisfactionQuestionnaireId, loadedFileId, teacherPersonSelected.get().getTeacherId(),
-                            exitSatisfactionRow.getResponseId(), exitSatisfactionRow.getSendDate(), answersJson,
-                            exitSatisfactionRow.getId(), exitSatisfactionRow.getCourse(), exitSatisfactionRow.getGroup());
+                    ExitSatisfactionQuestionnaire newExitQuestionnaire = new ExitSatisfactionQuestionnaire();
+                    newExitQuestionnaire.setId(exitSatisfactionQuestionnaireId);
+                    newExitQuestionnaire.setLoadedFileId(loadedFileId);
+                    newExitQuestionnaire.setTeacherId(teacherPersonSelected.get().getTeacherId());
+                    newExitQuestionnaire.setResponseId(exitSatisfactionRow.getResponseId());
+                    newExitQuestionnaire.setSendDate(exitSatisfactionRow.getSendDate());
+                    newExitQuestionnaire.setAnswers(answersJson);
+                    newExitQuestionnaire.setNumberId(exitSatisfactionRow.getId());
+                    newExitQuestionnaire.setCourse(exitSatisfactionRow.getCourse());
+                    newExitQuestionnaire.setGroup(exitSatisfactionRow.getGroup());
 
                     questionnaireRepository.insertExitSatisfactionQuestionnaire(newExitQuestionnaire);
                     newRecords++;
