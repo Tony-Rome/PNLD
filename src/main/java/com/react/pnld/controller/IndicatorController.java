@@ -8,7 +8,7 @@ public class IndicatorController {
 
 
     @GetMapping("/indicators")
-    public String home(){
+    public String home() {
         return "indicators/indicator";
     }
 }

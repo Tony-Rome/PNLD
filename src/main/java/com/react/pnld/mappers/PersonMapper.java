@@ -14,4 +14,6 @@ public interface PersonMapper {
     int getNextTeacherId();
 
     int getNextPersonId();
+
+    boolean checkIfEmailExists(String email);
 }

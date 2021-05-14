@@ -18,7 +18,7 @@ public class TrainingTest implements Serializable {
     private float score;
     private String answers; //TODO to json
 
-    public TrainingTest(){
+    public TrainingTest() {
         super();
     }
 

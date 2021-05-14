@@ -27,7 +27,7 @@ public class TrainingFileDTO {
 
     @Parsed(index = 3)
     @LowerCase
-    private String institution;
+    private String schoolName;
 
     @Parsed(index = 4)
     @LowerCase
@@ -47,7 +47,7 @@ public class TrainingFileDTO {
 
     private PGInterval requiredInterval;
 
-    @Parsed(index = 10 )
+    @Parsed(index = 10)
     @Format(formats = {"#0,00"}, options = "decimalSeparator=,")
     private float score;
 
@@ -103,6 +103,7 @@ public class TrainingFileDTO {
         this.lastNames = lastNames;
     }
 
+
     public String getName() {
         return name;
     }
@@ -119,12 +120,12 @@ public class TrainingFileDTO {
         this.rut = rut;
     }
 
-    public String getInstitution() {
-        return institution;
+    public String getSchoolName() {
+        return schoolName;
     }
 
-    public void setInstitution(String institution) {
-        this.institution = institution;
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
     }
 
     public String getDepartment() {
@@ -180,7 +181,7 @@ public class TrainingFileDTO {
     }
 
     public PGInterval getRequiredInterval() {
-        if(requiredInterval == null) this.buildPGIntervalFrom();
+        if (requiredInterval == null) this.buildPGIntervalFrom();
         return requiredInterval;
     }
 
@@ -188,7 +189,7 @@ public class TrainingFileDTO {
         this.requiredInterval = requiredInterval;
     }
 
-    private void buildPGIntervalFrom(){
+    private void buildPGIntervalFrom() {
         LocalDateTime tempDateTime = LocalDateTime.from(this.startIn);
 
         int years = toIntExact(tempDateTime.until(this.finishIn, ChronoUnit.YEARS));
@@ -206,7 +207,7 @@ public class TrainingFileDTO {
         int minutes = toIntExact(tempDateTime.until(this.finishIn, ChronoUnit.MINUTES));
         tempDateTime = tempDateTime.plusMinutes(minutes);
 
-        int seconds = toIntExact(tempDateTime.until( this.finishIn, ChronoUnit.SECONDS));
+        int seconds = toIntExact(tempDateTime.until(this.finishIn, ChronoUnit.SECONDS));
 
         this.requiredInterval = new PGInterval(years, months, days, hours, minutes, seconds);
     }
@@ -305,7 +306,7 @@ public class TrainingFileDTO {
                 "lastNames='" + lastNames + '\'' +
                 ", name='" + name + '\'' +
                 ", rut='" + rut + '\'' +
-                ", institution='" + institution + '\'' +
+                ", institution='" + schoolName + '\'' +
                 ", department='" + department + '\'' +
                 ", email='" + email + '\'' +
                 ", testState='" + testState + '\'' +

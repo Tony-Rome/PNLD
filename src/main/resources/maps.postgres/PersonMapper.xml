@@ -32,14 +32,14 @@
          recursos_cs, recursos_robotica, id_capacitacion)
         VALUES
         (#{teacherId}, #{personId}, #{rut}, #{age}, #{department}, #{participatedInPNLD}, #{teachesInLevels},
-         #{teachesSubjects}, #{csResources}, #{roboticsResources}, #{trainingId});
+         #{teachesSubjects}, #{csResources}, #{roboticsResources}, #{trainingId})
     </insert>
 
     <insert id="insertPerson">
         INSERT INTO pnld.persona
         (id_persona, nombre, apellido_paterno, apellido_materno, correo, id_genero, id_colegio)
         VALUES
-        (#{personId}, #{name}, #{paternalLastName}, #{maternalLastName}, #{email}, #{genderId}, #{schoolId});
+        (#{personId}, #{name}, #{paternalLastName}, #{maternalLastName}, #{email}, #{genderId}, #{schoolId})
     </insert>
 
     <select id="getNextPersonId" resultType="int">
@@ -48,6 +48,10 @@
 
     <select id="getNextTeacherId" resultType="int">
         SELECT nextval(pg_get_serial_sequence('pnld.docente', 'id_docente'));
+    </select>
+
+    <select id="checkIfEmailExists" resultType="boolean">
+        SELECT exists(SELECT 0 FROM pnld.persona WHERE correo = #{email});
     </select>
 
 </mapper>

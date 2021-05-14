@@ -85,7 +85,7 @@ public class FileService {
             return false;
         }
 
-        String cleanHeaders = fileUtilService.removeSymbols(firstLine);
+        String cleanHeaders = EntityAttributeUtilService.removeSymbols(firstLine);
         String[] headersFromFile = cleanHeaders.split(",");
         String[] selectedHeadersArray = fileUtilService.selectedHeadersArray(scheduleFileLoadDTO.getSelectedType());
         boolean isHeadersEquals = fileUtilService.isStringArraysEquals(headersFromFile, selectedHeadersArray);

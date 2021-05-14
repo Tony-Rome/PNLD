@@ -9,7 +9,7 @@ public class Person {
     private int genderId;
     private int schoolId;
 
-    public Person(){
+    public Person() {
         super();
     }
 

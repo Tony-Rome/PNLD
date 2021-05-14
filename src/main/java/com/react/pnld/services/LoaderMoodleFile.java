@@ -1,12 +1,12 @@
 package com.react.pnld.services;
 
+import com.react.pnld.dto.DiagnosticFileDTO;
 import com.react.pnld.dto.FileResumeDTO;
+import com.react.pnld.dto.SatisfactionFileDTO;
 import com.react.pnld.dto.TrainingFileDTO;
 import com.react.pnld.model.*;
-import com.react.pnld.repo.PersonRepository;
-import com.react.pnld.repo.SchoolRepository;
+import com.react.pnld.repo.QuestionnaireRepository;
 import com.react.pnld.repo.TestRepository;
-import com.react.pnld.repo.TrainingRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,23 +19,14 @@ import java.util.Optional;
 public class LoaderMoodleFile {
 
     private static final Logger logger = LoggerFactory.getLogger(LoaderMoodleFile.class);
-    private static final String DELIMITER_LAST_NAMES = " ";
-    private static final int GENDER_ID_NOT_SPECIFIED = 4;
-    private static final int RBD_ID_NOT_SPECIFIED = 0;
-    private static final String NOT_SPECIFIED = "no especificado";
-    private static final int REGION_ID_OTHER = 17;
-
-    @Autowired
-    PersonRepository personRepository;
 
     @Autowired
     TestRepository testRepository;
+    @Autowired
+    QuestionnaireRepository questionnaireRepository;
 
     @Autowired
-    TrainingRepository trainingRepository;
-
-    @Autowired
-    SchoolRepository schoolRepository;
+    EntityUtilService entityUtilService;
 
     public FileResumeDTO processTrainingFileRows(List<TrainingFileDTO> postTrainingRows, int loadedFileId,
                                                  String testType) {
@@ -49,124 +40,157 @@ public class LoaderMoodleFile {
         for (TrainingFileDTO postTrainingRow : postTrainingRows) {
             logger.info("processTrainingFileRows. postTrainingRow={}", postTrainingRow);
 
-            Optional<Teacher> teacherSelected = personRepository.getTeacherPerson(FileUtilService.
-                    removeSymbols(postTrainingRow.getRut()));
+            School school = entityUtilService.getSchoolByName(postTrainingRow.getSchoolName());
 
-            if (!teacherSelected.isPresent()) {
-                Teacher teacher = this.buildTeacherFrom(postTrainingRow);
-                this.personRepository.insertPerson(teacher);
-                this.personRepository.insertTeacher(teacher);
-                teacherSelected = Optional.of(teacher);
+            boolean rut = entityUtilService.validateTeacherByRut(postTrainingRow.getRut());
+            boolean email = entityUtilService.validatePersonByEmail(postTrainingRow.getEmail());
+
+            if (rut && email) {
+
+                Optional<Teacher> teacherSelected = entityUtilService.getTeacherPersonByRut(postTrainingRow.getRut());
+
+                if (!teacherSelected.isPresent()) {
+                    Teacher teacher = entityUtilService.buildTeacherFrom(postTrainingRow, school.getId());
+                    entityUtilService.createPerson(teacher);
+                    entityUtilService.createTeacher(teacher);
+
+                    teacherSelected = Optional.of(teacher);
+                }
+
+                logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherSelected.get());
+
+                Optional<TrainingTest> trainingTest = testRepository.getTrainingTest(teacherSelected.get().getTeacherId(),
+                        testType);
+
+                if (!trainingTest.isPresent()) {
+                    TrainingTest newTrainingTest = new TrainingTest();
+                    newTrainingTest.setId(this.testRepository.getNextTrainingTestId());
+                    newTrainingTest.setType(testType);
+                    newTrainingTest.setLoadedFileId(loadedFileId);
+                    newTrainingTest.setTeacherId(teacherSelected.get().getTeacherId());
+                    newTrainingTest.setInitDate(postTrainingRow.getStartIn());
+                    newTrainingTest.setEndDate(postTrainingRow.getFinishIn());
+                    newTrainingTest.setRequiredInterval(postTrainingRow.getRequiredInterval());
+                    newTrainingTest.setState(postTrainingRow.getTestState());
+                    newTrainingTest.setScore(postTrainingRow.getScore());
+                    newTrainingTest.setAnswers(null);//TODO set answers list
+
+                    int resultInsertTest = this.testRepository.insertTrainingTest(newTrainingTest);
+                    logger.info("processTrainingFileRows. resultInsertTest={}", resultInsertTest);
+                    newRecords++;
+                } else {
+                    duplicatedRecords++;
+                }
             }
-
-            logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherSelected.get());
-
-            Optional<TrainingTest> trainingTest = testRepository.getTrainingTest(teacherSelected.get().getTeacherId(),
-                    testType);
-
-            if (!trainingTest.isPresent()) {
-                TrainingTest newTrainingTest = new TrainingTest();
-                newTrainingTest.setId(this.testRepository.getNextTrainingTestId());
-                newTrainingTest.setType(testType);
-                newTrainingTest.setLoadedFileId(loadedFileId);
-                newTrainingTest.setTeacherId(teacherSelected.get().getTeacherId());
-                newTrainingTest.setInitDate(postTrainingRow.getStartIn());
-                newTrainingTest.setEndDate(postTrainingRow.getFinishIn());
-                newTrainingTest.setRequiredInterval(postTrainingRow.getRequiredInterval());
-                newTrainingTest.setState(postTrainingRow.getTestState());
-                newTrainingTest.setScore(postTrainingRow.getScore());
-                newTrainingTest.setAnswers(null);//TODO set answers list
-
-                int resultInsertTest = this.testRepository.insertTrainingTest(newTrainingTest);
-                logger.info("processTrainingFileRows. resultInsertTest={}", resultInsertTest);
-                newRecords++;
-            } else {
-                duplicatedRecords++;
-            }
-
         }
-
         return new FileResumeDTO(postTrainingRows.size(), newRecords, duplicatedRecords);
     }
 
-    Teacher buildTeacherFrom(TrainingFileDTO postTrainingRow) {
+    public FileResumeDTO diagnosticFile(List<DiagnosticFileDTO> diagnosticRows, int loadedFileId) {
 
-        Teacher teacher = new Teacher();
-        teacher.setTeacherId(this.personRepository.getNextTeacherId());
-        teacher.setPersonId(this.personRepository.getNextPersonId());
-        teacher.setRut(FileUtilService.removeSymbols(postTrainingRow.getRut().trim()));
-        teacher.setAge(0);
-        teacher.setParticipatedInPNLD(false);
-        teacher.setTeachesInLevels(null);
-        teacher.setTeachesSubjects(null);
-        teacher.setCsResources(null);
-        teacher.setRoboticsResources(null);
+        int newRecords = 0;
+        int duplicatedRecords = 0;
 
-        String department = (postTrainingRow.getDepartment() == null || postTrainingRow.getDepartment().isEmpty())?
-                NOT_SPECIFIED : postTrainingRow.getDepartment();
-        teacher.setDepartment(department);
+        for (DiagnosticFileDTO diagnosticRow : diagnosticRows) {
 
-        Training training = this.trainingRepository.getTrainingByFacilitator(NOT_SPECIFIED);
-        teacher.setTrainingId(training.getId());
+            School school = entityUtilService.getSchoolByName(diagnosticRow.getSchoolName());
 
-        //Person, super object
-        String[] lastNames = postTrainingRow.getLastNames().split(DELIMITER_LAST_NAMES);//TODO validate when only one lastname
-        teacher.setName(postTrainingRow.getName());
-        teacher.setPaternalLastName(lastNames[0]);
-        teacher.setMaternalLastName(lastNames[1]);
-        teacher.setEmail(postTrainingRow.getEmail());
-        teacher.setGenderId(GENDER_ID_NOT_SPECIFIED);
+            boolean rut = entityUtilService.validateTeacherByRut(diagnosticRow.getRut());
+            boolean email = entityUtilService.validatePersonByEmail(diagnosticRow.getEmail());
 
-        String schoolName = postTrainingRow.getInstitution();
-        teacher.setSchoolId(getTeacherSchoolByName(schoolName).getId());
-        return teacher;
-    }
+            if (rut && email) {
 
-    private School getTeacherSchoolByName(String schoolName){
+                Optional<Teacher> teacherPersonSelected = entityUtilService.getTeacherPersonByRut(diagnosticRow.getRut());
 
-        if (schoolName == null || schoolName.isEmpty()) {
-            return schoolRepository.getSchoolByName(NOT_SPECIFIED).get();
-        } else {
-            Optional<School> schoolSelected = schoolRepository.getSchoolByName(schoolName);
-            if(!schoolSelected.isPresent()){
-                School newSchool = createNewSchool(schoolName, null, REGION_ID_OTHER, RBD_ID_NOT_SPECIFIED);
-                schoolSelected = Optional.of(newSchool);
+                if (!teacherPersonSelected.isPresent()) {
+                    Teacher teacher = entityUtilService.buildTeacherFromDiagnostic(diagnosticRow, school.getId());
+                    entityUtilService.createPerson(teacher);
+                    entityUtilService.createTeacher(teacher);
+                    teacherPersonSelected = Optional.of(teacher);
+                }
+
+                logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherPersonSelected.get());
+
+                int diagnosticQuestionnaireCount = questionnaireRepository.getDiagnosticQuestionnaireCount(teacherPersonSelected.get().getTeacherId());
+
+                if (diagnosticQuestionnaireCount < 1) {
+
+                    String answersJson = "{\"clave\":\"valor\"}";
+
+                    int diagnosticQuestionnaireId = questionnaireRepository.getNextDiagnosticQuestionnaireId();
+
+                    DiagnosticQuestionnaire newDiagnosticQuestionnaire = new DiagnosticQuestionnaire();
+                    newDiagnosticQuestionnaire.setId(diagnosticQuestionnaireId);
+                    newDiagnosticQuestionnaire.setLoadedFileId(loadedFileId);
+                    newDiagnosticQuestionnaire.setTeacherId(teacherPersonSelected.get().getTeacherId());
+                    newDiagnosticQuestionnaire.setRespondentId(diagnosticRow.getRespondentId());
+                    newDiagnosticQuestionnaire.setCollectorId(diagnosticRow.getCollectorId());
+                    newDiagnosticQuestionnaire.setCreatedDate(diagnosticRow.getCreatedDate());
+                    newDiagnosticQuestionnaire.setModifiedDate(diagnosticRow.getModifiedDate());
+                    newDiagnosticQuestionnaire.setAnswers(answersJson);
+
+                    questionnaireRepository.insertDiagnosticQuestionnaire(newDiagnosticQuestionnaire);
+                    newRecords++;
+                }
+                if (diagnosticQuestionnaireCount >= 1) {
+                    duplicatedRecords++;
+                }
             }
-            return schoolSelected.get();
+
+
         }
+        return new FileResumeDTO(diagnosticRows.size(), newRecords, duplicatedRecords);
     }
 
-    School createNewSchool(String name, String city, int regionId, int rbd){
-        School newSchool = new School();
-        newSchool.setId(schoolRepository.getNextSchoolId());
-        newSchool.setName(name);
-        newSchool.setCity(city);
-        newSchool.setRegionId(regionId);
-        newSchool.setRbd(rbd);
+    public FileResumeDTO satisfactionFile(List<SatisfactionFileDTO> satisfactionRows, int loadedFileId) {
 
-        int resultInsertSchool = this.schoolRepository.insertSchool(newSchool);
-        logger.info("createNewSchool. resultInsertSchool={}", resultInsertSchool);
-        return newSchool;
-    }
+        int newRecords = 0;
+        int duplicatedRecords = 0;
 
-    public FileResumeDTO diagnosticoFile(LoadedFile loadedFile) {
-        //TODO validate load records by file's type
-        //TODO insert records if not exist
+        for (SatisfactionFileDTO satisfactionRow : satisfactionRows) {
 
-        return new FileResumeDTO();
-    }
+            School school = entityUtilService.getSchoolByName(satisfactionRow.getSchoolName());
 
-    public FileResumeDTO salidaFile(LoadedFile loadedFile) {
-        //TODO validate load records by file's type
-        //TODO insert records if not exist
+            boolean rut = entityUtilService.validateTeacherByRut(satisfactionRow.getRut());
 
-        return new FileResumeDTO();
-    }
+            if (rut) {
 
-    public FileResumeDTO satisFile(LoadedFile loadedFile) {
-        //TODO validate load records by file's type
-        //TODO insert records if not exist
+                Optional<Teacher> teacherPersonSelected = entityUtilService.getTeacherPersonByRut(satisfactionRow.getRut());
 
-        return new FileResumeDTO();
+                if (!teacherPersonSelected.isPresent()) {
+                    Teacher teacher = entityUtilService.buildTeacherFromExitSatisfaction(satisfactionRow, school.getId());
+                    entityUtilService.createPerson(teacher);
+                    entityUtilService.createTeacher(teacher);
+                    teacherPersonSelected = Optional.of(teacher);
+                }
+
+                int satisfactionQuestionnaireCount = questionnaireRepository.getSatisfactionQuestionnaireCount(teacherPersonSelected.get().getTeacherId());
+
+                if (satisfactionQuestionnaireCount < 1) {
+
+                    String answersJson = "{\"llave\":\"respuesta\"}";
+
+                    int satisfactionQuestionnaireId = questionnaireRepository.getNextSatisfactionQuestionnaireId();
+
+                    SatisfactionQuestionnaire newSatisfactionQuestionnaire = new SatisfactionQuestionnaire();
+                    newSatisfactionQuestionnaire.setId(satisfactionQuestionnaireId);
+                    newSatisfactionQuestionnaire.setLoadedFileId(loadedFileId);
+                    newSatisfactionQuestionnaire.setTeacherId(teacherPersonSelected.get().getTeacherId());
+                    newSatisfactionQuestionnaire.setResponseId(satisfactionRow.getResponseId());
+                    newSatisfactionQuestionnaire.setSendDate(satisfactionRow.getSendDate());
+                    newSatisfactionQuestionnaire.setAnswers(answersJson);
+                    newSatisfactionQuestionnaire.setNumberId(satisfactionRow.getId());
+                    newSatisfactionQuestionnaire.setCourse(satisfactionRow.getCourse());
+                    newSatisfactionQuestionnaire.setGroup(satisfactionRow.getGroup());
+
+                    questionnaireRepository.insertSatisfactionQuestionnaire(newSatisfactionQuestionnaire);
+                    newRecords++;
+                }
+                if (satisfactionQuestionnaireCount >= 1) {
+                    duplicatedRecords++;
+                }
+            }
+        }
+        return new FileResumeDTO(satisfactionRows.size(), newRecords, duplicatedRecords);
     }
 }

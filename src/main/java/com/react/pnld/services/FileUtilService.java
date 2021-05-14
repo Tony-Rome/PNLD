@@ -1,11 +1,12 @@
 package com.react.pnld.services;
 
-import com.react.pnld.dto.FileResumeDTO;
-import com.react.pnld.dto.FileTypes;
-import com.react.pnld.dto.ScheduleFileLoadDTO;
-import com.react.pnld.dto.TrainingFileDTO;
+import com.react.pnld.dto.*;
+import com.react.pnld.interceptor.PNLDInterceptor;
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.model.LoadedFile;
+import com.univocity.parsers.common.DataProcessingException;
+import com.univocity.parsers.common.ParsingContext;
+import com.univocity.parsers.common.RowProcessorErrorHandler;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.text.Normalizer;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -46,11 +46,6 @@ public class FileUtilService {
     public FileUtilService() {
         csvParserSettings = new CsvParserSettings();
         csvParserSettings.setLineSeparatorDetectionEnabled(true);
-    }
-
-    public static String removeSymbols(String strToClean) {
-        String strCleaned = strToClean.replaceAll("[^a-zA-Z0-9,]", "");
-        return strCleaned.toLowerCase();
     }
 
     public String[] selectedHeadersArray(String selectedType) {
@@ -91,10 +86,8 @@ public class FileUtilService {
                 return csvHeadersProperties.getTestCT3();
 
             case SALIDA:
-                return csvHeadersProperties.getSalida();
-
             case SATISFACTION:
-                return csvHeadersProperties.getSatisfaction();
+                return csvHeadersProperties.getExitSatisfaction();
 
             default:
                 return new String[1];
@@ -148,16 +141,12 @@ public class FileUtilService {
         BeanListProcessor<T> rowProcessor = new BeanListProcessor<T>(clazz);
         csvParserSettings.setProcessor(rowProcessor);
         csvParserSettings.setHeaderExtractionEnabled(true);
+        csvParserSettings.setProcessorErrorHandler(new PNLDInterceptor());
 
-        try {
-            CsvParser parser = new CsvParser(csvParserSettings);
-            parser.parse(reader);
-            List<T> rowsLikeBeans = rowProcessor.getBeans();
-            return rowsLikeBeans;
-        } catch (Exception exception) {
-            logger.error(exception.getMessage(), exception);
-            return Collections.emptyList();
-        }
+        CsvParser parser = new CsvParser(csvParserSettings);
+        parser.parse(reader);
+        List<T> rowsLikeBeans = rowProcessor.getBeans();
+        return rowsLikeBeans;
     }
 
     public FileResumeDTO processLoadedFile(LoadedFile loadedFile) {
@@ -183,7 +172,8 @@ public class FileUtilService {
                 return this.loaderCodeFile.processSignInsFile(loadedFile);
 
             case DIAGNOSIS:
-                return this.loaderMoodleFile.diagnosticoFile(loadedFile);
+                List<DiagnosticFileDTO> diagnosticRows = parseRowsToBeans(loadedFileReader, DiagnosticFileDTO.class);
+                return this.loaderMoodleFile.diagnosticFile(diagnosticRows, loadedFile.getId());
 
             case PRE_TRAINING:
             case POST_TRAINING:
@@ -191,10 +181,9 @@ public class FileUtilService {
                 return loaderMoodleFile.processTrainingFileRows(trainingRows, loadedFile.getId(), loadedFile.getType());
 
             case SALIDA:
-                return this.loaderMoodleFile.salidaFile(loadedFile);
-
             case SATISFACTION:
-                return this.loaderMoodleFile.satisFile(loadedFile);
+                List<SatisfactionFileDTO> satisfactionRows = parseRowsToBeans(loadedFileReader, SatisfactionFileDTO.class);
+                return this.loaderMoodleFile.satisfactionFile(satisfactionRows, loadedFile.getId());
 
             case TEST_CT_1:
                 return this.loaderCPFile.testPCOneFile(loadedFile);
@@ -210,18 +199,15 @@ public class FileUtilService {
         }
     }
 
-    public static String removeAccents(String toClean){
-        return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
-    }
+    public static LocalDateTime getLocalDateFrom(String stringDate) {
 
-    public static LocalDateTime getLocalDateFrom(String stringDate){
-
-        String stringFormatted = stringDate.replaceAll(" de ", "/").replaceAll("\\s+|\\t", " ");;
+        String stringFormatted = stringDate.replaceAll(" de ", "/").replaceAll("\\s+|\\t", " ");
+        ;
         String formatPattern = "d/MMMM/yyyy H:m";
         try {
             return LocalDateTime.parse(stringFormatted, DateTimeFormatter.ofPattern(formatPattern,
                     new Locale("es", "ES")));
-        } catch (DateTimeException dateTimeException){
+        } catch (DateTimeException dateTimeException) {
             logger.error("getLocalDateFrom.", dateTimeException.getMessage(), dateTimeException);
             return LocalDateTime.MIN;
         }

@@ -2,6 +2,7 @@ package com.react.pnld;
 
 import com.react.pnld.dto.ScheduleFileLoadDTO;
 import com.react.pnld.dto.TrainingFileDTO;
+import com.react.pnld.services.EntityAttributeUtilService;
 import com.react.pnld.services.FileUtilService;
 import org.postgresql.util.PGInterval;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +37,9 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
 
     @Test
     void removeSymbols(){
-        String input = "First Name,Pref Name, # Students in Course,Highest Unit (Students),Online CSF  Course";
+        String input = "First Name,Pref Name,# Students in Course,Highest Unit (Students),Online CSF  Course";
         String expected = "firstname,prefname,studentsincourse,highestunitstudents,onlinecsfcourse";
-        Assert.assertEquals(fileUtilService.removeSymbols(input), expected);
+        Assert.assertEquals(EntityAttributeUtilService.removeSymbols(input), expected);
     }
 
     @Test
@@ -188,4 +189,34 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(0, duration.getMinutes());
         Assert.assertEquals(0, duration.getSeconds());
     }
+
+    @Test
+    public void normalizeRegion(){
+        String valparaiso = "región de valparaíso";
+        String valparaisoExpected = "valparaiso";
+        Assert.assertEquals(EntityAttributeUtilService.normalizeRegion(valparaiso), valparaisoExpected);
+
+        String maule = "región del maule";
+        String mauleExpected = "maule";
+        Assert.assertEquals(EntityAttributeUtilService.normalizeRegion(maule), mauleExpected);
+
+        String rm = "región metropolitana";
+        String rmExpected = "metropolitana";
+        Assert.assertEquals(EntityAttributeUtilService.normalizeRegion(rm),rmExpected);
+
+        String a = "región de la araucanía";
+        String aExpected = "araucania";
+        Assert.assertEquals(EntityAttributeUtilService.normalizeRegion(a),aExpected);
+    }
+
+    @Test
+    public void validateEmail(){
+        String email1 = "correoprueba@test.es";
+        Assert.assertEquals(EntityAttributeUtilService.emailValidator(email1), true);
+        String email2 = "emai123.456@dominio";
+        Assert.assertEquals(EntityAttributeUtilService.emailValidator(email2), false);
+        String email3 = "correono@valido@";
+        Assert.assertEquals(EntityAttributeUtilService.emailValidator(email3), false);
+    }
+
 }

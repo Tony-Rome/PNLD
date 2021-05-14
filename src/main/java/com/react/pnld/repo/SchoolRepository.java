@@ -16,15 +16,15 @@ public class SchoolRepository {
     @Autowired
     SchoolMapper schoolMapper;
 
-    public int getNextSchoolId(){
+    public int getNextSchoolId() {
         return schoolMapper.getNextSchoolId();
     }
 
-    public Optional<School> getSchoolByName(String name){
+    public Optional<School> getSchoolByName(String name) {
         return Optional.ofNullable(schoolMapper.getSchoolByName(name));
     }
 
-    public int insertSchool(School school){
+    public int insertSchool(School school) {
         logger.info("insertSchool. school={}", school);
         return schoolMapper.insertSchool(school);
     }
