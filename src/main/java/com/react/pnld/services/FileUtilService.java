@@ -1,8 +1,12 @@
 package com.react.pnld.services;
 
 import com.react.pnld.dto.*;
+import com.react.pnld.interceptor.PNLDInterceptor;
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.model.LoadedFile;
+import com.univocity.parsers.common.DataProcessingException;
+import com.univocity.parsers.common.ParsingContext;
+import com.univocity.parsers.common.RowProcessorErrorHandler;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
@@ -137,16 +141,12 @@ public class FileUtilService {
         BeanListProcessor<T> rowProcessor = new BeanListProcessor<T>(clazz);
         csvParserSettings.setProcessor(rowProcessor);
         csvParserSettings.setHeaderExtractionEnabled(true);
+        csvParserSettings.setProcessorErrorHandler(new PNLDInterceptor());
 
-        try {
-            CsvParser parser = new CsvParser(csvParserSettings);
-            parser.parse(reader);
-            List<T> rowsLikeBeans = rowProcessor.getBeans();
-            return rowsLikeBeans;
-        } catch (Exception exception) {
-            logger.error(exception.getMessage(), exception);
-            return Collections.emptyList();
-        }
+        CsvParser parser = new CsvParser(csvParserSettings);
+        parser.parse(reader);
+        List<T> rowsLikeBeans = rowProcessor.getBeans();
+        return rowsLikeBeans;
     }
 
     public FileResumeDTO processLoadedFile(LoadedFile loadedFile) {
