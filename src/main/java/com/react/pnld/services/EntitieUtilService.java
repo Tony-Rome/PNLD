@@ -111,8 +111,11 @@ public class EntitieUtilService {
         return FileAttributeUtilService.rutValidator(rut);
     }
 
-    public boolean validatePersonByEmail(String email){
-        return personRepository.checkIfEmailExists(email);
+    public String validatePersonByEmail(String email){
+
+        if(!FileAttributeUtilService.emailValidator(email)) return null;
+
+        return (!personRepository.checkIfEmailExists(email)) ? email : null;
     }
 
     public School getSchoolByName(String schoolName) {

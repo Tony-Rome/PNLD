@@ -6,9 +6,8 @@ import java.util.regex.Pattern;
 public class FileAttributeUtilService {
 
     public static final int RBD_ID_NOT_SPECIFIED = 0;
-    public static final int RUT_NOT_SPECIFY = 0;
 
-    public static String[] splitLastNames(String lastNames) { //TODO: a utilssrvice
+    public static String[] splitLastNames(String lastNames) {
 
         String[] newLastNamesArray = new String[2];
 
@@ -20,7 +19,7 @@ public class FileAttributeUtilService {
         return newLastNamesArray;
     }
 
-    public static String normalizeRegion(String name) { //TODO: a utilssrvice
+    public static String normalizeRegion(String name) {
         if (name == null || name.isEmpty()) {
             return null;
         }
@@ -28,11 +27,11 @@ public class FileAttributeUtilService {
         return normalizedName.replaceAll("region( de( la | )| del | )", "");
     }
 
-    public static String removeAccents(String toClean) { //TODO: a utilssrvice
+    public static String removeAccents(String toClean) {
         return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
     }
 
-    public static int rbdToInt(String rbdStr) { //TODO: a utilssrvice
+    public static int rbdToInt(String rbdStr) {
         String cleanedRbd = rbdStr.replaceAll("[^\\d]", "");
         if (cleanedRbd.isEmpty() || cleanedRbd.length() > 8) return RBD_ID_NOT_SPECIFIED;
         return Integer.parseInt(cleanedRbd);
@@ -65,9 +64,9 @@ public class FileAttributeUtilService {
 
     }
 
-    public static String emailValidator(String email){
+    public static boolean emailValidator(String email){
         String emailPattern = "^[\\w-\\.]+@([\\w-]+\\.[com]{3})$";
-        return (Pattern.matches(emailPattern, email)) ? email : null;
+        return (Pattern.matches(emailPattern, email)) ? true : false;
     }
 
 }

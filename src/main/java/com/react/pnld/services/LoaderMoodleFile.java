@@ -42,9 +42,9 @@ public class LoaderMoodleFile {
 
             School school = entitiesUtilService.getSchoolByName(postTrainingRow.getSchoolName());
 
-            String rut = FileAttributeUtilService.rutValidator(postTrainingRow.getRut()); //TODO: SACAR DE AQUÏ
+            String rut = entitiesUtilService.validateTeacherByRut(postTrainingRow.getRut());
 
-            if (rut == null) {
+            if (rut != null) {
                 Optional<Teacher> teacherSelected = entitiesUtilService.getTeacherPersonByRut(rut);
 
                 if (!teacherSelected.isPresent()) {
@@ -99,12 +99,10 @@ public class LoaderMoodleFile {
             if (!school.getName().equals(entitiesUtilService.NOT_SPECIFIED))
                 entitiesUtilService.verifySchool(school, diagnosticRow.getCommune(), regionId, diagnosticRow.getRbd());
 
-
-
             String rut = entitiesUtilService.validateTeacherByRut(diagnosticRow.getRut());
-            boolean email = entitiesUtilService.validatePersonByEmail(diagnosticRow.getEmail());
+            String email = entitiesUtilService.validatePersonByEmail(diagnosticRow.getEmail());
 
-            if (rut != null && !email){
+            if (rut != null && email!= null){
 
                 Optional<Teacher> teacherPersonSelected = entitiesUtilService.getTeacherPersonByRut(rut);
 
@@ -157,7 +155,7 @@ public class LoaderMoodleFile {
 
             School school = entitiesUtilService.getSchoolByName(FileAttributeUtilService.removeSymbols(exitSatisfactionRow.getSchoolName()));
 
-            String rut = FileAttributeUtilService.rutValidator(exitSatisfactionRow.getRut()); //TODO: SACAR DE AQUÏ
+            String rut = entitiesUtilService.validateTeacherByRut(exitSatisfactionRow.getRut());
 
             if (rut != null) {
 
