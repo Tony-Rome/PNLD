@@ -144,37 +144,13 @@ public class EntityUtilService {
         return teacher;
     }
 
-
-    public void completeTeacherPersonFromDiagnostic(Teacher teacher, DiagnosticFileDTO diagnosticFileDTO) {
-
-        if (teacher.getAge() == 0 && diagnosticFileDTO.getAge() != 0) teacher.setAge(diagnosticFileDTO.getAge());
-
-        if ((teacher.getName() == null || teacher.getName().isEmpty()) && diagnosticFileDTO.getName() != null)
-            teacher.setName(diagnosticFileDTO.getName());
-
-        if (diagnosticFileDTO.getLastNames() != null) {
-
-            String[] lastNames = EntityAttributeUtilService.splitLastNames(diagnosticFileDTO.getLastNames());
-
-            if (teacher.getPaternalLastName() == null || teacher.getPaternalLastName().isEmpty())
-                teacher.setPaternalLastName(lastNames[0]);
-            if (teacher.getMaternalLastName() == null || teacher.getMaternalLastName().isEmpty())
-                teacher.setMaternalLastName(lastNames[1]);
-        }
-
-        if ((teacher.getEmail() == null || teacher.getEmail().isEmpty()) && diagnosticFileDTO.getEmail() != null)
-            teacher.setEmail(diagnosticFileDTO.getEmail());
-
-        //TODO Actualizar teacherPerson
-    }
-
     public boolean validateTeacherByRut(String rut) {return EntityAttributeUtilService.rutValidator(rut);}
 
     public boolean validatePersonByEmail(String email) {
 
         if (!EntityAttributeUtilService.emailValidator(email)) return false;
 
-        return (!personRepository.checkIfEmailExists(email));
+        return !personRepository.checkIfEmailExists(email);
     }
 
     public School getSchoolByName(String schoolName) {
