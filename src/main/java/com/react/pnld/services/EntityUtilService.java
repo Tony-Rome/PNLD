@@ -1,7 +1,7 @@
 package com.react.pnld.services;
 
 import com.react.pnld.dto.DiagnosticFileDTO;
-import com.react.pnld.dto.ExitSatisfactionFileDTO;
+import com.react.pnld.dto.SatisfactionFileDTO;
 import com.react.pnld.dto.TrainingFileDTO;
 import com.react.pnld.model.GenderProperties;
 import com.react.pnld.model.School;
@@ -113,7 +113,7 @@ public class EntityUtilService {
         return teacher;
     }
 
-    public Teacher buildTeacherFromExitSatisfaction(ExitSatisfactionFileDTO exitSatisfactionFileDTO, int schoolId) {
+    public Teacher buildTeacherFromExitSatisfaction(SatisfactionFileDTO exitSatisfactionFileDTO, int schoolId) {
 
         Teacher teacher = new Teacher();
         teacher.setTeacherId(this.personRepository.getNextTeacherId());
@@ -145,7 +145,7 @@ public class EntityUtilService {
     }
 
 
-    public void verifyTeacherPersonFromDiagnostic(Teacher teacher, DiagnosticFileDTO diagnosticFileDTO) {
+    public void completeTeacherPersonFromDiagnostic(Teacher teacher, DiagnosticFileDTO diagnosticFileDTO) {
 
         if (teacher.getAge() == 0 && diagnosticFileDTO.getAge() != 0) teacher.setAge(diagnosticFileDTO.getAge());
 
@@ -168,36 +168,13 @@ public class EntityUtilService {
         //TODO Actualizar teacherPerson
     }
 
-    public void verifyTeacherPersonFromExistSatisfaction(Teacher teacher, ExitSatisfactionFileDTO exitSatisfactionFileDTO) {
-
-        if ((teacher.getDepartment() == null || teacher.getDepartment().isEmpty()) && exitSatisfactionFileDTO.getDepartment() != null)
-            teacher.setDepartment(exitSatisfactionFileDTO.getDepartment());
-
-        if ((teacher.getName() == null || teacher.getName().isEmpty()) && exitSatisfactionFileDTO.getName() != null)
-            teacher.setName(exitSatisfactionFileDTO.getName());
-
-        if (exitSatisfactionFileDTO.getLastNames() != null) {
-
-            String[] lastNames = EntityAttributeUtilService.splitLastNames(exitSatisfactionFileDTO.getLastNames());
-
-            if (teacher.getPaternalLastName() == null || teacher.getPaternalLastName().isEmpty())
-                teacher.setPaternalLastName(lastNames[0]);
-            if (teacher.getMaternalLastName() == null || teacher.getMaternalLastName().isEmpty())
-                teacher.setMaternalLastName(lastNames[1]);
-        }
-
-        //TODO Actualizar teacherPerson
-    }
-
-    public boolean validateTeacherByRut(String rut) {
-        return EntityAttributeUtilService.rutValidator(rut);
-    }
+    public boolean validateTeacherByRut(String rut) {return EntityAttributeUtilService.rutValidator(rut);}
 
     public boolean validatePersonByEmail(String email) {
 
         if (!EntityAttributeUtilService.emailValidator(email)) return false;
 
-        return (!personRepository.checkIfEmailExists(email)) ? true : false;
+        return (!personRepository.checkIfEmailExists(email));
     }
 
     public School getSchoolByName(String schoolName) {
@@ -230,22 +207,6 @@ public class EntityUtilService {
         int resultInsertSchool = this.schoolRepository.insertSchool(newSchool);
         logger.info("createNewSchool. resultInsertSchool={}", resultInsertSchool);
         return newSchool;
-    }
-
-    public void verifySchool(School school, String city, int regionId, String rbdAsStr) {
-
-        int rbd = EntityAttributeUtilService.rbdToInt(rbdAsStr);
-
-        if ((school.getCity() == null || school.getCity().isEmpty()) && (city != null)) {
-            school.setCity(city);
-        }
-        if ((school.getRegionId() == REGION_ID_OTHER) && (regionId != REGION_ID_OTHER)) {
-            school.setRegionId(regionId);
-        }
-        if ((school.getRbd() == EntityAttributeUtilService.RBD_ID_NOT_SPECIFIED) && (rbd != EntityAttributeUtilService.RBD_ID_NOT_SPECIFIED)) {
-            school.setRbd(rbd);
-        }
-        //TODO Actualizar colegio
     }
 
     public int getRegionId(String name) {

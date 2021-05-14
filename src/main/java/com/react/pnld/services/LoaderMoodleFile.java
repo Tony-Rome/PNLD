@@ -1,8 +1,8 @@
 package com.react.pnld.services;
 
 import com.react.pnld.dto.DiagnosticFileDTO;
-import com.react.pnld.dto.ExitSatisfactionFileDTO;
 import com.react.pnld.dto.FileResumeDTO;
+import com.react.pnld.dto.SatisfactionFileDTO;
 import com.react.pnld.dto.TrainingFileDTO;
 import com.react.pnld.model.*;
 import com.react.pnld.repo.QuestionnaireRepository;
@@ -93,12 +93,7 @@ public class LoaderMoodleFile {
 
         for (DiagnosticFileDTO diagnosticRow : diagnosticRows) {
 
-            int regionId = entityUtilService.getRegionId(diagnosticRow.getRegion());
-
             School school = entityUtilService.getSchoolByName(diagnosticRow.getSchoolName());
-
-            if (!school.getName().equals(entityUtilService.NOT_SPECIFIED))
-                entityUtilService.verifySchool(school, diagnosticRow.getCommune(), regionId, diagnosticRow.getRbd());
 
             boolean rut = entityUtilService.validateTeacherByRut(diagnosticRow.getRut());
             boolean email = entityUtilService.validatePersonByEmail(diagnosticRow.getEmail());
@@ -113,9 +108,6 @@ public class LoaderMoodleFile {
                     entityUtilService.createTeacher(teacher);
                     teacherPersonSelected = Optional.of(teacher);
                 }
-
-                if (teacherPersonSelected.isPresent())
-                    entityUtilService.verifyTeacherPersonFromDiagnostic(teacherPersonSelected.get(), diagnosticRow);
 
                 logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherPersonSelected.get());
 
@@ -150,58 +142,55 @@ public class LoaderMoodleFile {
         return new FileResumeDTO(diagnosticRows.size(), newRecords, duplicatedRecords);
     }
 
-    public FileResumeDTO exitSatisfactionFile(List<ExitSatisfactionFileDTO> exitSatisfactionRows, int loadedFileId) {
+    public FileResumeDTO satisfactionFile(List<SatisfactionFileDTO> satisfactionRows, int loadedFileId) {
 
         int newRecords = 0;
         int duplicatedRecords = 0;
 
-        for (ExitSatisfactionFileDTO exitSatisfactionRow : exitSatisfactionRows) {
+        for (SatisfactionFileDTO satisfactionRow : satisfactionRows) {
 
-            School school = entityUtilService.getSchoolByName(exitSatisfactionRow.getSchoolName());
+            School school = entityUtilService.getSchoolByName(satisfactionRow.getSchoolName());
 
-            boolean rut = entityUtilService.validateTeacherByRut(exitSatisfactionRow.getRut());
+            boolean rut = entityUtilService.validateTeacherByRut(satisfactionRow.getRut());
 
             if (rut) {
 
-                Optional<Teacher> teacherPersonSelected = entityUtilService.getTeacherPersonByRut(exitSatisfactionRow.getRut());
+                Optional<Teacher> teacherPersonSelected = entityUtilService.getTeacherPersonByRut(satisfactionRow.getRut());
 
                 if (!teacherPersonSelected.isPresent()) {
-                    Teacher teacher = entityUtilService.buildTeacherFromExitSatisfaction(exitSatisfactionRow, school.getId());
+                    Teacher teacher = entityUtilService.buildTeacherFromExitSatisfaction(satisfactionRow, school.getId());
                     entityUtilService.createPerson(teacher);
                     entityUtilService.createTeacher(teacher);
                     teacherPersonSelected = Optional.of(teacher);
                 }
 
-                if (teacherPersonSelected.isPresent())
-                    entityUtilService.verifyTeacherPersonFromExistSatisfaction(teacherPersonSelected.get(), exitSatisfactionRow);
+                int satisfactionQuestionnaireCount = questionnaireRepository.getSatisfactionQuestionnaireCount(teacherPersonSelected.get().getTeacherId());
 
-                int exitSatisfactionQuestionnaireCount = questionnaireRepository.getExitSatisfactionQuestionnaireCount(teacherPersonSelected.get().getTeacherId());
-
-                if (exitSatisfactionQuestionnaireCount < 1) {
+                if (satisfactionQuestionnaireCount < 1) {
 
                     String answersJson = "{\"llave\":\"respuesta\"}";
 
-                    int exitSatisfactionQuestionnaireId = questionnaireRepository.getNextExitSatisfactionQuestionnaireId();
+                    int satisfactionQuestionnaireId = questionnaireRepository.getNextSatisfactionQuestionnaireId();
 
-                    ExitSatisfactionQuestionnaire newExitQuestionnaire = new ExitSatisfactionQuestionnaire();
-                    newExitQuestionnaire.setId(exitSatisfactionQuestionnaireId);
-                    newExitQuestionnaire.setLoadedFileId(loadedFileId);
-                    newExitQuestionnaire.setTeacherId(teacherPersonSelected.get().getTeacherId());
-                    newExitQuestionnaire.setResponseId(exitSatisfactionRow.getResponseId());
-                    newExitQuestionnaire.setSendDate(exitSatisfactionRow.getSendDate());
-                    newExitQuestionnaire.setAnswers(answersJson);
-                    newExitQuestionnaire.setNumberId(exitSatisfactionRow.getId());
-                    newExitQuestionnaire.setCourse(exitSatisfactionRow.getCourse());
-                    newExitQuestionnaire.setGroup(exitSatisfactionRow.getGroup());
+                    SatisfactionQuestionnaire newSatisfactionQuestionnaire = new SatisfactionQuestionnaire();
+                    newSatisfactionQuestionnaire.setId(satisfactionQuestionnaireId);
+                    newSatisfactionQuestionnaire.setLoadedFileId(loadedFileId);
+                    newSatisfactionQuestionnaire.setTeacherId(teacherPersonSelected.get().getTeacherId());
+                    newSatisfactionQuestionnaire.setResponseId(satisfactionRow.getResponseId());
+                    newSatisfactionQuestionnaire.setSendDate(satisfactionRow.getSendDate());
+                    newSatisfactionQuestionnaire.setAnswers(answersJson);
+                    newSatisfactionQuestionnaire.setNumberId(satisfactionRow.getId());
+                    newSatisfactionQuestionnaire.setCourse(satisfactionRow.getCourse());
+                    newSatisfactionQuestionnaire.setGroup(satisfactionRow.getGroup());
 
-                    questionnaireRepository.insertExitSatisfactionQuestionnaire(newExitQuestionnaire);
+                    questionnaireRepository.insertSatisfactionQuestionnaire(newSatisfactionQuestionnaire);
                     newRecords++;
                 }
-                if (exitSatisfactionQuestionnaireCount >= 1) {
+                if (satisfactionQuestionnaireCount >= 1) {
                     duplicatedRecords++;
                 }
             }
         }
-        return new FileResumeDTO(exitSatisfactionRows.size(), newRecords, duplicatedRecords);
+        return new FileResumeDTO(satisfactionRows.size(), newRecords, duplicatedRecords);
     }
 }

@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class ExitSatisfactionFileDTO {
+public class SatisfactionFileDTO {
 
     @Parsed(index = 0)
     private int responseId;

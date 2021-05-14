@@ -2,7 +2,7 @@ package com.react.pnld.model;
 
 import java.sql.Timestamp;
 
-public class ExitSatisfactionQuestionnaire {
+public class SatisfactionQuestionnaire {
 
     private int id;
     private int loadedFileId;
@@ -14,7 +14,7 @@ public class ExitSatisfactionQuestionnaire {
     private String course;
     private String group;
 
-    public ExitSatisfactionQuestionnaire() {
+    public SatisfactionQuestionnaire() {
     }
 
     public int getId() {

@@ -182,8 +182,8 @@ public class FileUtilService {
 
             case SALIDA:
             case SATISFACTION:
-                List<ExitSatisfactionFileDTO> exitSatisfactionRows = parseRowsToBeans(loadedFileReader, ExitSatisfactionFileDTO.class);
-                return this.loaderMoodleFile.exitSatisfactionFile(exitSatisfactionRows, loadedFile.getId());
+                List<SatisfactionFileDTO> satisfactionRows = parseRowsToBeans(loadedFileReader, SatisfactionFileDTO.class);
+                return this.loaderMoodleFile.satisfactionFile(satisfactionRows, loadedFile.getId());
 
             case TEST_CT_1:
                 return this.loaderCPFile.testPCOneFile(loadedFile);

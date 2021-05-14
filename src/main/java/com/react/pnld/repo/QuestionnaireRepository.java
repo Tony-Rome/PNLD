@@ -2,7 +2,7 @@ package com.react.pnld.repo;
 
 import com.react.pnld.mappers.QuestionnaireMapper;
 import com.react.pnld.model.DiagnosticQuestionnaire;
-import com.react.pnld.model.ExitSatisfactionQuestionnaire;
+import com.react.pnld.model.SatisfactionQuestionnaire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -24,15 +24,15 @@ public class QuestionnaireRepository {
         questionnaireMapper.insertDiagnosticQuestionnaire(newDiagnosticQuestionnaire);
     }
 
-    public int getExitSatisfactionQuestionnaireCount(int teacherId) {
+    public int getSatisfactionQuestionnaireCount(int teacherId) {
         return questionnaireMapper.getExitSatisfactionQuestionnaireCount(teacherId);
     }
 
-    public int getNextExitSatisfactionQuestionnaireId() {
+    public int getNextSatisfactionQuestionnaireId() {
         return questionnaireMapper.getNextExitSatisfactionQuestionnaireId();
     }
 
-    public void insertExitSatisfactionQuestionnaire(ExitSatisfactionQuestionnaire exitSatisfactionQuestionnaire) {
+    public void insertSatisfactionQuestionnaire(SatisfactionQuestionnaire exitSatisfactionQuestionnaire) {
         questionnaireMapper.insertExitSatisfactionQuestionnaire(exitSatisfactionQuestionnaire);
     }
 }
