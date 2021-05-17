@@ -21,8 +21,8 @@
                           <option value="test-pc-1">test PC (1 - 4 año)</option>
                           <option value="test-pc-2">test PC (5 - 8 año)</option>
                           <option value="test-pc-3">Test PC docentes</option>
-                          <option value="salida">salida</option>
                           <option value="satis">satisfaccion</option>
+                          <option value="general">resumen general</option>
                     </select>
                 </td>
             </tr>

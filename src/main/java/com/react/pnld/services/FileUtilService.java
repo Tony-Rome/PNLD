@@ -85,9 +85,8 @@ public class FileUtilService {
             case TEST_CT_3:
                 return csvHeadersProperties.getTestCT3();
 
-            case SALIDA:
             case SATISFACTION:
-                return csvHeadersProperties.getExitSatisfaction();
+                return csvHeadersProperties.getSatisfaction();
 
             default:
                 return new String[1];
@@ -180,7 +179,6 @@ public class FileUtilService {
                 List<TrainingFileDTO> trainingRows = parseRowsToBeans(loadedFileReader, TrainingFileDTO.class);
                 return loaderMoodleFile.processTrainingFileRows(trainingRows, loadedFile.getId(), loadedFile.getType());
 
-            case SALIDA:
             case SATISFACTION:
                 List<SatisfactionFileDTO> satisfactionRows = parseRowsToBeans(loadedFileReader, SatisfactionFileDTO.class);
                 return this.loaderMoodleFile.satisfactionFile(satisfactionRows, loadedFile.getId());
