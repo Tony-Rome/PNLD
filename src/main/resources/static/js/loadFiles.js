@@ -24,7 +24,7 @@ const SHOW_MSG_OK = 1;
 const SHOW_MSG_ERROR = 2;
 const REMOVE_MSG_OK = 3;
 const REMOVE_MSG_ERROR = 4;
-
+const dt = new DataTransfer();
 const INIT_URL = "/scheduleFileLoadPost";
 
         let formDataValid = {
@@ -68,7 +68,9 @@ const INIT_URL = "/scheduleFileLoadPost";
             uploadFile.click();
         });
 
-        uploadFile.addEventListener("change", ()=>{
+        uploadFile.addEventListener("change", (e)=>{
+        console.log("CHANGE");
+        console.log(e);
             if(uploadFile.files.length === 1){
                 let name = uploadFile.files[0].name;
                 activeFileName(name);
@@ -143,6 +145,7 @@ const INIT_URL = "/scheduleFileLoadPost";
             popup.style.display = "none";
             switchPopup(REMOVE_MSG_ERROR);
             deactivateFileName();
+            uploadFile.files = dt.files;
             submitController();
         });
 
