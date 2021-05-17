@@ -20,7 +20,7 @@
     </head>
     <body>
 
-        <#assign filesNumberToShow = 5 />
+        <#assign filesNumberToShow = 10 />
 
         <@hd.header title = 'Archivos'/>
 
