@@ -29,8 +29,14 @@
                             <td>${filesList[i].type}</td>
                             <td>${filesList[i].uploadedDateTime}</td>
                             <td>${filesList[i].state}</td>
-                            <td>${filesList[i].totalRecords}</td>
-                            <td>${filesList[i].duplicateRecords}</td>
+                            <#if filesList[i].state == 'planificado'>
+                                <td>-</td>
+                                <td>-</td>
+                            <#else>
+                                <td>${filesList[i].totalRecords}</td>
+                                <td>${filesList[i].duplicateRecords}</td>
+                            </#if>
+
                           </tr>
                   </#list>
 
