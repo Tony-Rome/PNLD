@@ -9,6 +9,6 @@ public class IndicatorController {
 
     @GetMapping("/indicators")
     public String home() {
-        return "indicators/indicator";
+        return "indicators/indicator-base";
     }
 }
