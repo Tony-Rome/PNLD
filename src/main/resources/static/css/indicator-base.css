@@ -1,5 +1,26 @@
-.dimensionContainer{}
+.dimensionContainer{
+    text-align: center;
+    margin-top: 35px;
+}
 
-.subDimensionContainer{}
+.subDimensionContainer{
+    display: flex;
+    justify-content: space-evenly;
+}
 
-.subDimension{}
+.dimensionTitle {
+    border-radius: 5px;
+    border: 1px solid black;
+    background-color: #40f58e;
+    width: 900px;
+    margin: auto;
+}
+
+.subDimension{
+    margin-top: 20px;
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 350px;
+    height: 30px;
+    line-height: 30px;
+}

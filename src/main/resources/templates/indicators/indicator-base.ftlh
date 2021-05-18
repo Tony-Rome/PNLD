@@ -14,7 +14,7 @@
     <@hd.header title = 'Indicadores' />
 
     <div class=dimensionContainer>
-        Dimensiones
+        <div class=dimensionTitle>Dimensiones</div>
         <div class=subDimensionContainer>
             <div class=subDimension>Capacitaciones</div>
             <div class=subDimension>Uso Code.org</div>
