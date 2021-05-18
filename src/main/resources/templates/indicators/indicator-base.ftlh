@@ -13,14 +13,25 @@
 
     <@hd.header title = 'Indicadores' />
 
-    <div class=dimensionContainer>
+    <div class=dimensionHeaderContainer>
         <div class=dimensionTitle>Dimensiones</div>
-        <div class=subDimensionContainer>
-            <div class=subDimension>Capacitaciones</div>
-            <div class=subDimension>Uso Code.org</div>
-            <div class=subDimension>Test Pensamiento COmputacional</div>
+        <div class=dimensionContainer>
+            <div class=dimension>Capacitaciones</div>
+            <div class=dimension>Uso Code.org</div>
+            <div class=dimension>Test Pensamiento COmputacional</div>
         </div>
     </div>
 
 
+    <div class=indicatorContainer>
+        <div class=subDimensionContainer>
+            <h3>Subdimensiones</h3>
+        </div>
+        <div class=chartContainer>
+            Grafico
+        </div>
+        <div class=filterContainer>
+            <h3>Filtros</h3>
+        </div>
+    </div>
 </html>

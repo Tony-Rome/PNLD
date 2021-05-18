@@ -1,26 +1,34 @@
-.dimensionContainer{
+.dimensionHeaderContainer{
     text-align: center;
-    margin-top: 35px;
+    margin: 35px auto;
+    width: 1090px;
+    line-height: 30px;
 }
 
-.subDimensionContainer{
+.dimensionTitle {
+    background-color: #c2ffb6;
+    height: 30px;
+    width: 100%;
+    margin: auto;
+    font-size: 20px;
+}
+
+.dimensionContainer{
     display: flex;
     justify-content: space-evenly;
 }
 
-.dimensionTitle {
-    border-radius: 5px;
-    border: 1px solid black;
-    background-color: #40f58e;
-    width: 900px;
-    margin: auto;
-}
-
-.subDimension{
+.dimension{
     margin-top: 20px;
     border: 1px solid black;
     border-radius: 5px;
     width: 350px;
     height: 30px;
     line-height: 30px;
+    margin-top: 1%;
+}
+
+.indicatorContainer{
+    display: flex;
+    justify-content: space-around;
 }
