@@ -24,7 +24,6 @@ const SHOW_MSG_OK = 1;
 const SHOW_MSG_ERROR = 2;
 const REMOVE_MSG_OK = 3;
 const REMOVE_MSG_ERROR = 4;
-const dt = new DataTransfer();
 const INIT_URL = "/scheduleFileLoadPost";
 
 let formDataValid = {
@@ -131,10 +130,11 @@ btSubmitOk.addEventListener("click", ()=> {
 });
 
 btSubmitError.addEventListener("click",()=> {
+    const dt = new DataTransfer();
     popup.style.display = "none";
     switchPopup(REMOVE_MSG_ERROR);
-    deactivateFileName();
     uploadFile.files = dt.files;
+    deactivateFileName();
     submitController();
 });
 
