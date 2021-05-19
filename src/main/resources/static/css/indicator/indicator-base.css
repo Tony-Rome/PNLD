@@ -31,4 +31,16 @@
 .indicatorContainer{
     display: flex;
     justify-content: space-around;
+    text-align: center;
+}
+
+.exportData{
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 250px;
+    margin: auto;
+}
+
+.logoExcel{
+    width: 60px;
 }
