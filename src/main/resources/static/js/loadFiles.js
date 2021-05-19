@@ -130,10 +130,14 @@ btSubmitOk.addEventListener("click", ()=> {
 });
 
 btSubmitError.addEventListener("click",()=> {
-    const dt = new DataTransfer();
+
     popup.style.display = "none";
     switchPopup(REMOVE_MSG_ERROR);
-    uploadFile.files = dt.files;
+    var name = fileName.value;
+    var selectedOption = fileType.selectedOptions[0].innerText;
+    form.reset();
+    fileName.value = name;
+    fileType.selectedOptions[0].innerText = selectedOption;
     deactivateFileName();
     submitController();
 });
