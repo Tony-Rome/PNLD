@@ -1,5 +1,5 @@
 .filesTableContainer{
-    height: 320px;
+    height: 480px;
 }
 
 .filesTable {
@@ -23,5 +23,6 @@ div.filesTableContainer td {
 
 .emptyTableMsg {
     text-align: center;
-    margin-top: 80px;
+    margin-top: 120px;
+    font-size: 30px;
 }
