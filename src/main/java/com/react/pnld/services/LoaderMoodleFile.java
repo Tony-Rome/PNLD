@@ -42,6 +42,9 @@ public class LoaderMoodleFile {
 
             School school = entityUtilService.getSchoolByName(postTrainingRow.getSchoolName());
 
+            if (school == null)
+                school = entityUtilService.createNewSchool(postTrainingRow.getSchoolName(), null, null, null, null);
+
             boolean rut = entityUtilService.validateTeacherByRut(postTrainingRow.getRut());
             boolean email = entityUtilService.validatePersonByEmail(postTrainingRow.getEmail());
 
@@ -94,6 +97,11 @@ public class LoaderMoodleFile {
         for (DiagnosticFileDTO diagnosticRow : diagnosticRows) {
 
             School school = entityUtilService.getSchoolByName(diagnosticRow.getSchoolName());
+
+            school = (school == null) ?
+                    entityUtilService.createNewSchool(diagnosticRow.getSchoolName(), null, diagnosticRow.getCommune(), diagnosticRow.getRegion(), diagnosticRow.getRbd())
+                    :
+                    entityUtilService.updateSchool(school, null, diagnosticRow.getCommune(), diagnosticRow.getRegion(), diagnosticRow.getRbd());
 
             boolean rut = entityUtilService.validateTeacherByRut(diagnosticRow.getRut());
             boolean email = entityUtilService.validatePersonByEmail(diagnosticRow.getEmail());
@@ -150,6 +158,9 @@ public class LoaderMoodleFile {
         for (SatisfactionFileDTO satisfactionRow : satisfactionRows) {
 
             School school = entityUtilService.getSchoolByName(satisfactionRow.getSchoolName());
+
+            if(school == null)
+                school = entityUtilService.createNewSchool(satisfactionRow.getSchoolName(), null, null, null, null);
 
             boolean rut = entityUtilService.validateTeacherByRut(satisfactionRow.getRut());
 

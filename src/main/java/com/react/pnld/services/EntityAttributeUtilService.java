@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public class EntityAttributeUtilService {
 
-    public static final int RBD_ID_NOT_SPECIFIED = 0;
+
 
     public static String[] splitLastNames(String lastNames) {
 
@@ -31,9 +31,10 @@ public class EntityAttributeUtilService {
         return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
     }
 
-    public static int rbdToInt(String rbdStr) {
+    public static Integer rbdToInt(String rbdStr) { //TODO: Mejorar función
+        if(rbdStr == null || rbdStr.isEmpty()) return null;
         String cleanedRbd = rbdStr.replaceAll("[^\\d]", "");
-        if (cleanedRbd.isEmpty() || cleanedRbd.length() > 8) return RBD_ID_NOT_SPECIFIED;
+        if (cleanedRbd.isEmpty() || cleanedRbd.length() > 6) return null;
         return Integer.parseInt(cleanedRbd);
     }
 

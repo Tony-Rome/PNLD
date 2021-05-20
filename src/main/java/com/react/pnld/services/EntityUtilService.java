@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
@@ -22,6 +23,7 @@ public class EntityUtilService {
 
     public static final int GENDER_ID_NOT_SPECIFIED = 4;
     public static final int REGION_ID_OTHER = 17;
+    public static final int RBD_ID_NOT_SPECIFIED = 0;
     public static final String NOT_SPECIFIED = "no especificado";
 
     @Autowired
@@ -155,47 +157,67 @@ public class EntityUtilService {
 
     public School getSchoolByName(String schoolName) {
 
-        if (schoolName == null || schoolName.isEmpty()) {
-            return schoolRepository.getSchoolByName(NOT_SPECIFIED).get();
-        }
+        if (schoolName == null || schoolName.isEmpty()) return null;
 
         String schoolNameNormalized = EntityAttributeUtilService.removeAccents(schoolName);
-
         Optional<School> schoolSelected = schoolRepository.getSchoolByName(schoolNameNormalized);
 
-        if (!schoolSelected.isPresent()) {
-            School newSchool = createNewSchool(schoolNameNormalized, null,
-                    REGION_ID_OTHER, EntityAttributeUtilService.RBD_ID_NOT_SPECIFIED);
-            schoolSelected = Optional.of(newSchool);
-        }
-        return schoolSelected.get();
+        return (schoolSelected.isPresent()) ? schoolSelected.get() : null;
 
     }
 
-    School createNewSchool(String name, String city, int regionId, int rbd) {
+    public School createNewSchool(String name, String city, String commune,String regionName, String rbd) {
+
+        if (name == null || name.isEmpty()) return schoolRepository.getSchoolByName(NOT_SPECIFIED).get();
+
         School newSchool = new School();
         newSchool.setId(schoolRepository.getNextSchoolId());
-        newSchool.setName(name);
+        newSchool.setName(EntityAttributeUtilService.removeAccents(name));
         newSchool.setCity(city);
+        newSchool.setCommune(commune);
+
+        int regionId = getRegionId(regionName);
         newSchool.setRegionId(regionId);
-        newSchool.setRbd(rbd);
+
+        Integer rbdAsInt = EntityAttributeUtilService.rbdToInt(rbd);
+        newSchool.setRbd((rbdAsInt != null) ? rbdAsInt.intValue() : RBD_ID_NOT_SPECIFIED);
 
         int resultInsertSchool = this.schoolRepository.insertSchool(newSchool);
         logger.info("createNewSchool. resultInsertSchool={}", resultInsertSchool);
         return newSchool;
     }
 
+    public School updateSchool(School school, String city, String commune,String regionName, String rbd){
+
+        if(city != null && !city.isEmpty()) school.setCity(city);
+
+        if(commune != null && !commune.isEmpty()) school.setCommune(commune);
+
+        if(school.getRegionId() == REGION_ID_OTHER && !regionName.isEmpty() && regionName != null){
+            int regionId = getRegionId(regionName);
+            school.setRegionId(regionId);
+        }
+
+        if(school.getRbd() == RBD_ID_NOT_SPECIFIED && rbd != null && !rbd.isEmpty()) {
+            Integer rbdAsInt = EntityAttributeUtilService.rbdToInt(rbd);
+            if(rbdAsInt != null) school.setRbd(rbdAsInt.intValue());
+        }
+
+        int resultUpdateSchool =schoolRepository.updateSchool(school);
+        logger.info("updateSchool. resultInsertSchool={}", resultUpdateSchool);
+
+        return school;
+    }
+
     public int getRegionId(String name) {
 
-        if (name == null || name.isEmpty()) {
-            return REGION_ID_OTHER;
-        }
+        if (name == null || name.isEmpty()) return REGION_ID_OTHER;
+
         String cleanedName = EntityAttributeUtilService.normalizeRegion(name);
-        Optional<Integer> regionIdSelected = regionRepository.getRegionIdByName(cleanedName);
+        int regionIdSelected = regionRepository.getRegionIdByName(cleanedName);
 
-        logger.info("getRegionId. regionIdSelected={}", regionIdSelected.get());
-
-        return (regionIdSelected.isPresent()) ? regionIdSelected.get().intValue() : REGION_ID_OTHER;
+        logger.info("getRegionId. regionIdSelected={}", regionIdSelected);
+        return regionIdSelected;
     }
 
     public String genderStandardization(String gender) {

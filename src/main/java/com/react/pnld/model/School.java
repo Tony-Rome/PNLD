@@ -7,6 +7,7 @@ public class School implements Serializable {
     private int id;
     private String name;
     private String city;
+    private String commune;
     private int regionId;
     private int rbd;
 
@@ -37,6 +38,10 @@ public class School implements Serializable {
     public void setCity(String city) {
         this.city = city;
     }
+
+    public String getCommune(){return commune;}
+
+    public void setCommune(String commune){this.commune = commune;}
 
     public int getRegionId() {
         return regionId;

@@ -8,4 +8,6 @@ public interface SchoolMapper {
     School getSchoolByName(String name);
 
     int insertSchool(School school);
+
+    int updateSchool(School school);
 }
