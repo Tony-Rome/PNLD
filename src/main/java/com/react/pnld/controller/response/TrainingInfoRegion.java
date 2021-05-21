@@ -2,42 +2,42 @@ package com.react.pnld.controller.response;
 
 import java.io.Serializable;
 
-public class RegionTrainingInfo implements Serializable {
+public class TrainingInfoRegion implements Serializable {
 
-    private int regionId;
-    private String regionName;
+    private int id;
+    private String name;
     private int numberInstitutionsInPNLD;
     private float percentageInstitutions;
     private float percentageFirstTimeInPNLD;
 
-    public RegionTrainingInfo(){
+    public TrainingInfoRegion(){
         super();
     }
 
-    public RegionTrainingInfo(int regionId, String regionName, int numberInstitutionsInPNLD, float percentageInstitutions,
+    public TrainingInfoRegion(int id, String name, int numberInstitutionsInPNLD, float percentageInstitutions,
                               float percentageFirstTimeInPNLD) {
         super();
-        this.regionId = regionId;
-        this.regionName = regionName;
+        this.id = id;
+        this.name = name;
         this.numberInstitutionsInPNLD = numberInstitutionsInPNLD;
         this.percentageInstitutions = percentageInstitutions;
         this.percentageFirstTimeInPNLD = percentageFirstTimeInPNLD;
     }
 
-    public int getRegionId() {
-        return regionId;
+    public int getId() {
+        return id;
     }
 
-    public void setRegionId(int regionId) {
-        this.regionId = regionId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getRegionName() {
-        return regionName;
+    public String getName() {
+        return name;
     }
 
-    public void setRegionName(String regionName) {
-        this.regionName = regionName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getNumberInstitutionsInPNLD() {
@@ -66,9 +66,9 @@ public class RegionTrainingInfo implements Serializable {
 
     @Override
     public String toString() {
-        return "RegionTrainingInfo{" +
-                "regionId=" + regionId +
-                ", regionName='" + regionName + '\'' +
+        return "TrainingInfoRegion{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", numberInstitutionsInPNLD=" + numberInstitutionsInPNLD +
                 ", percentageInstitutions=" + percentageInstitutions +
                 ", percentageFirstTimeInPNLD=" + percentageFirstTimeInPNLD +

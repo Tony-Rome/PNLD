@@ -3,19 +3,19 @@ package com.react.pnld.controller.response;
 import java.io.Serializable;
 import java.util.List;
 
-public class TrainedInstitutionsResponse implements Serializable {
+public class InfoTrainedInstitutionsResponse implements Serializable {
     private int fromYear;
     private int toYear;
-    private List<RegionTrainingInfo> regionsInfo;
+    private List<TrainingInfoRegion> trainingInfoRegions;
 
-    public TrainedInstitutionsResponse(){
+    public InfoTrainedInstitutionsResponse(){
         super();
     }
 
-    public TrainedInstitutionsResponse(int fromYear, int toYear, List<RegionTrainingInfo> regionsInfo) {
+    public InfoTrainedInstitutionsResponse(int fromYear, int toYear, List<TrainingInfoRegion> trainingInfoRegions) {
         this.fromYear = fromYear;
         this.toYear = toYear;
-        this.regionsInfo = regionsInfo;
+        this.trainingInfoRegions = trainingInfoRegions;
     }
 
     public int getFromYear() {
@@ -34,12 +34,12 @@ public class TrainedInstitutionsResponse implements Serializable {
         this.toYear = toYear;
     }
 
-    public List<RegionTrainingInfo> getRegionsInfo() {
-        return regionsInfo;
+    public List<TrainingInfoRegion> getTrainingInfoRegions() {
+        return trainingInfoRegions;
     }
 
-    public void setRegionsInfo(List<RegionTrainingInfo> regionsInfo) {
-        this.regionsInfo = regionsInfo;
+    public void setTrainingInfoRegions(List<TrainingInfoRegion> trainingInfoRegions) {
+        this.trainingInfoRegions = trainingInfoRegions;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class TrainedInstitutionsResponse implements Serializable {
         return "TrainedInstitutionsResponse{" +
                 "fromYear=" + fromYear +
                 ", toYear=" + toYear +
-                ", regionsInfo=" + regionsInfo +
+                ", trainingInfoRegions=" + trainingInfoRegions +
                 '}';
     }
 }

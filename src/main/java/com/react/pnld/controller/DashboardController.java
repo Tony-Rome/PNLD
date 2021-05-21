@@ -1,7 +1,7 @@
 package com.react.pnld.controller;
 
-import com.react.pnld.controller.response.RegionTrainingInfo;
-import com.react.pnld.controller.response.TrainedInstitutionsResponse;
+import com.react.pnld.controller.response.TrainingInfoRegion;
+import com.react.pnld.controller.response.InfoTrainedInstitutionsResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,14 +19,15 @@ public class DashboardController {
     private static final Logger logger = LoggerFactory.getLogger(DashboardController.class);
 
     @GetMapping(value = "/capacitaciones/establecimientos")
-    public TrainedInstitutionsResponse getInfoTrainedInstitutions(@RequestParam(name = "fromYear") int fromYear,
-                                                                  @RequestParam(name = "toYear") int toYear){
+    public InfoTrainedInstitutionsResponse getInfoTrainedInstitutions(@RequestParam(name = "fromYear") int fromYear,
+                                                                      @RequestParam(name = "toYear") int toYear){
         logger.info("getInstitutionsTrainingInfo. fromYear={}, toYear={}", fromYear, toYear);
 
-        List<RegionTrainingInfo> regionTrainingInfoList = new ArrayList<>();
-        regionTrainingInfoList.add(new RegionTrainingInfo(1, "Arica", 5, 0.3f, 0.6f));
-        regionTrainingInfoList.add(new RegionTrainingInfo(1, "Valparaiso", 20, 0.6f, 0.3f));
-        return new TrainedInstitutionsResponse();
+        List<TrainingInfoRegion> trainingInfoRegionList = new ArrayList<>();
+        trainingInfoRegionList.add(new TrainingInfoRegion(1, "Arica", 5, 0.3f, 0.6f));
+        trainingInfoRegionList.add(new TrainingInfoRegion(5, "Valparaiso", 20, 0.6f, 0.3f));
+
+        return new InfoTrainedInstitutionsResponse(fromYear, toYear, trainingInfoRegionList);
     }
 
 }
