@@ -30,4 +30,22 @@ public class DashboardController {
         return new InfoTrainedInstitutionsResponse(fromYear, toYear, trainingInfoRegionList);
     }
 
+    @GetMapping(value = "/capacitaciones/docentes")
+    public String getInfoTrainedTeacher(@RequestParam(name = "fromYear") int fromYear,
+                                        @RequestParam(name = "toYear") int toYear){
+        return "Work in progress";
+    }
+
+    @GetMapping(value = "/test-pc/docentes")
+    public String getInfoTeacherCTTest(@RequestParam(name = "fromYear") int fromYear,
+                                        @RequestParam(name = "toYear") int toYear){
+        return "Work in progress";
+    }
+
+    @GetMapping(value = "/test-pc/estudiantes")
+    public String getInfoStudentsCTTest(@RequestParam(name = "fromYear") int fromYear,
+                                      @RequestParam(name = "toYear") int toYear){
+        return "Work in progress";
+    }
+
 }
