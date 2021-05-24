@@ -150,19 +150,16 @@ public class EntityUtilService {
 
     public boolean validatePersonByEmail(String email) {
 
-        if (!EntityAttributeUtilService.emailValidator(email)) return false;
-
+        if (email == null || email.isEmpty() || !EntityAttributeUtilService.emailValidator(email)) return false;
         return !personRepository.checkIfEmailExists(email);
     }
 
-    public School getSchoolByName(String schoolName) {
+    public Optional<School> getSchoolByName(String schoolName) {
 
-        if (schoolName == null || schoolName.isEmpty()) return null;
+        if (schoolName == null || schoolName.isEmpty()) return Optional.empty();
 
         String schoolNameNormalized = EntityAttributeUtilService.removeAccents(schoolName);
-        Optional<School> schoolSelected = schoolRepository.getSchoolByName(schoolNameNormalized);
-
-        return (schoolSelected.isPresent()) ? schoolSelected.get() : null;
+        return schoolRepository.getSchoolByName(schoolNameNormalized);
 
     }
 
