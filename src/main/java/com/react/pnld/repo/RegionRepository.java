@@ -12,7 +12,7 @@ public class RegionRepository {
     @Autowired
     RegionMapper regionMapper;
 
-    public Optional<Integer> getRegionIdByName(String name) {
-        return Optional.ofNullable(regionMapper.getRegionIdByName(name));
+    public Integer getRegionIdByName(String name) {
+        return regionMapper.getRegionIdByName(name);
     }
 }

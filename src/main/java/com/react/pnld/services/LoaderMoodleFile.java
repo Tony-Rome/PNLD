@@ -40,7 +40,10 @@ public class LoaderMoodleFile {
         for (TrainingFileDTO postTrainingRow : postTrainingRows) {
             logger.info("processTrainingFileRows. postTrainingRow={}", postTrainingRow);
 
-            School school = entityUtilService.getSchoolByName(postTrainingRow.getSchoolName());
+            Optional<School> school = entityUtilService.getSchoolByName(postTrainingRow.getSchoolName());
+
+            if (!school.isPresent())
+                school = Optional.of(entityUtilService.createNewSchool(postTrainingRow.getSchoolName(), null, null, null, null));
 
             boolean rut = entityUtilService.validateTeacherByRut(postTrainingRow.getRut());
             boolean email = entityUtilService.validatePersonByEmail(postTrainingRow.getEmail());
@@ -50,7 +53,7 @@ public class LoaderMoodleFile {
                 Optional<Teacher> teacherSelected = entityUtilService.getTeacherPersonByRut(postTrainingRow.getRut());
 
                 if (!teacherSelected.isPresent()) {
-                    Teacher teacher = entityUtilService.buildTeacherFrom(postTrainingRow, school.getId());
+                    Teacher teacher = entityUtilService.buildTeacherFrom(postTrainingRow, school.get().getId());
                     entityUtilService.createPerson(teacher);
                     entityUtilService.createTeacher(teacher);
 
@@ -93,7 +96,12 @@ public class LoaderMoodleFile {
 
         for (DiagnosticFileDTO diagnosticRow : diagnosticRows) {
 
-            School school = entityUtilService.getSchoolByName(diagnosticRow.getSchoolName());
+            Optional<School> school = entityUtilService.getSchoolByName(diagnosticRow.getSchoolName());
+
+            school = Optional.of(!school.isPresent() ?
+                    entityUtilService.createNewSchool(diagnosticRow.getSchoolName(), null, diagnosticRow.getCommune(), diagnosticRow.getRegion(), diagnosticRow.getRbd())
+                    :
+                    entityUtilService.updateSchool(school.get(), null, diagnosticRow.getCommune(), diagnosticRow.getRegion(), diagnosticRow.getRbd()));
 
             boolean rut = entityUtilService.validateTeacherByRut(diagnosticRow.getRut());
             boolean email = entityUtilService.validatePersonByEmail(diagnosticRow.getEmail());
@@ -103,7 +111,7 @@ public class LoaderMoodleFile {
                 Optional<Teacher> teacherPersonSelected = entityUtilService.getTeacherPersonByRut(diagnosticRow.getRut());
 
                 if (!teacherPersonSelected.isPresent()) {
-                    Teacher teacher = entityUtilService.buildTeacherFromDiagnostic(diagnosticRow, school.getId());
+                    Teacher teacher = entityUtilService.buildTeacherFromDiagnostic(diagnosticRow, school.get().getId());
                     entityUtilService.createPerson(teacher);
                     entityUtilService.createTeacher(teacher);
                     teacherPersonSelected = Optional.of(teacher);
@@ -149,7 +157,10 @@ public class LoaderMoodleFile {
 
         for (SatisfactionFileDTO satisfactionRow : satisfactionRows) {
 
-            School school = entityUtilService.getSchoolByName(satisfactionRow.getSchoolName());
+            Optional<School> school = entityUtilService.getSchoolByName(satisfactionRow.getSchoolName());
+
+            if(!school.isPresent())
+                school = Optional.of(entityUtilService.createNewSchool(satisfactionRow.getSchoolName(), null, null, null, null));
 
             boolean rut = entityUtilService.validateTeacherByRut(satisfactionRow.getRut());
 
@@ -158,7 +169,7 @@ public class LoaderMoodleFile {
                 Optional<Teacher> teacherPersonSelected = entityUtilService.getTeacherPersonByRut(satisfactionRow.getRut());
 
                 if (!teacherPersonSelected.isPresent()) {
-                    Teacher teacher = entityUtilService.buildTeacherFromExitSatisfaction(satisfactionRow, school.getId());
+                    Teacher teacher = entityUtilService.buildTeacherFromExitSatisfaction(satisfactionRow, school.get().getId());
                     entityUtilService.createPerson(teacher);
                     entityUtilService.createTeacher(teacher);
                     teacherPersonSelected = Optional.of(teacher);
