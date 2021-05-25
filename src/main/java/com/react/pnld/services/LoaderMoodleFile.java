@@ -1,9 +1,6 @@
 package com.react.pnld.services;
 
-import com.react.pnld.dto.DiagnosticFileDTO;
-import com.react.pnld.dto.FileResumeDTO;
-import com.react.pnld.dto.SatisfactionFileDTO;
-import com.react.pnld.dto.TrainingFileDTO;
+import com.react.pnld.dto.*;
 import com.react.pnld.model.*;
 import com.react.pnld.repo.QuestionnaireRepository;
 import com.react.pnld.repo.TestRepository;
@@ -192,5 +189,11 @@ public class LoaderMoodleFile {
             }
         }
         return new FileResumeDTO(satisfactionRows.size(), newRecords, duplicatedRecords);
+    }
+
+    public FileResumeDTO processGeneralResumeRows(List<GeneralResumeTrainingDTO> generalResumeRows, int loadedFileId){
+        logger.info("processGeneralResumeRows. generalResumeRows.size()={}, loadedFileId={}, testType={}",
+                generalResumeRows.size(), loadedFileId);
+        return new FileResumeDTO();
     }
 }

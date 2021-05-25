@@ -191,6 +191,11 @@ public class FileUtilService {
             case TEST_CT_3:
                 return this.loaderCPFile.testPCThreeFile(loadedFile);
 
+            case GENERAL_RESUME:
+                List<GeneralResumeTrainingDTO> generalResumeTrainingRows = parseRowsToBeans(loadedFileReader,
+                        GeneralResumeTrainingDTO.class);
+                return this.loaderMoodleFile.processGeneralResumeRows(generalResumeTrainingRows, loadedFile.getId());
+
             default:
                 return new FileResumeDTO(0, 0, 0);
         }
