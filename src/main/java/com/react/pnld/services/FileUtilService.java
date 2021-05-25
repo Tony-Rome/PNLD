@@ -4,9 +4,6 @@ import com.react.pnld.dto.*;
 import com.react.pnld.interceptor.PNLDInterceptor;
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.model.LoadedFile;
-import com.univocity.parsers.common.DataProcessingException;
-import com.univocity.parsers.common.ParsingContext;
-import com.univocity.parsers.common.RowProcessorErrorHandler;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
@@ -20,7 +17,6 @@ import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -87,6 +83,9 @@ public class FileUtilService {
 
             case SATISFACTION:
                 return csvHeadersProperties.getSatisfaction();
+
+            case GENERAL_RESUME:
+                return csvHeadersProperties.getGeneralResumeArray();
 
             default:
                 return new String[1];

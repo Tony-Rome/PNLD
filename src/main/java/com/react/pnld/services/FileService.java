@@ -35,6 +35,9 @@ public class FileService {
     @Value("${copy.path.files}")
     private String FILE_PATH;
 
+    @Value("${csv.headers.delimiters}")
+    private String csvHeadersDelimiters;
+
     @Autowired
     private FileUtilService fileUtilService;
 
@@ -86,7 +89,7 @@ public class FileService {
         }
 
         String cleanHeaders = EntityAttributeUtilService.removeSymbols(firstLine);
-        String[] headersFromFile = cleanHeaders.split(",");
+        String[] headersFromFile = cleanHeaders.split(this.csvHeadersDelimiters);
         String[] selectedHeadersArray = fileUtilService.selectedHeadersArray(scheduleFileLoadDTO.getSelectedType());
         boolean isHeadersEquals = fileUtilService.isStringArraysEquals(headersFromFile, selectedHeadersArray);
 
