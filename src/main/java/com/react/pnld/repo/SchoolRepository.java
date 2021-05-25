@@ -28,4 +28,9 @@ public class SchoolRepository {
         logger.info("insertSchool. school={}", school);
         return schoolMapper.insertSchool(school);
     }
+
+    public int updateSchool(School school) {
+        logger.info("updateSchool. school={}", school);
+        return schoolMapper.updateSchool(school);
+    }
 }

@@ -219,4 +219,18 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(EntityAttributeUtilService.emailValidator(email3), false);
     }
 
+    @Test
+    public void rbdToInt(){
+        String rbdAsStr1 = "4045-9";
+        int rbdAsIntExpected1 = 40459;
+        Assert.assertEquals(EntityAttributeUtilService.rbdToInt(rbdAsStr1).intValue(), rbdAsIntExpected1);
+
+        String rbdAsStr2 = "22333-6";
+        int rbdAsIntExpected2 = 223336;
+        Assert.assertEquals(EntityAttributeUtilService.rbdToInt(rbdAsStr2).intValue(), rbdAsIntExpected2);
+
+        String rbdAsStr3 = "Municipal";
+        Assert.assertEquals(EntityAttributeUtilService.rbdToInt(rbdAsStr3), null);
+    }
+
 }
