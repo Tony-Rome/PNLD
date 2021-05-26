@@ -28,6 +28,13 @@
             (#{id}, #{regionId}, #{name}, #{city}, #{rbd});
     </insert>
 
+    <update id="updateSchool">
+        UPDATE pnld.colegio
+        SET
+        ciudad = #{city}, comuna = #{commune}, id_region = #{regionId}, rbd = #{rbd}
+        WHERE id = #{id}
+    </update>
+
     <resultMap id="getSchool" type="com.react.pnld.model.School">
         <id property="id" column="id"/>
         <result property="name" column="nombre" />

@@ -221,6 +221,20 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
+    public void rbdToInt(){
+        String rbdAsStr1 = "4045-9";
+        int rbdAsIntExpected1 = 40459;
+        Assert.assertEquals(EntityAttributeUtilService.rbdToInt(rbdAsStr1).intValue(), rbdAsIntExpected1);
+
+        String rbdAsStr2 = "22333-6";
+        int rbdAsIntExpected2 = 223336;
+        Assert.assertEquals(EntityAttributeUtilService.rbdToInt(rbdAsStr2).intValue(), rbdAsIntExpected2);
+
+        String rbdAsStr3 = "Municipal";
+        Assert.assertEquals(EntityAttributeUtilService.rbdToInt(rbdAsStr3), null);
+    }
+
+    @Test
     public void selectedHeaders_Equals_GeneralResumeType(){
         String[] generalResumeHeadersMock = EntityAttributeUtilService.removeSymbols(generalResumeHeaderString).split(";");
         String[] generalResumeHeaders = fileUtilService.selectedHeadersArray("general-resume");
