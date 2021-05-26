@@ -41,7 +41,8 @@ public class FileUtilService {
 
     public FileUtilService() {
         csvParserSettings = new CsvParserSettings();
-        csvParserSettings.setLineSeparatorDetectionEnabled(true);
+        csvParserSettings.getFormat().setDelimiter(';');
+        //csvParserSettings.setLineSeparatorDetectionEnabled(true);
     }
 
     public String[] selectedHeadersArray(String selectedType) {
@@ -93,8 +94,8 @@ public class FileUtilService {
     }
 
     public boolean isStringArraysEquals(String[] firstArray, String[] secondArray) {
-        logger.info("isStringArraysEquals. firstArray={}", firstArray);
-        logger.info("isStringArraysEquals. secondArray={}", secondArray);
+        logger.info("isStringArraysEquals. firstArray={}", Arrays.toString(firstArray));
+        logger.info("isStringArraysEquals. secondArray={}", Arrays.toString(secondArray));
 
         String[] firstArraySorted = firstArray;
         String[] secondArraySorted = secondArray;

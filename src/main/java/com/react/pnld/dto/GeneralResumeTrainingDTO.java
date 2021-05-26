@@ -5,28 +5,27 @@ import com.univocity.parsers.annotations.Parsed;
 
 public class GeneralResumeTrainingDTO {
 
-    //@Parsed(field = "rut")
-    @Parsed(index = 0)
+    @Parsed(field = "Rut,RUT")
     private String rut;
 
-    @Parsed(index = 1)
+    @Parsed(field = "Region,REGION")
     private int regionId;
 
-    @Parsed(index = 2)
+    @Parsed(field = "Rbd,RBD")
     private String rbd;
 
-    @Parsed(index = 3)
+    @Parsed(field = "Nombres,NOMBRES")
     private String names;
 
-    @Parsed(index = 6)
+    @Parsed(field = "Asiste Jornada,ASISTE JORNADA")
     @BooleanString(trueStrings = {"si", "SI"}, falseStrings = {"no", "NO"})
     private boolean attendsInPerson;
 
-    @Parsed(index = 7)
+    @Parsed(field = "anno capacitacion, Anno Capacitacion,ANNO CAPACITACION")
     private int trainingYear;
 
-    @Parsed(index = 14)
-    @BooleanString(trueStrings = {"aprobado", "Aprobado"}, falseStrings = {"reprobado", "Reprobado"})
+    @Parsed(field = "estado final,Estado Final,ESTADO FINAL")
+    @BooleanString(trueStrings = {"aprobado", "Aprobado", "APROBADO"}, falseStrings = {"reprobado", "Reprobado", "REPROBADO"})
     private boolean isApproved;
 
     public GeneralResumeTrainingDTO(){
