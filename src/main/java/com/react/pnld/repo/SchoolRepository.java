@@ -28,4 +28,9 @@ public class SchoolRepository {
         logger.info("insertSchool. school={}", school);
         return schoolMapper.insertSchool(school);
     }
+
+    public Optional<School> getSchool(String name, int rbd){
+        return Optional.ofNullable(schoolMapper.getSchool(name, rbd));
+    }
+
 }

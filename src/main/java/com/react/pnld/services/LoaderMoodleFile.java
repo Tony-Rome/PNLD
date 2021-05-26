@@ -19,6 +19,7 @@ public class LoaderMoodleFile {
 
     @Autowired
     TestRepository testRepository;
+
     @Autowired
     QuestionnaireRepository questionnaireRepository;
 
@@ -192,8 +193,24 @@ public class LoaderMoodleFile {
     }
 
     public FileResumeDTO processGeneralResumeRows(List<GeneralResumeTrainingDTO> generalResumeRows, int loadedFileId){
-        logger.info("processGeneralResumeRows. generalResumeRows.size()={}, loadedFileId={}, testType={}",
+        logger.info("processGeneralResumeRows. generalResumeRows.size()={}, loadedFileId={}",
                 generalResumeRows.size(), loadedFileId);
-        return new FileResumeDTO();
+
+        int newRecords = 0;
+        int duplicatedRecords = 0;
+
+        for(GeneralResumeTrainingDTO generalResumeRow : generalResumeRows){
+            logger.info("processGeneralResumeRows. generalResumeRow={}", generalResumeRow);
+
+            Optional<School> school = entityUtilService.getSchool(null, generalResumeRow.getRbd());
+
+            if(!school.isPresent()){
+
+            }
+
+
+        }
+
+        return new FileResumeDTO(generalResumeRows.size(), newRecords, duplicatedRecords);
     }
 }

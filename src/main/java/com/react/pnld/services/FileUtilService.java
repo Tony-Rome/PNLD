@@ -41,8 +41,8 @@ public class FileUtilService {
 
     public FileUtilService() {
         csvParserSettings = new CsvParserSettings();
-        csvParserSettings.getFormat().setDelimiter(';');
-        //csvParserSettings.setLineSeparatorDetectionEnabled(true);
+        csvParserSettings.setProcessorErrorHandler(new PNLDInterceptor());
+        csvParserSettings.setLineSeparatorDetectionEnabled(true);
     }
 
     public String[] selectedHeadersArray(String selectedType) {
@@ -140,7 +140,7 @@ public class FileUtilService {
         BeanListProcessor<T> rowProcessor = new BeanListProcessor<T>(clazz);
         csvParserSettings.setProcessor(rowProcessor);
         csvParserSettings.setHeaderExtractionEnabled(true);
-        csvParserSettings.setProcessorErrorHandler(new PNLDInterceptor());
+        csvParserSettings.setDelimiterDetectionEnabled(true, csvHeadersProperties.getDelimiters().toCharArray());
 
         CsvParser parser = new CsvParser(csvParserSettings);
         parser.parse(reader);

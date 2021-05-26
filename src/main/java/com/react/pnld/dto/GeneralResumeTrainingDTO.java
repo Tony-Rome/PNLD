@@ -12,7 +12,7 @@ public class GeneralResumeTrainingDTO {
     private int regionId;
 
     @Parsed(field = {"Rbd", "RBD"})
-    private String rbd;
+    private int rbd;
 
     @Parsed(field = {"Nombres", "NOMBRES"})
     private String names;
@@ -32,7 +32,7 @@ public class GeneralResumeTrainingDTO {
         super();
     }
 
-    public GeneralResumeTrainingDTO(String rut, int regionId, String rbd, String names, boolean attendsInPerson,
+    public GeneralResumeTrainingDTO(String rut, int regionId, int rbd, String names, boolean attendsInPerson,
                                     int trainingYear, boolean isApproved) {
         this.rut = rut;
         this.regionId = regionId;
@@ -59,11 +59,11 @@ public class GeneralResumeTrainingDTO {
         this.regionId = regionId;
     }
 
-    public String getRbd() {
+    public int getRbd() {
         return rbd;
     }
 
-    public void setRbd(String rbd) {
+    public void setRbd(int rbd) {
         this.rbd = rbd;
     }
 
@@ -97,5 +97,18 @@ public class GeneralResumeTrainingDTO {
 
     public void setApproved(boolean approved) {
         isApproved = approved;
+    }
+
+    @Override
+    public String toString() {
+        return "GeneralResumeTrainingDTO{" +
+                "rut='" + rut + '\'' +
+                ", regionId=" + regionId +
+                ", rbd='" + rbd + '\'' +
+                ", names='" + names + '\'' +
+                ", attendsInPerson=" + attendsInPerson +
+                ", trainingYear=" + trainingYear +
+                ", isApproved=" + isApproved +
+                '}';
     }
 }

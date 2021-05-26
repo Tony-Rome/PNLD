@@ -28,4 +28,25 @@
             (#{id}, #{regionId}, #{name}, #{city}, #{rbd});
     </insert>
 
+    <resultMap id="getSchool" type="com.react.pnld.model.School">
+        <id property="id" column="id"/>
+        <result property="name" column="nombre" />
+        <result property="city" column="ciudad" />
+        <result property="regionId" column="id_region" />
+        <result property="rbd" column="rbd" />
+    </resultMap>
+    <select id="getSchool" resultType="getSchool">
+        SELECT *
+        FROM pnld.colegio
+        WHERE nombre = #{name};
+    <where>
+        <if test="name != null">
+            nombre = #{name}
+        </if>
+        <if test="rbd != null">
+            AND rbd = #{rbd}
+        </if>
+    </where>
+    </select>
+
 </mapper>

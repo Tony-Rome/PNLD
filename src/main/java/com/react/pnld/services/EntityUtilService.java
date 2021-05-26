@@ -215,5 +215,24 @@ public class EntityUtilService {
         return genderProperties.GENDER_TYPE_NOT_ESPECIFY;
     }
 
+    public Optional<School> getSchool(String name, int rbd){
+        String schoolNameNormalized = EntityAttributeUtilService.removeAccents(name);
+        Optional<School> schoolSelected = schoolRepository.getSchool(schoolNameNormalized, rbd);
+        return schoolSelected;
+    }
 
+    public int updateSchool(School school, int regionId, String name, String city, int rbd, String commune){
+        int regionIdUpdated = (school.getRegionId());
+        String nameSchoolUpdated = null;
+        String cityUpdated= null;
+        int rbdUpdated = 0;
+        String communeUpdated = null;
+
+        school.setRegionId(regionIdUpdated);
+        school.setName(nameSchoolUpdated);
+        school.setCity(cityUpdated);
+        school.setRbd(rbdUpdated);
+
+        return 0;
+    }
 }
