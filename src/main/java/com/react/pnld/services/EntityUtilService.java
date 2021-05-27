@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
@@ -163,6 +162,7 @@ public class EntityUtilService {
 
     }
 
+    //TODO replace for other
     public School createNewSchool(String name, String city, String commune,String regionName, String rbd) {
 
         if (name == null || name.isEmpty()) return schoolRepository.getSchoolByName(NOT_SPECIFIED).get();
@@ -178,6 +178,30 @@ public class EntityUtilService {
 
         Integer rbdAsInt = EntityAttributeUtilService.rbdToInt(rbd);
         newSchool.setRbd((rbdAsInt != null) ? rbdAsInt.intValue() : RBD_ID_NOT_SPECIFIED);
+
+        int resultInsertSchool = this.schoolRepository.insertSchool(newSchool);
+        logger.info("createNewSchool. resultInsertSchool={}", resultInsertSchool);
+        return newSchool;
+    }
+
+    public School createSchool(String name, String city, String commune, int regionId, int rbd) {
+
+        School newSchool = new School();
+        newSchool.setId(schoolRepository.getNextSchoolId());
+        String schoolName = (name == null || name.isEmpty())? NOT_SPECIFIED :
+                EntityAttributeUtilService.removeAccents(name);
+        newSchool.setName(schoolName);
+
+        String schoolCity = (city == null || city.isEmpty())? NOT_SPECIFIED :
+                EntityAttributeUtilService.removeAccents(city);
+        newSchool.setCity(schoolCity);
+
+        String schoolCommune = (commune == null || commune.isEmpty())? NOT_SPECIFIED :
+                EntityAttributeUtilService.removeAccents(commune);
+        newSchool.setCommune(schoolCommune);
+
+        newSchool.setRegionId((regionId == 0)? REGION_ID_OTHER : regionId);
+        newSchool.setRbd((rbd == 0) ? RBD_ID_NOT_SPECIFIED : rbd);
 
         int resultInsertSchool = this.schoolRepository.insertSchool(newSchool);
         logger.info("createNewSchool. resultInsertSchool={}", resultInsertSchool);
@@ -200,7 +224,7 @@ public class EntityUtilService {
             if(rbdAsInt != null) school.setRbd(rbdAsInt.intValue());
         }
 
-        int resultUpdateSchool =schoolRepository.updateSchool(school);
+        int resultUpdateSchool = schoolRepository.updateSchool(school);
         logger.info("updateSchool. resultInsertSchool={}", resultUpdateSchool);
 
         return school;
@@ -235,23 +259,28 @@ public class EntityUtilService {
     }
 
     public Optional<School> getSchool(String name, int rbd){
-        String schoolNameNormalized = EntityAttributeUtilService.removeAccents(name);
+        String schoolNameNormalized = (name == null)? null : EntityAttributeUtilService.removeAccents(name);
         Optional<School> schoolSelected = schoolRepository.getSchool(schoolNameNormalized, rbd);
         return schoolSelected;
     }
 
     public int updateSchool(School school, int regionId, String name, String city, int rbd, String commune){
-        int regionIdUpdated = (school.getRegionId());
-        String nameSchoolUpdated = null;
-        String cityUpdated= null;
-        int rbdUpdated = 0;
-        String communeUpdated = null;
-
+        int regionIdUpdated = (regionId > 0 && regionId < 17)? regionId : school.getRegionId();
         school.setRegionId(regionIdUpdated);
+
+        String nameSchoolUpdated = (name != null && !name.isEmpty())? name : school.getName();
         school.setName(nameSchoolUpdated);
+
+        String cityUpdated= (city != null && !city.isEmpty())? city : school.getCity();
         school.setCity(cityUpdated);
+
+        int rbdUpdated = (rbd != 0)? rbd : school.getRbd();
         school.setRbd(rbdUpdated);
 
-        return 0;
+        String communeUpdated = (commune != null && !commune.isEmpty())? commune : school.getCommune();
+        school.setCommune(communeUpdated);
+
+        int resultUpdate = schoolRepository.updateSchool(school);
+        return resultUpdate;
     }
 }

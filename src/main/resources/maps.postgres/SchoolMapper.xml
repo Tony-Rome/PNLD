@@ -42,18 +42,16 @@
         <result property="regionId" column="id_region" />
         <result property="rbd" column="rbd" />
     </resultMap>
-    <select id="getSchool" resultType="getSchool">
-        SELECT *
-        FROM pnld.colegio
-        WHERE nombre = #{name};
-    <where>
-        <if test="name != null">
-            nombre = #{name}
-        </if>
-        <if test="rbd != null">
-            AND rbd = #{rbd}
-        </if>
-    </where>
+    <select id="getSchool" resultMap="getSchool">
+        SELECT * FROM pnld.colegio
+        <where>
+            <if test="name != null">
+                nombre = #{name}
+            </if>
+            <if test="rbd != null">
+                OR rbd = #{rbd}
+            </if>
+        </where>
     </select>
 
 </mapper>

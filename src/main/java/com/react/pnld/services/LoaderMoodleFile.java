@@ -216,10 +216,14 @@ public class LoaderMoodleFile {
             Optional<School> school = entityUtilService.getSchool(null, generalResumeRow.getRbd());
 
             if(!school.isPresent()){
-
+                School newSchool = entityUtilService.createSchool(null, null, null, generalResumeRow.getRegionId(), generalResumeRow.getRbd());
+                school = Optional.of(newSchool);
+            } else {
+                int updateResponse = entityUtilService.updateSchool(school.get(), generalResumeRow.getRegionId(), null, null, generalResumeRow.getRbd(), null);
+                logger.info("processGeneralResumeRows. updateResponse={}", updateResponse);
             }
 
-
+            logger.info("processGeneralResumeRows. school={}", school.get());
         }
 
         return new FileResumeDTO(generalResumeRows.size(), newRecords, duplicatedRecords);
