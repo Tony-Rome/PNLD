@@ -35,7 +35,6 @@
 }
 
 .filterAccordion .filterBlock.filterActive .filterContent {
-    overflow-y: scroll;
     height: 150px;
     border-top: 1px solid black;
     border-top-left-radius: 0;
@@ -44,4 +43,8 @@
 
 .filterAccordion .filterBlock.filterInactive .filterTitle {
     background-color: #d9d9d9;
+}
+
+.filterAccordion .filterBlock.filterActive .filterContent.scrollable {
+    overflow-y: scroll;
 }

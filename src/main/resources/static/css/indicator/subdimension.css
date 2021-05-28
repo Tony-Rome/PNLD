@@ -44,3 +44,7 @@
 .subDimensionAccordion .subDimensionBlock.subDimensionInactive .subDimensionTitle {
     background-color: #d9d9d9;
 }
+
+.subDimensionAccordion .subDimensionBlock.subDimensionActive .subDimensionContent.scrollable {
+    overflow-y: scroll;
+}

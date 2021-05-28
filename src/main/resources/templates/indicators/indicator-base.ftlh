@@ -1,101 +1,82 @@
-<#import "../commons/header.ftlh" as hd />
+<#macro head>
+        <head>
+            <title>Archivos</title>
+            <meta charset="UTF-8">
+            <base href="/">
+            <link href="css/header.css" rel="stylesheet"/>
+            <link href="css/indicator/indicator-base.css" rel="stylesheet"/>
+            <link href="css/indicator/subdimension.css" rel="stylesheet"/>
+            <link href="css/indicator/filter.css" rel="stylesheet"/>
+        </head>
+</#macro>
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Archivos</title>
-        <meta charset="UTF-8">
-        <base href="/">
-        <link href="css/header.css" rel="stylesheet"/>
-        <link href="css/indicator/indicator-base.css" rel="stylesheet"/>
-        <link href="css/indicator/subdimension.css" rel="stylesheet"/>
-        <link href="css/indicator/filter.css" rel="stylesheet"/>
-    </head>
-    <body>
+<#macro dimensions dimensionIndex>
 
-    <@hd.header title = 'Indicadores' />
+    <#assign dimensionsList = ["Capacitaciones","Codo","Test Pensamiento Computacional"]/>
+    <#assign linkList = ["training","code","TPC"]/>
 
     <div class=dimensionHeaderContainer>
         <div class=dimensionTitle>Dimensiones</div>
+
         <div class=dimensionContainer>
-            <div class=dimension>Capacitaciones</div>
-            <div class=dimension>Uso Code.org</div>
-            <div class=dimension>Test Pensamiento COmputacional</div>
+            <#list dimensionsList as d>
+                <a href="/indicators/${linkList[d?index]}" class="dimension <#if d?index == dimensionIndex>active</#if>">${d}</a>
+            </#list>
+        </div>
+    </div>
+</#macro>
+
+<#macro chart >
+    <div class=chartContainer id=chartContainer>
+        <canvas id="myChart" width="400" height="400"></canvas>
+    </div>
+</#macro>
+
+<#macro yearFilter>
+    <#assign currentYear = .now?string.yyyy?number />
+
+    <#assign yearRange = 5 />
+    <#assign lastYear = currentYear - yearRange />
+
+    <div class="filterBlock filterActive">
+      <h3 class="filterTitle">Año</h3>
+      <div class="filterContent scrollable">
+        <#list currentYear..lastYear as yearAsNumber>
+            <#assign yearAsStr = yearAsNumber?string.computer/>
+            <li><input type="checkbox" name="year" value=${yearAsStr} onclick="getYearsSelected()">${yearAsStr}</input></li>
+        </#list>
+      </div>
+    </div>
+</#macro>
+
+<#macro regionFilter>
+
+    <#assign regionList = ["Arica y Parinacota", "Tarapaca", "Antofagasta", "Atacama",
+        "Coquimbo", " Valparaíso", " Metropolitana de Santiago", "O'higgins",
+         "Maule", "Ñuble", "Biobio", "Aracanía", "Los ríos", "Los Lagos", "Aysén", "Magallanes", "Otra"] />
+
+    <div class="filterBlock filterInactive">
+      <h3 class="filterTitle">Región</h3>
+      <div class="filterContent scrollable">
+        <#list regionList as region>
+            <li><input type="checkbox">${region}</input></li>
+        </#list>
+      </div>
+    </div>
+</#macro>
+
+<#macro genderFilter>
+
+    <#assign genderList = ["Femenino", "Masculino", "No especificado", "Otro"]/>
+
+    <div class="filterBlock filterInactive">
+        <h3 class="filterTitle">Género</h3>
+        <div class="filterContent">
+            <#list genderList as gender>
+              <li><input type="checkbox" value=${gender}>${gender}</input></li>
+            </#list>
         </div>
     </div>
 
+</#macro>
 
-    <div class=indicatorContainer>
-
-        <div class=subDimensionContainer>
-            <h3>Subdimensiones</h3>
-
-          <div class="subDimensionAccordion">
-              <div class="subDimensionBlock subDimensionActive">
-                  <h3 class="subDimensionTitle">Establecimientos</h3>
-                  <div class="subDimensionContent">
-                      <li><input type="radio" class="subDimensionOption" value="1" name="institution">Cantidad por región</input></li>
-                      <li><input type="radio" class="subDimensionOption" value="2" name="institution">Participantes en PNLD</input></li>
-                      <li><input type="radio" class="subDimensionOption" value="3" name="institution">% que participan por 1ra vez</input></li>
-                      <li><input type="radio" class="subDimensionOption" value="4" name="institution">% por región</input></li>
-                  </div>
-              </div>
-              <div class="subDimensionBlock subDimensionInactive">
-                  <h3 class="subDimensionTitle">Estudiantes</h3>
-                  <div class="subDimensionContent">
-                      <li><a href="#" class="subDimensionOption">Opcion 1</a></li>
-                      <li><a href="#" class="subDimensionOption">Participantes en PNLD</a></li>
-                      <li><a href="#" class="subDimensionOption">% que participan por 1ra vez</a></li>
-                      <li><a href="#" class="subDimensionOption">% por región</a></li>
-                  </div>
-              </div>
-              <div class="subDimensionBlock subDimensionInactive">
-                  <h3 class="subDimensionTitle">Estudiantes</h3>
-                  <div class="subDimensionContent">
-                  </div>
-              </div>
-          </div>
-
-        </div>
-
-
-        <div class=chartContainer>
-            Grafico
-        </div>
-
-
-        <div class=filterContainer>
-            <h3>Filtros</h3>
-
-            <div class="filterAccordion">
-                  <div class="filterBlock filterActive">
-                      <h3 class="filterTitle">Año</h3>
-                      <div class="filterContent">
-                          <li><input type="checkbox">2021</input></li>
-                          <li><input type="checkbox">2020</input></li>
-                          <li><input type="checkbox">2019</input></li>
-                          <li><input type="checkbox">2018</input></li>
-                      </div>
-                  </div>
-                  <div class="filterBlock filterInactive">
-                      <h3 class="filterTitle">Región</h3>
-                      <div class="filterContent">
-                          <li><input type="checkbox">Tarapaca</input></li>
-                          <li><input type="checkbox">BioBio</input></li>
-                          <li><input type="checkbox">Araucania</input></li>
-                          <li><input type="checkbox">Los Lagos</input></li>
-                          <li><input type="checkbox">Tarapaca</input></li>
-                        <li><input type="checkbox">BioBio</input></li>
-                        <li><input type="checkbox">Araucania</input></li>
-                        <li><input type="checkbox">Los Lagos</input></li>
-                      </div>
-                  </div>
-              </div>
-        </div>
-    </div>
-
-    <div class="exportData">Exportar Datos Indicador <img src="img/excel-logo.jpg" class="logoExcel" alt="export excel"></div>
-
-    <script src="js/indicator/subDimension.js"></script>
-    <script src="js/indicator/filter.js"></script>
-</html>
