@@ -44,4 +44,8 @@ public class PersonRepository {
     public boolean checkIfEmailExists(String email) {
         return personMapper.checkIfEmailExists(email);
     }
+
+    public int updateTeacher(Teacher teacher){
+        return personMapper.updateTeacher(teacher);
+    }
 }

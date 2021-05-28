@@ -243,4 +243,9 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
         Arrays.sort(generalResumeHeadersMock);
         Assert.assertEquals(generalResumeHeaders, generalResumeHeadersMock);
     }
+
+    @Test
+    public void misc(){
+        Assert.assertEquals("1.234.567-k", "1.234.567-K".toLowerCase());
+    }
 }

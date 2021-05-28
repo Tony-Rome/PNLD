@@ -47,10 +47,10 @@ public class EntityAttributeUtilService {
         return rut.replaceAll("[^0-9k]", "");
     }
 
-    public static boolean rutValidator(String rutToClean) {
-        String cleanedRut = clearRut(rutToClean);
+    public static boolean rutValidator(String cleanRut) {
+
         String rutPattern = "[0-9]{6,8}(k|[0-9])";
-        String rut = Pattern.matches(rutPattern, cleanedRut) ? cleanedRut : null;
+        String rut = Pattern.matches(rutPattern, cleanRut) ? cleanRut : null;
 
         if (rut == null) return false;
 

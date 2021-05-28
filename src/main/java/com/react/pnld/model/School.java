@@ -6,13 +6,22 @@ public class School implements Serializable {
 
     private int id;
     private String name;
-    private String city;
     private String commune;
+    private String city;
     private int regionId;
     private int rbd;
 
     public School() {
         super();
+    }
+
+    public School(int id, String name, String commune, String city, int regionId, int rbd) {
+        this.id = id;
+        this.name = name;
+        this.commune = commune;
+        this.city = city;
+        this.regionId = regionId;
+        this.rbd = rbd;
     }
 
     public int getId() {
