@@ -22,38 +22,30 @@
           <div class="subDimensionAccordion">
               <div class="subDimensionBlock subDimensionActive">
 
-                    <assign subDimensions = ["Cantidad por región","Participantes en PNLD", "% que participan por 1ra vez","% por región"]>/
-                  <h3 class="subDimensionTitle">Establecimientos</h3>
+                    <assign subDimensions = ["Cantidad por región","Participantes en PNLD", "% que participan por 1ra vez","% por región"]>
+                  <h3 class="subDimensionTitle">Docentes</h3>
                   <div class="subDimensionContent">
-                      <li><input type="radio" class="subDimensionOption" value="1" name="institution" onclick="chartFunction()">Cantidad por región</input></li>
-                      <li><input type="radio" class="subDimensionOption" value="2" name="institution" onclick="chartFunction()">Participantes en PNLD</input></li>
-                      <li><input type="radio" class="subDimensionOption" value="3" name="institution">% que participan por 1ra vez</input></li>
-                      <li><input type="radio" class="subDimensionOption" value="4" name="institution">% por región</input></li>
+                      <li><input type="radio" class="subDimensionOption" value="1" name="teacher" onclick="chartFunction()">N° de inscritos</input></li>
+                      <li><input type="radio" class="subDimensionOption" value="2" name="teacher" onclick="chartFunction()">% activos</input></li>
+                      <li><input type="radio" class="subDimensionOption" value="3" name="teacher">Distribución n° secciones</input></li>
+                      <li><input type="radio" class="subDimensionOption" value="4" name="teacher">Distribución N° estudiante</input></li>
                   </div>
               </div>
               <div class="subDimensionBlock subDimensionInactive">
                   <h3 class="subDimensionTitle">Estudiantes</h3>
                   <div class="subDimensionContent">
-                      <li><a href="#" class="subDimensionOption">Opcion 1</a></li>
-                      <li><a href="#" class="subDimensionOption">Participantes en PNLD</a></li>
-                      <li><a href="#" class="subDimensionOption">% que participan por 1ra vez</a></li>
-                      <li><a href="#" class="subDimensionOption">% por región</a></li>
-                  </div>
-              </div>
-              <div class="subDimensionBlock subDimensionInactive">
-                  <h3 class="subDimensionTitle">Estudiantes</h3>
-                  <div class="subDimensionContent">
+                      <li><input type="radio" class="subDimensionOption" value="1" name="teacher" onclick="chartFunction()">N° de inscritos</input></li>
+                      <li><input type="radio" class="subDimensionOption" value="1" name="teacher" onclick="chartFunction()">% activos</input></li>
+                      <li><input type="radio" class="subDimensionOption" value="1" name="teacher" onclick="chartFunction()">Distribución nivel de avance</input></li>
+                      <li><input type="radio" class="subDimensionOption" value="1" name="teacher" onclick="chartFunction()">Distribución nivel de uso</input></li>
+
                   </div>
               </div>
           </div>
 
         </div>
 
-
-        <div class=chartContainer id=chartContainer>
-            <canvas id="myChart" width="400" height="400"></canvas>
-        </div>
-
+        <@ib.chart/>
 
         <div class=filterContainer>
             <h3>Filtros</h3>
