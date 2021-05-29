@@ -9,7 +9,6 @@
         <result property="age" column="edad" />
         <result property="department" column="departamento" />
         <result property="participatedInPNLD" column="participo_en_PNLD" />
-        <result property="trainingId" column="id_capacitacion" />
         <result property="personId" column="id_persona"/>
         <result property="name" column="nombre" />
         <result property="paternalLastName" column="apellido_paterno" />
@@ -19,7 +18,7 @@
         <result property="schoolId" column="id_colegio" />
     </resultMap>
     <select id="getTeacherPerson" resultMap="getTeacherPerson" useCache="true">
-        SELECT d.id_docente, d.rut, d.edad, d.departamento, d.participo_en_PNLD, d.id_capacitacion,
+        SELECT d.id_docente, d.rut, d.edad, d.departamento, d.participo_en_PNLD,
                p.id_persona, p.nombre, p.apellido_paterno, p.apellido_materno, p.correo, p.id_genero, p.id_colegio
         FROM pnld.persona p INNER JOIN pnld.docente d
         ON p.id_persona = d.id_persona
@@ -28,11 +27,11 @@
 
     <insert id="insertTeacher">
         INSERT INTO pnld.docente
-        (id_docente, id_persona, rut, edad, departamento, participo_en_PNLD, dicta_en_niveles, dicta_asignaturas,
-         recursos_cs, recursos_robotica, id_capacitacion)
+        (id_docente, id_persona, rut, edad, departamento, participo_en_PNLD, dicta_en_niveles, capacitacion_aprobada,
+         anno_capacitacion)
         VALUES
         (#{teacherId}, #{personId}, #{rut}, #{age}, #{department}, #{participatedInPNLD}, #{teachesInLevels},
-         #{teachesSubjects}, #{csResources}, #{roboticsResources}, #{trainingId})
+         #{isTrainingApproved}, #{trainingYear})
     </insert>
 
     <insert id="insertPerson">
