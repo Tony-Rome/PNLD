@@ -22,6 +22,20 @@ public class TrainingTest implements Serializable {
         super();
     }
 
+    public TrainingTest(int id, String type, int loadedFileId, int teacherId, LocalDateTime initDate,
+                        LocalDateTime endDate, PGInterval requiredInterval, String state, float score, String answers) {
+        this.id = id;
+        this.type = type;
+        this.loadedFileId = loadedFileId;
+        this.teacherId = teacherId;
+        this.initDate = initDate;
+        this.endDate = endDate;
+        this.requiredInterval = requiredInterval;
+        this.state = state;
+        this.score = score;
+        this.answers = answers;
+    }
+
     public int getId() {
         return id;
     }

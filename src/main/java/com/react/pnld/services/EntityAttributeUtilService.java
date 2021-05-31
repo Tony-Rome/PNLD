@@ -28,6 +28,7 @@ public class EntityAttributeUtilService {
     }
 
     public static String removeAccents(String toClean) {
+        if(toClean == null) return new String();
         return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
     }
 

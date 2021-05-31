@@ -71,8 +71,6 @@ public class EntityUtilService {
                 NOT_SPECIFIED : trainingFileDTO.getDepartment();
         teacher.setDepartment(department);
 
-        Training training = this.trainingRepository.getTrainingByFacilitator(NOT_SPECIFIED);
-
         String[] lastNames = EntityAttributeUtilService.splitLastNames(trainingFileDTO.getLastNames());
         teacher.setName(trainingFileDTO.getName());
         teacher.setPaternalLastName(lastNames[0]);
@@ -137,27 +135,16 @@ public class EntityUtilService {
         return teacher;
     }
 
-    public boolean validateTeacherByRut(String rut) {return EntityAttributeUtilService.rutValidator(rut);}
-
     public boolean validatePersonByEmail(String email) {
 
         if (email == null || email.isEmpty() || !EntityAttributeUtilService.emailValidator(email)) return false;
         return !personRepository.checkIfEmailExists(email);
     }
 
-    public Optional<School> getSchoolByName(String schoolName) {
-
-        if (schoolName == null || schoolName.isEmpty()) return Optional.empty();
-
-        String schoolNameNormalized = EntityAttributeUtilService.removeAccents(schoolName);
-        return schoolRepository.getSchoolByName(schoolNameNormalized);
-
-    }
-
     //TODO replace for other
     public School createNewSchool(String name, String city, String commune,String regionName, String rbd) {
 
-        if (name == null || name.isEmpty()) return schoolRepository.getSchoolByName(NOT_SPECIFIED).get();
+        if (name == null || name.isEmpty()) return schoolRepository.getSchoolWhereName(NOT_SPECIFIED).get();
 
         School newSchool = new School();
         newSchool.setId(schoolRepository.getNextSchoolId());
@@ -177,14 +164,11 @@ public class EntityUtilService {
     }
 
     public School createSchool(String name, String commune, String city, int regionId, int rbd) {
-        String schoolName = (name == null || name.isEmpty())? NOT_SPECIFIED :
-                EntityAttributeUtilService.removeAccents(name);
+        String schoolName = (name == null || name.isEmpty())? NOT_SPECIFIED : name;
 
-        String schoolCity = (city == null || city.isEmpty())? NOT_SPECIFIED :
-                EntityAttributeUtilService.removeAccents(city);
+        String schoolCity = (city == null || city.isEmpty())? NOT_SPECIFIED : city;
 
-        String schoolCommune = (commune == null || commune.isEmpty())? NOT_SPECIFIED :
-                EntityAttributeUtilService.removeAccents(commune);
+        String schoolCommune = (commune == null || commune.isEmpty())? NOT_SPECIFIED : commune;
 
         int schoolRegionId = (regionId == 0)? REGION_ID_OTHER : regionId;
 
@@ -247,10 +231,18 @@ public class EntityUtilService {
         return genderProperties.GENDER_TYPE_NOT_ESPECIFY;
     }
 
-    public Optional<School> getSchool(String name, int rbd){
-        String schoolNameNormalized = (name == null)? null : EntityAttributeUtilService.removeAccents(name);
-        Optional<School> schoolSelected = schoolRepository.getSchool(schoolNameNormalized, rbd);
-        return schoolSelected;
+
+    public Optional<School> getSchoolWhereName(String schoolName) {
+
+        Optional<School> selectedSchool = schoolRepository.getSchoolWhereName(schoolName);
+
+        if(!selectedSchool.isPresent()) return schoolRepository.getSchoolWhereRbd(0);
+
+        return selectedSchool;
+    }
+
+    public Optional<School> getSchoolWhereRbd(int rbd){
+        return schoolRepository.getSchoolWhereRbd(rbd);
     }
 
     public int updateSchool(School school, String name, int rbd, int regionId, String city, String commune){
@@ -270,6 +262,7 @@ public class EntityUtilService {
         school.setCommune(communeUpdated);
 
         int resultUpdate = schoolRepository.updateSchool(school);
+        logger.info("updateSchool. school={}, resultUpdate={}", school, resultUpdate);
         return resultUpdate;
     }
 

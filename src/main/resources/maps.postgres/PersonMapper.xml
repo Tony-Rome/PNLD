@@ -50,14 +50,14 @@
     </select>
 
     <select id="checkIfEmailExists" resultType="boolean">
-        SELECT exists(SELECT 0 FROM pnld.persona WHERE correo = #{email});
+        SELECT exists(SELECT 1 FROM pnld.persona WHERE correo = #{email});
     </select>
 
     <update id="updateTeacher">
         UPDATE pnld.docente
-        SET rut = #{rut}, edad = #{age}, departmento = #{department}, participo_en_PNLD = #{participatedInPNLD},
-            dicta_en_niveles = #{teachesInLevels}, cpacitacion_aprobada = #{isTrainingApproved}, anno_capacitacion = #{trainingYear}
-        WHERE id = #{teacherId}
+        SET rut = #{rut}, edad = #{age}, departamento = #{department}, participo_en_PNLD = #{participatedInPNLD},
+            dicta_en_niveles = #{teachesInLevels}, capacitacion_aprobada = #{isTrainingApproved}, anno_capacitacion = #{trainingYear}
+        WHERE id_docente = #{teacherId}
     </update>
 
 

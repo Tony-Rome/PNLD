@@ -6,11 +6,11 @@ public interface SchoolMapper {
 
     int getNextSchoolId();
 
-    School getSchoolByName(String name);
+    School getSchoolWhereName(String name);
 
     int insertSchool(School school);
 
     int updateSchool(School school);
 
-    School getSchool(String name, int rbd);
+    School getSchoolWhereRbd(int rbd);
 }

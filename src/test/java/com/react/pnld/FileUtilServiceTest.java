@@ -254,4 +254,10 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
         String schoolName = "colegio ñuble del río";
         Assert.assertEquals(EntityAttributeUtilService.removeAccents(schoolName), "colegio nuble del rio");
     }
+
+    @Test
+    public void cleaningRut_Equals(){
+        String rut = "2.345.678-k";
+        Assert.assertEquals(EntityAttributeUtilService.clearRut(rut), "2345678k");
+    }
 }

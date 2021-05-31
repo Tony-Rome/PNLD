@@ -20,8 +20,8 @@ public class SchoolRepository {
         return schoolMapper.getNextSchoolId();
     }
 
-    public Optional<School> getSchoolByName(String name) {
-        return Optional.ofNullable(schoolMapper.getSchoolByName(name));
+    public Optional<School> getSchoolWhereName(String name) {
+        return Optional.ofNullable(schoolMapper.getSchoolWhereName(name));
     }
 
     public int insertSchool(School school) {
@@ -34,8 +34,8 @@ public class SchoolRepository {
         return schoolMapper.updateSchool(school);
     }
 
-    public Optional<School> getSchool(String name, int rbd){
-        return Optional.ofNullable(schoolMapper.getSchool(name, rbd));
+    public Optional<School> getSchoolWhereRbd(int rbd){
+        return Optional.ofNullable(schoolMapper.getSchoolWhereRbd(rbd));
     }
 
 }

@@ -8,14 +8,14 @@
         SELECT nextval(pg_get_serial_sequence('pnld.colegio', 'id'));
     </select>
 
-    <resultMap id="getSchoolByName" type="com.react.pnld.model.School">
+    <resultMap id="getSchoolWhereName" type="com.react.pnld.model.School">
         <id property="id" column="id"/>
         <result property="name" column="nombre" />
         <result property="city" column="ciudad" />
         <result property="regionId" column="id_region" />
         <result property="rbd" column="rbd" />
     </resultMap>
-    <select id="getSchoolByName" resultMap="getSchoolByName">
+    <select id="getSchoolWhereName" resultMap="getSchoolWhereName">
         SELECT *
         FROM pnld.colegio
         WHERE nombre = #{name};
@@ -35,23 +35,16 @@
         WHERE id = #{id}
     </update>
 
-    <resultMap id="getSchool" type="com.react.pnld.model.School">
+    <resultMap id="getSchoolWhereRbd" type="com.react.pnld.model.School">
         <id property="id" column="id"/>
         <result property="name" column="nombre" />
         <result property="city" column="ciudad" />
         <result property="regionId" column="id_region" />
         <result property="rbd" column="rbd" />
     </resultMap>
-    <select id="getSchool" resultMap="getSchool">
+    <select id="getSchoolWhereRbd" resultMap="getSchoolWhereRbd">
         SELECT * FROM pnld.colegio
-        <where>
-            <if test="name != null">
-                nombre = #{name}
-            </if>
-            <if test="rbd != null">
-                OR rbd = #{rbd}
-            </if>
-        </where>
+        WHERE rbd = #{rbd};
     </select>
 
 </mapper>

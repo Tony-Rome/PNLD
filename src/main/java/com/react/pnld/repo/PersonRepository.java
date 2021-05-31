@@ -23,14 +23,15 @@ public class PersonRepository {
     }
 
     public int insertTeacher(Teacher teacher) {
-        logger.info("insertTeacher. teacher={}", teacher);
-        return personMapper.insertTeacher(teacher);
+        int resultInsertTeacher = personMapper.insertTeacher(teacher);
+        logger.info("insertTeacher. teacher={}, resultInsertTeacher={}", teacher, resultInsertTeacher);
+        return resultInsertTeacher;
     }
 
     public int insertPerson(Person person) {
-
-        logger.info("insertPerson. person={}", person);
-        return personMapper.insertPerson(person);
+        int resultInsertPerson = personMapper.insertPerson(person);
+        logger.info("insertPerson. person={}, resultInsertPerson={}", person, resultInsertPerson);
+        return  resultInsertPerson;
     }
 
     public int getNextTeacherId() {
