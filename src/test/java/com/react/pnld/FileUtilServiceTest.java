@@ -248,4 +248,10 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     public void misc(){
         Assert.assertEquals("1.234.567-k", "1.234.567-K".toLowerCase());
     }
+
+    @Test
+    public void removeAccents(){
+        String schoolName = "colegio ñuble del río";
+        Assert.assertEquals(EntityAttributeUtilService.removeAccents(schoolName), "colegio nuble del rio");
+    }
 }
