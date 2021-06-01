@@ -58,5 +58,6 @@
 
     <@ib.javascript/>
     <script src="js/indicator/code/subDimension.js"></script>
+    <script src="js/indicator/code/filter.js"></script>
 
 </html>

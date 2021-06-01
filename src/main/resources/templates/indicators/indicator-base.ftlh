@@ -50,7 +50,7 @@
               <div class="filterContent scrollable">
                 <#list currentYear..lastYear as yearAsNumber>
                     <#assign yearAsStr = yearAsNumber?string.computer/>
-                    <li><input type="checkbox" name="year" value=${yearAsStr} onclick="getYearsSelected()">${yearAsStr}</input></li>
+                    <li><input type="checkbox" name="year" value=${yearAsStr}>${yearAsStr}</input></li>
                 </#list>
               </div>
             </div>
@@ -64,7 +64,7 @@
               <h3 class="filterTitle">Región</h3>
               <div class="filterContent scrollable">
                 <#list regionList as region>
-                    <li><input type="checkbox" name="region" value=${region?index} onclick="getRegionsSelected()">${region}</input></li>
+                    <li><input type="checkbox" name="region" value=${region?index}>${region}</input></li>
                 </#list>
               </div>
             </div>
@@ -75,7 +75,7 @@
                 <h3 class="filterTitle">Género</h3>
                 <div class="filterContent">
                     <#list genderList as gender>
-                      <li><input type="checkbox" name="gender" value=${gender?index} onclick="getGendersSelected()">${gender}</input></li>
+                      <li><input type="checkbox" name="gender" value=${gender?index}>${gender}</input></li>
                     </#list>
                 </div>
             </div>

@@ -59,5 +59,6 @@
 
     <@ib.javascript/>
     <script src="js/indicator/tpc/subDimension.js"></script>
+    <script src="js/indicator/tpc/filter.js"></script>
 
 </html>
