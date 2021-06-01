@@ -28,6 +28,7 @@ public class EntityAttributeUtilService {
     }
 
     public static String removeAccents(String toClean) {
+        if(toClean == null) return new String();
         return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
     }
 
@@ -39,7 +40,7 @@ public class EntityAttributeUtilService {
     }
 
     public static String removeSymbols(String strToClean) {
-        String strCleaned = strToClean.replaceAll("(, |[^a-zA-Z0-9,])", "");
+        String strCleaned = strToClean.replaceAll("(, |[^a-zA-Z0-9,;])", "");
         return strCleaned.toLowerCase();
     }
 
@@ -47,10 +48,10 @@ public class EntityAttributeUtilService {
         return rut.replaceAll("[^0-9k]", "");
     }
 
-    public static boolean rutValidator(String rutToClean) {
-        String cleanedRut = clearRut(rutToClean);
+    public static boolean rutValidator(String cleanRut) {
+
         String rutPattern = "[0-9]{6,8}(k|[0-9])";
-        String rut = Pattern.matches(rutPattern, cleanedRut) ? cleanedRut : null;
+        String rut = Pattern.matches(rutPattern, cleanRut) ? cleanRut : null;
 
         if (rut == null) return false;
 

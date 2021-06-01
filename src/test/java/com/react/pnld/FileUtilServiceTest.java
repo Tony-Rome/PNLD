@@ -29,6 +29,7 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     private String studentLevelHeaderString = "teachername,teacheremail,schoolname,schoolcity,course,sectionid,organizer,students,studentswithprojects,index,avgcoursecompleted,maxcoursecompleted,medianlevelsattempted,projects";
     private String signInPerCourseHeaderString = "weekofsigninat,coursename,distinctcountofuseridcsfstarted";
     private String signInsHeaderString = "weekofsigninat,distinctcountofuserid,differenceindistinctcountofuserid";
+    private String generalResumeHeaderString = "RUT;REGIÓN;RBD;NOMBRES;ÍTEM;ASISTE JORNADA ;Año de Capacitacion;FECHA ASISTENCIA 1;FECHA ASISTENCIA 2;EVIDENCIA;ACTIVIDAD EN PLATAFORMA;REVISIÓN EVIDENCIAS ENTREGADAS;ESTADO PLATAFORMA;ESTADO FINAL;PAGO;MONTO ITEM";
 
     @Test
     void contextLoads() {
@@ -233,4 +234,30 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(EntityAttributeUtilService.rbdToInt(rbdAsStr3), null);
     }
 
+    @Test
+    public void selectedHeaders_Equals_GeneralResumeType(){
+        String[] generalResumeHeadersMock = EntityAttributeUtilService.removeSymbols(generalResumeHeaderString).split(";");
+        String[] generalResumeHeaders = fileUtilService.selectedHeadersArray("general-resume");
+
+        Arrays.sort(generalResumeHeaders);
+        Arrays.sort(generalResumeHeadersMock);
+        Assert.assertEquals(generalResumeHeaders, generalResumeHeadersMock);
+    }
+
+    @Test
+    public void misc(){
+        Assert.assertEquals("1.234.567-k", "1.234.567-K".toLowerCase());
+    }
+
+    @Test
+    public void removeAccents(){
+        String schoolName = "colegio ñuble del río";
+        Assert.assertEquals(EntityAttributeUtilService.removeAccents(schoolName), "colegio nuble del rio");
+    }
+
+    @Test
+    public void cleaningRut_Equals(){
+        String rut = "2.345.678-k";
+        Assert.assertEquals(EntityAttributeUtilService.clearRut(rut), "2345678k");
+    }
 }

@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
@@ -30,18 +29,22 @@ public class EntityUtilService {
     private GenderProperties genderProperties;
 
     @Autowired
-    PersonRepository personRepository;
-    @Autowired
-    TrainingRepository trainingRepository;
-    @Autowired
-    SchoolRepository schoolRepository;
-    @Autowired
-    GenderRepository genderRepository;
-    @Autowired
-    RegionRepository regionRepository;
+    private PersonRepository personRepository;
 
-    public Optional<Teacher> getTeacherPersonByRut(String rut) {
-        return personRepository.getTeacherPerson(EntityAttributeUtilService.clearRut(rut));
+    @Autowired
+    private TrainingRepository trainingRepository;
+
+    @Autowired
+    private SchoolRepository schoolRepository;
+
+    @Autowired
+    private GenderRepository genderRepository;
+
+    @Autowired
+    private RegionRepository regionRepository;
+
+    public Optional<Teacher> getTeacherPersonByRut(String cleanRut) {
+        return personRepository.getTeacherPerson(cleanRut);
     }
 
     public int createPerson(Teacher teacher) {
@@ -63,16 +66,10 @@ public class EntityUtilService {
         teacher.setSchoolId(schoolId);
         teacher.setParticipatedInPNLD(false);
         teacher.setTeachesInLevels(null);
-        teacher.setTeachesSubjects(null);
-        teacher.setCsResources(null);
-        teacher.setRoboticsResources(null);
 
         String department = (trainingFileDTO.getDepartment() == null || trainingFileDTO.getDepartment().isEmpty()) ?
                 NOT_SPECIFIED : trainingFileDTO.getDepartment();
         teacher.setDepartment(department);
-
-        Training training = this.trainingRepository.getTrainingByFacilitator(NOT_SPECIFIED);
-        teacher.setTrainingId(training.getId());
 
         String[] lastNames = EntityAttributeUtilService.splitLastNames(trainingFileDTO.getLastNames());
         teacher.setName(trainingFileDTO.getName());
@@ -94,14 +91,10 @@ public class EntityUtilService {
         teacher.setSchoolId(schoolId);
         teacher.setParticipatedInPNLD(false);
         teacher.setTeachesInLevels(null);
-        teacher.setTeachesSubjects(null);
-        teacher.setCsResources(null);
-        teacher.setRoboticsResources(null);
 
         teacher.setDepartment(NOT_SPECIFIED);
 
         Training training = this.trainingRepository.getTrainingByFacilitator(NOT_SPECIFIED);
-        teacher.setTrainingId(training.getId());
 
         String[] lastNames = EntityAttributeUtilService.splitLastNames(diagnosticFileDTO.getLastNames());
         teacher.setName(diagnosticFileDTO.getName());
@@ -125,16 +118,12 @@ public class EntityUtilService {
         teacher.setAge(0);
         teacher.setParticipatedInPNLD(false);
         teacher.setTeachesInLevels(null);
-        teacher.setTeachesSubjects(null);
-        teacher.setCsResources(null);
-        teacher.setRoboticsResources(null);
 
         String department = (exitSatisfactionFileDTO.getDepartment() == null || exitSatisfactionFileDTO.getDepartment().isEmpty()) ?
                 NOT_SPECIFIED : exitSatisfactionFileDTO.getDepartment();
         teacher.setDepartment(department);
 
         Training training = this.trainingRepository.getTrainingByFacilitator(NOT_SPECIFIED);
-        teacher.setTrainingId(training.getId());
 
         String[] lastNames = EntityAttributeUtilService.splitLastNames(exitSatisfactionFileDTO.getLastNames());
         teacher.setName(exitSatisfactionFileDTO.getName());
@@ -146,26 +135,16 @@ public class EntityUtilService {
         return teacher;
     }
 
-    public boolean validateTeacherByRut(String rut) {return EntityAttributeUtilService.rutValidator(rut);}
-
     public boolean validatePersonByEmail(String email) {
 
         if (email == null || email.isEmpty() || !EntityAttributeUtilService.emailValidator(email)) return false;
         return !personRepository.checkIfEmailExists(email);
     }
 
-    public Optional<School> getSchoolByName(String schoolName) {
-
-        if (schoolName == null || schoolName.isEmpty()) return Optional.empty();
-
-        String schoolNameNormalized = EntityAttributeUtilService.removeAccents(schoolName);
-        return schoolRepository.getSchoolByName(schoolNameNormalized);
-
-    }
-
+    //TODO replace for other
     public School createNewSchool(String name, String city, String commune,String regionName, String rbd) {
 
-        if (name == null || name.isEmpty()) return schoolRepository.getSchoolByName(NOT_SPECIFIED).get();
+        if (name == null || name.isEmpty()) return schoolRepository.getSchoolWhereName(NOT_SPECIFIED).get();
 
         School newSchool = new School();
         newSchool.setId(schoolRepository.getNextSchoolId());
@@ -184,26 +163,22 @@ public class EntityUtilService {
         return newSchool;
     }
 
-    public School updateSchool(School school, String city, String commune,String regionName, String rbd){
+    public School createSchool(String name, String commune, String city, int regionId, int rbd) {
+        String schoolName = (name == null || name.isEmpty())? NOT_SPECIFIED : name;
 
-        if(city != null && !city.isEmpty()) school.setCity(city);
+        String schoolCity = (city == null || city.isEmpty())? NOT_SPECIFIED : city;
 
-        if(commune != null && !commune.isEmpty()) school.setCommune(commune);
+        String schoolCommune = (commune == null || commune.isEmpty())? NOT_SPECIFIED : commune;
 
-        if(school.getRegionId() == REGION_ID_OTHER && !regionName.isEmpty() && regionName != null){
-            int regionId = getRegionId(regionName);
-            school.setRegionId(regionId);
-        }
+        int schoolRegionId = (regionId == 0)? REGION_ID_OTHER : regionId;
 
-        if(school.getRbd() == RBD_ID_NOT_SPECIFIED && rbd != null && !rbd.isEmpty()) {
-            Integer rbdAsInt = EntityAttributeUtilService.rbdToInt(rbd);
-            if(rbdAsInt != null) school.setRbd(rbdAsInt.intValue());
-        }
+        int schoolRbd = (rbd == 0) ? RBD_ID_NOT_SPECIFIED : rbd;
 
-        int resultUpdateSchool =schoolRepository.updateSchool(school);
-        logger.info("updateSchool. resultInsertSchool={}", resultUpdateSchool);
-
-        return school;
+        School newSchool = new School(schoolRepository.getNextSchoolId(), schoolName, schoolCommune, schoolCity,
+                schoolRegionId, schoolRbd);
+        int resultInsertSchool = this.schoolRepository.insertSchool(newSchool);
+        logger.info("createNewSchool. newSchool={}, resultInsertSchool={}", newSchool, resultInsertSchool);
+        return newSchool;
     }
 
     public int getRegionId(String name) {
@@ -235,4 +210,50 @@ public class EntityUtilService {
     }
 
 
+    public Optional<School> getSchoolWhereName(String schoolName) {
+
+        Optional<School> selectedSchool = schoolRepository.getSchoolWhereName(schoolName);
+
+        if(!selectedSchool.isPresent()) return schoolRepository.getSchoolWhereRbd(0);
+
+        return selectedSchool;
+    }
+
+    public Optional<School> getSchoolWhereRbd(int rbd){
+        return schoolRepository.getSchoolWhereRbd(rbd);
+    }
+
+    public int updateSchool(School school, String name, int rbd, int regionId, String city, String commune){
+        int regionIdUpdated = (regionId > 0 && regionId < 17)? regionId : school.getRegionId();
+        school.setRegionId(regionIdUpdated);
+
+        String nameSchoolUpdated = (name != null && !name.isEmpty())? name : school.getName();
+        school.setName(nameSchoolUpdated);
+
+        String cityUpdated= (city != null && !city.isEmpty())? city : school.getCity();
+        school.setCity(cityUpdated);
+
+        int rbdUpdated = (rbd != 0)? rbd : school.getRbd();
+        school.setRbd(rbdUpdated);
+
+        String communeUpdated = (commune != null && !commune.isEmpty())? commune : school.getCommune();
+        school.setCommune(communeUpdated);
+
+        int resultUpdate = schoolRepository.updateSchool(school);
+        logger.info("updateSchool. school={}, resultUpdate={}", school, resultUpdate);
+        return resultUpdate;
+    }
+
+    public int updateTeacher(Teacher teacher, int age, String department, boolean participatedInPNLD, String teachesInLevels,
+                             boolean isApproved, int trainngYear){
+
+        if(age != 0) teacher.setAge(age);
+        if(department != null && !department.isEmpty()) teacher.setDepartment(department);
+        if(participatedInPNLD) teacher.setParticipatedInPNLD(participatedInPNLD);
+        if(teachesInLevels != null) teacher.setTeachesInLevels(teachesInLevels);
+        if(isApproved) teacher.setTrainingApproved(isApproved);
+        if(trainngYear > 0) teacher.setTrainingYear(trainngYear);
+
+        return personRepository.updateTeacher(teacher);
+    }
 }

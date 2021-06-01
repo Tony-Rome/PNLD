@@ -1,9 +1,6 @@
 package com.react.pnld.services;
 
-import com.react.pnld.dto.DiagnosticFileDTO;
-import com.react.pnld.dto.FileResumeDTO;
-import com.react.pnld.dto.SatisfactionFileDTO;
-import com.react.pnld.dto.TrainingFileDTO;
+import com.react.pnld.dto.*;
 import com.react.pnld.model.*;
 import com.react.pnld.repo.QuestionnaireRepository;
 import com.react.pnld.repo.TestRepository;
@@ -22,71 +19,60 @@ public class LoaderMoodleFile {
 
     @Autowired
     TestRepository testRepository;
+
     @Autowired
     QuestionnaireRepository questionnaireRepository;
 
     @Autowired
     EntityUtilService entityUtilService;
 
-    public FileResumeDTO processTrainingFileRows(List<TrainingFileDTO> postTrainingRows, int loadedFileId,
+    public FileResumeDTO processTrainingFileRows(List<TrainingFileDTO> trainingRows, int loadedFileId,
                                                  String testType) {
 
         logger.info("processTrainingFileRows. postTrainingRows.size()={}, loadedFileId={}, testType={}",
-                postTrainingRows.size(), loadedFileId, testType);
+                trainingRows.size(), loadedFileId, testType);
 
         int newRecords = 0;
         int duplicatedRecords = 0;
 
-        for (TrainingFileDTO postTrainingRow : postTrainingRows) {
-            logger.info("processTrainingFileRows. postTrainingRow={}", postTrainingRow);
+        for (TrainingFileDTO trainingRow : trainingRows) {
+            logger.info("processTrainingFileRows. trainingRow={}", trainingRow);
 
-            Optional<School> school = entityUtilService.getSchoolByName(postTrainingRow.getSchoolName());
+            String rutCleaned = EntityAttributeUtilService.clearRut(trainingRow.getRut().toLowerCase());
+            Optional<Teacher> teacherSelected = entityUtilService.getTeacherPersonByRut(rutCleaned);
 
-            if (!school.isPresent())
-                school = Optional.of(entityUtilService.createNewSchool(postTrainingRow.getSchoolName(), null, null, null, null));
+            if (!teacherSelected.isPresent()) {
+                String cleanSchoolName = EntityAttributeUtilService.removeAccents(trainingRow.getSchoolName());
+                Optional<School> school = entityUtilService.getSchoolWhereName(cleanSchoolName);
 
-            boolean rut = entityUtilService.validateTeacherByRut(postTrainingRow.getRut());
-            boolean email = entityUtilService.validatePersonByEmail(postTrainingRow.getEmail());
+                Teacher teacher = entityUtilService.buildTeacherFrom(trainingRow, school.get().getId());
+                teacher.setRut(rutCleaned);
+                entityUtilService.createPerson(teacher);
+                entityUtilService.createTeacher(teacher);
 
-            if (rut && email) {
-
-                Optional<Teacher> teacherSelected = entityUtilService.getTeacherPersonByRut(postTrainingRow.getRut());
-
-                if (!teacherSelected.isPresent()) {
-                    Teacher teacher = entityUtilService.buildTeacherFrom(postTrainingRow, school.get().getId());
-                    entityUtilService.createPerson(teacher);
-                    entityUtilService.createTeacher(teacher);
-
-                    teacherSelected = Optional.of(teacher);
-                }
-
-                logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherSelected.get());
-
-                Optional<TrainingTest> trainingTest = testRepository.getTrainingTest(teacherSelected.get().getTeacherId(),
-                        testType);
-
-                if (!trainingTest.isPresent()) {
-                    TrainingTest newTrainingTest = new TrainingTest();
-                    newTrainingTest.setId(this.testRepository.getNextTrainingTestId());
-                    newTrainingTest.setType(testType);
-                    newTrainingTest.setLoadedFileId(loadedFileId);
-                    newTrainingTest.setTeacherId(teacherSelected.get().getTeacherId());
-                    newTrainingTest.setInitDate(postTrainingRow.getStartIn());
-                    newTrainingTest.setEndDate(postTrainingRow.getFinishIn());
-                    newTrainingTest.setRequiredInterval(postTrainingRow.getRequiredInterval());
-                    newTrainingTest.setState(postTrainingRow.getTestState());
-                    newTrainingTest.setScore(postTrainingRow.getScore());
-                    newTrainingTest.setAnswers(null);//TODO set answers list
-
-                    int resultInsertTest = this.testRepository.insertTrainingTest(newTrainingTest);
-                    logger.info("processTrainingFileRows. resultInsertTest={}", resultInsertTest);
-                    newRecords++;
-                } else {
-                    duplicatedRecords++;
-                }
+                teacherSelected = Optional.of(teacher);
             }
+
+            logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherSelected.get());
+            Optional<TrainingTest> trainingTest = testRepository.getTrainingTest(teacherSelected.get().getTeacherId(),
+                    testType);
+
+            if (!trainingTest.isPresent()) {
+                TrainingTest newTrainingTest = new TrainingTest(this.testRepository.getNextTrainingTestId(), testType,
+                        loadedFileId, teacherSelected.get().getTeacherId(), trainingRow.getStartIn(), trainingRow.getFinishIn(),
+                        trainingRow.getRequiredInterval(), trainingRow.getTestState(), trainingRow.getScore(), null);
+
+                int resultInsertTest = this.testRepository.insertTrainingTest(newTrainingTest);
+                logger.info("processTrainingFileRows. resultInsertTest={}", resultInsertTest);
+                newRecords++;
+            } else {
+                duplicatedRecords++;
+            }
+
+            boolean isRutValid = EntityAttributeUtilService.rutValidator(rutCleaned);
+            boolean isEmailValid = entityUtilService.validatePersonByEmail(trainingRow.getEmail());
         }
-        return new FileResumeDTO(postTrainingRows.size(), newRecords, duplicatedRecords);
+        return new FileResumeDTO(trainingRows.size(), newRecords, duplicatedRecords);
     }
 
     public FileResumeDTO diagnosticFile(List<DiagnosticFileDTO> diagnosticRows, int loadedFileId) {
@@ -96,14 +82,18 @@ public class LoaderMoodleFile {
 
         for (DiagnosticFileDTO diagnosticRow : diagnosticRows) {
 
-            Optional<School> school = entityUtilService.getSchoolByName(diagnosticRow.getSchoolName());
+            Optional<School> school = entityUtilService.getSchoolWhereName(diagnosticRow.getSchoolName());
 
-            school = Optional.of(!school.isPresent() ?
-                    entityUtilService.createNewSchool(diagnosticRow.getSchoolName(), null, diagnosticRow.getCommune(), diagnosticRow.getRegion(), diagnosticRow.getRbd())
-                    :
-                    entityUtilService.updateSchool(school.get(), null, diagnosticRow.getCommune(), diagnosticRow.getRegion(), diagnosticRow.getRbd()));
+            if(!school.isPresent()){
+                school = Optional.of(entityUtilService.createNewSchool(diagnosticRow.getSchoolName(), null,
+                        diagnosticRow.getCommune(), diagnosticRow.getRegion(), diagnosticRow.getRbd()));
+            } else {
+                entityUtilService.updateSchool(school.get(), null,
+                        EntityAttributeUtilService.rbdToInt(diagnosticRow.getRbd()).intValue(),
+                        entityUtilService.getRegionId(diagnosticRow.getRegion()), null, diagnosticRow.getCommune());
+            }
 
-            boolean rut = entityUtilService.validateTeacherByRut(diagnosticRow.getRut());
+            boolean rut = EntityAttributeUtilService.rutValidator(diagnosticRow.getRut());
             boolean email = entityUtilService.validatePersonByEmail(diagnosticRow.getEmail());
 
             if (rut && email) {
@@ -157,12 +147,12 @@ public class LoaderMoodleFile {
 
         for (SatisfactionFileDTO satisfactionRow : satisfactionRows) {
 
-            Optional<School> school = entityUtilService.getSchoolByName(satisfactionRow.getSchoolName());
+            Optional<School> school = entityUtilService.getSchoolWhereName(satisfactionRow.getSchoolName());
 
             if(!school.isPresent())
                 school = Optional.of(entityUtilService.createNewSchool(satisfactionRow.getSchoolName(), null, null, null, null));
 
-            boolean rut = entityUtilService.validateTeacherByRut(satisfactionRow.getRut());
+            boolean rut = EntityAttributeUtilService.rutValidator(satisfactionRow.getRut());
 
             if (rut) {
 
@@ -203,5 +193,40 @@ public class LoaderMoodleFile {
             }
         }
         return new FileResumeDTO(satisfactionRows.size(), newRecords, duplicatedRecords);
+    }
+
+    public FileResumeDTO processGeneralResumeRows(List<GeneralResumeTrainingDTO> generalResumeRows, int loadedFileId){
+        logger.info("processGeneralResumeRows. generalResumeRows.size()={}, loadedFileId={}",
+                generalResumeRows.size(), loadedFileId);
+
+        int newRecords = 0;
+        int duplicatedRecords = 0;
+
+        for(GeneralResumeTrainingDTO generalResumeRow : generalResumeRows){
+            logger.info("processGeneralResumeRows. generalResumeRow={}", generalResumeRow);
+
+            Optional<School> school = entityUtilService.getSchoolWhereRbd(generalResumeRow.getRbd());
+
+            if(!school.isPresent()){
+                School newSchool = entityUtilService.createSchool(null, null, null, generalResumeRow.getRegionId(), generalResumeRow.getRbd());
+                school = Optional.of(newSchool);
+            } else {
+                int updateResponse = entityUtilService.updateSchool(school.get(), null, generalResumeRow.getRbd(), generalResumeRow.getRegionId(), null, null);
+                logger.info("processGeneralResumeRows. updateResponse={}", updateResponse);
+            }
+
+            logger.info("processGeneralResumeRows. school={}", school.get());
+
+            String rutCleaned = EntityAttributeUtilService.clearRut(generalResumeRow.getRut().toLowerCase());
+            Optional<Teacher> teacher = entityUtilService.getTeacherPersonByRut(rutCleaned);
+
+            if(teacher.isPresent()){
+                entityUtilService.updateTeacher(teacher.get(), 0, null, true, null,
+                        generalResumeRow.isApproved(), generalResumeRow.getTrainingYear());
+                newRecords++;
+            } //create teacher is not possible because data necessary are in other files
+        }
+
+        return new FileResumeDTO(generalResumeRows.size(), newRecords, duplicatedRecords);
     }
 }

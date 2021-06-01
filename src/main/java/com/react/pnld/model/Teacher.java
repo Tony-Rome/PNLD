@@ -9,11 +9,9 @@ public class Teacher extends Person implements Serializable {
     private int age;
     private String department;
     private boolean participatedInPNLD;
-    private String teachesSubjects;
     private String teachesInLevels;
-    private String csResources;
-    private String roboticsResources;
-    private int trainingId;
+    private boolean isTrainingApproved;
+    private int trainingYear;
 
     public Teacher() {
         super();
@@ -59,14 +57,6 @@ public class Teacher extends Person implements Serializable {
         this.participatedInPNLD = participatedInPNLD;
     }
 
-    public String getTeachesSubjects() {
-        return teachesSubjects;
-    }
-
-    public void setTeachesSubjects(String teachesSubjects) {
-        this.teachesSubjects = teachesSubjects;
-    }
-
     public String getTeachesInLevels() {
         return teachesInLevels;
     }
@@ -75,28 +65,20 @@ public class Teacher extends Person implements Serializable {
         this.teachesInLevels = teachesInLevels;
     }
 
-    public String getCsResources() {
-        return csResources;
+    public boolean isTrainingApproved() {
+        return isTrainingApproved;
     }
 
-    public void setCsResources(String csResources) {
-        this.csResources = csResources;
+    public void setTrainingApproved(boolean trainingApproved) {
+        isTrainingApproved = trainingApproved;
     }
 
-    public String getRoboticsResources() {
-        return roboticsResources;
+    public int getTrainingYear() {
+        return trainingYear;
     }
 
-    public void setRoboticsResources(String roboticsResources) {
-        this.roboticsResources = roboticsResources;
-    }
-
-    public int getTrainingId() {
-        return trainingId;
-    }
-
-    public void setTrainingId(int trainingId) {
-        this.trainingId = trainingId;
+    public void setTrainingYear(int trainingYear) {
+        this.trainingYear = trainingYear;
     }
 
     @Override
@@ -107,11 +89,9 @@ public class Teacher extends Person implements Serializable {
                 ", age=" + age +
                 ", department='" + department + '\'' +
                 ", participatedInPNLD=" + participatedInPNLD +
-                ", teachesSubjects='" + teachesSubjects + '\'' +
                 ", teachesInLevels='" + teachesInLevels + '\'' +
-                ", csResources='" + csResources + '\'' +
-                ", roboticsResources='" + roboticsResources + '\'' +
-                ", trainingId='" + trainingId + '\'' +
+                ", isTrainingApproved=" + isTrainingApproved +
+                ", trainingYear=" + trainingYear +
                 '}';
     }
 }

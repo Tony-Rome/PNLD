@@ -45,7 +45,6 @@ public class FileController {
     @PostMapping(value = "/scheduleFileLoadPost")
     public ResponseEntity<String> scheduleFileLoadPost(ScheduleFileLoadDTO scheduleFileLoadDTO, Model model) {
 
-
         model.addAttribute("scheduleFileLoadDTO", scheduleFileLoadDTO);
 
         String loadedBy = SecurityContextHolder.getContext().getAuthentication().getName();
