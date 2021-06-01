@@ -50,19 +50,7 @@
 
         <@ib.chart/>
 
-        <div class=filterContainer>
-            <h3>Filtros</h3>
-
-            <div class="filterAccordion">
-
-                  <@ib.yearFilter/>
-
-                  <@ib.regionFilter/>
-
-                  <@ib.genderFilter/>
-
-              </div>
-        </div>
+        <@ib.filter/>
 
     </div>
 

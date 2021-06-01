@@ -53,19 +53,8 @@
 
         <@ib.chart/>
 
-        <div class=filterContainer>
-            <h3>Filtros</h3>
+        <@ib.filter/>
 
-            <div class="filterAccordion">
-
-                  <@ib.yearFilter/>
-
-                  <@ib.regionFilter/>
-
-                  <@ib.genderFilter/>
-
-              </div>
-        </div>
     </div>
 
     <div class="exportData">Exportar Datos Indicador <img src="img/excel-logo.jpg" class="logoExcel" alt="export excel"></div>

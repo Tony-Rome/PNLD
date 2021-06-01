@@ -3,7 +3,6 @@ import {getChart} from './chart.js';
 const SUB_DIMENSION_BASE_URL = '/v1/capacitaciones/establecimientos/';
 const institutionList = document.getElementsByName('institution');
 
-
 function getInfoRegion(){
 
     let fromYearParam = 2021;

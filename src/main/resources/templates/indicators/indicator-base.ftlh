@@ -32,49 +32,53 @@
     </div>
 </#macro>
 
-<#macro yearFilter>
-    <#assign currentYear = .now?string.yyyy?number />
+<#macro filter>
 
-    <#assign yearRange = 4 />
-    <#assign lastYear = currentYear - yearRange />
+    <div class=filterContainer>
 
-    <div class="filterBlock filterActive">
-      <h3 class="filterTitle">Año</h3>
-      <div class="filterContent scrollable">
-        <#list currentYear..lastYear as yearAsNumber>
-            <#assign yearAsStr = yearAsNumber?string.computer/>
-            <li><input type="checkbox" name="year" value=${yearAsStr} onclick="getYearsSelected()">${yearAsStr}</input></li>
-        </#list>
-      </div>
-    </div>
-</#macro>
+        <h3>Filtros</h3>
 
-<#macro regionFilter>
+        <div class="filterAccordion">
 
-    <#assign regionList = ["Arica y Parinacota", "Tarapaca", "Antofagasta", "Atacama",
-        "Coquimbo", " Valparaíso", " Metropolitana de Santiago", "O'higgins",
-         "Maule", "Ñuble", "Biobio", "Aracanía", "Los ríos", "Los Lagos", "Aysén", "Magallanes", "Otra"] />
+            <#assign currentYear = .now?string.yyyy?number />
 
-    <div class="filterBlock filterInactive">
-      <h3 class="filterTitle">Región</h3>
-      <div class="filterContent scrollable">
-        <#list regionList as region>
-            <li><input type="checkbox" name="region" value=${region?index} onclick="getRegionsSelected()">${region}</input></li>
-        </#list>
-      </div>
-    </div>
-</#macro>
+            <#assign yearRange = 4 />
+            <#assign lastYear = currentYear - yearRange />
 
-<#macro genderFilter>
+            <div class="filterBlock filterActive">
+              <h3 class="filterTitle">Año</h3>
+              <div class="filterContent scrollable">
+                <#list currentYear..lastYear as yearAsNumber>
+                    <#assign yearAsStr = yearAsNumber?string.computer/>
+                    <li><input type="checkbox" name="year" value=${yearAsStr} onclick="getYearsSelected()">${yearAsStr}</input></li>
+                </#list>
+              </div>
+            </div>
 
-    <#assign genderList = ["Femenino", "Masculino", "No especificado", "Otro"]/>
 
-    <div class="filterBlock filterInactive" id="genderFilter">
-        <h3 class="filterTitle">Género</h3>
-        <div class="filterContent">
-            <#list genderList as gender>
-              <li><input type="checkbox" name="gender" value=${gender?index} onclick="getGendersSelected()">${gender}</input></li>
-            </#list>
+            <#assign regionList = ["Arica y Parinacota", "Tarapaca", "Antofagasta", "Atacama",
+                "Coquimbo", " Valparaíso", " Metropolitana de Santiago", "O'higgins",
+                 "Maule", "Ñuble", "Biobio", "Aracanía", "Los ríos", "Los Lagos", "Aysén", "Magallanes", "Otra"] />
+
+            <div class="filterBlock filterInactive">
+              <h3 class="filterTitle">Región</h3>
+              <div class="filterContent scrollable">
+                <#list regionList as region>
+                    <li><input type="checkbox" name="region" value=${region?index} onclick="getRegionsSelected()">${region}</input></li>
+                </#list>
+              </div>
+            </div>
+
+            <#assign genderList = ["Femenino", "Masculino", "No especificado", "Otro"]/>
+
+            <div class="filterBlock filterInactive" id="genderFilter">
+                <h3 class="filterTitle">Género</h3>
+                <div class="filterContent">
+                    <#list genderList as gender>
+                      <li><input type="checkbox" name="gender" value=${gender?index} onclick="getGendersSelected()">${gender}</input></li>
+                    </#list>
+                </div>
+            </div>
         </div>
     </div>
 </#macro>
