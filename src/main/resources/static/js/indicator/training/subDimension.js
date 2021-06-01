@@ -3,6 +3,10 @@ import {getChart} from './chart.js';
 const SUB_DIMENSION_BASE_URL = '/v1/capacitaciones/establecimientos/';
 const institutionList = document.getElementsByName('institution');
 
+const PARTICIPANT_INSTITUTION_NUMBER = 0;
+const FIRST_TIME_INSTITUTION_PERCENTAGE = 1;
+const PARTICIPANT_INSTITUTION_PERCENTAGE = 2;
+
 function getInfoRegion(){
 
     let fromYearParam = 2021;
@@ -15,7 +19,6 @@ function getInfoRegion(){
         });
     return response;
 };
-
 
 function randomColorFunction(){
     let r = Math.floor(Math.random() * 255);
@@ -32,9 +35,7 @@ function randomColorFunction(){
     return randomColorDict;
 };
 
-
-async function chartFunction() {
-
+async function participantInstitutionNumber() {
     let response = await getInfoRegion();
     let infoRegionsResponse = response['trainingInfoRegions'];
 
@@ -67,7 +68,26 @@ async function chartFunction() {
 
     getChart(labels, datasets);
 
-};
+}
+
+function firstTimeInstitutionPercentage(){}
+
+function participantInstitutionPercentage(){}
+
+function chartFunction() {
+
+    switch(parseInt(this.value)){
+        case PARTICIPANT_INSTITUTION_NUMBER:
+            participantInstitutionNumber();
+            break;
+        case FIRST_TIME_INSTITUTION_PERCENTAGE:
+            firstTimeInstitutionPercentage;
+            break;
+        case PARTICIPANT_INSTITUTION_PERCENTAGE:
+            participantInstitutionPercentage;
+            break;
+    }
+}
 
 institutionList.forEach((e,i) => {
     e.addEventListener('click', chartFunction);
