@@ -20,34 +20,38 @@
             <h3>Subdimensiones</h3>
 
           <div class="subDimensionAccordion">
+
               <div class="subDimensionBlock subDimensionActive">
 
-                  <h3 class="subDimensionTitle">Establecimientos</h3>
+                  <h3 class="subDimensionTitle" id="institution">Establecimientos</h3>
                   <div class="subDimensionContent">
-                      <li><input type="radio" class="subDimensionOption" value="2" name="institution" onclick="chartFunction()">N° participantes en PNLD</input></li>
-                      <li><input type="radio" class="subDimensionOption" value="3" name="institution">% que participan por 1ra vez</input></li>
-                      <li><input type="radio" class="subDimensionOption" value="4" name="institution">% de participantes</input></li>
+
+                    <#assign institutionList = ["N° participantes en PNLD", "% que participan por 1ra vez", "% de participantes"]/>
+                    <#list institutionList as institution>
+                        <li><input type="radio" class="subDimensionOption" value=${institution?index} name="institution" onclick="chartFunction()">${institution}</input></li>
+                    </#list>
+
                   </div>
               </div>
+
               <div class="subDimensionBlock subDimensionInactive">
-                  <h3 class="subDimensionTitle">Docentes</h3>
+
+                  <h3 class="subDimensionTitle" id="teacher">Docentes</h3>
                   <div class="subDimensionContent scrollable">
-                      <li><input type="radio" class="subDimensionOption">N° de capacitados</input></li>
-                      <li><input type="radio" class="subDimensionOption">% de jornada presencial</input></li>
-                      <li><input type="radio" class="subDimensionOption">% que completan pre-test</input></li>
-                      <li><input type="radio" class="subDimensionOption">% que completan post-test</input></li>
-                      <li><input type="radio" class="subDimensionOption">% que completan curso en línea</input></li>
-                      <li><input type="radio" class="subDimensionOption">% que aprueban capacitación</input></li>
-                      <li><input type="radio" class="subDimensionOption">Diferencia puntajes pre y post-test</input></li>
+
+                    <#assign teacherList = ["N° de capacitados", "% de jornada presencial", "% que completan pre-test", "% que completan post-test", "% que completan curso en línea", "% que aprueban capacitación", "Diferencia puntajes pre y post-test"]/>
+
+                    <#list teacherList as teacher>
+                        <li><input type="radio" class="subDimensionOption" value=${teacher?index} name="teacher" onclick="chartFunction()">${teacher}</input></li>
+                    </#list>
+
                   </div>
               </div>
           </div>
 
         </div>
 
-
         <@ib.chart/>
-
 
         <div class=filterContainer>
             <h3>Filtros</h3>
@@ -66,7 +70,8 @@
 
     <div class="exportData">Exportar Datos Indicador <img src="img/excel-logo.jpg" class="logoExcel" alt="export excel"></div>
 
-    <script src="js/indicator/subDimension.js"></script>
-    <script src="js/indicator/filter.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <@ib.javascript/>
+    <script src="js/indicator/training/subDimension.js"></script>
+    <script src="js/indicator/training/filter.js"></script>
+
 </html>

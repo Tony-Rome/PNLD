@@ -12,7 +12,7 @@
 
 <#macro dimensions dimensionIndex>
 
-    <#assign dimensionsList = ["Capacitaciones","Codo","Test Pensamiento Computacional"]/>
+    <#assign dimensionsList = ["Capacitaciones","Code.org","Test Pensamiento Computacional"]/>
     <#assign linkList = ["training","code","TPC"]/>
 
     <div class=dimensionHeaderContainer>
@@ -35,7 +35,7 @@
 <#macro yearFilter>
     <#assign currentYear = .now?string.yyyy?number />
 
-    <#assign yearRange = 5 />
+    <#assign yearRange = 4 />
     <#assign lastYear = currentYear - yearRange />
 
     <div class="filterBlock filterActive">
@@ -59,7 +59,7 @@
       <h3 class="filterTitle">Región</h3>
       <div class="filterContent scrollable">
         <#list regionList as region>
-            <li><input type="checkbox">${region}</input></li>
+            <li><input type="checkbox" name="region" value=${region?index} onclick="getRegionsSelected()">${region}</input></li>
         </#list>
       </div>
     </div>
@@ -69,14 +69,19 @@
 
     <#assign genderList = ["Femenino", "Masculino", "No especificado", "Otro"]/>
 
-    <div class="filterBlock filterInactive">
+    <div class="filterBlock filterInactive" id="genderFilter">
         <h3 class="filterTitle">Género</h3>
         <div class="filterContent">
             <#list genderList as gender>
-              <li><input type="checkbox" value=${gender}>${gender}</input></li>
+              <li><input type="checkbox" name="gender" value=${gender?index} onclick="getGendersSelected()">${gender}</input></li>
             </#list>
         </div>
     </div>
+</#macro>
 
+<#macro javascript>
+    <script src="js/indicator/subDimension.js"></script>
+    <script src="js/indicator/filter.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </#macro>
 

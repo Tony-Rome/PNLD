@@ -11,16 +11,3 @@ filterTitle.forEach( (t, i) => {
         filterBock[i].classList.remove('filterInactive')
     })
 });
-
-
-
-
-getYearsSelected = () => {
-    const yearsFilters = document.getElementsByName('year');
-    var yearsSelected = [];
-    yearsFilters.forEach( (e, i) => {
-        yearsSelected.push(yearsFilters[i].checked);
-    })
-
-    console.log(yearsSelected);
-};
