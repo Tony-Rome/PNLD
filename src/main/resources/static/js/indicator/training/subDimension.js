@@ -1,9 +1,10 @@
-const ctx = document.getElementById('myChart').getContext('2d');
+import {getChart} from './chart.js';
+
 const SUB_DIMENSION_BASE_URL = '/v1/capacitaciones/establecimientos/';
+const institutionList = document.getElementsByName('institution');
 
-var myChart;
 
-getInfoRegion = () => {
+function getInfoRegion(){
 
     let fromYearParam = 2021;
     let toYearParam = 2021;
@@ -17,7 +18,7 @@ getInfoRegion = () => {
 };
 
 
-randomColorFunction = () => {
+function randomColorFunction(){
     let r = Math.floor(Math.random() * 255);
     let g = Math.floor(Math.random() * 255);
     let b = Math.floor(Math.random() * 255);
@@ -29,87 +30,46 @@ randomColorFunction = () => {
     randomColorDict['backgroundColor'] = "rgba(" + r + "," + g + "," + b + "," + COLOR_TRANSPARENT + ")"
     randomColorDict['borderColor'] = "rgba(" + r + "," + g + "," + b + "," + COLOR_SOLID + ")"
 
-    return randomColorDict
+    return randomColorDict;
 };
 
 
-chartFunction = async () => {
+async function chartFunction() {
 
-        let response = await getInfoRegion();
-        let infoRegionsResponse = response['trainingInfoRegions'];
+    let response = await getInfoRegion();
+    let infoRegionsResponse = response['trainingInfoRegions'];
 
-        let labels = [];
-        let data = [];
-        let backgroundColor = [];
-        let borderColor = [];
-        let datasets = [];
-        let dataset = {};
+    let labels = [];
+    let data = [];
+    let backgroundColor = [];
+    let borderColor = [];
+    let datasets = [];
+    let dataset = {};
 
-        infoRegionsResponse.forEach( (element, index) => {
+    infoRegionsResponse.forEach( (element, index) => {
 
-            let regionName = element['name'];
-            let schoolNumber = element['numberInstitutionsInPNLD'];
-            let randomColorDict = randomColorFunction();
+        let regionName = element['name'];
+        let schoolNumber = element['numberInstitutionsInPNLD'];
+        let randomColorDict = randomColorFunction();
 
-            labels.push(regionName);
+        labels.push(regionName);
 
-            data.push(schoolNumber);
-            backgroundColor.push(randomColorDict['backgroundColor'])
-            borderColor.push(randomColorDict['borderColor'])
+        data.push(schoolNumber);
+        backgroundColor.push(randomColorDict['backgroundColor']);
+        borderColor.push(randomColorDict['borderColor']);
 
-        });
+    });
 
-        dataset['data'] = data;
-        dataset['backgroundColor'] = backgroundColor;
-        dataset['borderColor'] = borderColor;
+    dataset['data'] = data;
+    dataset['backgroundColor'] = backgroundColor;
+    dataset['borderColor'] = borderColor;
 
-        datasets.push(dataset);
+    datasets.push(dataset);
 
-        if(myChart) { myChart.destroy(); }
+    getChart(labels, datasets);
 
-        myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: datasets
-                },
-                options: {
-                    scales: {
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Regiones',
-                                font: {
-                                    size: 14,
-                                },
+};
 
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Cantida',
-                                font: {
-                                    size: 14,
-                                },
-                                padding: {
-                                    top: 12,
-                                }
-                            }
-                        }
-                    },
-                    indexAxis: 'y',
-                    plugins:{
-                        legend: {
-                            display: false
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'N° de colegios por región'
-                    }
-                }
-            });
-
-        myChart.update();
-    };
+institutionList.forEach((e,i) => {
+    e.addEventListener('click', chartFunction);
+});

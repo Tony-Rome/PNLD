@@ -28,7 +28,7 @@
 
                     <#assign institutionList = ["N° participantes en PNLD", "% que participan por 1ra vez", "% de participantes"]/>
                     <#list institutionList as institution>
-                        <li><input type="radio" class="subDimensionOption" value=${institution?index} name="institution" onclick="chartFunction()">${institution}</input></li>
+                        <li><input type="radio" class="subDimensionOption" value=${institution?index} name="institution">${institution}</input></li>
                     </#list>
 
                   </div>
@@ -71,7 +71,7 @@
     <div class="exportData">Exportar Datos Indicador <img src="img/excel-logo.jpg" class="logoExcel" alt="export excel"></div>
 
     <@ib.javascript/>
-    <script src="js/indicator/training/subDimension.js"></script>
+    <script type="module" src="js/indicator/training/subDimension.js"></script>
     <script src="js/indicator/training/filter.js"></script>
 
 </html>
