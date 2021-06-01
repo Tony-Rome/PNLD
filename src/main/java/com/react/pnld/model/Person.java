@@ -13,9 +13,6 @@ public class Person {
         super();
     }
 
-
-
-
     public int getPersonId() {
         return personId;
     }

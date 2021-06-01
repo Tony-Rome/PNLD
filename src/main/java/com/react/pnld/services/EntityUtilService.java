@@ -181,28 +181,6 @@ public class EntityUtilService {
         return newSchool;
     }
 
-    /*public School updateSchool(School school, String city, String commune,String regionName, String rbd){
-
-        if(city != null && !city.isEmpty()) school.setCity(city);
-
-        if(commune != null && !commune.isEmpty()) school.setCommune(commune);
-
-        if(school.getRegionId() == REGION_ID_OTHER && !regionName.isEmpty() && regionName != null){
-            int regionId = getRegionId(regionName);
-            school.setRegionId(regionId);
-        }
-
-        if(school.getRbd() == RBD_ID_NOT_SPECIFIED && rbd != null && !rbd.isEmpty()) {
-            Integer rbdAsInt = EntityAttributeUtilService.rbdToInt(rbd);
-            if(rbdAsInt != null) school.setRbd(rbdAsInt.intValue());
-        }
-
-        int resultUpdateSchool = schoolRepository.updateSchool(school);
-        logger.info("updateSchool. resultInsertSchool={}", resultUpdateSchool);
-
-        return school;
-    }*/
-
     public int getRegionId(String name) {
 
         if (name == null || name.isEmpty()) return REGION_ID_OTHER;

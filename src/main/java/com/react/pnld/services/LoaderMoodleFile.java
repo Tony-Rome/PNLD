@@ -85,9 +85,11 @@ public class LoaderMoodleFile {
             Optional<School> school = entityUtilService.getSchoolWhereName(diagnosticRow.getSchoolName());
 
             if(!school.isPresent()){
-                entityUtilService.createNewSchool(diagnosticRow.getSchoolName(), null, diagnosticRow.getCommune(), diagnosticRow.getRegion(), diagnosticRow.getRbd());
+                school = Optional.of(entityUtilService.createNewSchool(diagnosticRow.getSchoolName(), null,
+                        diagnosticRow.getCommune(), diagnosticRow.getRegion(), diagnosticRow.getRbd()));
             } else {
-                entityUtilService.updateSchool(school.get(), null, EntityAttributeUtilService.rbdToInt(diagnosticRow.getRbd()).intValue(),
+                entityUtilService.updateSchool(school.get(), null,
+                        EntityAttributeUtilService.rbdToInt(diagnosticRow.getRbd()).intValue(),
                         entityUtilService.getRegionId(diagnosticRow.getRegion()), null, diagnosticRow.getCommune());
             }
 
@@ -204,7 +206,6 @@ public class LoaderMoodleFile {
             logger.info("processGeneralResumeRows. generalResumeRow={}", generalResumeRow);
 
             Optional<School> school = entityUtilService.getSchoolWhereRbd(generalResumeRow.getRbd());
-            logger.info("processGeneralResumeRows. school={}", school.get());
 
             if(!school.isPresent()){
                 School newSchool = entityUtilService.createSchool(null, null, null, generalResumeRow.getRegionId(), generalResumeRow.getRbd());
@@ -213,6 +214,8 @@ public class LoaderMoodleFile {
                 int updateResponse = entityUtilService.updateSchool(school.get(), null, generalResumeRow.getRbd(), generalResumeRow.getRegionId(), null, null);
                 logger.info("processGeneralResumeRows. updateResponse={}", updateResponse);
             }
+
+            logger.info("processGeneralResumeRows. school={}", school.get());
 
             String rutCleaned = EntityAttributeUtilService.clearRut(generalResumeRow.getRut().toLowerCase());
             Optional<Teacher> teacher = entityUtilService.getTeacherPersonByRut(rutCleaned);

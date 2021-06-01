@@ -35,14 +35,7 @@
         WHERE id = #{id}
     </update>
 
-    <resultMap id="getSchoolWhereRbd" type="com.react.pnld.model.School">
-        <id property="id" column="id"/>
-        <result property="name" column="nombre" />
-        <result property="city" column="ciudad" />
-        <result property="regionId" column="id_region" />
-        <result property="rbd" column="rbd" />
-    </resultMap>
-    <select id="getSchoolWhereRbd" resultMap="getSchoolWhereRbd">
+    <select id="getSchoolWhereRbd" resultMap="getSchoolWhereName">
         SELECT * FROM pnld.colegio
         WHERE rbd = #{rbd};
     </select>
