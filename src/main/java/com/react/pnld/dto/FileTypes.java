@@ -13,6 +13,7 @@ public enum FileTypes {
     TEST_CT_2("test-pc-2"),
     TEST_CT_3("test-pc-3"),
     SATISFACTION("satis"),
+    GENERAL_RESUME("general-resume"),
     NOT_DEFINED("");
 
     public final String label;

@@ -8,15 +8,14 @@
         SELECT nextval(pg_get_serial_sequence('pnld.colegio', 'id'));
     </select>
 
-    <resultMap id="school" type="com.react.pnld.model.School">
+    <resultMap id="getSchoolWhereName" type="com.react.pnld.model.School">
         <id property="id" column="id"/>
         <result property="name" column="nombre" />
         <result property="city" column="ciudad" />
         <result property="regionId" column="id_region" />
         <result property="rbd" column="rbd" />
     </resultMap>
-
-    <select id="getSchoolByName" resultMap="school">
+    <select id="getSchoolWhereName" resultMap="getSchoolWhereName">
         SELECT *
         FROM pnld.colegio
         WHERE nombre = #{name};
@@ -24,9 +23,9 @@
 
     <insert id="insertSchool">
         INSERT INTO pnld.colegio
-            (id, id_region, nombre, ciudad, comuna, rbd)
+            (id, id_region, nombre, ciudad, rbd)
         VALUES
-            (#{id}, #{regionId}, #{name}, #{city}, #{commune}, #{rbd});
+            (#{id}, #{regionId}, #{name}, #{city}, #{rbd});
     </insert>
 
     <update id="updateSchool">
@@ -35,5 +34,10 @@
         ciudad = #{city}, comuna = #{commune}, id_region = #{regionId}, rbd = #{rbd}
         WHERE id = #{id}
     </update>
+
+    <select id="getSchoolWhereRbd" resultMap="getSchoolWhereName">
+        SELECT * FROM pnld.colegio
+        WHERE rbd = #{rbd};
+    </select>
 
 </mapper>

@@ -4,9 +4,6 @@ import com.react.pnld.dto.*;
 import com.react.pnld.interceptor.PNLDInterceptor;
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.model.LoadedFile;
-import com.univocity.parsers.common.DataProcessingException;
-import com.univocity.parsers.common.ParsingContext;
-import com.univocity.parsers.common.RowProcessorErrorHandler;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
@@ -20,7 +17,6 @@ import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -45,6 +41,7 @@ public class FileUtilService {
 
     public FileUtilService() {
         csvParserSettings = new CsvParserSettings();
+        csvParserSettings.setProcessorErrorHandler(new PNLDInterceptor());
         csvParserSettings.setLineSeparatorDetectionEnabled(true);
     }
 
@@ -88,14 +85,17 @@ public class FileUtilService {
             case SATISFACTION:
                 return csvHeadersProperties.getSatisfaction();
 
+            case GENERAL_RESUME:
+                return csvHeadersProperties.getGeneralResumeArray();
+
             default:
                 return new String[1];
         }
     }
 
     public boolean isStringArraysEquals(String[] firstArray, String[] secondArray) {
-        logger.info("isStringArraysEquals. firstArray={}", firstArray);
-        logger.info("isStringArraysEquals. secondArray={}", secondArray);
+        logger.info("isStringArraysEquals. firstArray={}", Arrays.toString(firstArray));
+        logger.info("isStringArraysEquals. secondArray={}", Arrays.toString(secondArray));
 
         String[] firstArraySorted = firstArray;
         String[] secondArraySorted = secondArray;
@@ -140,7 +140,7 @@ public class FileUtilService {
         BeanListProcessor<T> rowProcessor = new BeanListProcessor<T>(clazz);
         csvParserSettings.setProcessor(rowProcessor);
         csvParserSettings.setHeaderExtractionEnabled(true);
-        csvParserSettings.setProcessorErrorHandler(new PNLDInterceptor());
+        csvParserSettings.setDelimiterDetectionEnabled(true, csvHeadersProperties.getDelimiters().toCharArray());
 
         CsvParser parser = new CsvParser(csvParserSettings);
         parser.parse(reader);
@@ -191,6 +191,11 @@ public class FileUtilService {
 
             case TEST_CT_3:
                 return this.loaderCPFile.testPCThreeFile(loadedFile);
+
+            case GENERAL_RESUME:
+                List<GeneralResumeTrainingDTO> generalResumeTrainingRows = parseRowsToBeans(loadedFileReader,
+                        GeneralResumeTrainingDTO.class);
+                return this.loaderMoodleFile.processGeneralResumeRows(generalResumeTrainingRows, loadedFile.getId());
 
             default:
                 return new FileResumeDTO(0, 0, 0);
