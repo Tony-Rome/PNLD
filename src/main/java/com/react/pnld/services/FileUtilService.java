@@ -35,7 +35,7 @@ public class FileUtilService {
     private LoaderCodeFile loaderCodeFile;
 
     @Autowired
-    private LoaderCPFile loaderCPFile;
+    private LoaderCTFile loaderCTFile;
 
     private CsvParserSettings csvParserSettings;
 
@@ -184,13 +184,13 @@ public class FileUtilService {
                 return this.loaderMoodleFile.satisfactionFile(satisfactionRows, loadedFile.getId());
 
             case TEST_CT_1:
-                return this.loaderCPFile.testPCOneFile(loadedFile);
+                return this.loaderCTFile.testPCOneFile(loadedFile);
 
             case TEST_CT_2:
-                return this.loaderCPFile.testPCTwoFile(loadedFile);
+                return this.loaderCTFile.testPCTwoFile(loadedFile);
 
             case TEST_CT_3:
-                return this.loaderCPFile.testPCThreeFile(loadedFile);
+                return this.loaderCTFile.testPCThreeFile(loadedFile);
 
             case GENERAL_RESUME:
                 List<GeneralResumeTrainingDTO> generalResumeTrainingRows = parseRowsToBeans(loadedFileReader,
