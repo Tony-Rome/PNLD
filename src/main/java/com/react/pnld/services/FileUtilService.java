@@ -181,7 +181,7 @@ public class FileUtilService {
 
             case SATISFACTION:
                 List<SatisfactionFileDTO> satisfactionRows = parseRowsToBeans(loadedFileReader, SatisfactionFileDTO.class);
-                return this.loaderMoodleFile.satisfactionFile(satisfactionRows, loadedFile.getId());
+                return this.loaderMoodleFile.processSatisfactionFileRows(satisfactionRows, loadedFile.getId());
 
             case TEST_CT_1:
                 return this.loaderCTFile.testPCOneFile(loadedFile);

@@ -140,7 +140,7 @@ public class LoaderMoodleFile {
         return new FileResumeDTO(diagnosticRows.size(), newRecords, duplicatedRecords);
     }
 
-    public FileResumeDTO satisfactionFile(List<SatisfactionFileDTO> satisfactionRows, int loadedFileId) {
+    public FileResumeDTO processSatisfactionFileRows(List<SatisfactionFileDTO> satisfactionRows, int loadedFileId) {
 
         int newRecords = 0;
         int duplicatedRecords = 0;
