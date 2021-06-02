@@ -57,7 +57,7 @@
     <div class="exportData">Exportar Datos Indicador <img src="img/excel-logo.jpg" class="logoExcel" alt="export excel"></div>
 
     <@ib.javascript/>
-    <script src="js/indicator/code/subDimension.js"></script>
+    <script src="js/indicator/code/sub-dimension.js"></script>
     <script src="js/indicator/code/filter.js"></script>
 
 </html>

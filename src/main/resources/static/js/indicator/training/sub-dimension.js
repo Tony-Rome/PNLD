@@ -46,20 +46,22 @@ async function participantInstitutionNumber() {
     let datasets = [];
     let dataset = {};
 
-    infoRegionsResponse.forEach( (element, index) => {
+    for(let i = 0 ; i <8; i++){
+        infoRegionsResponse.forEach( (element, index) => {
 
-        let regionName = element['name'];
-        let schoolNumber = element['numberInstitutionsInPNLD'];
-        let randomColorDict = randomColorFunction();
+            let regionName = element['name'];
+            let schoolNumber = element['numberInstitutionsInPNLD'];
+            let randomColorDict = randomColorFunction();
 
-        labels.push(regionName);
+            labels.push(regionName);
 
-        data.push(schoolNumber);
-        backgroundColor.push(randomColorDict['backgroundColor']);
-        borderColor.push(randomColorDict['borderColor']);
+            data.push(schoolNumber);
+            backgroundColor.push(randomColorDict['backgroundColor']);
+            borderColor.push(randomColorDict['borderColor']);
 
-    });
+        });
 
+    }
     dataset['data'] = data;
     dataset['backgroundColor'] = backgroundColor;
     dataset['borderColor'] = borderColor;

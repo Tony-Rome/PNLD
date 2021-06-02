@@ -33,6 +33,6 @@
         <@ff.fileForm/>
         <@pu.popup/>
 
-        <script src="js/loadFiles.js"></script>
+        <script src="js/load-files.js"></script>
     </body>
 </html>

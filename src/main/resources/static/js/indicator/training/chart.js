@@ -13,22 +13,11 @@ export function getChart (labels, datasets) {
             },
             options: {
                 scales: {
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Regiones',
-                            align: 'end',
-                            font: {
-                                size: 14,
-                            },
-
-                        }
-                    },
                     x: {
                         title: {
                             display: true,
-                            text: 'Cantidad',
-                            align: 'end',
+                            text: 'Regiones',
+                            align: 'center',
                             font: {
                                 size: 14,
                             },
@@ -36,9 +25,22 @@ export function getChart (labels, datasets) {
                                 top: 12,
                             }
                         }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Cantidad',
+                            align: 'center',
+                            font: {
+                                size: 14,
+                            },
+                            padding: {
+                                bottom: 12,
+                            }
+                        }
                     }
                 },
-                indexAxis: 'y',
+                indexAxis: 'x',
                 plugins:{
                     title: {
                         display: true,

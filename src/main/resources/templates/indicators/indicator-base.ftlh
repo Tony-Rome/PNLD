@@ -28,7 +28,7 @@
 
 <#macro chart >
     <div class=chartContainer id=chartContainer>
-        <canvas id="myChart" width="400" height="400"></canvas>
+        <canvas id="myChart" width="600" height="600"></canvas>
     </div>
 </#macro>
 
@@ -84,7 +84,7 @@
 </#macro>
 
 <#macro javascript>
-    <script src="js/indicator/subDimension.js"></script>
+    <script src="js/indicator/sub-dimension.js"></script>
     <script src="js/indicator/filter.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </#macro>
