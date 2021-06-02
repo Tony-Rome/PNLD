@@ -56,10 +56,9 @@
               </div>
             </div>
 
-
-            <#assign regionList = ["Arica y Parinacota", "Tarapaca", "Antofagasta", "Atacama",
-                "Coquimbo", " Valparaíso", " Metropolitana de Santiago", "O'higgins",
-                 "Maule", "Ñuble", "Biobio", "Aracanía", "Los ríos", "Los Lagos", "Aysén", "Magallanes", "Otra"] />
+            <#assign regionList = ["Tarapacá", "Antofagasta", "Atacama", "Coquimbo", "Valparaíso", "O'Higgins",
+                "Maule", "BioBío", "Araucanía", "Los Lagos", "Aysén", "Magallanes", "Metropolitana", "Los Ríos",
+                 "Arica y Parinacota", "Ñuble", "Otra"] />
 
             <div class="filterBlock filterInactive">
               <h3 class="filterTitle">Región</h3>
