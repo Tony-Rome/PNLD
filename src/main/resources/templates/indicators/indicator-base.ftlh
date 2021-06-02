@@ -13,7 +13,7 @@
 <#macro dimensions dimensionIndex>
 
     <#assign dimensionsList = ["Capacitaciones","Code.org","Test Pensamiento Computacional"]/>
-    <#assign linkList = ["training","code","TPC"]/>
+    <#assign linkList = ["training","code","ct-test"]/>
 
     <div class=dimensionHeaderContainer>
         <div class=dimensionTitle>Dimensiones</div>

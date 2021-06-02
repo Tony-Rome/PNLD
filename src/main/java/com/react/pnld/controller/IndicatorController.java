@@ -14,6 +14,6 @@ public class IndicatorController {
     @GetMapping("/code")
     public String codeIndicator(){ return "indicators/code"; }
 
-    @GetMapping("/TPC")
-    public String tpcIndicator(){ return "indicators/tpc"; }
+    @GetMapping("/ct-test")
+    public String tpcIndicator(){ return "indicators/ct-test"; }
 }
