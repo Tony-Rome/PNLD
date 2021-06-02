@@ -32,8 +32,9 @@ public class LoaderMoodleFile {
         logger.info("processTrainingFileRows. postTrainingRows.size()={}, loadedFileId={}, testType={}",
                 trainingRows.size(), loadedFileId, testType);
 
-        int newRecords = 0;
-        int duplicatedRecords = 0;
+        int newRecordCount = 0;
+        int duplicatedRecordCount = 0;
+        int invalidRecordCount = 0;
 
         for (TrainingFileDTO trainingRow : trainingRows) {
             logger.info("processTrainingFileRows. trainingRow={}", trainingRow);
@@ -64,21 +65,22 @@ public class LoaderMoodleFile {
 
                 int resultInsertTest = this.testRepository.insertTrainingTest(newTrainingTest);
                 logger.info("processTrainingFileRows. resultInsertTest={}", resultInsertTest);
-                newRecords++;
+                newRecordCount++;
             } else {
-                duplicatedRecords++;
+                duplicatedRecordCount++;
             }
 
             boolean isRutValid = EntityAttributeUtilService.rutValidator(rutCleaned);
             boolean isEmailValid = entityUtilService.validatePersonByEmail(trainingRow.getEmail());
         }
-        return new FileResumeDTO(trainingRows.size(), newRecords, duplicatedRecords);
+        return new FileResumeDTO(trainingRows.size(), newRecordCount, duplicatedRecordCount, invalidRecordCount);
     }
 
     public FileResumeDTO diagnosticFile(List<DiagnosticFileDTO> diagnosticRows, int loadedFileId) {
 
-        int newRecords = 0;
-        int duplicatedRecords = 0;
+        int newRecordCount = 0;
+        int duplicatedRecordCount = 0;
+        int invalidRecordCount = 0;
 
         for (DiagnosticFileDTO diagnosticRow : diagnosticRows) {
 
@@ -128,22 +130,23 @@ public class LoaderMoodleFile {
                     newDiagnosticQuestionnaire.setAnswers(answersJson);
 
                     questionnaireRepository.insertDiagnosticQuestionnaire(newDiagnosticQuestionnaire);
-                    newRecords++;
+                    newRecordCount++;
                 }
                 if (diagnosticQuestionnaireCount >= 1) {
-                    duplicatedRecords++;
+                    duplicatedRecordCount++;
                 }
             }
 
 
         }
-        return new FileResumeDTO(diagnosticRows.size(), newRecords, duplicatedRecords);
+        return new FileResumeDTO(diagnosticRows.size(), newRecordCount, duplicatedRecordCount, invalidRecordCount);
     }
 
     public FileResumeDTO processSatisfactionFileRows(List<SatisfactionFileDTO> satisfactionRows, int loadedFileId) {
 
-        int newRecords = 0;
-        int duplicatedRecords = 0;
+        int newRecordCount = 0;
+        int duplicatedRecordCount = 0;
+        int invalidRecordCount = 0;
 
         for (SatisfactionFileDTO satisfactionRow : satisfactionRows) {
 
@@ -185,22 +188,23 @@ public class LoaderMoodleFile {
                     newSatisfactionQuestionnaire.setGroup(satisfactionRow.getGroup());
 
                     questionnaireRepository.insertSatisfactionQuestionnaire(newSatisfactionQuestionnaire);
-                    newRecords++;
+                    newRecordCount++;
                 }
                 if (satisfactionQuestionnaireCount >= 1) {
-                    duplicatedRecords++;
+                    duplicatedRecordCount++;
                 }
             }
         }
-        return new FileResumeDTO(satisfactionRows.size(), newRecords, duplicatedRecords);
+        return new FileResumeDTO(satisfactionRows.size(), newRecordCount, duplicatedRecordCount, invalidRecordCount);
     }
 
     public FileResumeDTO processGeneralResumeRows(List<GeneralResumeTrainingDTO> generalResumeRows, int loadedFileId){
         logger.info("processGeneralResumeRows. generalResumeRows.size()={}, loadedFileId={}",
                 generalResumeRows.size(), loadedFileId);
 
-        int newRecords = 0;
-        int duplicatedRecords = 0;
+        int newRecordCount = 0;
+        int duplicatedRecordCount = 0;
+        int invalidRecordCount = 0;
 
         for(GeneralResumeTrainingDTO generalResumeRow : generalResumeRows){
             logger.info("processGeneralResumeRows. generalResumeRow={}", generalResumeRow);
@@ -223,10 +227,10 @@ public class LoaderMoodleFile {
             if(teacher.isPresent()){
                 entityUtilService.updateTeacher(teacher.get(), 0, null, true, null,
                         generalResumeRow.isApproved(), generalResumeRow.getTrainingYear());
-                newRecords++;
+                newRecordCount++;
             } //create teacher is not possible because data necessary are in other files
         }
 
-        return new FileResumeDTO(generalResumeRows.size(), newRecords, duplicatedRecords);
+        return new FileResumeDTO(generalResumeRows.size(), newRecordCount, duplicatedRecordCount, invalidRecordCount);
     }
 }

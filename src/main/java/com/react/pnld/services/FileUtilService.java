@@ -198,7 +198,7 @@ public class FileUtilService {
                 return this.loaderMoodleFile.processGeneralResumeRows(generalResumeTrainingRows, loadedFile.getId());
 
             default:
-                return new FileResumeDTO(0, 0, 0);
+                return new FileResumeDTO(0, 0, 0, 0);
         }
     }
 
