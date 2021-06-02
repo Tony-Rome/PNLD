@@ -28,7 +28,7 @@
 
 <#macro chart >
     <div class=chartContainer id=chartContainer>
-        <canvas id="myChart" width="600" height="600"></canvas>
+        <canvas id="myChart" width="700" height="700"></canvas>
     </div>
 </#macro>
 
@@ -48,6 +48,7 @@
             <div class="filterBlock filterActive">
               <h3 class="filterTitle">Año</h3>
               <div class="filterContent scrollable">
+                <li><input type="checkbox" name="year" value="all">Todos los años</input></li>
                 <#list currentYear..lastYear as yearAsNumber>
                     <#assign yearAsStr = yearAsNumber?string.computer/>
                     <li><input type="checkbox" name="year" value=${yearAsStr}>${yearAsStr}</input></li>
@@ -63,6 +64,7 @@
             <div class="filterBlock filterInactive">
               <h3 class="filterTitle">Región</h3>
               <div class="filterContent scrollable">
+                <li><input type="checkbox" name="region" value="all">Todas las regiones</input></li>
                 <#list regionList as region>
                     <li><input type="checkbox" name="region" value=${region?index}>${region}</input></li>
                 </#list>
@@ -73,7 +75,8 @@
 
             <div class="filterBlock filterInactive" id="genderFilter">
                 <h3 class="filterTitle">Género</h3>
-                <div class="filterContent">
+                <div class="filterContent scrollable">
+                    <li><input type="checkbox" name="gender" value="all">Todos los géneros</input></li>
                     <#list genderList as gender>
                       <li><input type="checkbox" name="gender" value=${gender?index}>${gender}</input></li>
                     </#list>

@@ -17,7 +17,7 @@ export function getChart (labels, datasets) {
                         title: {
                             display: true,
                             text: 'Regiones',
-                            align: 'center',
+                            align: 'end',
                             font: {
                                 size: 14,
                             },
@@ -30,7 +30,7 @@ export function getChart (labels, datasets) {
                         title: {
                             display: true,
                             text: 'Cantidad',
-                            align: 'center',
+                            align: 'end',
                             font: {
                                 size: 14,
                             },
