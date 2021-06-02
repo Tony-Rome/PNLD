@@ -89,6 +89,6 @@
 <#macro javascript>
     <script src="js/indicator/sub-dimension.js"></script>
     <script src="js/indicator/filter.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/indicator/chart-main.js"></script>
 </#macro>
 
