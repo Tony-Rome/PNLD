@@ -7,6 +7,6 @@
     });
 
     indicatorsSquare.addEventListener("click", ()=> {
-            window.location.href="/indicators";
+            window.location.href="/indicators/training";
 
     });
