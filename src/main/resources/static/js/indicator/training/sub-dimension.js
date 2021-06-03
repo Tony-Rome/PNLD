@@ -1,24 +1,12 @@
+import {transformRegionName} from '../utils.js';
 import {getChart} from './chart.js';
+import {getInfoRegion} from './consume.js';
 
-const SUB_DIMENSION_BASE_URL = '/v1/capacitaciones/establecimientos/';
 const institutionList = document.getElementsByName('institution');
 
 const PARTICIPANT_INSTITUTION_NUMBER = 0;
 const FIRST_TIME_INSTITUTION_PERCENTAGE = 1;
 const PARTICIPANT_INSTITUTION_PERCENTAGE = 2;
-
-function getInfoRegion(){
-
-    let fromYearParam = 2021;
-    let toYearParam = 2021;
-    const url = SUB_DIMENSION_BASE_URL + '?fromYear=' + fromYearParam + '&toYear=' + toYearParam;
-    const response = fetch(url, {method: 'GET'})
-        .then( (resp) => resp.json() )
-        .then( (data) => {
-            return data;
-        });
-    return response;
-};
 
 function randomColorFunction(){
     let r = Math.floor(Math.random() * 255);
@@ -36,8 +24,12 @@ function randomColorFunction(){
 };
 
 async function participantInstitutionNumber() {
-    let response = await getInfoRegion();
-    let infoRegionsResponse = response['trainingInfoRegions'];
+
+    let currentYear = new Date().getFullYear();
+    let response = await getInfoRegion(currentYear);
+    let trainingInfoRegionsRaw = response['trainingInfoRegions'];
+
+    let trainingInfoRegions = transformRegionName(trainingInfoRegionsRaw);
 
     let labels = [];
     let data = [];
@@ -46,29 +38,27 @@ async function participantInstitutionNumber() {
     let datasets = [];
     let dataset = {};
 
-    for(let i = 0 ; i <8; i++){
-        infoRegionsResponse.forEach( (element, index) => {
+    trainingInfoRegions.forEach( (element, index) => {
 
-            let regionName = element['name'];
-            let schoolNumber = element['numberInstitutionsInPNLD'];
-            let randomColorDict = randomColorFunction();
+        let regionName = element['regionName'];
+        let institutionNumber = element['institutionNumberPNLD'];
+        let randomColorDict = randomColorFunction();
 
-            labels.push(regionName);
+        labels.push(regionName);
 
-            data.push(schoolNumber);
-            backgroundColor.push(randomColorDict['backgroundColor']);
-            borderColor.push(randomColorDict['borderColor']);
+        data.push(institutionNumber);
+        backgroundColor.push(randomColorDict['backgroundColor']);
+        borderColor.push(randomColorDict['borderColor']);
 
-        });
+    });
 
-    }
     dataset['data'] = data;
     dataset['backgroundColor'] = backgroundColor;
     dataset['borderColor'] = borderColor;
 
     datasets.push(dataset);
 
-    getChart(labels, datasets);
+    getChart(labels, datasets, currentYear);
 
 }
 
@@ -77,6 +67,8 @@ function firstTimeInstitutionPercentage(){}
 function participantInstitutionPercentage(){}
 
 function chartFunction() {
+
+    //TODO: Mejorar filtrado agregando nombre de subdimension (inst o doc).
 
     switch(parseInt(this.value)){
         case PARTICIPANT_INSTITUTION_NUMBER:

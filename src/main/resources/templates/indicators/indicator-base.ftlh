@@ -65,7 +65,7 @@
               <div class="filterContent scrollable">
                 <li><input type="checkbox" id="allRegion">Todas las regiones</input></li>
                 <#list regionList as region>
-                    <li><input type="checkbox" name="region" value=${region?index}>${region}</input></li>
+                    <li><input type="checkbox" id="${region}" name="region" value=${region?index + 1}>${region}</input></li>
                 </#list>
               </div>
             </div>

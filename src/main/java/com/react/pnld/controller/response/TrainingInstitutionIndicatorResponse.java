@@ -1,18 +1,20 @@
 package com.react.pnld.controller.response;
 
+import com.react.pnld.dto.TrainingInstitutionIndicatorDTO;
+
 import java.io.Serializable;
 import java.util.List;
 
-public class InfoTrainedInstitutionsResponse implements Serializable {
+public class TrainingInstitutionIndicatorResponse implements Serializable {
     private int fromYear;
     private int toYear;
-    private List<TrainingInfoRegion> trainingInfoRegions;
+    private List<TrainingInstitutionIndicatorDTO> trainingInfoRegions;
 
-    public InfoTrainedInstitutionsResponse(){
+    public TrainingInstitutionIndicatorResponse(){
         super();
     }
 
-    public InfoTrainedInstitutionsResponse(int fromYear, int toYear, List<TrainingInfoRegion> trainingInfoRegions) {
+    public TrainingInstitutionIndicatorResponse(int fromYear, int toYear, List<TrainingInstitutionIndicatorDTO> trainingInfoRegions) {
         this.fromYear = fromYear;
         this.toYear = toYear;
         this.trainingInfoRegions = trainingInfoRegions;
@@ -34,11 +36,11 @@ public class InfoTrainedInstitutionsResponse implements Serializable {
         this.toYear = toYear;
     }
 
-    public List<TrainingInfoRegion> getTrainingInfoRegions() {
+    public List<TrainingInstitutionIndicatorDTO> getTrainingInfoRegions() {
         return trainingInfoRegions;
     }
 
-    public void setTrainingInfoRegions(List<TrainingInfoRegion> trainingInfoRegions) {
+    public void setTrainingInfoRegions(List<TrainingInstitutionIndicatorDTO> trainingInfoRegions) {
         this.trainingInfoRegions = trainingInfoRegions;
     }
 
