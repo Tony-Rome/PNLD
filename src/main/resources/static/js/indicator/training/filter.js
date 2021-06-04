@@ -1,73 +1,39 @@
-const yearList = document.getElementsByName('year');
-const regionList = document.getElementsByName('region');
-const genderList = document.getElementsByName('gender');
+import {selectChart} from './utils.js';
+
+const filterList = document.getElementsByClassName('filterOption');
+
 const allYear = document.getElementById('allYear');
 const allRegion = document.getElementById('allRegion');
 const allGender = document.getElementById('allGender');
 
-
-
-getYearsSelected = () => {
-    const yearsFilters = document.getElementsByName('year');
-    var yearsSelected = [];
-    yearsFilters.forEach( (e, i) => {
-        yearsSelected.push(yearsFilters[i].checked);
-    })
-
-    console.log(yearsSelected);
-};
-
-getRegionsSelected = () => {
-    const regionsFilter = document.getElementsByName('region');
-    var regionSelected = [];
-    regionsFilter.forEach( (e, i) => {
-        regionSelected.push(regionsFilter[i].checked);
-    })
-
-    console.log(regionSelected);
-};
-
-getGendersSelected = () => {
-    const gendersFilter = document.getElementsByName('gender');
-    var gendersSelected = [];
-    gendersFilter.forEach( (e, i) => {
-        gendersSelected.push(gendersFilter[i].checked);
-    })
-
-    console.log(gendersSelected);
-};
-
 function selectAllYears() {
-
+    var yearList = document.getElementsByName('year');
     yearList.forEach( (e, i) => {
         e.checked = this.checked;
-    })
+    });
+    selectChart();
 };
 
 function selectAllRegions() {
+    var regionList = document.getElementsByName('region');
     regionList.forEach( (e, i) => {
         e.checked = this.checked;
-    })
+    });
+    selectChart();
 };
 
 function selectAllGenders() {
+    var genderList = document.getElementsByName('gender');
     genderList.forEach( (e,i) => {
         e.checked = this.checked;
-    })
+    });
+    selectChart();
 };
 
-yearList.forEach((e,i) => {
-    e.addEventListener('click', getYearsSelected);
+Object.keys(filterList).forEach( (k,i) => {
+    filterList[i].addEventListener('click', selectChart);
 });
 
-regionList.forEach((e,i) => {
-    e.addEventListener('click', getRegionsSelected);
-});
-
-genderList.forEach((e,i) => {
-    e.addEventListener('click', getGendersSelected);
-});
-
-allYear.addEventListener('change', selectAllYears);
-allRegion.addEventListener('click', selectAllRegions);
-allGender.addEventListener('click', selectAllGenders);
+allYear.addEventListener('click', selectAllYears); //TODO: Se ppuede hacer general con classname
+allRegion.addEventListener('click', selectAllRegions); //TODO: Se ppuede hacer general con classname
+allGender.addEventListener('click', selectAllGenders); //TODO: Se ppuede hacer general con classname

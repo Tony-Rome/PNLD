@@ -5,6 +5,8 @@ const ACTIVE_CLASS = "subDimensionActive";
 const INACTIVE_CLASS = "subDimensionInactive";
 const INSTITUTION_VALUE = "institution";
 
+const subDimensionList = document.getElementsByClassName('subDimensionOption');
+
 if(sdTitle[0].id === INSTITUTION_VALUE){
     genderFilter.style.display = "none";
 }
@@ -25,3 +27,14 @@ sdTitle.forEach( (e, i) => {
         }
     })
 });
+
+export function getSubDimensionSelected(){
+    var selected = {};
+    Object.keys(subDimensionList).forEach( (k,i) => {
+        if(subDimensionList[i].checked === true) {
+            selected['name'] = subDimensionList[i].name;
+            selected['chart'] = subDimensionList[i].value;
+        }
+    });
+    return selected;
+};

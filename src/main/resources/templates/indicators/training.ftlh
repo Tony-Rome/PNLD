@@ -61,6 +61,6 @@
 
     <@ib.javascript/>
     <script type="module" src="js/indicator/training/sub-dimension.js"></script>
-    <script src="js/indicator/training/filter.js"></script>
+    <script type="module" src="js/indicator/training/filter.js"></script>
 
 </html>
