@@ -30,7 +30,7 @@ export function selectChart(){
 async function selectCharByInstitution(chartOption, yearsSelected, queryParams){
 
     var response = await getInstitutionSubDimensionData(queryParams);
-    var dataRaw = response['trainingIndicatorData']; //TODO: Cambiar nombre parámetro
+    var dataRaw = response['trainingIndicatorData'];
     var data = transformRegionName(dataRaw);
 
     if(chartOption === PARTICIPANT_INSTITUTION_NUMBER){
@@ -38,10 +38,10 @@ async function selectCharByInstitution(chartOption, yearsSelected, queryParams){
 
     }
     if(chartOption === FIRST_TIME_INSTITUTION_PERCENTAGE){
-        console.log(1);
+       firstTimeInstitutionPercentage();
     }
     if(chartOption === PARTICIPANT_INSTITUTION_PERCENTAGE){
-        console.log(2);
+        participantInstitutionPercentage();
     }
 }
 
