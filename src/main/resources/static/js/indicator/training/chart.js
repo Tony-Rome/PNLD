@@ -5,10 +5,10 @@ function defineTitle(data){
 
     let baseTitle = 'N° de colegios por región ';
 
-    if(typeof(data) === "object"){
+    if(Object.keys(data).length === 2){
         return baseTitle + data['fromYear'] + " - " + data['toYear'];
     }else{
-        return baseTitle + data;
+        return baseTitle + data['year'];
     }
 }
 

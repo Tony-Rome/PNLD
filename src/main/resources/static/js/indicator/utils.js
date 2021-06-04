@@ -1,6 +1,7 @@
 const regionNameList = document.getElementsByName('region');
 
 export function transformRegionName(data){
+    console.log("tranform: "+data);
     var new_data = data.map(e => {
         e['regionName'] = regionNameList[e['id'] - 1].id;
         return e;
@@ -25,14 +26,22 @@ export function randomColorFunction(){
 };
 
 export function defineYearsQueryParams(yearsSelected){
+    var selected = {};
 
-    if(yearsSelected.length === 0) return new Date().getFullYear();
-    if(yearsSelected.length === 1) return yearsSelected[0];
-    if(yearsSelected.length >= 2){
-        var selected = {
-            'fromYear': Math.min(...yearsSelected),
-            'toYear': Math.max(...yearsSelected),
-        }
+    if(yearsSelected.length === 0) {
+        selected['year'] = new Date().getFullYear();
         return selected;
     }
+
+    if(yearsSelected.length === 1) {
+        selected['year'] = yearsSelected[0];
+        return selected;
+    }
+
+    if(yearsSelected.length >= 2){
+        selected['fromYear'] = Math.min(...yearsSelected);
+        selected['toYear'] = Math.max(...yearsSelected);
+        return selected;
+    }
+
 }

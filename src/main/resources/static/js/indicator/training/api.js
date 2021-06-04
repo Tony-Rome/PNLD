@@ -4,13 +4,14 @@ export function getInstitutionSubDimensionData(yearRange){
 
     var queryParams;
 
-    if(typeof(yearRange) === "object"){
+    if(Object.keys(yearRange).length === 2){
         queryParams = '?fromYear=' + yearRange['fromYear'] + '&toYear=' + yearRange['toYear'];
     }else{
-        queryParams = '?fromYear=' + yearRange + '&toYear=' + yearRange;
+        queryParams = '?fromYear=' + yearRange['year'] + '&toYear=' + yearRange['year'];
     }
 
     const url = SUB_DIMENSION_BASE_URL + queryParams;
+    console.log("URL: " +url);
     const response = fetch(url, {method: 'GET'})
         .then( (resp) => resp.json() )
         .then( (data) => {

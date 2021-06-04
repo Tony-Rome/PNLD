@@ -18,7 +18,7 @@ export async function selectChart(){
 
     var yearsSelected = getYearsSelected();
     var queryParams = defineYearsQueryParams(yearsSelected);
-
+    console.log("Define query aprams: "+ queryParams);
 
     if(subDimensionSelected['name'] === 'institution'){ //TODO: Mover a funcion colegio
 
@@ -47,14 +47,27 @@ export async function selectChart(){
 function selectCharByInstitution(){}
 function selectChartByTeacher(){}
 
-function participantInstitutionNumber(dataList, title) {
+function filterData(data){
+    //TODO: Aplicar filtros a traves de funcion filter o parecido
+     var regionsSelected = getRegionsSelected();
+     var gendersSelected = getGendersSelected();
+     console.log(regionsSelected.length === 0);
+     console.log(gendersSelected.length === 0);
+}
 
+function participantInstitutionNumber(dataList, yearRange) {
+    console.log(dataList);
     let labels = [];
     let data = [];
     let backgroundColor = [];
     let borderColor = [];
     let datasets = [];
     let dataset = {};
+    console.log(yearRange);
+    console.log(typeof(yearRange));
+    Object.keys(yearRange).forEach( (k,i) => {
+        console.log(yearRange[k]);
+    });
 
     dataList.forEach( (element, index) => {
 
@@ -76,7 +89,7 @@ function participantInstitutionNumber(dataList, title) {
 
     datasets.push(dataset);
 
-    getChart(labels, datasets, title);
+    getChart(labels, datasets, yearRange);
 
 }
 
