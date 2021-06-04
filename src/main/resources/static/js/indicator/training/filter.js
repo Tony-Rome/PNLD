@@ -1,4 +1,4 @@
-import {selectChart} from './utils.js';
+import {selectChart} from './chart-setup.js';
 
 const filterList = document.getElementsByClassName('filterOption');
 
@@ -34,6 +34,6 @@ Object.keys(filterList).forEach( (k,i) => {
     filterList[i].addEventListener('click', selectChart);
 });
 
-allYear.addEventListener('click', selectAllYears); //TODO: Se ppuede hacer general con classname
-allRegion.addEventListener('click', selectAllRegions); //TODO: Se ppuede hacer general con classname
-allGender.addEventListener('click', selectAllGenders); //TODO: Se ppuede hacer general con classname
+allYear.addEventListener('click', selectAllYears);
+allRegion.addEventListener('click', selectAllRegions);
+allGender.addEventListener('click', selectAllGenders);

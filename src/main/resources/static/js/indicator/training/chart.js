@@ -25,6 +25,7 @@ export function getChart (labels, datasets, title) {
             options: {
                 scales: {
                     x: {
+                        stacked: true,
                         title: {
                             display: true,
                             text: 'Regiones',
@@ -38,6 +39,7 @@ export function getChart (labels, datasets, title) {
                         }
                     },
                     y: {
+                        stacked: true,
                         title: {
                             display: true,
                             text: 'Cantidad',
@@ -58,9 +60,10 @@ export function getChart (labels, datasets, title) {
                         text: defineTitle(title),
                     },
                     legend: {
-                        display: false
+                        display: true
                     }
                 },
+                responsive: true,
 
             }
         });

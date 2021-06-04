@@ -30,7 +30,7 @@ export function getRegionsSelected() {
     regionList.forEach( (e, i) => {
         if(e.checked === true) regionSelected.push(e.id);
     })
-
+    return regionSelected;
 };
 
 export function getGendersSelected() {
@@ -40,3 +40,13 @@ export function getGendersSelected() {
     })
 
 };
+
+export function getAllRegionsName(){
+    var regionName = [];
+
+    regionList.forEach( (e,i) => {
+        regionName.push(e.id);
+    });
+
+    return regionName;
+}

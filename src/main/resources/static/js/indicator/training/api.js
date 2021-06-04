@@ -11,7 +11,6 @@ export function getInstitutionSubDimensionData(yearRange){
     }
 
     const url = SUB_DIMENSION_BASE_URL + queryParams;
-    console.log("URL: " +url);
     const response = fetch(url, {method: 'GET'})
         .then( (resp) => resp.json() )
         .then( (data) => {
