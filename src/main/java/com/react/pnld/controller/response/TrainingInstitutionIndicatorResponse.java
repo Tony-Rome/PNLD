@@ -8,16 +8,16 @@ import java.util.List;
 public class TrainingInstitutionIndicatorResponse implements Serializable {
     private int fromYear;
     private int toYear;
-    private List<TrainingInstitutionIndicatorDTO> trainingInfoRegions;
+    private List<TrainingInstitutionIndicatorDTO> trainingIndicatorData;
 
     public TrainingInstitutionIndicatorResponse(){
         super();
     }
 
-    public TrainingInstitutionIndicatorResponse(int fromYear, int toYear, List<TrainingInstitutionIndicatorDTO> trainingInfoRegions) {
+    public TrainingInstitutionIndicatorResponse(int fromYear, int toYear, List<TrainingInstitutionIndicatorDTO> trainingIndicatorData) {
         this.fromYear = fromYear;
         this.toYear = toYear;
-        this.trainingInfoRegions = trainingInfoRegions;
+        this.trainingIndicatorData = trainingIndicatorData;
     }
 
     public int getFromYear() {
@@ -36,20 +36,20 @@ public class TrainingInstitutionIndicatorResponse implements Serializable {
         this.toYear = toYear;
     }
 
-    public List<TrainingInstitutionIndicatorDTO> getTrainingInfoRegions() {
-        return trainingInfoRegions;
+    public List<TrainingInstitutionIndicatorDTO> getTrainingIndicatorData() {
+        return trainingIndicatorData;
     }
 
-    public void setTrainingInfoRegions(List<TrainingInstitutionIndicatorDTO> trainingInfoRegions) {
-        this.trainingInfoRegions = trainingInfoRegions;
+    public void setTrainingIndicatorData(List<TrainingInstitutionIndicatorDTO> trainingIndicatorData) {
+        this.trainingIndicatorData = trainingIndicatorData;
     }
 
     @Override
     public String toString() {
-        return "TrainedInstitutionsResponse{" +
+        return "TrainingInstitutionIndicatorResponse{" +
                 "fromYear=" + fromYear +
                 ", toYear=" + toYear +
-                ", trainingInfoRegions=" + trainingInfoRegions +
+                ", trainingIndicatorData=" + trainingIndicatorData +
                 '}';
     }
 }

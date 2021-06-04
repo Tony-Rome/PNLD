@@ -30,7 +30,7 @@ export function selectChart(){
 async function selectCharByInstitution(chartOption, yearsSelected, queryParams){
 
     var response = await getInstitutionSubDimensionData(queryParams);
-    var dataRaw = response['trainingInfoRegions']; //TODO: Cambiar nombre parámetro
+    var dataRaw = response['trainingIndicatorData']; //TODO: Cambiar nombre parámetro
     var data = transformRegionName(dataRaw);
 
     if(chartOption === PARTICIPANT_INSTITUTION_NUMBER){
@@ -77,7 +77,7 @@ function participantInstitutionNumber(dataList, yearRange, title) {
         datasets.push(dataset);
     });
 
-    let labels = getRegionsLabels();
+    let labels = getRegionsSelected();
     getChart(labels, datasets, title);
 
 }
@@ -103,7 +103,7 @@ function dataListWithEmptyValues(data){
 function regionFilter(data){
     let regionList = getRegionsSelected();
 
-    if(regionList.length === 0) return data;
+    if(regionList.length === 0) return [];
 
     let dataFilter = []
 
@@ -114,10 +114,6 @@ function regionFilter(data){
     return dataFilter;
 }
 
-function getRegionsLabels(){
-    let regionList = getRegionsSelected();
-    return(regionList.length === 0) ? getAllRegionsName() : regionList;
-}
 
 function genderFilter(data){};
 
