@@ -26,11 +26,28 @@
         SELECT nextval(pg_get_serial_sequence('pnld.cuestionario_salida', 'id'))
     </select>
 
+    <resultMap id="getSatisfactionQuest" type="com.react.pnld.model.SatisfactionQuestionnaire">
+        <id property="id" column="id"/>
+        <result property="loadedFileId" column="id_archivo_cargado"/>
+        <result property="teacherRut" column="rut_docente"/>
+        <result property="responseId" column="id_respuesta"/>
+        <result property="sendDate" column="fecha_enviada"/>
+        <result property="answers" column="respuestas"/>
+        <result property="numberId" column="numero_id"/>
+        <result property="course" column="curso"/>
+        <result property="group" column="grupo"/>
+    </resultMap>
+    <select id="getSatisfactionQuestByRut" resultType="getSatisfactionQuest">
+        SELECT *
+        FROM pnld.cuestionario_satisfaccion
+        WHERE rut = #{teacherRut}
+    </select>
+
     <insert id="insertExitSatisfactionQuestionnaire">
         INSERT INTO pnld.cuestionario_salida
-        (id, id_archivo_cargado, id_docente, id_respuesta, fecha_enviada, respuestas, numero_id, curso, grupo)
+        (id, id_archivo_cargado, rut_docente, id_respuesta, fecha_enviada, respuestas, numero_id, curso, grupo)
         VALUES
-        (#{id}, #{loadedFileId}, #{teacherId}, #{responseId}, #{sendDate}, #{answers}::json, #{numberId}, #{course}, #{group})
+        (#{id}, #{loadedFileId}, #{teacherRut}, #{responseId}, #{sendDate}, #{answers}::json, #{numberId}, #{course}, #{group})
     </insert>
 
 </mapper>

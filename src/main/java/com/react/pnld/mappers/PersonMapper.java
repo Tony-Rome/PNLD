@@ -1,6 +1,5 @@
 package com.react.pnld.mappers;
 
-import com.react.pnld.model.Person;
 import com.react.pnld.model.Teacher;
 
 public interface PersonMapper {

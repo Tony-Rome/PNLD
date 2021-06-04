@@ -1,13 +1,8 @@
 package com.react.pnld.services;
 
-import com.react.pnld.dto.DiagnosticFileDTO;
-import com.react.pnld.dto.SatisfactionFileDTO;
-import com.react.pnld.dto.TrainingFileDTO;
-import com.react.pnld.model.GenderProperties;
 import com.react.pnld.model.School;
-import com.react.pnld.model.Teacher;
-import com.react.pnld.model.Training;
-import com.react.pnld.repo.*;
+import com.react.pnld.repo.RegionRepository;
+import com.react.pnld.repo.SchoolRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,126 +15,13 @@ public class EntityUtilService {
 
     private static final Logger logger = LoggerFactory.getLogger(EntityUtilService.class);
 
-    public static final int GENDER_ID_NOT_SPECIFIED = 4;
+
     public static final int REGION_ID_OTHER = 17;
     public static final int RBD_ID_NOT_SPECIFIED = 0;
     public static final String NOT_SPECIFIED = "no especificado";
 
     @Autowired
-    private GenderProperties genderProperties;
-
-    @Autowired
-    private PersonRepository personRepository;
-
-    @Autowired
-    private TrainingRepository trainingRepository;
-
-    @Autowired
-    private SchoolRepository schoolRepository;
-
-    @Autowired
-    private GenderRepository genderRepository;
-
-    @Autowired
     private RegionRepository regionRepository;
-
-    public Optional<Teacher> getTeacherPersonByRut(String cleanRut) {
-        return personRepository.getTeacherPerson(cleanRut);
-    }
-
-    public int createPerson(Teacher teacher) {
-        return this.personRepository.insertPerson(teacher);
-
-    }
-
-    public int createTeacher(Teacher teacher) {
-        return this.personRepository.insertTeacher(teacher);
-    }
-
-    public Teacher buildTeacherFrom(TrainingFileDTO trainingFileDTO, int schoolId) {
-
-        Teacher teacher = new Teacher();
-        teacher.setTeacherId(this.personRepository.getNextTeacherId());
-        teacher.setPersonId(this.personRepository.getNextPersonId());
-        teacher.setRut(EntityAttributeUtilService.clearRut(trainingFileDTO.getRut()));
-        teacher.setAge(0);
-        teacher.setSchoolId(schoolId);
-        teacher.setParticipatedInPNLD(false);
-        teacher.setTeachesInLevels(null);
-
-        String department = (trainingFileDTO.getDepartment() == null || trainingFileDTO.getDepartment().isEmpty()) ?
-                NOT_SPECIFIED : trainingFileDTO.getDepartment();
-        teacher.setDepartment(department);
-
-        String[] lastNames = EntityAttributeUtilService.splitLastNames(trainingFileDTO.getLastNames());
-        teacher.setName(trainingFileDTO.getName());
-        teacher.setPaternalLastName(lastNames[0]);
-        teacher.setMaternalLastName(lastNames[1]);
-        teacher.setEmail(trainingFileDTO.getEmail());
-        teacher.setGenderId(GENDER_ID_NOT_SPECIFIED);
-
-        return teacher;
-    }
-
-    public Teacher buildTeacherFromDiagnostic(DiagnosticFileDTO diagnosticFileDTO, int schoolId) {
-
-        Teacher teacher = new Teacher();
-        teacher.setTeacherId(this.personRepository.getNextTeacherId());
-        teacher.setPersonId(this.personRepository.getNextPersonId());
-        teacher.setRut(EntityAttributeUtilService.clearRut(diagnosticFileDTO.getRut()));
-        teacher.setAge(diagnosticFileDTO.getAge());
-        teacher.setSchoolId(schoolId);
-        teacher.setParticipatedInPNLD(false);
-        teacher.setTeachesInLevels(null);
-
-        teacher.setDepartment(NOT_SPECIFIED);
-
-        Training training = this.trainingRepository.getTrainingByFacilitator(NOT_SPECIFIED);
-
-        String[] lastNames = EntityAttributeUtilService.splitLastNames(diagnosticFileDTO.getLastNames());
-        teacher.setName(diagnosticFileDTO.getName());
-        teacher.setPaternalLastName(lastNames[0]);
-        teacher.setMaternalLastName(lastNames[1]);
-        teacher.setEmail(diagnosticFileDTO.getEmail());
-
-        int genderId = genderRepository.getGenderIdByType(this.genderStandardization(diagnosticFileDTO.getGender()));
-        teacher.setGenderId(genderId);
-
-        return teacher;
-    }
-
-    public Teacher buildTeacherFromExitSatisfaction(SatisfactionFileDTO exitSatisfactionFileDTO, int schoolId) {
-
-        Teacher teacher = new Teacher();
-        teacher.setTeacherId(this.personRepository.getNextTeacherId());
-        teacher.setPersonId(this.personRepository.getNextPersonId());
-        teacher.setRut(EntityAttributeUtilService.clearRut(exitSatisfactionFileDTO.getRut()));
-        teacher.setSchoolId(schoolId);
-        teacher.setAge(0);
-        teacher.setParticipatedInPNLD(false);
-        teacher.setTeachesInLevels(null);
-
-        String department = (exitSatisfactionFileDTO.getDepartment() == null || exitSatisfactionFileDTO.getDepartment().isEmpty()) ?
-                NOT_SPECIFIED : exitSatisfactionFileDTO.getDepartment();
-        teacher.setDepartment(department);
-
-        Training training = this.trainingRepository.getTrainingByFacilitator(NOT_SPECIFIED);
-
-        String[] lastNames = EntityAttributeUtilService.splitLastNames(exitSatisfactionFileDTO.getLastNames());
-        teacher.setName(exitSatisfactionFileDTO.getName());
-        teacher.setPaternalLastName(lastNames[0]);
-        teacher.setMaternalLastName(lastNames[1]);
-        teacher.setEmail(null);
-        teacher.setGenderId(GENDER_ID_NOT_SPECIFIED);
-
-        return teacher;
-    }
-
-    public boolean validatePersonByEmail(String email) {
-
-        if (email == null || email.isEmpty() || !EntityAttributeUtilService.emailValidator(email)) return false;
-        return !personRepository.checkIfEmailExists(email);
-    }
 
     //TODO replace for other
     public School createNewSchool(String name, String city, String commune,String regionName, String rbd) {
@@ -192,24 +74,6 @@ public class EntityUtilService {
         return regionIdSelected;
     }
 
-    public String genderStandardization(String gender) {
-
-        if (genderProperties.getFemale().contains(gender)) {
-            return genderProperties.GENDER_TYPE_FEMALE;
-        }
-
-        if (genderProperties.getMale().contains(gender)) {
-            return genderProperties.GENDER_TYPE_MALE;
-        }
-
-        if (genderProperties.getOther().contains(gender)) {
-            return genderProperties.GENDER_TYPE_OTHER;
-        }
-
-        return genderProperties.GENDER_TYPE_NOT_ESPECIFY;
-    }
-
-
     public Optional<School> getSchoolWhereName(String schoolName) {
 
         Optional<School> selectedSchool = schoolRepository.getSchoolWhereName(schoolName);
@@ -244,16 +108,4 @@ public class EntityUtilService {
         return resultUpdate;
     }
 
-    public int updateTeacher(Teacher teacher, int age, String department, boolean participatedInPNLD, String teachesInLevels,
-                             boolean isApproved, int trainngYear){
-
-        if(age != 0) teacher.setAge(age);
-        if(department != null && !department.isEmpty()) teacher.setDepartment(department);
-        if(participatedInPNLD) teacher.setParticipatedInPNLD(participatedInPNLD);
-        if(teachesInLevels != null) teacher.setTeachesInLevels(teachesInLevels);
-        if(isApproved) teacher.setTrainingApproved(isApproved);
-        if(trainngYear > 0) teacher.setTrainingYear(trainngYear);
-
-        return personRepository.updateTeacher(teacher);
-    }
 }

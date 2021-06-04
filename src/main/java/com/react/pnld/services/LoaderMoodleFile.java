@@ -2,8 +2,8 @@ package com.react.pnld.services;
 
 import com.react.pnld.dto.*;
 import com.react.pnld.model.*;
-import com.react.pnld.repo.QuestionnaireRepository;
 import com.react.pnld.repo.TestRepository;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +21,18 @@ public class LoaderMoodleFile {
     TestRepository testRepository;
 
     @Autowired
-    QuestionnaireRepository questionnaireRepository;
+    EntityUtilService entityUtilService;//TODO eliminate
 
     @Autowired
-    EntityUtilService entityUtilService;
+    PersonService personService;
 
-    public FileResumeDTO processTrainingFileRows(List<TrainingFileDTO> trainingRows, int loadedFileId,
-                                                 String testType) {
+    @Autowired
+    QuestionnaireService questionnaireService;
+
+    @Autowired
+    SchoolService schoolService;
+
+    public FileResumeDTO processTrainingFileRows(List<TrainingFileDTO> trainingRows, int loadedFileId, String testType) {
 
         logger.info("processTrainingFileRows. postTrainingRows.size()={}, loadedFileId={}, testType={}",
                 trainingRows.size(), loadedFileId, testType);
@@ -39,17 +44,16 @@ public class LoaderMoodleFile {
         for (TrainingFileDTO trainingRow : trainingRows) {
             logger.info("processTrainingFileRows. trainingRow={}", trainingRow);
 
-            String rutCleaned = EntityAttributeUtilService.clearRut(trainingRow.getRut().toLowerCase());
-            Optional<Teacher> teacherSelected = entityUtilService.getTeacherPersonByRut(rutCleaned);
+            Optional<Teacher> teacherSelected = personService.getTeacherByRut(trainingRow.getRut());
 
             if (!teacherSelected.isPresent()) {
                 String cleanSchoolName = EntityAttributeUtilService.removeAccents(trainingRow.getSchoolName());
                 Optional<School> school = entityUtilService.getSchoolWhereName(cleanSchoolName);
 
-                Teacher teacher = entityUtilService.buildTeacherFrom(trainingRow, school.get().getId());
+                Teacher teacher = personService.buildTeacherFrom(trainingRow, school.get().getId());
                 teacher.setRut(rutCleaned);
-                entityUtilService.createPerson(teacher);
-                entityUtilService.createTeacher(teacher);
+                personService.saveTeacher(teacher);
+                personService.createTeacher(teacher);
 
                 teacherSelected = Optional.of(teacher);
             }
@@ -71,7 +75,7 @@ public class LoaderMoodleFile {
             }
 
             boolean isRutValid = EntityAttributeUtilService.rutValidator(rutCleaned);
-            boolean isEmailValid = entityUtilService.validatePersonByEmail(trainingRow.getEmail());
+            boolean isEmailValid = personService.validatePersonByEmail(trainingRow.getEmail());
         }
         return new FileResumeDTO(trainingRows.size(), newRecordCount, duplicatedRecordCount, invalidRecordCount);
     }
@@ -96,16 +100,16 @@ public class LoaderMoodleFile {
             }
 
             boolean rut = EntityAttributeUtilService.rutValidator(diagnosticRow.getRut());
-            boolean email = entityUtilService.validatePersonByEmail(diagnosticRow.getEmail());
+            boolean email = personService.validatePersonByEmail(diagnosticRow.getEmail());
 
             if (rut && email) {
 
-                Optional<Teacher> teacherPersonSelected = entityUtilService.getTeacherPersonByRut(diagnosticRow.getRut());
+                Optional<Teacher> teacherPersonSelected = personService.getTeacherByRut(diagnosticRow.getRut());
 
                 if (!teacherPersonSelected.isPresent()) {
-                    Teacher teacher = entityUtilService.buildTeacherFromDiagnostic(diagnosticRow, school.get().getId());
-                    entityUtilService.createPerson(teacher);
-                    entityUtilService.createTeacher(teacher);
+                    Teacher teacher = personService.buildTeacherFromDiagnostic(diagnosticRow, school.get().getId());
+                    personService.saveTeacher(teacher);
+                    personService.createTeacher(teacher);
                     teacherPersonSelected = Optional.of(teacher);
                 }
 
@@ -148,53 +152,39 @@ public class LoaderMoodleFile {
         int duplicatedRecordCount = 0;
         int invalidRecordCount = 0;
 
-        for (SatisfactionFileDTO satisfactionRow : satisfactionRows) {
+        for (SatisfactionFileDTO satisfactionRowDTO : satisfactionRows) {
 
-            Optional<School> school = entityUtilService.getSchoolWhereName(satisfactionRow.getSchoolName());
+            String teacherRut = personService.clearRut(satisfactionRowDTO.getRut());
 
-            if(!school.isPresent())
-                school = Optional.of(entityUtilService.createNewSchool(satisfactionRow.getSchoolName(), null, null, null, null));
+            if(!personService.rutValidator(teacherRut)){
+                invalidRecordCount++;
+            } else {
+                Optional<Teacher> teacherPerson = personService.getTeacherByRut(teacherRut);
 
-            boolean rut = EntityAttributeUtilService.rutValidator(satisfactionRow.getRut());
+                if(teacherPerson.isPresent()){
 
-            if (rut) {
+                    Optional<SatisfactionQuestionnaire> satisfactionQuestionnaire = questionnaireService.
+                            getSatisfactionQuestByRut(teacherPerson.get().getRut());
 
-                Optional<Teacher> teacherPersonSelected = entityUtilService.getTeacherPersonByRut(satisfactionRow.getRut());
+                    if(satisfactionQuestionnaire.isPresent()){
+                        duplicatedRecordCount++;
+                    } else {
+                        String answersJson = "{\"llave\":\"respuesta\"}"; //TODO replace to jsonb
+                        int questionnaireId = questionnaireService.getNextSatisfactionQuestionnaireId();
+                        int createQuestionnaireResponse = questionnaireService.saveSatisfactionQuestionnaire(
+                                new SatisfactionQuestionnaire(questionnaireId, loadedFileId, teacherPerson.get().getRut(), satisfactionRowDTO.getResponseId(),
+                                        satisfactionRowDTO.getSendDate(), answersJson, satisfactionRowDTO.getId(), satisfactionRowDTO.getCourse(),
+                                        satisfactionRowDTO.getGroup()));
 
-                if (!teacherPersonSelected.isPresent()) {
-                    Teacher teacher = entityUtilService.buildTeacherFromExitSatisfaction(satisfactionRow, school.get().getId());
-                    entityUtilService.createPerson(teacher);
-                    entityUtilService.createTeacher(teacher);
-                    teacherPersonSelected = Optional.of(teacher);
-                }
-
-                int satisfactionQuestionnaireCount = questionnaireRepository.getSatisfactionQuestionnaireCount(teacherPersonSelected.get().getTeacherId());
-
-                if (satisfactionQuestionnaireCount < 1) {
-
-                    String answersJson = "{\"llave\":\"respuesta\"}";
-
-                    int satisfactionQuestionnaireId = questionnaireRepository.getNextSatisfactionQuestionnaireId();
-
-                    SatisfactionQuestionnaire newSatisfactionQuestionnaire = new SatisfactionQuestionnaire();
-                    newSatisfactionQuestionnaire.setId(satisfactionQuestionnaireId);
-                    newSatisfactionQuestionnaire.setLoadedFileId(loadedFileId);
-                    newSatisfactionQuestionnaire.setTeacherId(teacherPersonSelected.get().getTeacherId());
-                    newSatisfactionQuestionnaire.setResponseId(satisfactionRow.getResponseId());
-                    newSatisfactionQuestionnaire.setSendDate(satisfactionRow.getSendDate());
-                    newSatisfactionQuestionnaire.setAnswers(answersJson);
-                    newSatisfactionQuestionnaire.setNumberId(satisfactionRow.getId());
-                    newSatisfactionQuestionnaire.setCourse(satisfactionRow.getCourse());
-                    newSatisfactionQuestionnaire.setGroup(satisfactionRow.getGroup());
-
-                    questionnaireRepository.insertSatisfactionQuestionnaire(newSatisfactionQuestionnaire);
-                    newRecordCount++;
-                }
-                if (satisfactionQuestionnaireCount >= 1) {
-                    duplicatedRecordCount++;
+                        logger.info("processSatisfactionFileRows. createQuestionnaireResponse={}", createQuestionnaireResponse);
+                        newRecordCount++;
+                    }
+                }  else {
+                    invalidRecordCount++;
                 }
             }
         }
+
         return new FileResumeDTO(satisfactionRows.size(), newRecordCount, duplicatedRecordCount, invalidRecordCount);
     }
 
@@ -221,11 +211,11 @@ public class LoaderMoodleFile {
 
             logger.info("processGeneralResumeRows. school={}", school.get());
 
-            String rutCleaned = EntityAttributeUtilService.clearRut(generalResumeRow.getRut().toLowerCase());
-            Optional<Teacher> teacher = entityUtilService.getTeacherPersonByRut(rutCleaned);
+            String rutCleaned = personService.clearRut(generalResumeRow.getRut().toLowerCase());
+            Optional<Teacher> teacher = personService.getTeacherByRut(rutCleaned);
 
             if(teacher.isPresent()){
-                entityUtilService.updateTeacher(teacher.get(), 0, null, true, null,
+                personService.updateTeacher(teacher.get(), 0, null, true, null,
                         generalResumeRow.isApproved(), generalResumeRow.getTrainingYear());
                 newRecordCount++;
             } //create teacher is not possible because data necessary are in other files
@@ -233,4 +223,5 @@ public class LoaderMoodleFile {
 
         return new FileResumeDTO(generalResumeRows.size(), newRecordCount, duplicatedRecordCount, invalidRecordCount);
     }
+
 }

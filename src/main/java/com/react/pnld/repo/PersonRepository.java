@@ -1,7 +1,6 @@
 package com.react.pnld.repo;
 
 import com.react.pnld.mappers.PersonMapper;
-import com.react.pnld.model.Person;
 import com.react.pnld.model.Teacher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

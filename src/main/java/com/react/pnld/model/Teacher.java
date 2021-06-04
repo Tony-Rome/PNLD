@@ -2,10 +2,13 @@ package com.react.pnld.model;
 
 import java.io.Serializable;
 
-public class Teacher extends Person implements Serializable {
+public class Teacher implements Serializable {
 
-    private int teacherId;
     private String rut;
+    private int schoolId;
+    private int genderId;
+    private String name;
+    private String email;
     private int age;
     private String department;
     private boolean participatedInPNLD;
@@ -17,12 +20,20 @@ public class Teacher extends Person implements Serializable {
         super();
     }
 
-    public int getTeacherId() {
-        return teacherId;
-    }
-
-    public void setTeacherId(int teacherId) {
-        this.teacherId = teacherId;
+    public Teacher(String rut, int schoolId, int genderId, String name, String email, int age,
+                   String department, boolean participatedInPNLD, String teachesInLevels, boolean isTrainingApproved,
+                   int trainingYear) {
+        this.rut = rut;
+        this.schoolId = schoolId;
+        this.genderId = genderId;
+        this.name = name;
+        this.email = email;
+        this.age = age;
+        this.department = department;
+        this.participatedInPNLD = participatedInPNLD;
+        this.teachesInLevels = teachesInLevels;
+        this.isTrainingApproved = isTrainingApproved;
+        this.trainingYear = trainingYear;
     }
 
     public String getRut() {
@@ -31,6 +42,38 @@ public class Teacher extends Person implements Serializable {
 
     public void setRut(String rut) {
         this.rut = rut;
+    }
+
+    public int getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(int schoolId) {
+        this.schoolId = schoolId;
+    }
+
+    public int getGenderId() {
+        return genderId;
+    }
+
+    public void setGenderId(int genderId) {
+        this.genderId = genderId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getAge() {
@@ -84,8 +127,11 @@ public class Teacher extends Person implements Serializable {
     @Override
     public String toString() {
         return "Teacher{" +
-                "teacherId=" + teacherId +
-                ", rut='" + rut + '\'' +
+                "rut='" + rut + '\'' +
+                ", schoolId=" + schoolId +
+                ", genderId=" + genderId +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
                 ", age=" + age +
                 ", department='" + department + '\'' +
                 ", participatedInPNLD=" + participatedInPNLD +

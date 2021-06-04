@@ -6,7 +6,7 @@ public class SatisfactionQuestionnaire {
 
     private int id;
     private int loadedFileId;
-    private int teacherId;
+    private String teacherRut;
     private int responseId;
     private Timestamp sendDate;
     private String answers;
@@ -15,6 +15,20 @@ public class SatisfactionQuestionnaire {
     private String group;
 
     public SatisfactionQuestionnaire() {
+        super();
+    }
+
+    public SatisfactionQuestionnaire(int id, int loadedFileId, String teacherRut, int responseId, Timestamp sendDate,
+                                     String answers, int numberId, String course, String group) {
+        this.id = id;
+        this.loadedFileId = loadedFileId;
+        this.teacherRut = teacherRut;
+        this.responseId = responseId;
+        this.sendDate = sendDate;
+        this.answers = answers;
+        this.numberId = numberId;
+        this.course = course;
+        this.group = group;
     }
 
     public int getId() {
@@ -33,12 +47,12 @@ public class SatisfactionQuestionnaire {
         this.loadedFileId = loadedFileId;
     }
 
-    public int getTeacherId() {
-        return teacherId;
+    public String getTeacherRut() {
+        return teacherRut;
     }
 
-    public void setTeacherId(int teacherId) {
-        this.teacherId = teacherId;
+    public void setTeacherRut(String teacherRut) {
+        this.teacherRut = teacherRut;
     }
 
     public int getResponseId() {
@@ -94,7 +108,7 @@ public class SatisfactionQuestionnaire {
         return "ExitQuestionnaire{" +
                 "id=" + id +
                 ", loadedFileId=" + loadedFileId +
-                ", teacherId=" + teacherId +
+                ", teacherRut=" + teacherRut +
                 ", responseId=" + responseId +
                 ", sendDate=" + sendDate +
                 ", answers='" + answers + '\'' +

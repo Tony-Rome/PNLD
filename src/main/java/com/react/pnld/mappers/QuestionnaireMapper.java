@@ -15,5 +15,7 @@ public interface QuestionnaireMapper {
 
     int getNextExitSatisfactionQuestionnaireId();
 
-    void insertExitSatisfactionQuestionnaire(SatisfactionQuestionnaire exitSatisfactionQuestionnaire);
+    SatisfactionQuestionnaire getSatisfactionQuestByRut(String teacherRut);
+
+    int insertExitSatisfactionQuestionnaire(SatisfactionQuestionnaire exitSatisfactionQuestionnaire);
 }

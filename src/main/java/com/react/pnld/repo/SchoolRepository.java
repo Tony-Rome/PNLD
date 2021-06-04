@@ -38,4 +38,8 @@ public class SchoolRepository {
         return Optional.ofNullable(schoolMapper.getSchoolWhereRbd(rbd));
     }
 
+    public Optional<School> getSchoolNotSpecified(){
+        return this.getSchoolWhereRbd(0);
+    }
+
 }

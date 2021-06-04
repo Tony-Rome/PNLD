@@ -32,7 +32,11 @@ public class QuestionnaireRepository {
         return questionnaireMapper.getNextExitSatisfactionQuestionnaireId();
     }
 
-    public void insertSatisfactionQuestionnaire(SatisfactionQuestionnaire exitSatisfactionQuestionnaire) {
-        questionnaireMapper.insertExitSatisfactionQuestionnaire(exitSatisfactionQuestionnaire);
+    public SatisfactionQuestionnaire getSatisfactionQuestionnaire(String teacherRut){
+        this.questionnaireMapper.getSatisfactionQuestByRut(teacherRut);
+    }
+
+    public int insertSatisfactionQuestionnaire(SatisfactionQuestionnaire exitSatisfactionQuestionnaire) {
+        return questionnaireMapper.insertExitSatisfactionQuestionnaire(exitSatisfactionQuestionnaire);
     }
 }
