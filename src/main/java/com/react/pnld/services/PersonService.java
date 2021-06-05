@@ -1,7 +1,6 @@
 package com.react.pnld.services;
 
 import com.react.pnld.dto.DiagnosticFileDTO;
-import com.react.pnld.dto.TrainingFileDTO;
 import com.react.pnld.model.GenderProperties;
 import com.react.pnld.model.Teacher;
 import com.react.pnld.repo.GenderRepository;
@@ -39,27 +38,6 @@ public class PersonService {
 
     public int createTeacher(Teacher teacher) {
         return this.personRepository.insertTeacher(teacher);
-    }
-
-    public Teacher buildTeacherFrom(TrainingFileDTO trainingFileDTO, int schoolId) {
-
-        Teacher teacher = new Teacher();
-        teacher.setRut(this.clearRut(trainingFileDTO.getRut()));
-        teacher.setAge(0);
-        teacher.setSchoolId(schoolId);
-        teacher.setParticipatedInPNLD(false);
-        teacher.setTeachesInLevels(null);
-
-        String department = (trainingFileDTO.getDepartment() == null || trainingFileDTO.getDepartment().isEmpty()) ?
-                NOT_SPECIFIED : trainingFileDTO.getDepartment();
-        teacher.setDepartment(department);
-
-        String[] lastNames = EntityAttributeUtilService.splitLastNames(trainingFileDTO.getLastNames());
-        teacher.setName(trainingFileDTO.getName());
-        teacher.setEmail(trainingFileDTO.getEmail());
-        teacher.setGenderId(GenderProperties.GENDER_ID_NOT_SPECIFIED);
-
-        return teacher;
     }
 
     public Teacher buildTeacherFromDiagnostic(DiagnosticFileDTO diagnosticFileDTO, int schoolId) {

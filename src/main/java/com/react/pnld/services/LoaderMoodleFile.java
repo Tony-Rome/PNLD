@@ -2,8 +2,6 @@ package com.react.pnld.services;
 
 import com.react.pnld.dto.*;
 import com.react.pnld.model.*;
-import com.react.pnld.repo.TestRepository;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,7 @@ public class LoaderMoodleFile {
     private static final Logger logger = LoggerFactory.getLogger(LoaderMoodleFile.class);
 
     @Autowired
-    TestRepository testRepository;
+    TestService testService;
 
     @Autowired
     EntityUtilService entityUtilService;//TODO eliminate
@@ -41,41 +39,48 @@ public class LoaderMoodleFile {
         int duplicatedRecordCount = 0;
         int invalidRecordCount = 0;
 
-        for (TrainingFileDTO trainingRow : trainingRows) {
-            logger.info("processTrainingFileRows. trainingRow={}", trainingRow);
+        for (TrainingFileDTO trainingRowDTO : trainingRows) {
+            logger.info("processTrainingFileRows. trainingRow={}", trainingRowDTO);
 
-            Optional<Teacher> teacherSelected = personService.getTeacherByRut(trainingRow.getRut());
+            String teacherRut = personService.clearRut(trainingRowDTO.getRut());
 
-            if (!teacherSelected.isPresent()) {
-                String cleanSchoolName = EntityAttributeUtilService.removeAccents(trainingRow.getSchoolName());
-                Optional<School> school = entityUtilService.getSchoolWhereName(cleanSchoolName);
-
-                Teacher teacher = personService.buildTeacherFrom(trainingRow, school.get().getId());
-                teacher.setRut(rutCleaned);
-                personService.saveTeacher(teacher);
-                personService.createTeacher(teacher);
-
-                teacherSelected = Optional.of(teacher);
-            }
-
-            logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherSelected.get());
-            Optional<TrainingTest> trainingTest = testRepository.getTrainingTest(teacherSelected.get().getTeacherId(),
-                    testType);
-
-            if (!trainingTest.isPresent()) {
-                TrainingTest newTrainingTest = new TrainingTest(this.testRepository.getNextTrainingTestId(), testType,
-                        loadedFileId, teacherSelected.get().getTeacherId(), trainingRow.getStartIn(), trainingRow.getFinishIn(),
-                        trainingRow.getRequiredInterval(), trainingRow.getTestState(), trainingRow.getScore(), null);
-
-                int resultInsertTest = this.testRepository.insertTrainingTest(newTrainingTest);
-                logger.info("processTrainingFileRows. resultInsertTest={}", resultInsertTest);
-                newRecordCount++;
+            if(!personService.rutValidator(teacherRut)){
+                invalidRecordCount++;
             } else {
-                duplicatedRecordCount++;
-            }
+                Optional<Teacher> teacherSelected = personService.getTeacherByRut(teacherRut);
 
-            boolean isRutValid = EntityAttributeUtilService.rutValidator(rutCleaned);
-            boolean isEmailValid = personService.validatePersonByEmail(trainingRow.getEmail());
+                if (!teacherSelected.isPresent()) {
+
+                    String fullName = trainingRowDTO.getName() + " " + trainingRowDTO.getLastNames();
+
+                    Optional<School> schoolSelected = schoolService.getSchoolByName(trainingRowDTO.getSchoolName());
+
+                    Teacher teacher = new Teacher(teacherRut, schoolSelected.get().getId(), GenderProperties.GENDER_ID_NOT_SPECIFIED,
+                            fullName, trainingRowDTO.getEmail(), 0, trainingRowDTO.getDepartment(), false,
+                            null, false, 0);
+                    personService.createTeacher(teacher);
+                    teacherSelected = Optional.of(teacher);
+                }
+
+                logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherSelected.get());
+                Optional<TrainingTest> trainingTest = testService.getTrainingTestByTeacherRut(teacherSelected.get().getRut(),
+                        testType);
+
+                if (!trainingTest.isPresent()) {
+                    int testId = testService.getNextTrainingTestId();
+                    String answersJson = "{\"llave\":\"respuesta\"}"; //TODO replace to jsonb
+
+                    TrainingTest newTrainingTest = new TrainingTest(testId, testType,
+                            loadedFileId, teacherSelected.get().getRut(), trainingRowDTO.getStartIn(), trainingRowDTO.getFinishIn(),
+                            trainingRowDTO.getRequiredInterval(), trainingRowDTO.getTestState(), trainingRowDTO.getScore(), answersJson);
+
+                    int resultInsertTest = testService.saveTrainingTest(newTrainingTest);
+                    logger.info("processTrainingFileRows. resultInsertTest={}", resultInsertTest);
+                    newRecordCount++;
+                } else {
+                    duplicatedRecordCount++;
+                }
+            }
         }
         return new FileResumeDTO(trainingRows.size(), newRecordCount, duplicatedRecordCount, invalidRecordCount);
     }
@@ -153,9 +158,9 @@ public class LoaderMoodleFile {
         int invalidRecordCount = 0;
 
         for (SatisfactionFileDTO satisfactionRowDTO : satisfactionRows) {
+            logger.info("processSatisfactionFileRows. satisfactionRowDTO={}", satisfactionRowDTO);
 
             String teacherRut = personService.clearRut(satisfactionRowDTO.getRut());
-
             if(!personService.rutValidator(teacherRut)){
                 invalidRecordCount++;
             } else {
