@@ -4,9 +4,10 @@ import java.io.Serializable;
 
 public class Teacher implements Serializable {
 
-    private String rut;
-    private int schoolId;
+    private int id;
+    private int schoolRbd;
     private int genderId;
+    private String rut;
     private String name;
     private String email;
     private int age;
@@ -20,12 +21,12 @@ public class Teacher implements Serializable {
         super();
     }
 
-    public Teacher(String rut, int schoolId, int genderId, String name, String email, int age,
-                   String department, boolean participatedInPNLD, String teachesInLevels, boolean isTrainingApproved,
-                   int trainingYear) {
-        this.rut = rut;
-        this.schoolId = schoolId;
+    public Teacher(int id, int schoolRbd, int genderId, String rut, String name, String email, int age, String department,
+                   boolean participatedInPNLD, String teachesInLevels, boolean isTrainingApproved, int trainingYear) {
+        this.id = id;
+        this.schoolRbd = schoolRbd;
         this.genderId = genderId;
+        this.rut = rut;
         this.name = name;
         this.email = email;
         this.age = age;
@@ -36,20 +37,20 @@ public class Teacher implements Serializable {
         this.trainingYear = trainingYear;
     }
 
-    public String getRut() {
-        return rut;
+    public int getId() {
+        return id;
     }
 
-    public void setRut(String rut) {
-        this.rut = rut;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getSchoolId() {
-        return schoolId;
+    public int getSchoolRbd() {
+        return schoolRbd;
     }
 
-    public void setSchoolId(int schoolId) {
-        this.schoolId = schoolId;
+    public void setSchoolRbd(int schoolRbd) {
+        this.schoolRbd = schoolRbd;
     }
 
     public int getGenderId() {
@@ -58,6 +59,14 @@ public class Teacher implements Serializable {
 
     public void setGenderId(int genderId) {
         this.genderId = genderId;
+    }
+
+    public String getRut() {
+        return rut;
+    }
+
+    public void setRut(String rut) {
+        this.rut = rut;
     }
 
     public String getName() {
@@ -127,9 +136,10 @@ public class Teacher implements Serializable {
     @Override
     public String toString() {
         return "Teacher{" +
-                "rut='" + rut + '\'' +
-                ", schoolId=" + schoolId +
+                "id=" + id +
+                ", schoolRbd=" + schoolRbd +
                 ", genderId=" + genderId +
+                ", rut='" + rut + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +

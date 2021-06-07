@@ -28,8 +28,9 @@ public class PersonService {
     @Autowired
     private GenderRepository genderRepository;
 
-    @Autowired
-    private SchoolService schoolService;
+    public int getNextTeacherId() {
+        return this.personRepository.getNextTeacherId();
+    }
 
     public Optional<Teacher> getTeacherByRut(String rut) {
         String rutCleaned = this.clearRut(rut);
@@ -45,7 +46,7 @@ public class PersonService {
         Teacher teacher = new Teacher();
         teacher.setRut(this.clearRut(diagnosticFileDTO.getRut()));
         teacher.setAge(diagnosticFileDTO.getAge());
-        teacher.setSchoolId(schoolId);
+        teacher.setSchoolRbd(schoolId);
         teacher.setParticipatedInPNLD(false);
         teacher.setTeachesInLevels(null);
 
@@ -69,16 +70,7 @@ public class PersonService {
         return !personRepository.checkIfEmailExists(email);
     }
 
-    public int updateTeacher(Teacher teacher, int age, String department, boolean participatedInPNLD, String teachesInLevels,
-                             boolean isApproved, int trainngYear){
-
-        if(age != 0) teacher.setAge(age);
-        if(department != null && !department.isEmpty()) teacher.setDepartment(department);
-        if(participatedInPNLD) teacher.setParticipatedInPNLD(participatedInPNLD);
-        if(teachesInLevels != null) teacher.setTeachesInLevels(teachesInLevels);
-        if(isApproved) teacher.setTrainingApproved(isApproved);
-        if(trainngYear > 0) teacher.setTrainingYear(trainngYear);
-
+    public int updateTeacher(Teacher teacher){
         return personRepository.updateTeacher(teacher);
     }
 

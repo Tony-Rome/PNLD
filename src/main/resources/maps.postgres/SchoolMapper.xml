@@ -4,10 +4,6 @@
 <mapper namespace="com.react.pnld.mappers.SchoolMapper">
     <cache/>
 
-    <select id="getNextSchoolId" resultType="int">
-        SELECT nextval(pg_get_serial_sequence('pnld.colegio', 'id'));
-    </select>
-
     <resultMap id="getSchoolWhereName" type="com.react.pnld.model.School">
         <id property="id" column="id"/>
         <result property="name" column="nombre" />
@@ -23,16 +19,16 @@
 
     <insert id="insertSchool">
         INSERT INTO pnld.colegio
-            (id, id_region, nombre, ciudad, rbd)
+            (rbd, id_region, nombre, ciudad)
         VALUES
-            (#{id}, #{regionId}, #{name}, #{city}, #{rbd});
+            (#{rbd}, #{regionId}, #{name}, #{city});
     </insert>
 
     <update id="updateSchool">
         UPDATE pnld.colegio
         SET
-        ciudad = #{city}, comuna = #{commune}, id_region = #{regionId}, rbd = #{rbd}
-        WHERE id = #{id}
+        ciudad = #{city}, comuna = #{commune}, id_region = #{regionId}
+        WHERE rbd = #{rbd}
     </update>
 
     <select id="getSchoolWhereRbd" resultMap="getSchoolWhereName">

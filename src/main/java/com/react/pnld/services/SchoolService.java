@@ -29,4 +29,16 @@ public class SchoolService {
 
         return schoolRepository.getSchoolNotSpecified();
     }
+
+    public Optional<School> getSchoolWhereRbd(int rbd){
+        return schoolRepository.getSchoolWhereRbd(rbd);
+    }
+
+    public int createSchool(School school){
+        return schoolRepository.insertSchool(school);
+    }
+
+    public int updateSchool(School school){
+        return schoolRepository.updateSchool(school);
+    }
 }

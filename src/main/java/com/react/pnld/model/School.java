@@ -4,32 +4,22 @@ import java.io.Serializable;
 
 public class School implements Serializable {
 
-    private int id;
+    private int rbd;
     private String name;
     private String commune;
     private String city;
     private int regionId;
-    private int rbd;
 
     public School() {
         super();
     }
 
-    public School(int id, String name, String commune, String city, int regionId, int rbd) {
-        this.id = id;
+    public School(int rbd, String name, String commune, String city, int regionId) {
+        this.rbd = rbd;
         this.name = name;
         this.commune = commune;
         this.city = city;
         this.regionId = regionId;
-        this.rbd = rbd;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -71,11 +61,11 @@ public class School implements Serializable {
     @Override
     public String toString() {
         return "School{" +
-                "id=" + id +
+                "rbd=" + rbd +
                 ", name='" + name + '\'' +
+                ", commune='" + commune + '\'' +
                 ", city='" + city + '\'' +
                 ", regionId=" + regionId +
-                ", rbd=" + rbd +
                 '}';
     }
 }

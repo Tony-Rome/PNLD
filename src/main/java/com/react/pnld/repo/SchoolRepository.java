@@ -16,16 +16,11 @@ public class SchoolRepository {
     @Autowired
     SchoolMapper schoolMapper;
 
-    public int getNextSchoolId() {
-        return schoolMapper.getNextSchoolId();
-    }
-
     public Optional<School> getSchoolWhereName(String name) {
         return Optional.ofNullable(schoolMapper.getSchoolWhereName(name));
     }
 
     public int insertSchool(School school) {
-        logger.info("insertSchool. school={}", school);
         return schoolMapper.insertSchool(school);
     }
 

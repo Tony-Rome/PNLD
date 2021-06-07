@@ -52,11 +52,11 @@ public class LoaderMoodleFile {
 
                     Optional<School> schoolSelected = schoolService.getSchoolByName(trainingRowDTO.getSchoolName());
 
-                    Teacher teacher = new Teacher(teacherRut, schoolSelected.get().getId(), GenderProperties.GENDER_ID_NOT_SPECIFIED,
-                            fullName, trainingRowDTO.getEmail(), 0, trainingRowDTO.getDepartment(), false,
+                    Teacher newTeacher = new Teacher(personService.getNextTeacherId(), schoolSelected.get().getRbd(), GenderProperties.GENDER_ID_NOT_SPECIFIED,
+                            teacherRut, fullName, trainingRowDTO.getEmail(), 0, trainingRowDTO.getDepartment(), false,
                             null, false, 0);
-                    personService.createTeacher(teacher);
-                    teacherSelected = Optional.of(teacher);
+                    personService.createTeacher(newTeacher);
+                    teacherSelected = Optional.of(newTeacher);
                 }
 
                 logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherSelected.get());
@@ -201,13 +201,16 @@ public class LoaderMoodleFile {
         for(GeneralResumeTrainingDTO generalResumeRow : generalResumeRows){
             logger.info("processGeneralResumeRows. generalResumeRow={}", generalResumeRow);
 
-            Optional<School> school = entityUtilService.getSchoolWhereRbd(generalResumeRow.getRbd());
+            Optional<School> school = schoolService.getSchoolWhereRbd(generalResumeRow.getRbd());
 
             if(!school.isPresent()){
-                School newSchool = entityUtilService.createSchool(null, null, null, generalResumeRow.getRegionId(), generalResumeRow.getRbd());
+                School newSchool = new School(generalResumeRow.getRbd(), null, null, null, generalResumeRow.getRegionId());
+                int createSchoolResponse = schoolService.createSchool(newSchool);
+                logger.info("processGeneralResumeRows. createSchoolResponse={}", createSchoolResponse);
                 school = Optional.of(newSchool);
             } else {
-                int updateResponse = entityUtilService.updateSchool(school.get(), null, generalResumeRow.getRbd(), generalResumeRow.getRegionId(), null, null);
+                school.get().setRegionId(generalResumeRow.getRegionId());
+                int updateResponse = schoolService.updateSchool(school.get());
                 logger.info("processGeneralResumeRows. updateResponse={}", updateResponse);
             }
 
@@ -217,8 +220,9 @@ public class LoaderMoodleFile {
             Optional<Teacher> teacher = personService.getTeacherByRut(rutCleaned);
 
             if(teacher.isPresent()){
-                personService.updateTeacher(teacher.get(), 0, null, true, null,
-                        generalResumeRow.isApproved(), generalResumeRow.getTrainingYear());
+                teacher.get().setTrainingApproved(generalResumeRow.isApproved());
+                teacher.get().setTrainingYear(generalResumeRow.getTrainingYear());
+                personService.updateTeacher(teacher.get());
                 newRecordCount++;
             } //create teacher is not possible because data necessary are in other files
         }
