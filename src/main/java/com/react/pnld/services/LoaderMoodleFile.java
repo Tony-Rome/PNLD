@@ -19,9 +19,6 @@ public class LoaderMoodleFile {
     TestService testService;
 
     @Autowired
-    EntityUtilService entityUtilService;//TODO eliminate
-
-    @Autowired
     PersonService personService;
 
     @Autowired
