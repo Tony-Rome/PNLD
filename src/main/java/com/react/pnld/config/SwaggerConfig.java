@@ -20,7 +20,7 @@ import java.time.LocalDate;
 @Configuration
 @EnableSwagger2
 @ConfigurationProperties("app.api")
-@ConditionalOnProperty(name="app.api.swagger.enable", havingValue = "true")
+@ConditionalOnProperty(name = "app.api.swagger.enable", havingValue = "true")
 public class SwaggerConfig {
 
     private String version;

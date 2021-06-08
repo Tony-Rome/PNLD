@@ -34,7 +34,7 @@ public class SchoolRepository {
         return schoolMapper.updateSchool(school);
     }
 
-    public Optional<School> getSchoolWhereRbd(int rbd){
+    public Optional<School> getSchoolWhereRbd(int rbd) {
         return Optional.ofNullable(schoolMapper.getSchoolWhereRbd(rbd));
     }
 

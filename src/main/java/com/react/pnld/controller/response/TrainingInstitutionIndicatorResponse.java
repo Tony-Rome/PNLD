@@ -10,7 +10,7 @@ public class TrainingInstitutionIndicatorResponse implements Serializable {
     private int toYear;
     private List<TrainingInstitutionIndicatorDTO> trainingIndicatorData;
 
-    public TrainingInstitutionIndicatorResponse(){
+    public TrainingInstitutionIndicatorResponse() {
         super();
     }
 

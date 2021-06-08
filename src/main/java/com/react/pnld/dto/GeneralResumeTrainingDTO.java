@@ -28,7 +28,7 @@ public class GeneralResumeTrainingDTO {
     @BooleanString(trueStrings = {"aprobado", "Aprobado", "APROBADO"}, falseStrings = {"reprobado", "Reprobado", "REPROBADO"})
     private boolean isApproved;
 
-    public GeneralResumeTrainingDTO(){
+    public GeneralResumeTrainingDTO() {
         super();
     }
 

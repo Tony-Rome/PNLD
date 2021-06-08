@@ -142,7 +142,7 @@ public class EntityUtilService {
     }
 
     //TODO replace for other
-    public School createNewSchool(String name, String city, String commune,String regionName, String rbd) {
+    public School createNewSchool(String name, String city, String commune, String regionName, String rbd) {
 
         if (name == null || name.isEmpty()) return schoolRepository.getSchoolWhereName(NOT_SPECIFIED).get();
 
@@ -164,13 +164,13 @@ public class EntityUtilService {
     }
 
     public School createSchool(String name, String commune, String city, int regionId, int rbd) {
-        String schoolName = (name == null || name.isEmpty())? NOT_SPECIFIED : name;
+        String schoolName = (name == null || name.isEmpty()) ? NOT_SPECIFIED : name;
 
-        String schoolCity = (city == null || city.isEmpty())? NOT_SPECIFIED : city;
+        String schoolCity = (city == null || city.isEmpty()) ? NOT_SPECIFIED : city;
 
-        String schoolCommune = (commune == null || commune.isEmpty())? NOT_SPECIFIED : commune;
+        String schoolCommune = (commune == null || commune.isEmpty()) ? NOT_SPECIFIED : commune;
 
-        int schoolRegionId = (regionId == 0)? REGION_ID_OTHER : regionId;
+        int schoolRegionId = (regionId == 0) ? REGION_ID_OTHER : regionId;
 
         int schoolRbd = (rbd == 0) ? RBD_ID_NOT_SPECIFIED : rbd;
 
@@ -214,29 +214,29 @@ public class EntityUtilService {
 
         Optional<School> selectedSchool = schoolRepository.getSchoolWhereName(schoolName);
 
-        if(!selectedSchool.isPresent()) return schoolRepository.getSchoolWhereRbd(0);
+        if (!selectedSchool.isPresent()) return schoolRepository.getSchoolWhereRbd(0);
 
         return selectedSchool;
     }
 
-    public Optional<School> getSchoolWhereRbd(int rbd){
+    public Optional<School> getSchoolWhereRbd(int rbd) {
         return schoolRepository.getSchoolWhereRbd(rbd);
     }
 
-    public int updateSchool(School school, String name, int rbd, int regionId, String city, String commune){
-        int regionIdUpdated = (regionId > 0 && regionId < 17)? regionId : school.getRegionId();
+    public int updateSchool(School school, String name, int rbd, int regionId, String city, String commune) {
+        int regionIdUpdated = (regionId > 0 && regionId < 17) ? regionId : school.getRegionId();
         school.setRegionId(regionIdUpdated);
 
-        String nameSchoolUpdated = (name != null && !name.isEmpty())? name : school.getName();
+        String nameSchoolUpdated = (name != null && !name.isEmpty()) ? name : school.getName();
         school.setName(nameSchoolUpdated);
 
-        String cityUpdated= (city != null && !city.isEmpty())? city : school.getCity();
+        String cityUpdated = (city != null && !city.isEmpty()) ? city : school.getCity();
         school.setCity(cityUpdated);
 
-        int rbdUpdated = (rbd != 0)? rbd : school.getRbd();
+        int rbdUpdated = (rbd != 0) ? rbd : school.getRbd();
         school.setRbd(rbdUpdated);
 
-        String communeUpdated = (commune != null && !commune.isEmpty())? commune : school.getCommune();
+        String communeUpdated = (commune != null && !commune.isEmpty()) ? commune : school.getCommune();
         school.setCommune(communeUpdated);
 
         int resultUpdate = schoolRepository.updateSchool(school);
@@ -245,14 +245,14 @@ public class EntityUtilService {
     }
 
     public int updateTeacher(Teacher teacher, int age, String department, boolean participatedInPNLD, String teachesInLevels,
-                             boolean isApproved, int trainngYear){
+                             boolean isApproved, int trainngYear) {
 
-        if(age != 0) teacher.setAge(age);
-        if(department != null && !department.isEmpty()) teacher.setDepartment(department);
-        if(participatedInPNLD) teacher.setParticipatedInPNLD(participatedInPNLD);
-        if(teachesInLevels != null) teacher.setTeachesInLevels(teachesInLevels);
-        if(isApproved) teacher.setTrainingApproved(isApproved);
-        if(trainngYear > 0) teacher.setTrainingYear(trainngYear);
+        if (age != 0) teacher.setAge(age);
+        if (department != null && !department.isEmpty()) teacher.setDepartment(department);
+        if (participatedInPNLD) teacher.setParticipatedInPNLD(participatedInPNLD);
+        if (teachesInLevels != null) teacher.setTeachesInLevels(teachesInLevels);
+        if (isApproved) teacher.setTrainingApproved(isApproved);
+        if (trainngYear > 0) teacher.setTrainingYear(trainngYear);
 
         return personRepository.updateTeacher(teacher);
     }

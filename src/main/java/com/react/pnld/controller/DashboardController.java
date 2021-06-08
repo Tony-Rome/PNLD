@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,7 +24,7 @@ public class DashboardController {
 
     @GetMapping(value = "/capacitaciones/establecimientos")
     public TrainingInstitutionIndicatorResponse getInfoTrainedInstitutions(@RequestParam(name = "fromYear") int fromYear,
-                                                                           @RequestParam(name = "toYear") int toYear){
+                                                                           @RequestParam(name = "toYear") int toYear) {
         logger.info("getInstitutionsTrainingInfo. fromYear={}, toYear={}", fromYear, toYear);
 
         List<TrainingInstitutionIndicatorDTO> trainingInstitutionIndicatorDTOList;
@@ -38,19 +37,19 @@ public class DashboardController {
 
     @GetMapping(value = "/capacitaciones/docentes")
     public String getInfoTrainedTeacher(@RequestParam(name = "fromYear") int fromYear,
-                                        @RequestParam(name = "toYear") int toYear){
+                                        @RequestParam(name = "toYear") int toYear) {
         return "Work in progress";
     }
 
     @GetMapping(value = "/test-pc/docentes")
     public String getInfoTeacherCTTest(@RequestParam(name = "fromYear") int fromYear,
-                                        @RequestParam(name = "toYear") int toYear){
+                                       @RequestParam(name = "toYear") int toYear) {
         return "Work in progress";
     }
 
     @GetMapping(value = "/test-pc/estudiantes")
     public String getInfoStudentsCTTest(@RequestParam(name = "fromYear") int fromYear,
-                                      @RequestParam(name = "toYear") int toYear){
+                                        @RequestParam(name = "toYear") int toYear) {
         return "Work in progress";
     }
 

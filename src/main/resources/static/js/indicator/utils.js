@@ -15,7 +15,7 @@ export function randomColorFunction(){
     let b = Math.floor(Math.random() * 255);
 
     const COLOR_SOLID = 1;
-    const COLOR_TRANSPARENT = 0.2;
+    const COLOR_TRANSPARENT = 0.7;
 
     let randomColorDict = {};
     randomColorDict['backgroundColor'] = "rgba(" + r + "," + g + "," + b + "," + COLOR_TRANSPARENT + ")"
