@@ -1,8 +1,9 @@
 package com.react.pnld.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class DiagnosticQuestionnaire {
+public class DiagnosticQuestionnaire implements Serializable {
 
     private int id;
     private int loadedFileId;
@@ -14,6 +15,19 @@ public class DiagnosticQuestionnaire {
     private String answers;
 
     public DiagnosticQuestionnaire() {
+        super();
+    }
+
+    public DiagnosticQuestionnaire(int id, int loadedFileId, int teacherId, long respondentId, long collectorId,
+                                   Timestamp createdDate, Timestamp modifiedDate, String answers) {
+        this.id = id;
+        this.loadedFileId = loadedFileId;
+        this.teacherId = teacherId;
+        this.respondentId = respondentId;
+        this.collectorId = collectorId;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.answers = answers;
     }
 
     public int getId() {

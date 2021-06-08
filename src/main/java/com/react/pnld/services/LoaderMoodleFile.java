@@ -90,20 +90,20 @@ public class LoaderMoodleFile {
 
         for (DiagnosticFileDTO diagnosticRow : diagnosticRows) {
             int schoolRbd = schoolService.rbdToInt(diagnosticRow.getRbd());
-            Optional<School> school = schoolService.getSchoolWhereRbd(schoolRbd);
+            Optional<School> schoolSelected = schoolService.getSchoolWhereRbd(schoolRbd);
 
-            if(!school.isPresent()){
+            if(!schoolSelected.isPresent()){
                 School newSchool = new School(schoolRbd, diagnosticRow.getName(), diagnosticRow.getCommune(), null,
                         schoolService.getRegionId(diagnosticRow.getRegion()));
                 int insertNewSchoolResponse =  schoolService.createSchool(newSchool);
                 logger.info("processDiagnosticFileRows. insertNewSchoolResponse={}", insertNewSchoolResponse);
-                school = Optional.of(newSchool);
+                schoolSelected = Optional.of(newSchool);
 
             } else {
-                school.get().setName(diagnosticRow.getName());
-                school.get().setCommune(diagnosticRow.getCommune());
-                school.get().setRegionId(schoolService.getRegionId(diagnosticRow.getRegion()));
-                int updateSchoolResponse = schoolService.updateSchool(school.get());
+                schoolSelected.get().setName(diagnosticRow.getName());
+                schoolSelected.get().setCommune(diagnosticRow.getCommune());
+                schoolSelected.get().setRegionId(schoolService.getRegionId(diagnosticRow.getRegion()));
+                int updateSchoolResponse = schoolService.updateSchool(schoolSelected.get());
                 logger.info("processDiagnosticFileRows. updateSchoolResponse={}", updateSchoolResponse);
             }
 
@@ -113,39 +113,37 @@ public class LoaderMoodleFile {
                 invalidRecordCount++;
             } else {
 
-                Optional<Teacher> teacherPersonSelected = personService.getTeacherByRut(diagnosticRow.getRut());
+                Optional<Teacher> teacherSelected = personService.getTeacherByRut(diagnosticRow.getRut());
 
-                if (!teacherPersonSelected.isPresent()) {
-                    Teacher teacher = personService.buildTeacherFromDiagnostic(diagnosticRow, school.get().getId());
-                    personService.saveTeacher(teacher);
-                    personService.createTeacher(teacher);
-                    teacherPersonSelected = Optional.of(teacher);
+                if (!teacherSelected.isPresent()) {
+                    int teacherGender = personService.getGenderIdByType(personService.genderStandardization(diagnosticRow.getGender()));
+                    Teacher newTeacher = new Teacher(personService.getNextTeacherId(), schoolSelected.get().getRbd(), teacherGender,
+                            diagnosticRow.getRut(), diagnosticRow.getName(), diagnosticRow.getEmail(), diagnosticRow.getAge(), null,
+                    false, null, false, 0);
+                    int createTeacherResponse = personService.createTeacher(newTeacher);
+                    logger.info("processDiagnosticFileRows. createTeacherResponse={}", createTeacherResponse);
+                    teacherSelected = Optional.of(newTeacher);
                 }
 
-                logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherPersonSelected.get());
+                logger.info("processDiagnosticFileRows. teacherSelected.get()={}", teacherSelected.get());
 
-                int diagnosticQuestionnaireCount = questionnaireRepository.getDiagnosticQuestionnaireCount(teacherPersonSelected.get().getTeacherId());
+                Optional<DiagnosticQuestionnaire> diagnosticQuestionnaire = questionnaireService.getDiagnosticQuestByRut(teacherSelected.get().getRut());
 
-                if (diagnosticQuestionnaireCount < 1) {
+                if (!diagnosticQuestionnaire.isPresent()) {
 
                     String answersJson = "{\"clave\":\"valor\"}";
 
-                    int diagnosticQuestionnaireId = questionnaireRepository.getNextDiagnosticQuestionnaireId();
+                    int diagnosticQuestionnaireId = questionnaireService.getNextDiagnosticQuestionnaireId();
 
-                    DiagnosticQuestionnaire newDiagnosticQuestionnaire = new DiagnosticQuestionnaire();
-                    newDiagnosticQuestionnaire.setId(diagnosticQuestionnaireId);
-                    newDiagnosticQuestionnaire.setLoadedFileId(loadedFileId);
-                    newDiagnosticQuestionnaire.setTeacherId(teacherPersonSelected.get().getTeacherId());
-                    newDiagnosticQuestionnaire.setRespondentId(diagnosticRow.getRespondentId());
-                    newDiagnosticQuestionnaire.setCollectorId(diagnosticRow.getCollectorId());
-                    newDiagnosticQuestionnaire.setCreatedDate(diagnosticRow.getCreatedDate());
-                    newDiagnosticQuestionnaire.setModifiedDate(diagnosticRow.getModifiedDate());
-                    newDiagnosticQuestionnaire.setAnswers(answersJson);
+                    DiagnosticQuestionnaire newDiagnosticQuestionnaire = new DiagnosticQuestionnaire(diagnosticQuestionnaireId,
+                    loadedFileId, teacherSelected.get().getId(), diagnosticRow.getRespondentId(), diagnosticRow.getCollectorId(),
+                    diagnosticRow.getCreatedDate(), diagnosticRow.getModifiedDate(), answersJson);
 
-                    questionnaireRepository.insertDiagnosticQuestionnaire(newDiagnosticQuestionnaire);
+                    int createDiagnosticResponse = questionnaireService.insertDiagnosticQuestionnaire(newDiagnosticQuestionnaire);
+                    logger.info("processDiagnosticFileRows. createDiagnosticResponse={}", createDiagnosticResponse);
+
                     newRecordCount++;
-                }
-                if (diagnosticQuestionnaireCount >= 1) {
+                } else {
                     duplicatedRecordCount++;
                 }
             }

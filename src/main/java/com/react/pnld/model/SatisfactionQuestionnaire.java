@@ -1,8 +1,9 @@
 package com.react.pnld.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class SatisfactionQuestionnaire {
+public class SatisfactionQuestionnaire implements Serializable {
 
     private int id;
     private int loadedFileId;

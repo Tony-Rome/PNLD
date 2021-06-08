@@ -1,6 +1,5 @@
 package com.react.pnld.services;
 
-import com.react.pnld.dto.DiagnosticFileDTO;
 import com.react.pnld.model.GenderProperties;
 import com.react.pnld.model.Teacher;
 import com.react.pnld.repo.GenderRepository;
@@ -41,33 +40,8 @@ public class PersonService {
         return this.personRepository.insertTeacher(teacher);
     }
 
-    public Teacher buildTeacherFromDiagnostic(DiagnosticFileDTO diagnosticFileDTO, int schoolId) {
-
-        Teacher teacher = new Teacher();
-        teacher.setRut(this.clearRut(diagnosticFileDTO.getRut()));
-        teacher.setAge(diagnosticFileDTO.getAge());
-        teacher.setSchoolRbd(schoolId);
-        teacher.setParticipatedInPNLD(false);
-        teacher.setTeachesInLevels(null);
-
-        teacher.setDepartment(NOT_SPECIFIED);
-
-        //Training training = this.trainingRepository.getTrainingByFacilitator(NOT_SPECIFIED);
-
-        String[] lastNames = EntityAttributeUtilService.splitLastNames(diagnosticFileDTO.getLastNames());
-        teacher.setName(diagnosticFileDTO.getName());
-        teacher.setEmail(diagnosticFileDTO.getEmail());
-
-        int genderId = genderRepository.getGenderIdByType(this.genderStandardization(diagnosticFileDTO.getGender()));
-        teacher.setGenderId(genderId);
-
-        return teacher;
-    }
-
-    public boolean validatePersonByEmail(String email) {
-
-        if (email == null || email.isEmpty() || !EntityAttributeUtilService.emailValidator(email)) return false;
-        return !personRepository.checkIfEmailExists(email);
+    public int getGenderIdByType(String genderType){
+        return genderRepository.getGenderIdByType(genderType);
     }
 
     public int updateTeacher(Teacher teacher){
@@ -76,15 +50,15 @@ public class PersonService {
 
     public String genderStandardization(String gender) {
 
-        if (genderProperties.getFemale().contains(gender)) {
+        if (genderProperties.getFemale().contains(gender.toLowerCase())) {
             return genderProperties.GENDER_TYPE_FEMALE;
         }
 
-        if (genderProperties.getMale().contains(gender)) {
+        if (genderProperties.getMale().contains(gender.toLowerCase())) {
             return genderProperties.GENDER_TYPE_MALE;
         }
 
-        if (genderProperties.getOther().contains(gender)) {
+        if (genderProperties.getOther().contains(gender.toLowerCase())) {
             return genderProperties.GENDER_TYPE_OTHER;
         }
 

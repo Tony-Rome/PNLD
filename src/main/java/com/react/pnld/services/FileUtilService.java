@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.text.Normalizer;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -214,5 +215,10 @@ public class FileUtilService {
             logger.error("getLocalDateFrom.", dateTimeException.getMessage(), dateTimeException);
             return LocalDateTime.MIN;
         }
+    }
+
+    public static String removeAccents(String toClean) {
+        if(toClean == null) return new String();
+        return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
     }
 }

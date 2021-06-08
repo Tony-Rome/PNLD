@@ -1,6 +1,5 @@
 package com.react.pnld.model;
 
-import com.react.pnld.services.EntityAttributeUtilService;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "csv.headers")
@@ -126,7 +125,7 @@ public class CSVHeadersProperties {
     }
 
     public String[] getGeneralResumeArray() {
-        return EntityAttributeUtilService.removeSymbols(generalResume).split(this.delimiters);
+        return generalResume.replaceAll("(, |[^a-zA-Z0-9,;])", "").toLowerCase().split(this.delimiters);
     }
 
     public String getDelimiters() {

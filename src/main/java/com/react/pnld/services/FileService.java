@@ -88,7 +88,7 @@ public class FileService {
             return false;
         }
 
-        String cleanHeaders = EntityAttributeUtilService.removeSymbols(firstLine);
+        String cleanHeaders = firstLine.replaceAll("(, |[^a-zA-Z0-9,;])", "").toLowerCase();
         String[] headersFromFile = cleanHeaders.split(this.csvHeadersDelimiters);
         String[] selectedHeadersArray = fileUtilService.selectedHeadersArray(scheduleFileLoadDTO.getSelectedType());
         boolean isHeadersEquals = fileUtilService.isStringArraysEquals(headersFromFile, selectedHeadersArray);

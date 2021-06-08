@@ -8,13 +8,9 @@ public interface PersonMapper {
 
     int insertTeacher(Teacher teacher);
 
-    int insertPerson(Person person);
-
     int getNextTeacherId();
 
     int getNextPersonId();
-
-    boolean checkIfEmailExists(String email);
 
     int updateTeacher(Teacher teacher);
 }

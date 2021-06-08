@@ -57,9 +57,9 @@ public class SchoolService {
     }
 
     public int rbdToInt(String rbdStr) {
-        if(rbdStr == null || rbdStr.isEmpty()) return null;
+        if(rbdStr == null || rbdStr.isEmpty()) return 0;
         String cleanedRbd = rbdStr.replaceAll("[^\\d]", "");
-        if (cleanedRbd.isEmpty() || cleanedRbd.length() > LEN_MAX_RBD) return null;
+        if (cleanedRbd.isEmpty() || cleanedRbd.length() > LEN_MAX_RBD) return 0;
         return Integer.parseInt(cleanedRbd);
     }
 
@@ -67,10 +67,18 @@ public class SchoolService {
 
         if (name == null || name.isEmpty()) return REGION_ID_OTHER;
 
-        String cleanedName = EntityAttributeUtilService.normalizeRegion(name);
+        String cleanedName = this.normalizeRegion(name);
         int regionIdSelected = regionRepository.getRegionIdByName(cleanedName);
 
         logger.info("getRegionId. regionIdSelected={}", regionIdSelected);
         return regionIdSelected;
+    }
+
+    public static String normalizeRegion(String name) {
+        if (name == null || name.isEmpty()) {
+            return null;
+        }
+        String normalizedName = Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+        return normalizedName.replaceAll("region( de( la | )| del | )", "");
     }
 }

@@ -27,22 +27,12 @@ public class PersonRepository {
         return resultInsertTeacher;
     }
 
-    public int insertPerson(Person person) {
-        int resultInsertPerson = personMapper.insertPerson(person);
-        logger.info("insertPerson. person={}, resultInsertPerson={}", person, resultInsertPerson);
-        return  resultInsertPerson;
-    }
-
     public int getNextTeacherId() {
         return personMapper.getNextTeacherId();
     }
 
     public int getNextPersonId() {
         return personMapper.getNextPersonId();
-    }
-
-    public boolean checkIfEmailExists(String email) {
-        return personMapper.checkIfEmailExists(email);
     }
 
     public int updateTeacher(Teacher teacher){

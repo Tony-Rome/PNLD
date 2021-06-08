@@ -3,8 +3,20 @@
 
 <mapper namespace="com.react.pnld.mappers.QuestionnaireMapper">
 
-    <select id="getDiagnosticQuestionnaireCount" resultType="int" parameterType="int">
-        SELECT COUNT(id) FROM pnld.pnld.cuestionario_diagnostico WHERE id_docente = #{teacherId}
+    <resultMap id="diagnosticQuestionnaire" type="com.react.pnld.model.DiagnosticQuestionnaire">
+        <id property="id" column="id"/>
+        <result property="loadedFileId" column="id_archivo_cargado"/>
+        <result property="teacherRut" column="rut_docente"/>
+        <result property="responseId" column="id_respuesta"/>
+        <result property="collectorId" column="id_coleccion"/>
+        <result property="createdDate" column="fecha_creacion"/>
+        <result property="modifiedDate" column="fecha_modificacion"/>
+        <result property="answers" column="respuestas"/>
+    </resultMap>
+    <select id="getDiagnosticQuestionnaireWhereRut" resultType="diagnosticQuestionnaire">
+        SELECT *
+        FROM pnld.cuestionario_diagnostico
+        WHERE rut_docente = #{teacherRut};
     </select>
 
     <insert id="insertDiagnosticQuestionnaire">
