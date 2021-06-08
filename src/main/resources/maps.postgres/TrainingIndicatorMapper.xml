@@ -19,12 +19,11 @@
     </resultMap>
 
     <select id="participantInstitutionNumberPNLD" resultMap="trainingInstitution">
-        SELECT d.anno_capacitacion, COUNT(p.id_colegio) AS cantidad_colegio, r.id AS id_region, r.nombre AS nombre_region
+        SELECT d.anno_capacitacion, COUNT(d.id_colegio) AS cantidad_colegio, r.id AS id_region, r.nombre AS nombre_region
         FROM pnld.docente AS d
-            JOIN pnld.persona AS p ON d.id_persona = p.id_persona
-            JOIN pnld.colegio AS c ON p.id_colegio = c.id
-            JOIN pnld.region AS r ON c.id_region = r.id
-        WHERE d.anno_capacitacion BETWEEN #{fromYear} AND #{toYear} GROUP BY r.nombre, r.id, d.anno_capacitacion ORDER BY r.id
+        JOIN pnld.colegio AS c ON d.id_colegio = c.id
+        JOIN pnld.region AS r ON c.id_region = r.id
+        WHERE d.anno_capacitacion BETWEEN #{fromYear} and #{toYear} GROUP BY r.id, d.anno_capacitacion ORDER BY r.id
     </select>
 
 </mapper>

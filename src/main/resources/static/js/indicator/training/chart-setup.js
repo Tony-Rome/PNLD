@@ -14,7 +14,7 @@ const PARTICIPANT_INSTITUTION_PERCENTAGE = 2;
 export function selectChart(){
 
     if(this && this.type === "radio") activeDefaultOptions();
-    
+
     let subDimensionSelected = getSubDimensionSelected();
 
     var chartOption = parseInt(subDimensionSelected['chart'])
@@ -90,7 +90,6 @@ function participantInstitutionNumber(dataList, yearRange, title) {
 
         datasets.push(dataset);
     });
-    console.log(datasets);
     let labels = getRegionsSelected();
     getChart(labels, datasets, title);
 

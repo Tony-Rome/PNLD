@@ -12,11 +12,8 @@ import java.util.List;
 @Service
 public class TrainingIndicatorService {
 
-    private static final Logger logger = LoggerFactory.getLogger(TrainingIndicatorService.class);
-
     @Autowired
     private TrainingIndicatorRepository trainingIndicatorRepository;
-
 
     public List<TrainingInstitutionIndicatorDTO> participantInstitutionNumberPNLD(int fromYear, int toYear) {
         return trainingIndicatorRepository.participantInstitutionNumberPNLD(fromYear, toYear);

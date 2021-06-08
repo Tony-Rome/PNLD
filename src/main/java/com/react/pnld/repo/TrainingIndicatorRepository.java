@@ -12,8 +12,6 @@ import java.util.List;
 @Repository
 public class TrainingIndicatorRepository {
 
-    private static final Logger logger = LoggerFactory.getLogger(TrainingIndicatorRepository.class);
-
     @Autowired
     private TrainingIndicatorMapper trainingIndicatorMapper;
 

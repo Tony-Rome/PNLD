@@ -31,7 +31,7 @@ public class DashboardController {
         List<TrainingInstitutionIndicatorDTO> trainingInstitutionIndicatorDTOList;
         trainingInstitutionIndicatorDTOList = trainingIndicatorService.participantInstitutionNumberPNLD(fromYear, toYear);
 
-        System.out.println(trainingInstitutionIndicatorDTOList);
+        logger.info("getInstitutionsTrainingInfo. trainingInstitutionIndicatorDTOList={}", trainingInstitutionIndicatorDTOList);
 
         return new TrainingInstitutionIndicatorResponse(fromYear, toYear, trainingInstitutionIndicatorDTOList);
     }
