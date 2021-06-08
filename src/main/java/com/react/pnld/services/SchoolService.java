@@ -41,4 +41,11 @@ public class SchoolService {
     public int updateSchool(School school){
         return schoolRepository.updateSchool(school);
     }
+
+    public int rbdToInt(String rbdStr) {
+        if(rbdStr == null || rbdStr.isEmpty()) return null;
+        String cleanedRbd = rbdStr.replaceAll("[^\\d]", "");
+        if (cleanedRbd.isEmpty() || cleanedRbd.length() > LEN_MAX_RBD) return null;
+        return Integer.parseInt(cleanedRbd);
+    }
 }

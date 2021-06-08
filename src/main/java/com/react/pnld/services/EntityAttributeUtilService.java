@@ -32,13 +32,6 @@ public class EntityAttributeUtilService {
         return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
     }
 
-    public static Integer rbdToInt(String rbdStr) {
-        if(rbdStr == null || rbdStr.isEmpty()) return null;
-        String cleanedRbd = rbdStr.replaceAll("[^\\d]", "");
-        if (cleanedRbd.isEmpty() || cleanedRbd.length() > LEN_MAX_RBD) return null;
-        return Integer.parseInt(cleanedRbd);
-    }
-
     public static String removeSymbols(String strToClean) {
         String strCleaned = strToClean.replaceAll("(, |[^a-zA-Z0-9,;])", "");
         return strCleaned.toLowerCase();

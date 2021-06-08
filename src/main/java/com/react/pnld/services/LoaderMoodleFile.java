@@ -89,8 +89,8 @@ public class LoaderMoodleFile {
         int invalidRecordCount = 0;
 
         for (DiagnosticFileDTO diagnosticRow : diagnosticRows) {
-
-            Optional<School> school = entityUtilService.getSchoolWhereName(diagnosticRow.getSchoolName());
+            int schoolRbd = schoolService.rbdToInt(diagnosticRow.getRbd());
+            Optional<School> school = schoolService.getSchoolWhereRbd(schoolRbd);
 
             if(!school.isPresent()){
                 school = Optional.of(entityUtilService.createNewSchool(diagnosticRow.getSchoolName(), null,
