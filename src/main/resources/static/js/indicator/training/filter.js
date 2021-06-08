@@ -14,7 +14,7 @@ function selectAllYears() {
     selectChart();
 };
 
-function selectAllRegions() {
+export function selectAllRegions() {
     var regionList = document.getElementsByName('region');
     regionList.forEach( (e, i) => {
         e.checked = this.checked;

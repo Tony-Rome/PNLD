@@ -5,11 +5,17 @@
 
     <cache/>
 
+    <resultMap id="trainingInstitutionDataByYear" type="com.react.pnld.dto.TrainingInstitutionDataByYearDTO">
+        <result property="year" column="anno_capacitacion" />
+        <result property="institutionNumberPNLD" column="cantidad_colegio" />
+        <result property="percentageInstitutions" column="colegio_porcentaje"/>
+        <result property="percentageFirstTimeInPNLD" column="primera_vez_porcentaje"/>
+    </resultMap>
+
     <resultMap id="trainingInstitution" type="com.react.pnld.dto.TrainingInstitutionIndicatorDTO">
         <id property="id" column="id_region"/>
-        <result property="year" column="anno_capacitacion"/>
         <result property="regionName" column="nombre_region" />
-        <result property="institutionNumberPNLD" column="cantidad_colegio" />
+        <collection property="trainingInstitutionDataByYearDTOList" resultMap="trainingInstitutionDataByYear"/>
     </resultMap>
 
     <select id="participantInstitutionNumberPNLD" resultMap="trainingInstitution">

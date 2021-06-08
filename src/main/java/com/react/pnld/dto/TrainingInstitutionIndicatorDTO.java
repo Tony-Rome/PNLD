@@ -1,15 +1,13 @@
 package com.react.pnld.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class TrainingInstitutionIndicatorDTO implements Serializable {
 
     private int id;
-    private int year;
     private String regionName;
-    private int institutionNumberPNLD;
-    private float percentageInstitutions;
-    private float percentageFirstTimeInPNLD;
+    private List<TrainingInstitutionDataByYearDTO> trainingInstitutionDataByYearDTOList;
 
     public int getId() {
         return id;
@@ -17,14 +15,6 @@ public class TrainingInstitutionIndicatorDTO implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
     }
 
     public String getRegionName() {
@@ -35,38 +25,20 @@ public class TrainingInstitutionIndicatorDTO implements Serializable {
         this.regionName = regionName;
     }
 
-    public int getInstitutionNumberPNLD() {
-        return institutionNumberPNLD;
+    public List<TrainingInstitutionDataByYearDTO> getTrainingInstitutionDataByYearDTOList() {
+        return trainingInstitutionDataByYearDTOList;
     }
 
-    public void setInstitutionNumberPNLD(int institutionNumberPNLD) {
-        this.institutionNumberPNLD = institutionNumberPNLD;
-    }
-
-    public float getPercentageInstitutions() {
-        return percentageInstitutions;
-    }
-
-    public void setPercentageInstitutions(float percentageInstitutions) {
-        this.percentageInstitutions = percentageInstitutions;
-    }
-
-    public float getPercentageFirstTimeInPNLD() {
-        return percentageFirstTimeInPNLD;
-    }
-
-    public void setPercentageFirstTimeInPNLD(float percentageFirstTimeInPNLD) {
-        this.percentageFirstTimeInPNLD = percentageFirstTimeInPNLD;
+    public void setTrainingInstitutionDataByYearDTOList(List<TrainingInstitutionDataByYearDTO> trainingInstitutionDataByYearDTOList) {
+        this.trainingInstitutionDataByYearDTOList = trainingInstitutionDataByYearDTOList;
     }
 
     @Override
     public String toString() {
         return "TrainingInstitutionIndicatorDTO{" +
-                "year=" + year +
+                "id=" + id +
                 ", regionName='" + regionName + '\'' +
-                ", institutionNumberPNLD=" + institutionNumberPNLD +
-                ", percentageInstitutions=" + percentageInstitutions +
-                ", percentageFirstTimeInPNLD=" + percentageFirstTimeInPNLD +
+                ", trainingInstitutionDataByYearDTOList= [" + trainingInstitutionDataByYearDTOList + "]" +
                 '}';
     }
 }

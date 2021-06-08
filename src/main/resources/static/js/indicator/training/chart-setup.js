@@ -1,6 +1,7 @@
 import {transformRegionName, randomColorFunction, defineYearsQueryParams} from '../utils.js';
-import {getYearsSelected, getRegionsSelected, getGendersSelected, getAllRegionsName} from '../filter.js';
+import {getYearsSelected, getRegionsSelected, getGendersSelected, getAllRegionsName, yearList} from '../filter.js';
 import {getSubDimensionSelected} from '../sub-dimension.js';
+import {selectAllRegions} from './filter.js';
 import {getInstitutionSubDimensionData} from './api.js';
 import {getChart} from './chart.js';
 
@@ -12,6 +13,8 @@ const PARTICIPANT_INSTITUTION_PERCENTAGE = 2;
 
 export function selectChart(){
 
+    if(this && this.type === "radio") activeDefaultOptions();
+    
     let subDimensionSelected = getSubDimensionSelected();
 
     var chartOption = parseInt(subDimensionSelected['chart'])
@@ -25,6 +28,11 @@ export function selectChart(){
         //TODO: filtro según valor de chart
         selectChartByTeacher();
     }
+}
+
+function activeDefaultOptions(){
+    yearList[0].checked = true;
+    allRegion.click();
 }
 
 async function selectCharByInstitution(chartOption, yearsSelected, queryParams){
@@ -53,19 +61,25 @@ function participantInstitutionNumber(dataList, yearRange, title) {
 
     var datasets = [];
 
+    var dataListFully = dataListWithEmptyValues(dataList, yearRange);
+
     yearRange.forEach( (year, i) => {
 
         var randomColorDict = randomColorFunction();
+        var data = [];
 
-        var dataByYear = dataList.filter(data => {
-            if(data.year === year) return data;
+        dataListFully.forEach( (e,index) => {
+
+            let institutionNumberData = e.trainingInstitutionDataByYearDTOList
+                .filter(data => data.year === year)
+                .map( data => data.institutionNumberPNLD);
+
+            data.push(institutionNumberData[0]);
+
+
         });
 
-        var dataFully = dataListWithEmptyValues(dataByYear);
-
-        var dataFilter = regionFilter(dataFully);
-
-        var data = dataFilter.map(d => d.institutionNumberPNLD);
+        var dataFilter = regionFilter(dataListFully);
 
         let dataset = {
             'label': year,
@@ -76,28 +90,40 @@ function participantInstitutionNumber(dataList, yearRange, title) {
 
         datasets.push(dataset);
     });
-
+    console.log(datasets);
     let labels = getRegionsSelected();
     getChart(labels, datasets, title);
 
 }
 
-function dataListWithEmptyValues(data){
-    let regionList = getAllRegionsName();
-    let institutionNumber = data.map(d => d.institutionNumberPNLD);
-    let regionId = data.map(d => d.id);
+function dataListWithEmptyValues(dataList, yearRange){
 
-    regionList.forEach( (e,i) => {
+    let regionList = getAllRegionsName();
+    let regionId = dataList.map(data => data.id);
+
+
+    regionList.forEach( (region,i) => {
         if(!regionId.includes(i+1)){
+            var dataDescriptionList = [];
+            yearRange.forEach( (year, index) => {
+                let dataDescription = {
+                    'institutionNumberPNLD': 0,
+                    'percentageFirstTimeInPNLD': 0.0,
+                    'percentageInstitutions': 0.0,
+                    'year': year
+                }
+                dataDescriptionList.push(dataDescription);
+            })
             let newValue = {
-                'regionName': e,
-                'institutionNumberPNLD': 0
+                'id': i+1,
+                'regionName': region,
+                'trainingInstitutionDataByYearDTOList': dataDescriptionList,
             }
-            data.splice(i,0,newValue);
+            dataList.splice(i,0,newValue);
         }
     });
 
-    return data;
+    return dataList;
 }
 
 function regionFilter(data){

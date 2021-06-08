@@ -1,10 +1,9 @@
 const filterBock = document.querySelectorAll('.filterBlock');
 const filterTitle = document.querySelectorAll('.filterTitle');
 
-const yearList = document.getElementsByName('year');
+export const yearList = document.getElementsByName('year');
 const regionList = document.getElementsByName('region');
 const genderList = document.getElementsByName('gender');
-
 
 filterTitle.forEach( (t, i) => {
     filterTitle[i].addEventListener('click', ()=>{
@@ -50,3 +49,4 @@ export function getAllRegionsName(){
 
     return regionName;
 }
+
