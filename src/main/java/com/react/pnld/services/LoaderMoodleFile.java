@@ -107,11 +107,11 @@ public class LoaderMoodleFile {
                 logger.info("processDiagnosticFileRows. updateSchoolResponse={}", updateSchoolResponse);
             }
 
+            String teacherRut = personService.clearRut(diagnosticRow.getRut());
 
-            boolean rut = EntityAttributeUtilService.rutValidator(diagnosticRow.getRut());
-            boolean email = personService.validatePersonByEmail(diagnosticRow.getEmail());
-
-            if (rut && email) {
+            if(!personService.rutValidator(teacherRut)){
+                invalidRecordCount++;
+            } else {
 
                 Optional<Teacher> teacherPersonSelected = personService.getTeacherByRut(diagnosticRow.getRut());
 
@@ -149,7 +149,6 @@ public class LoaderMoodleFile {
                     duplicatedRecordCount++;
                 }
             }
-
 
         }
         return new FileResumeDTO(diagnosticRows.size(), newRecordCount, duplicatedRecordCount, invalidRecordCount);
