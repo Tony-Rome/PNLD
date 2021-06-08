@@ -5,8 +5,6 @@ import java.util.regex.Pattern;
 
 public class EntityAttributeUtilService {
 
-    private static final int LEN_MAX_RBD = 6;
-
     public static String[] splitLastNames(String lastNames) {
 
         String[] newLastNamesArray = new String[2];

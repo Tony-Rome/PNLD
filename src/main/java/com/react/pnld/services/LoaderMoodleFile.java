@@ -82,7 +82,7 @@ public class LoaderMoodleFile {
         return new FileResumeDTO(trainingRows.size(), newRecordCount, duplicatedRecordCount, invalidRecordCount);
     }
 
-    public FileResumeDTO diagnosticFile(List<DiagnosticFileDTO> diagnosticRows, int loadedFileId) {
+    public FileResumeDTO processDiagnosticFileRows(List<DiagnosticFileDTO> diagnosticRows, int loadedFileId) {
 
         int newRecordCount = 0;
         int duplicatedRecordCount = 0;
@@ -93,13 +93,20 @@ public class LoaderMoodleFile {
             Optional<School> school = schoolService.getSchoolWhereRbd(schoolRbd);
 
             if(!school.isPresent()){
-                school = Optional.of(entityUtilService.createNewSchool(diagnosticRow.getSchoolName(), null,
-                        diagnosticRow.getCommune(), diagnosticRow.getRegion(), diagnosticRow.getRbd()));
+                School newSchool = new School(schoolRbd, diagnosticRow.getName(), diagnosticRow.getCommune(), null,
+                        schoolService.getRegionId(diagnosticRow.getRegion()));
+                int insertNewSchoolResponse =  schoolService.createSchool(newSchool);
+                logger.info("processDiagnosticFileRows. insertNewSchoolResponse={}", insertNewSchoolResponse);
+                school = Optional.of(newSchool);
+
             } else {
-                entityUtilService.updateSchool(school.get(), null,
-                        EntityAttributeUtilService.rbdToInt(diagnosticRow.getRbd()).intValue(),
-                        entityUtilService.getRegionId(diagnosticRow.getRegion()), null, diagnosticRow.getCommune());
+                school.get().setName(diagnosticRow.getName());
+                school.get().setCommune(diagnosticRow.getCommune());
+                school.get().setRegionId(schoolService.getRegionId(diagnosticRow.getRegion()));
+                int updateSchoolResponse = schoolService.updateSchool(school.get());
+                logger.info("processDiagnosticFileRows. updateSchoolResponse={}", updateSchoolResponse);
             }
+
 
             boolean rut = EntityAttributeUtilService.rutValidator(diagnosticRow.getRut());
             boolean email = personService.validatePersonByEmail(diagnosticRow.getEmail());

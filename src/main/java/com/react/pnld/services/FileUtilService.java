@@ -172,7 +172,7 @@ public class FileUtilService {
 
             case DIAGNOSIS:
                 List<DiagnosticFileDTO> diagnosticRows = parseRowsToBeans(loadedFileReader, DiagnosticFileDTO.class);
-                return this.loaderMoodleFile.diagnosticFile(diagnosticRows, loadedFile.getId());
+                return this.loaderMoodleFile.processDiagnosticFileRows(diagnosticRows, loadedFile.getId());
 
             case PRE_TRAINING:
             case POST_TRAINING:
