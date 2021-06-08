@@ -84,7 +84,7 @@ public class LoaderMoodleFile {
 
             Optional<School> school = entityUtilService.getSchoolWhereName(diagnosticRow.getSchoolName());
 
-            if(!school.isPresent()){
+            if (!school.isPresent()) {
                 school = Optional.of(entityUtilService.createNewSchool(diagnosticRow.getSchoolName(), null,
                         diagnosticRow.getCommune(), diagnosticRow.getRegion(), diagnosticRow.getRbd()));
             } else {
@@ -149,7 +149,7 @@ public class LoaderMoodleFile {
 
             Optional<School> school = entityUtilService.getSchoolWhereName(satisfactionRow.getSchoolName());
 
-            if(!school.isPresent())
+            if (!school.isPresent())
                 school = Optional.of(entityUtilService.createNewSchool(satisfactionRow.getSchoolName(), null, null, null, null));
 
             boolean rut = EntityAttributeUtilService.rutValidator(satisfactionRow.getRut());
@@ -195,19 +195,19 @@ public class LoaderMoodleFile {
         return new FileResumeDTO(satisfactionRows.size(), newRecords, duplicatedRecords);
     }
 
-    public FileResumeDTO processGeneralResumeRows(List<GeneralResumeTrainingDTO> generalResumeRows, int loadedFileId){
+    public FileResumeDTO processGeneralResumeRows(List<GeneralResumeTrainingDTO> generalResumeRows, int loadedFileId) {
         logger.info("processGeneralResumeRows. generalResumeRows.size()={}, loadedFileId={}",
                 generalResumeRows.size(), loadedFileId);
 
         int newRecords = 0;
         int duplicatedRecords = 0;
 
-        for(GeneralResumeTrainingDTO generalResumeRow : generalResumeRows){
+        for (GeneralResumeTrainingDTO generalResumeRow : generalResumeRows) {
             logger.info("processGeneralResumeRows. generalResumeRow={}", generalResumeRow);
 
             Optional<School> school = entityUtilService.getSchoolWhereRbd(generalResumeRow.getRbd());
 
-            if(!school.isPresent()){
+            if (!school.isPresent()) {
                 School newSchool = entityUtilService.createSchool(null, null, null, generalResumeRow.getRegionId(), generalResumeRow.getRbd());
                 school = Optional.of(newSchool);
             } else {
@@ -220,7 +220,7 @@ public class LoaderMoodleFile {
             String rutCleaned = EntityAttributeUtilService.clearRut(generalResumeRow.getRut().toLowerCase());
             Optional<Teacher> teacher = entityUtilService.getTeacherPersonByRut(rutCleaned);
 
-            if(teacher.isPresent()){
+            if (teacher.isPresent()) {
                 entityUtilService.updateTeacher(teacher.get(), 0, null, true, null,
                         generalResumeRow.isApproved(), generalResumeRow.getTrainingYear());
                 newRecords++;

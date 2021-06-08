@@ -9,11 +9,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndicatorController {
 
     @GetMapping("/training")
-    public String trainingIndicator(){ return "indicators/training"; }
+    public String trainingIndicator() {
+        return "indicators/training";
+    }
 
     @GetMapping("/code")
-    public String codeIndicator(){ return "indicators/code"; }
+    public String codeIndicator() {
+        return "indicators/code";
+    }
 
     @GetMapping("/ct-test")
-    public String tpcIndicator(){ return "indicators/ct-test"; }
+    public String tpcIndicator() {
+        return "indicators/ct-test";
+    }
 }

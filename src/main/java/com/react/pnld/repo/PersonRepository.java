@@ -31,7 +31,7 @@ public class PersonRepository {
     public int insertPerson(Person person) {
         int resultInsertPerson = personMapper.insertPerson(person);
         logger.info("insertPerson. person={}, resultInsertPerson={}", person, resultInsertPerson);
-        return  resultInsertPerson;
+        return resultInsertPerson;
     }
 
     public int getNextTeacherId() {
@@ -46,7 +46,7 @@ public class PersonRepository {
         return personMapper.checkIfEmailExists(email);
     }
 
-    public int updateTeacher(Teacher teacher){
+    public int updateTeacher(Teacher teacher) {
         return personMapper.updateTeacher(teacher);
     }
 }

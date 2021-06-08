@@ -51,7 +51,7 @@
                 <li><input type="checkbox" id="allYear">Todos los años</input></li>
                 <#list currentYear..lastYear as yearAsNumber>
                     <#assign yearAsStr = yearAsNumber?string.computer/>
-                    <li><input type="checkbox" name="year" value=${yearAsStr}>${yearAsStr}</input></li>
+                    <li><input type="checkbox" id="${yearAsStr}" class="filterOption" name="year" value=${yearAsStr}>${yearAsStr}</input></li>
                 </#list>
               </div>
             </div>
@@ -65,7 +65,7 @@
               <div class="filterContent scrollable">
                 <li><input type="checkbox" id="allRegion">Todas las regiones</input></li>
                 <#list regionList as region>
-                    <li><input type="checkbox" name="region" value=${region?index}>${region}</input></li>
+                    <li><input type="checkbox" id="${region}" class="filterOption" name="region" value=${region?index + 1}>${region}</input></li>
                 </#list>
               </div>
             </div>
@@ -77,7 +77,7 @@
                 <div class="filterContent scrollable">
                     <li><input type="checkbox" id="allGender">Todos los géneros</input></li>
                     <#list genderList as gender>
-                      <li><input type="checkbox" name="gender" value=${gender?index}>${gender}</input></li>
+                      <li><input type="checkbox" id="${gender}" class="filterOption" name="gender" value=${gender?index}>${gender}</input></li>
                     </#list>
                 </div>
             </div>
@@ -86,8 +86,8 @@
 </#macro>
 
 <#macro javascript>
-    <script src="js/indicator/sub-dimension.js"></script>
-    <script src="js/indicator/filter.js"></script>
+    <script type="module" src="js/indicator/sub-dimension.js"></script>
+    <script type="module" src="js/indicator/filter.js"></script>
     <script src="js/indicator/chart-main.js"></script>
 </#macro>
 

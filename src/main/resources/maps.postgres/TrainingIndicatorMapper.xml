@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.react.pnld.mappers.TrainingIndicatorMapper">
+
+    <cache/>
+
+    <resultMap id="trainingInstitutionDataByYear" type="com.react.pnld.dto.TrainingInstitutionDataByYearDTO">
+        <result property="year" column="anno_capacitacion" />
+        <result property="institutionNumberPNLD" column="cantidad_colegio" />
+        <result property="percentageInstitutions" column="colegio_porcentaje"/>
+        <result property="percentageFirstTimeInPNLD" column="primera_vez_porcentaje"/>
+    </resultMap>
+
+    <resultMap id="trainingInstitution" type="com.react.pnld.dto.TrainingInstitutionIndicatorDTO">
+        <id property="id" column="id_region"/>
+        <result property="regionName" column="nombre_region" />
+        <collection property="trainingInstitutionDataByYearDTOList" resultMap="trainingInstitutionDataByYear"/>
+    </resultMap>
+
+    <select id="participantInstitutionNumberPNLD" resultMap="trainingInstitution">
+        SELECT d.anno_capacitacion, COUNT(d.rbd_colegio) AS cantidad_colegio, r.id AS id_region, r.nombre AS nombre_region
+        FROM pnld.docente AS d
+        JOIN pnld.colegio AS c ON d.rbd_colegio = c.rbd_colegio
+        JOIN pnld.region AS r ON c.id_region = r.id
+        WHERE d.anno_capacitacion BETWEEN #{fromYear} and #{toYear} GROUP BY r.id, d.anno_capacitacion ORDER BY r.id
+    </select>
+
+</mapper>

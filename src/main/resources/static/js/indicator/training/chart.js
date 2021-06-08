@@ -1,7 +1,18 @@
 const ctx = document.getElementById('myChart').getContext('2d');
 var myChart;
 
-export function getChart (labels, datasets) {
+function defineTitle(data){
+
+    let baseTitle = 'N° de colegios por región ';
+
+    if(Object.keys(data).length === 2){
+        return baseTitle + data['fromYear'] + " - " + data['toYear'];
+    }else{
+        return baseTitle + data['year'];
+    }
+}
+
+export function getChart (labels, datasets, title) {
 
   if(myChart) { myChart.destroy(); }
 
@@ -14,6 +25,7 @@ export function getChart (labels, datasets) {
             options: {
                 scales: {
                     x: {
+                        stacked: true,
                         title: {
                             display: true,
                             text: 'Regiones',
@@ -27,6 +39,7 @@ export function getChart (labels, datasets) {
                         }
                     },
                     y: {
+                        stacked: true,
                         title: {
                             display: true,
                             text: 'Cantidad',
@@ -44,12 +57,13 @@ export function getChart (labels, datasets) {
                 plugins:{
                     title: {
                         display: true,
-                        text: 'N° de colegios por región',
+                        text: defineTitle(title),
                     },
                     legend: {
-                        display: false
+                        display: true
                     }
                 },
+                responsive: true,
 
             }
         });

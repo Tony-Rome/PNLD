@@ -28,12 +28,12 @@ public class EntityAttributeUtilService {
     }
 
     public static String removeAccents(String toClean) {
-        if(toClean == null) return new String();
+        if (toClean == null) return new String();
         return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
     }
 
     public static Integer rbdToInt(String rbdStr) {
-        if(rbdStr == null || rbdStr.isEmpty()) return null;
+        if (rbdStr == null || rbdStr.isEmpty()) return null;
         String cleanedRbd = rbdStr.replaceAll("[^\\d]", "");
         if (cleanedRbd.isEmpty() || cleanedRbd.length() > LEN_MAX_RBD) return null;
         return Integer.parseInt(cleanedRbd);
