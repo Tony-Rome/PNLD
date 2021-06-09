@@ -175,6 +175,43 @@ function participantInstitutionNumberAux(dataList, title) {
 
 }
 
-function firstTimeInstitutionPercentage(){}
+function firstTimeInstitutionPercentage(dataList, yearRange, title){
+
+    var datasets = [];
+
+    var dataListFully = dataListWithEmptyValues(dataList, yearRange);
+
+    yearRange.forEach( (year, i) => {
+
+        var randomColorDict = randomColorFunction();
+        var data = [];
+
+        dataListFully.forEach( (e,index) => {
+
+            let percentageFirstTimeInstitution = e.trainingInstitutionDataByYearDTOList
+                .filter(data => data.year === year)
+                .map( data => data.percentageFirstTimeInPNLD);
+
+            data.push(percentageFirstTimeInstitution[0]);
+
+
+        });
+
+        var dataFilter = regionFilter(dataListFully);
+
+        let dataset = {
+            'label': year,
+            'data': data,
+            'backgroundColor': randomColorDict['backgroundColor'],
+            'borderColor': randomColorDict['borderColor']
+        };
+
+        datasets.push(dataset);
+    });
+
+    let labels = getRegionsSelected();
+
+    getPercentageBarChart(labels, datasets, title, dataListFully);
+}
 
 function participantInstitutionPercentage(){}

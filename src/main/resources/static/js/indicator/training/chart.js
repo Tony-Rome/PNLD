@@ -12,7 +12,7 @@ function defineTitle(data){
     }
 }
 
-export function getChart (labels, datasets, title) {
+export function getChart (labels, datasets, title, dataList) {
 
   if(myChart) { myChart.destroy(); }
 
