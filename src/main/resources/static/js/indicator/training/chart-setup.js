@@ -178,7 +178,7 @@ function participantInstitutionNumberAux(dataList, title) {
 function firstTimeInstitutionPercentage(dataList, yearRange, title){
 
     var datasets = [];
-
+    const DECIMAL_NUMBER = 2;
     var dataListFully = dataListWithEmptyValues(dataList, yearRange);
 
     yearRange.forEach( (year, i) => {
@@ -190,7 +190,12 @@ function firstTimeInstitutionPercentage(dataList, yearRange, title){
 
             let percentageFirstTimeInstitution = e.trainingInstitutionDataByYearDTOList
                 .filter(data => data.year === year)
-                .map( data => data.firstTimeInstitutionNumber);
+                .map( data => {
+                    let totalInstitution = data.institutionNumberPNLD;
+                    let firstTimeNumber = data.firstTimeInstitutionNumber;
+                    let percentage = (firstTimeNumber/totalInstitution)*100;
+                    return percentage.toFixed(DECIMAL_NUMBER);
+                    });
 
             data.push(percentageFirstTimeInstitution[0]);
 

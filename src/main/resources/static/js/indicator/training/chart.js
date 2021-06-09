@@ -79,12 +79,19 @@ export function getPercentageBarChart (labels, datasets, title, dataList) {
       options: {
           scales: {
               x: {
+                  min: 0,
+                  max: 100,
+                  ticks:{
+                    callback: function(value, index, values){
+                        return value+"%";
+                    }
+                  },
                   title: {
                       display: true,
                       text: 'N° de instituciones inscritas por primera vez',
-                      align: 'end',
+                      align: 'center',
                       font: {
-                          size: 14,
+                          size: 15,
                       },
                       padding: {
                           top: 12,
@@ -95,12 +102,9 @@ export function getPercentageBarChart (labels, datasets, title, dataList) {
                   title: {
                       display: true,
                       text: 'Regiones',
-                      align: 'end',
+                      align: 'center',
                       font: {
-                          size: 14,
-                      },
-                      padding: {
-                          bottom: 12,
+                          size: 15,
                       }
                   }
               }
@@ -113,23 +117,26 @@ export function getPercentageBarChart (labels, datasets, title, dataList) {
                       return data[0].label;
                     },
                     label: function(data){
-                      console.log(dataList);
-                      console.log(data);
+                        let percentage = data.formattedValue;
+                        let year = data.dataset.label;
+                        return year + ": " + "Porcentaje " + percentage + "%";
+                    },
+                    afterLabel: function(data){
                       let index = data.parsed.y;
                       let regionData = dataList[index];
                       let year = parseInt(data.dataset.label);
-                      console.log("AÑO ABAJo");
-                      console.log(year);
-                      let total = regionData.trainingInstitutionDataByYearDTOList.map(e => {
-                          if (e.year === year) return e.institutionNumberPNLD;
+                      let dataNumber = regionData.trainingInstitutionDataByYearDTOList.map(e => {
+                          if (e.year === year) {
+                            let dataNumber = {
+                                'total': e.institutionNumberPNLD,
+                                'firstTime': e.firstTimeInstitutionNumber,
+                            };
+                            return dataNumber;
+                          };
                       });
-                      console.log("TOTAL ABAJO");
-                      console.log(total);
-                      let percentage = data.formattedValue + "%";
-
-                      return year + " - " + "Total: "+ total + "valor actual: " + percentage + "(" + percentage +")";
-                    },
-                    afterLabel: function(tooltipItem, data){
+                      let total = (dataNumber[0]) ? dataNumber[0].total : 0;
+                      let firstTimeNumber = (dataNumber[0]) ? dataNumber[0].firstTime : 0;
+                      return "Detalle: " + "Total "+ total + " - valor actual " + firstTimeNumber;
                     },
                   },
               },
