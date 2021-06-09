@@ -46,7 +46,7 @@ async function selectCharByInstitution(chartOption, yearsSelected, queryParams){
 
     }
     if(chartOption === FIRST_TIME_INSTITUTION_PERCENTAGE){
-       firstTimeInstitutionPercentage();
+       firstTimeInstitutionPercentage(data, yearsSelected, queryParams);
     }
     if(chartOption === PARTICIPANT_INSTITUTION_PERCENTAGE){
         participantInstitutionPercentage();
