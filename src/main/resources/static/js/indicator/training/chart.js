@@ -12,6 +12,63 @@ function defineTitle(data){
     }
 }
 
+export function getNumberBarChart (labels, datasets, title) {
+
+  if(myChart) { myChart.destroy(); }
+
+    myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Regiones',
+                            align: 'end',
+                            font: {
+                                size: 14,
+                            },
+                            padding: {
+                                top: 12,
+                            }
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Cantidad',
+                            align: 'end',
+                            font: {
+                                size: 14,
+                            },
+                            padding: {
+                                bottom: 12,
+                            }
+                        }
+                    }
+                },
+                indexAxis: 'x',
+                plugins:{
+                    title: {
+                        display: true,
+                        text: defineTitle(title),
+                    },
+                    legend: {
+                        display: true
+                    }
+                },
+                responsive: true,
+
+            }
+        });
+
+    myChart.update();
+}
+
 export function getPercentageBarChart (labels, datasets, title, dataList) {
 
   if(myChart) { myChart.destroy(); }

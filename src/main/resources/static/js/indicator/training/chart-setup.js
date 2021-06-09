@@ -3,7 +3,7 @@ import {getYearsSelected, getRegionsSelected, getGendersSelected, getAllRegionsN
 import {getSubDimensionSelected} from '../sub-dimension.js';
 import {selectAllRegions} from './filter.js';
 import {getInstitutionSubDimensionData} from './api.js';
-import {getChart} from './chart.js';
+import {getNumberBarChart, getPercentageBarChart} from './chart.js';
 
 const PARTICIPANT_INSTITUTION_NUMBER = 0;
 const FIRST_TIME_INSTITUTION_PERCENTAGE = 1;
@@ -91,7 +91,7 @@ function participantInstitutionNumber(dataList, yearRange, title) {
         datasets.push(dataset);
     });
     let labels = getRegionsSelected();
-    getChart(labels, datasets, title);
+    getNumberBarChart(labels, datasets, title);
 
 }
 
