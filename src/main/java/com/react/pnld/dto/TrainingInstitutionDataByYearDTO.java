@@ -7,7 +7,7 @@ public class TrainingInstitutionDataByYearDTO implements Serializable {
     private int year;
     private int institutionNumberPNLD;
     private float percentageInstitutions;
-    private int firstTimeInstitutionNumber;
+    private float percentageFirstTimeInPNLD;
 
     public int getYear() {
         return year;
@@ -33,12 +33,12 @@ public class TrainingInstitutionDataByYearDTO implements Serializable {
         this.percentageInstitutions = percentageInstitutions;
     }
 
-    public int getFirstTimeInstitutionNumber() {
-        return firstTimeInstitutionNumber;
+    public float getPercentageFirstTimeInPNLD() {
+        return percentageFirstTimeInPNLD;
     }
 
-    public void setFirstTimeInstitutionNumber(int firstTimeInstitutionNumber) {
-        this.firstTimeInstitutionNumber = firstTimeInstitutionNumber;
+    public void setPercentageFirstTimeInPNLD(float percentageFirstTimeInPNLD) {
+        this.percentageFirstTimeInPNLD = percentageFirstTimeInPNLD;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class TrainingInstitutionDataByYearDTO implements Serializable {
                 "year=" + year +
                 ", institutionNumberPNLD=" + institutionNumberPNLD +
                 ", percentageInstitutions=" + percentageInstitutions +
-                ", firstTimeInstitutionNumber=" + firstTimeInstitutionNumber +
+                ", percentageFirstTimeInPNLD=" + percentageFirstTimeInPNLD +
                 '}';
     }
 }

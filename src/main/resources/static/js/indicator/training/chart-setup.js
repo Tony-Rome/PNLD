@@ -190,7 +190,7 @@ function firstTimeInstitutionPercentage(dataList, yearRange, title){
 
             let percentageFirstTimeInstitution = e.trainingInstitutionDataByYearDTOList
                 .filter(data => data.year === year)
-                .map( data => data.percentageFirstTimeInPNLD);
+                .map( data => data.firstTimeInstitutionNumber);
 
             data.push(percentageFirstTimeInstitution[0]);
 

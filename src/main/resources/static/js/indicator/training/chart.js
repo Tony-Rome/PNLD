@@ -16,57 +16,78 @@ export function getChart (labels, datasets, title, dataList) {
 
   if(myChart) { myChart.destroy(); }
 
-    myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: datasets
-            },
-            options: {
-                scales: {
-                    x: {
-                        stacked: true,
-                        title: {
-                            display: true,
-                            text: 'Regiones',
-                            align: 'end',
-                            font: {
-                                size: 14,
-                            },
-                            padding: {
-                                top: 12,
-                            }
-                        }
+  myChart = new Chart(ctx, {
+      type: 'bar',
+      data: { labels: labels, datasets: datasets },
+      options: {
+          scales: {
+              x: {
+                  title: {
+                      display: true,
+                      text: 'N° de instituciones inscritas por primera vez',
+                      align: 'end',
+                      font: {
+                          size: 14,
+                      },
+                      padding: {
+                          top: 12,
+                      }
+                  }
+              },
+              y: {
+                  title: {
+                      display: true,
+                      text: 'Regiones',
+                      align: 'end',
+                      font: {
+                          size: 14,
+                      },
+                      padding: {
+                          bottom: 12,
+                      }
+                  }
+              }
+          },
+          indexAxis: 'y',
+          plugins:{
+              tooltip:{
+                  callbacks:{
+                    title: function(data){
+                      return data[0].label;
                     },
-                    y: {
-                        stacked: true,
-                        title: {
-                            display: true,
-                            text: 'Cantidad',
-                            align: 'end',
-                            font: {
-                                size: 14,
-                            },
-                            padding: {
-                                bottom: 12,
-                            }
-                        }
-                    }
-                },
-                indexAxis: 'x',
-                plugins:{
-                    title: {
-                        display: true,
-                        text: defineTitle(title),
+                    label: function(data){
+                      console.log(dataList);
+                      console.log(data);
+                      let index = data.parsed.y;
+                      let regionData = dataList[index];
+                      let year = parseInt(data.dataset.label);
+                      console.log("AÑO ABAJo");
+                      console.log(year);
+                      let total = regionData.trainingInstitutionDataByYearDTOList.map(e => {
+                          if (e.year === year) return e.institutionNumberPNLD;
+                      });
+                      console.log("TOTAL ABAJO");
+                      console.log(total);
+                      let percentage = data.formattedValue + "%";
+
+                      return year + " - " + "Total: "+ total + "valor actual: " + percentage + "(" + percentage +")";
                     },
-                    legend: {
-                        display: true
-                    }
-                },
-                responsive: true,
+                    afterLabel: function(tooltipItem, data){
+                    },
+                  },
+              },
+              title: {
+                  display: true,
+                  text: defineTitle(title),
+              },
+              legend: {
+                  display: true
+              }
+          },
+          responsive: true,
 
-            }
-        });
+      }
+  });
 
-    myChart.update();
+  myChart.update();
 }
