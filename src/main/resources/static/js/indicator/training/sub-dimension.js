@@ -1,7 +1,4 @@
-import {transformRegionName} from '../utils.js';
 import {selectChart} from './chart-setup.js';
-import {getChart} from './chart.js';
-import {getInstitutionSubDimensionData} from './api.js';
 
 const institutionList = document.getElementsByName('institution');
 
