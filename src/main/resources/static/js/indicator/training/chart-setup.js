@@ -31,11 +31,9 @@ export function selectChart(){
 }
 
 function activeDefaultOptions(){
-    console.log("Entro");
     yearList[0].checked = true;
     allRegion.checked = false;
     allRegion.click();
-    console.log(allRegion.checked);
 }
 
 async function selectCharByInstitution(chartOption, yearsSelected, queryParams){

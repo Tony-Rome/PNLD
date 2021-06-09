@@ -88,7 +88,7 @@ export function getPercentageBarChart (labels, datasets, title, dataList) {
                   },
                   title: {
                       display: true,
-                      text: 'N° de instituciones inscritas por primera vez',
+                      text: '% de instituciones que participan por primera vez',
                       align: 'center',
                       font: {
                           size: 15,
