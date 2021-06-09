@@ -1,7 +1,7 @@
 import {transformRegionName, randomColorFunction, defineYearsQueryParams} from '../utils.js';
 import {getYearsSelected, getRegionsSelected, getGendersSelected, getAllRegionsName, yearList} from '../filter.js';
 import {getSubDimensionSelected} from '../sub-dimension.js';
-import {selectAllRegions} from './filter.js';
+import {selectAllRegions, allRegion} from './filter.js';
 import {getInstitutionSubDimensionData} from './api.js';
 import {getNumberBarChart, getPercentageBarChart} from './chart.js';
 
@@ -31,8 +31,11 @@ export function selectChart(){
 }
 
 function activeDefaultOptions(){
+    console.log("Entro");
     yearList[0].checked = true;
+    allRegion.checked = false;
     allRegion.click();
+    console.log(allRegion.checked);
 }
 
 async function selectCharByInstitution(chartOption, yearsSelected, queryParams){
