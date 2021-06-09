@@ -27,10 +27,10 @@ export function getNumberBarChart (labels, datasets, title) {
                     x: {
                         title: {
                             display: true,
-                            text: 'Regiones',
-                            align: 'end',
+                            text: 'Cantidad',
+                            align: 'center',
                             font: {
-                                size: 14,
+                                size: 15,
                             },
                             padding: {
                                 top: 12,
@@ -40,10 +40,10 @@ export function getNumberBarChart (labels, datasets, title) {
                     y: {
                         title: {
                             display: true,
-                            text: 'Cantidad',
-                            align: 'end',
+                            text: 'Regiones',
+                            align: 'center',
                             font: {
-                                size: 14,
+                                size: 15,
                             },
                             padding: {
                                 bottom: 12,
@@ -51,7 +51,7 @@ export function getNumberBarChart (labels, datasets, title) {
                         }
                     }
                 },
-                indexAxis: 'x',
+                indexAxis: 'y',
                 plugins:{
                     title: {
                         display: true,
