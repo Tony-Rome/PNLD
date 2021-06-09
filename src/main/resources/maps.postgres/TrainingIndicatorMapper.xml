@@ -19,7 +19,19 @@
     </resultMap>
 
     <select id="participantInstitutionNumberPNLD" resultMap="trainingInstitution">
-        SELECT d.anno_capacitacion, COUNT(d.rbd_colegio) AS cantidad_colegio, r.id AS id_region, r.nombre AS nombre_region
+        SELECT
+            d.anno_capacitacion, COUNT(d.rbd_colegio) AS cantidad_colegio, r.id AS id_region, r.nombre AS nombre_region,
+            SUM(
+                CASE WHEN d.rbd_colegio IN
+                   (SELECT col.rbd_colegio
+                        FROM pnld.colegio AS col
+                        JOiN pnld.docente AS doc
+                            ON col.rbd_colegio = doc.rbd_colegio
+                        GROUP BY col.rbd_colegio
+                        HAVING COUNT(DISTINCT doc.anno_capacitacion) = 1)
+                THEN 1
+                ELSE 0
+                END) AS primera_vez_porcentaje
         FROM pnld.docente AS d
         JOIN pnld.colegio AS c ON d.rbd_colegio = c.rbd_colegio
         JOIN pnld.region AS r ON c.id_region = r.id
