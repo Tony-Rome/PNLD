@@ -70,7 +70,7 @@ export function getNumberBarChart (labels, datasets, title) {
 }
 
 export function getPercentageBarChart (labels, datasets, title, dataList) {
-
+    console.log(dataList);
   if(myChart) { myChart.destroy(); }
 
   myChart = new Chart(ctx, {
@@ -133,9 +133,9 @@ export function getPercentageBarChart (labels, datasets, title, dataList) {
                             };
                             return dataNumber;
                           };
-                      });
-                      let total = (dataNumber[0]) ? dataNumber[0].total : 0;
-                      let firstTimeNumber = (dataNumber[0]) ? dataNumber[0].firstTime : 0;
+                      }).filter(e => typeof e != 'undefined');
+                      let total = (typeof dataNumber[0] != 'undefined') ? dataNumber[0].total : 0;
+                      let firstTimeNumber = (typeof dataNumber[0] != 'undefined') ? dataNumber[0].firstTime : 0;
                       return "Detalle: " + "Total "+ total + " - valor actual " + firstTimeNumber;
                     },
                   },
