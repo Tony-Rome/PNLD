@@ -38,9 +38,13 @@ public class School implements Serializable {
         this.city = city;
     }
 
-    public String getCommune(){return commune;}
+    public String getCommune() {
+        return commune;
+    }
 
-    public void setCommune(String commune){this.commune = commune;}
+    public void setCommune(String commune) {
+        this.commune = commune;
+    }
 
     public int getRegionId() {
         return regionId;

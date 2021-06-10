@@ -223,7 +223,7 @@ public class LoaderMoodleFile {
             String rutCleaned = personService.clearRut(generalResumeRow.getRut().toLowerCase());
             Optional<Teacher> teacher = personService.getTeacherByRut(rutCleaned);
 
-            if(teacher.isPresent()){
+            if (teacher.isPresent()) {
                 teacher.get().setTrainingApproved(generalResumeRow.isApproved());
                 teacher.get().setTrainingYear(generalResumeRow.getTrainingYear());
                 personService.updateTeacher(teacher.get());

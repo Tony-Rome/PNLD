@@ -8,7 +8,7 @@ public enum DimensionType {
 
     public final String name;
 
-    private DimensionType(String name){
+    private DimensionType(String name) {
         this.name = name;
     }
 
