@@ -28,7 +28,7 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     private String studentLevelHeaderString = "teachername,teacheremail,schoolname,schoolcity,course,sectionid,organizer,students,studentswithprojects,index,avgcoursecompleted,maxcoursecompleted,medianlevelsattempted,projects";
     private String signInPerCourseHeaderString = "weekofsigninat,coursename,distinctcountofuseridcsfstarted";
     private String signInsHeaderString = "weekofsigninat,distinctcountofuserid,differenceindistinctcountofuserid";
-    private String generalResumeHeaderString = "RUT;REGIÓN;RBD;NOMBRES;ÍTEM;ASISTE JORNADA ;Año de Capacitacion;FECHA ASISTENCIA 1;FECHA ASISTENCIA 2;EVIDENCIA;ACTIVIDAD EN PLATAFORMA;REVISIÓN EVIDENCIAS ENTREGADAS;ESTADO PLATAFORMA;ESTADO FINAL;PAGO;MONTO ITEM";
+    private String generalResumeHeaderString = "RUT;REGION;RBD;NOMBRES;ASISTE JORNADA;ANNO CAPACITACION;ESTADO FINAL";
 
     @Test
     void contextLoads() {
@@ -187,7 +187,7 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void selectedHeaders_Equals_GeneralResumeType(){
-        String[] generalResumeHeadersMock = generalResumeHeaderString.replaceAll("(, |[^a-zA-Z0-9,;])", "").split(";");
+        String[] generalResumeHeadersMock = generalResumeHeaderString.toLowerCase().replaceAll("(, |[^a-zA-Z0-9,;])", "").split(";");
         String[] generalResumeHeaders = fileUtilService.selectedHeadersArray("general-resume");
 
         Arrays.sort(generalResumeHeaders);

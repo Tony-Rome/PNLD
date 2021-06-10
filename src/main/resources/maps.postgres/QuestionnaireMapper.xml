@@ -13,7 +13,7 @@
         <result property="modifiedDate" column="fecha_modificacion"/>
         <result property="answers" column="respuestas"/>
     </resultMap>
-    <select id="getDiagnosticQuestionnaireWhereRut" resultType="diagnosticQuestionnaire">
+    <select id="getDiagnosticQuestionnaireWhereRut" resultMap="diagnosticQuestionnaire">
         SELECT *
         FROM pnld.cuestionario_diagnostico
         WHERE rut_docente = #{teacherRut};
@@ -49,7 +49,7 @@
         <result property="course" column="curso"/>
         <result property="group" column="grupo"/>
     </resultMap>
-    <select id="getSatisfactionQuestByRut" resultType="getSatisfactionQuest">
+    <select id="getSatisfactionQuestByRut" resultMap="getSatisfactionQuest">
         SELECT *
         FROM pnld.cuestionario_satisfaccion
         WHERE rut = #{teacherRut}

@@ -48,6 +48,6 @@ public class SchootServiceTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(schoolService.rbdToInt(rbdAsStr2), rbdAsIntExpected2);
 
         String rbdAsStr3 = "Municipal";
-        Assert.assertEquals(schoolService.rbdToInt(rbdAsStr3), null);
+        Assert.assertEquals(schoolService.rbdToInt(rbdAsStr3), 0);
     }
 }
