@@ -2,14 +2,8 @@ const ctx = document.getElementById('myChart').getContext('2d');
 var myChart;
 
 function defineTitle(data){
-
-    let baseTitle = 'N° de colegios por región ';
-
-    if(Object.keys(data).length === 2){
-        return baseTitle + data['fromYear'] + " - " + data['toYear'];
-    }else{
-        return baseTitle + data['year'];
-    }
+    return (Object.keys(data).length === 2) ?
+        data['fromYear'] + " - " + data['toYear'] : data['year'];
 }
 
 export function getNumberBarChart (labels, datasets, title) {
@@ -55,7 +49,7 @@ export function getNumberBarChart (labels, datasets, title) {
                 plugins:{
                     title: {
                         display: true,
-                        text: defineTitle(title),
+                        text: 'N° de establecimientos por región ' + defineTitle(title),
                     },
                     legend: {
                         display: true
@@ -70,7 +64,7 @@ export function getNumberBarChart (labels, datasets, title) {
 }
 
 export function getPercentageBarChart (labels, datasets, title, dataList) {
-    console.log(dataList);
+
   if(myChart) { myChart.destroy(); }
 
   myChart = new Chart(ctx, {
@@ -142,7 +136,7 @@ export function getPercentageBarChart (labels, datasets, title, dataList) {
               },
               title: {
                   display: true,
-                  text: defineTitle(title),
+                  text: '% de establecimientos que participan por primera vez ' + defineTitle(title),
               },
               legend: {
                   display: true
