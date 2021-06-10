@@ -3,7 +3,7 @@ import {selectChart} from './chart-setup.js';
 const filterList = document.getElementsByClassName('filterOption');
 
 const allYear = document.getElementById('allYear');
-const allRegion = document.getElementById('allRegion');
+export const allRegion = document.getElementById('allRegion');
 const allGender = document.getElementById('allGender');
 
 function selectAllYears() {

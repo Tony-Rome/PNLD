@@ -1,9 +1,9 @@
 import {transformRegionName, randomColorFunction, defineYearsQueryParams} from '../utils.js';
 import {getYearsSelected, getRegionsSelected, getGendersSelected, getAllRegionsName, yearList} from '../filter.js';
 import {getSubDimensionSelected} from '../sub-dimension.js';
-import {selectAllRegions} from './filter.js';
+import {selectAllRegions, allRegion} from './filter.js';
 import {getInstitutionSubDimensionData} from './api.js';
-import {getChart} from './chart.js';
+import {getNumberBarChart, getPercentageBarChart} from './chart.js';
 
 const PARTICIPANT_INSTITUTION_NUMBER = 0;
 const FIRST_TIME_INSTITUTION_PERCENTAGE = 1;
@@ -32,6 +32,7 @@ export function selectChart(){
 
 function activeDefaultOptions(){
     yearList[0].checked = true;
+    allRegion.checked = false;
     allRegion.click();
 }
 
@@ -46,7 +47,7 @@ async function selectCharByInstitution(chartOption, yearsSelected, queryParams){
 
     }
     if(chartOption === FIRST_TIME_INSTITUTION_PERCENTAGE){
-       firstTimeInstitutionPercentage();
+       firstTimeInstitutionPercentage(data, yearsSelected, queryParams);
     }
     if(chartOption === PARTICIPANT_INSTITUTION_PERCENTAGE){
         participantInstitutionPercentage();
@@ -91,7 +92,7 @@ function participantInstitutionNumber(dataList, yearRange, title) {
         datasets.push(dataset);
     });
     let labels = getRegionsSelected();
-    getChart(labels, datasets, title);
+    getNumberBarChart(labels, datasets, title);
 
 }
 
@@ -175,6 +176,48 @@ function participantInstitutionNumberAux(dataList, title) {
 
 }
 
-function firstTimeInstitutionPercentage(){}
+function firstTimeInstitutionPercentage(dataList, yearRange, title){
+
+    var datasets = [];
+    const DECIMAL_NUMBER = 2;
+    var dataListFully = dataListWithEmptyValues(dataList, yearRange);
+
+    yearRange.forEach( (year, i) => {
+
+        var randomColorDict = randomColorFunction();
+        var data = [];
+
+        dataListFully.forEach( (e,index) => {
+
+            let percentageFirstTimeInstitution = e.trainingInstitutionDataByYearDTOList
+                .filter(data => data.year === year)
+                .map( data => {
+                    let totalInstitution = data.institutionNumberPNLD;
+                    let firstTimeNumber = data.firstTimeInstitutionNumber;
+                    let percentage = (firstTimeNumber/totalInstitution)*100;
+                    return percentage.toFixed(DECIMAL_NUMBER);
+                    });
+
+            data.push(percentageFirstTimeInstitution[0]);
+
+
+        });
+
+        var dataFilter = regionFilter(dataListFully);
+
+        let dataset = {
+            'label': year,
+            'data': data,
+            'backgroundColor': randomColorDict['backgroundColor'],
+            'borderColor': randomColorDict['borderColor']
+        };
+
+        datasets.push(dataset);
+    });
+
+    let labels = getRegionsSelected();
+
+    getPercentageBarChart(labels, datasets, title, dataListFully);
+}
 
 function participantInstitutionPercentage(){}
