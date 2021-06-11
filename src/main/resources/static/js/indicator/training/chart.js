@@ -138,10 +138,6 @@ export function getPercentageBarChart (labels, datasets, title, dataList) {
                   display: true,
                   text: '% de establecimientos que participan por primera vez ' + defineTitle(title),
               },
-
-
-
-
               legend: {
                   display: true
               }
