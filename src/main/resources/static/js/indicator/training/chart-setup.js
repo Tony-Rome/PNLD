@@ -1,4 +1,4 @@
-import {transformRegionName, randomColorFunction, defineYearsQueryParams} from '../utils.js';
+import {transformRegionName, getPaletteColor, defineYearsQueryParams} from '../utils.js';
 import {getYearsSelected, getRegionsSelected, getGendersSelected, getAllRegionsName, yearList} from '../filter.js';
 import {getSubDimensionSelected} from '../sub-dimension.js';
 import {selectAllRegions, allRegion} from './filter.js';
@@ -66,7 +66,7 @@ function participantInstitutionNumber(dataList, yearRange, title) {
 
     yearRange.forEach( (year, i) => {
 
-        var randomColorDict = randomColorFunction();
+        var paletteColor = getPaletteColor(i);
         var data = [];
 
         dataListFully.forEach( (e,index) => {
@@ -85,8 +85,8 @@ function participantInstitutionNumber(dataList, yearRange, title) {
         let dataset = {
             'label': year,
             'data': data,
-            'backgroundColor': randomColorDict['backgroundColor'],
-            'borderColor': randomColorDict['borderColor']
+            'backgroundColor': paletteColor['backgroundColor'],
+            'borderColor': paletteColor['borderColor']
         };
 
         datasets.push(dataset);
@@ -143,39 +143,6 @@ function regionFilter(data){
 
 function genderFilter(data){};
 
-function participantInstitutionNumberAux(dataList, title) {
-
-    let labels = [];
-    let data = [];
-    let backgroundColor = [];
-    let borderColor = [];
-    let datasets = [];
-    let dataset = {};
-
-    dataList.forEach( (element, index) => {
-
-        let regionName = element['regionName'];
-        let institutionNumber = element['institutionNumberPNLD'];
-        let randomColorDict = randomColorFunction();
-
-        labels.push(regionName);
-
-        data.push(institutionNumber);
-        backgroundColor.push(randomColorDict['backgroundColor']);
-        borderColor.push(randomColorDict['borderColor']);
-
-    });
-
-    dataset['data'] = data;
-    dataset['backgroundColor'] = backgroundColor;
-    dataset['borderColor'] = borderColor;
-
-    datasets.push(dataset);
-
-    getChart(labels, datasets, title);
-
-}
-
 function firstTimeInstitutionPercentage(dataList, yearRange, title){
 
     var datasets = [];
@@ -184,7 +151,7 @@ function firstTimeInstitutionPercentage(dataList, yearRange, title){
 
     yearRange.forEach( (year, i) => {
 
-        var randomColorDict = randomColorFunction();
+        var paletteColor = getPaletteColor(i);
         var data = [];
 
         dataListFully.forEach( (e,index) => {
@@ -208,8 +175,8 @@ function firstTimeInstitutionPercentage(dataList, yearRange, title){
         let dataset = {
             'label': year,
             'data': data,
-            'backgroundColor': randomColorDict['backgroundColor'],
-            'borderColor': randomColorDict['borderColor']
+            'backgroundColor': paletteColor['backgroundColor'],
+            'borderColor': paletteColor['borderColor']
         };
 
         datasets.push(dataset);
