@@ -10,7 +10,7 @@
     </head>
     <body>
 
-    <@hd.header title = 'Plataforma PNLD' />
+    <@hd.header title = 'Plataforma PNLD' buttonHome = false/>
 
     <div class="container">
 
