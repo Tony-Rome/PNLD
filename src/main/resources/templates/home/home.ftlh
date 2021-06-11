@@ -10,7 +10,7 @@
     </head>
     <body>
 
-    <@hd.header title = 'Plataforma PNLD' />
+    <@hd.header title = 'Plataforma PNLD' buttonHome = false/>
 
     <div class="container">
 
@@ -20,7 +20,7 @@
            </div>
 
            <h2>CARGAR ARCHIVOS</h2>
-           <span>Se pueden cargar archivos csv y txt</span>
+           <span>Se pueden cargar archivos .csv y .txt</span>
 
        </div>
 

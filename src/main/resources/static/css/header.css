@@ -17,14 +17,25 @@ body{
     font-size: 4vw;
     display: flex;
     align-items: center;
-    margin-left: auto;
+    margin: auto;
+}
+
+.buttonHome{
+
+    color: black;
+    text-align: center;
+    text-decoration-line: none;
+    border-radius: 4px;
+    width: 100px;
+    padding: 12px;
 }
 
 .logout {
     margin: 20px 100px auto auto;
-    color: black;
-    background-color: #0175DE;
-    border-radius: 4px;
-    text-decoration-line: none;
-    padding: 12px;
+    background-color: #54b2d9;
+}
+
+.init {
+    margin: 20px 0 auto 30px;
+    background-color: #37cf84;
 }
