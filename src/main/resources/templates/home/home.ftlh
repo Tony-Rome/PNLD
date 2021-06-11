@@ -20,7 +20,7 @@
            </div>
 
            <h2>CARGAR ARCHIVOS</h2>
-           <span>Se pueden cargar archivos csv y txt</span>
+           <span>Se pueden cargar archivos .csv y .txt</span>
 
        </div>
 
