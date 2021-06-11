@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.Normalizer;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,27 +56,31 @@ public class LoaderMoodleFile {
                     Teacher newTeacher = new Teacher(teacherRut, fullName, 0, GenderProperties.GENDER_ID_NOT_SPECIFIED,
                             trainingRowDTO.getEmail(), trainingRowDTO.getDepartment(), false, null,
                             false, 0, schoolSelected.get().getRbd());
-                    personService.createTeacher(newTeacher);
-                    teacherSelected = Optional.of(newTeacher);
-                }
+                    try {
+                        int createTeacherResponse = personService.createTeacher(newTeacher);
 
-                logger.info("processTrainingFileRows. teacherSelected.get()={}", teacherSelected.get());
-                Optional<TrainingTest> trainingTest = testService.getTrainingTestByTeacherRut(teacherSelected.get().getRut(),
-                        testType);
+                        logger.info("processTrainingFileRows. createTeacherResponse={}, newTeacher={}", createTeacherResponse, newTeacher);
+                        Optional<TrainingTest> trainingTest = testService.getTrainingTestByTeacherRut(newTeacher.getRut(),
+                                testType);
 
-                if (!trainingTest.isPresent()) {
-                    int testId = testService.getNextTrainingTestId();
-                    String answersJson = "{\"llave\":\"respuesta\"}"; //TODO replace to jsonb
+                        if (!trainingTest.isPresent()) {
+                            int testId = testService.getNextTrainingTestId();
+                            String answersJson = "{\"llave\":\"respuesta\"}"; //TODO replace to jsonb
 
-                    TrainingTest newTrainingTest = new TrainingTest(testId, testType,
-                            loadedFileId, teacherSelected.get().getRut(), trainingRowDTO.getStartIn(), trainingRowDTO.getFinishIn(),
-                            trainingRowDTO.getRequiredInterval(), trainingRowDTO.getTestState(), trainingRowDTO.getScore(), answersJson);
+                            TrainingTest newTrainingTest = new TrainingTest(testId, testType,
+                                    loadedFileId, newTeacher.getRut(), trainingRowDTO.getStartIn(), trainingRowDTO.getFinishIn(),
+                                    trainingRowDTO.getRequiredInterval(), trainingRowDTO.getTestState(), trainingRowDTO.getScore(),
+                                    answersJson);
 
-                    int resultInsertTest = testService.saveTrainingTest(newTrainingTest);
-                    logger.info("processTrainingFileRows. resultInsertTest={}", resultInsertTest);
-                    newRecordCount++;
-                } else {
-                    duplicatedRecordCount++;
+                            int resultInsertTest = testService.saveTrainingTest(newTrainingTest);
+                            logger.info("processTrainingFileRows. resultInsertTest={}", resultInsertTest);
+                            newRecordCount++;
+                        } else {
+                            duplicatedRecordCount++;
+                        }
+                    } catch (Exception e) {
+                        logger.error("processTrainingFileRows. e.getMessage()={}", e.getMessage(), e);
+                    }
                 }
             }
         }
@@ -90,17 +95,18 @@ public class LoaderMoodleFile {
 
         for (DiagnosticFileDTO diagnosticRow : diagnosticRows) {
             int schoolRbd = schoolService.rbdToInt(diagnosticRow.getRbd());
+            String schoolName = this.removeAccents(diagnosticRow.getSchoolName());
             Optional<School> schoolSelected = schoolService.getSchoolWhereRbd(schoolRbd);
 
             if(!schoolSelected.isPresent()){
-                School newSchool = new School(schoolRbd, diagnosticRow.getName(), diagnosticRow.getCommune(), null,
+                School newSchool = new School(schoolRbd, schoolName, diagnosticRow.getCommune(), null,
                         schoolService.getRegionId(diagnosticRow.getRegion()));
                 int insertNewSchoolResponse =  schoolService.createSchool(newSchool);
                 logger.info("processDiagnosticFileRows. insertNewSchoolResponse={}", insertNewSchoolResponse);
                 schoolSelected = Optional.of(newSchool);
 
             } else {
-                schoolSelected.get().setName(diagnosticRow.getName());
+                schoolSelected.get().setName(schoolName);
                 schoolSelected.get().setCommune(diagnosticRow.getCommune());
                 schoolSelected.get().setRegionId(schoolService.getRegionId(diagnosticRow.getRegion()));
                 int updateSchoolResponse = schoolService.updateSchool(schoolSelected.get());
@@ -120,31 +126,32 @@ public class LoaderMoodleFile {
                     Teacher newTeacher = new Teacher(teacherRut, diagnosticRow.getName(), diagnosticRow.getAge(),
                             teacherGender, diagnosticRow.getEmail(), null, false, null, false, 0,schoolSelected.get().getRbd());
 
-                    int createTeacherResponse = personService.createTeacher(newTeacher);
-                    logger.info("processDiagnosticFileRows. createTeacherResponse={}", createTeacherResponse);
-                    teacherSelected = Optional.of(newTeacher);
-                }
+                    try {
+                        int createTeacherResponse = personService.createTeacher(newTeacher);
+                        logger.info("processDiagnosticFileRows. newTeacher={}, createTeacherResponse={}", newTeacher, createTeacherResponse);
 
-                logger.info("processDiagnosticFileRows. teacherSelected.get()={}", teacherSelected.get());
+                        Optional<DiagnosticQuestionnaire> diagnosticQuestionnaire = questionnaireService.getDiagnosticQuestByRut(newTeacher.getRut());
 
-                Optional<DiagnosticQuestionnaire> diagnosticQuestionnaire = questionnaireService.getDiagnosticQuestByRut(teacherSelected.get().getRut());
+                        if (!diagnosticQuestionnaire.isPresent()) {
 
-                if (!diagnosticQuestionnaire.isPresent()) {
+                            String answersJson = "{\"clave\":\"valor\"}";
 
-                    String answersJson = "{\"clave\":\"valor\"}";
+                            int diagnosticQuestionnaireId = questionnaireService.getNextDiagnosticQuestionnaireId();
 
-                    int diagnosticQuestionnaireId = questionnaireService.getNextDiagnosticQuestionnaireId();
+                            DiagnosticQuestionnaire newDiagnosticQuestionnaire = new DiagnosticQuestionnaire(diagnosticQuestionnaireId,
+                                    loadedFileId, newTeacher.getRut(), diagnosticRow.getRespondentId(), diagnosticRow.getCollectorId(),
+                                    diagnosticRow.getCreatedDate(), diagnosticRow.getModifiedDate(), answersJson);
 
-                    DiagnosticQuestionnaire newDiagnosticQuestionnaire = new DiagnosticQuestionnaire(diagnosticQuestionnaireId,
-                    loadedFileId, teacherSelected.get().getRut(), diagnosticRow.getRespondentId(), diagnosticRow.getCollectorId(),
-                    diagnosticRow.getCreatedDate(), diagnosticRow.getModifiedDate(), answersJson);
+                            int createDiagnosticResponse = questionnaireService.insertDiagnosticQuestionnaire(newDiagnosticQuestionnaire);
+                            logger.info("processDiagnosticFileRows. createDiagnosticResponse={}", createDiagnosticResponse);
 
-                    int createDiagnosticResponse = questionnaireService.insertDiagnosticQuestionnaire(newDiagnosticQuestionnaire);
-                    logger.info("processDiagnosticFileRows. createDiagnosticResponse={}", createDiagnosticResponse);
-
-                    newRecordCount++;
-                } else {
-                    duplicatedRecordCount++;
+                            newRecordCount++;
+                        } else {
+                            duplicatedRecordCount++;
+                        }
+                    } catch (Exception e) {
+                        logger.error("processDiagnosticFileRows. e.getMessage={}", e.getMessage(), e);
+                    }
                 }
             }
 
@@ -234,4 +241,8 @@ public class LoaderMoodleFile {
         return new FileResumeDTO(generalResumeRows.size(), newRecordCount, duplicatedRecordCount, invalidRecordCount);
     }
 
+    public String removeAccents(String toClean) {
+        if (toClean == null) return new String();
+        return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+    }
 }

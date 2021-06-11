@@ -21,18 +21,9 @@ public class PersonRepository {
         return Optional.ofNullable(personMapper.getTeacherByRut(rut));
     }
 
-    public int insertTeacher(Teacher teacher) {
+    public int insertTeacher(Teacher teacher) throws Exception {
         int resultInsertTeacher = personMapper.insertTeacher(teacher);
-        logger.info("insertTeacher. teacher={}, resultInsertTeacher={}", teacher, resultInsertTeacher);
         return resultInsertTeacher;
-    }
-
-    public int getNextTeacherId() {
-        return personMapper.getNextTeacherId();
-    }
-
-    public int getNextPersonId() {
-        return personMapper.getNextPersonId();
     }
 
     public int updateTeacher(Teacher teacher){

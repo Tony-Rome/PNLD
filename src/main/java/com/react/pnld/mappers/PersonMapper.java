@@ -8,9 +8,5 @@ public interface PersonMapper {
 
     int insertTeacher(Teacher teacher);
 
-    int getNextTeacherId();
-
-    int getNextPersonId();
-
     int updateTeacher(Teacher teacher);
 }

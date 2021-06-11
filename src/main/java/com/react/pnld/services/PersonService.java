@@ -27,16 +27,12 @@ public class PersonService {
     @Autowired
     private GenderRepository genderRepository;
 
-    public int getNextTeacherId() {
-        return this.personRepository.getNextTeacherId();
-    }
-
     public Optional<Teacher> getTeacherByRut(String rut) {
         String rutCleaned = this.clearRut(rut);
         return personRepository.getTeacherByRut(rutCleaned);
     }
 
-    public int createTeacher(Teacher teacher) {
+    public int createTeacher(Teacher teacher) throws Exception {
         return this.personRepository.insertTeacher(teacher);
     }
 
