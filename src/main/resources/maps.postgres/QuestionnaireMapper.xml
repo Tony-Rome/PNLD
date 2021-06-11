@@ -7,7 +7,7 @@
         <id property="id" column="id"/>
         <result property="loadedFileId" column="id_archivo_cargado"/>
         <result property="teacherRut" column="rut_docente"/>
-        <result property="responseId" column="id_respuesta"/>
+        <result property="respondentId" column="id_encuestado_moodle"/>
         <result property="collectorId" column="id_coleccion"/>
         <result property="createdDate" column="fecha_creacion"/>
         <result property="modifiedDate" column="fecha_modificacion"/>
@@ -21,9 +21,9 @@
 
     <insert id="insertDiagnosticQuestionnaire">
         INSERT INTO pnld.cuestionario_diagnostico
-        (id, id_archivo_cargado, id_docente, id_respuesta, id_coleccion, fecha_creada, fecha_modificada, respuestas)
+        (id, id_archivo_cargado, rut_docente, id_encuestado_moodle, id_coleccion, fecha_creacion, fecha_modificacion, respuestas)
         VALUES
-        (#{id}, #{loadedFileId}, #{teacherId}, #{respondentId}, #{collectorId}, #{createdDate}, #{modifiedDate}, #{answers}::json)
+        (#{id}, #{loadedFileId}, #{teacherRut}, #{respondentId}, #{collectorId}, #{createdDate}, #{modifiedDate}, #{answers}::json);
     </insert>
 
     <select id="getNextDiagnosticQuestionnaireId" resultType="int">

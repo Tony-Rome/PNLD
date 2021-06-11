@@ -4,7 +4,7 @@ import com.react.pnld.model.Teacher;
 
 public interface PersonMapper {
 
-    Teacher getTeacherPerson(String rut);
+    Teacher getTeacherByRut(String rut);
 
     int insertTeacher(Teacher teacher);
 

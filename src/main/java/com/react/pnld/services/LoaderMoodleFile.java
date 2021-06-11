@@ -52,9 +52,9 @@ public class LoaderMoodleFile {
 
                     Optional<School> schoolSelected = schoolService.getSchoolByName(trainingRowDTO.getSchoolName());
 
-                    Teacher newTeacher = new Teacher(personService.getNextTeacherId(), schoolSelected.get().getRbd(), GenderProperties.GENDER_ID_NOT_SPECIFIED,
-                            teacherRut, fullName, trainingRowDTO.getEmail(), 0, trainingRowDTO.getDepartment(), false,
-                            null, false, 0);
+                    Teacher newTeacher = new Teacher(teacherRut, fullName, 0, GenderProperties.GENDER_ID_NOT_SPECIFIED,
+                            trainingRowDTO.getEmail(), trainingRowDTO.getDepartment(), false, null,
+                            false, 0, schoolSelected.get().getRbd());
                     personService.createTeacher(newTeacher);
                     teacherSelected = Optional.of(newTeacher);
                 }
@@ -113,13 +113,13 @@ public class LoaderMoodleFile {
                 invalidRecordCount++;
             } else {
 
-                Optional<Teacher> teacherSelected = personService.getTeacherByRut(diagnosticRow.getRut());
+                Optional<Teacher> teacherSelected = personService.getTeacherByRut(teacherRut);
 
                 if (!teacherSelected.isPresent()) {
                     int teacherGender = personService.getGenderIdByType(personService.genderStandardization(diagnosticRow.getGender()));
-                    Teacher newTeacher = new Teacher(personService.getNextTeacherId(), schoolSelected.get().getRbd(), teacherGender,
-                            diagnosticRow.getRut(), diagnosticRow.getName(), diagnosticRow.getEmail(), diagnosticRow.getAge(), null,
-                    false, null, false, 0);
+                    Teacher newTeacher = new Teacher(teacherRut, diagnosticRow.getName(), diagnosticRow.getAge(),
+                            teacherGender, diagnosticRow.getEmail(), null, false, null, false, 0,schoolSelected.get().getRbd());
+
                     int createTeacherResponse = personService.createTeacher(newTeacher);
                     logger.info("processDiagnosticFileRows. createTeacherResponse={}", createTeacherResponse);
                     teacherSelected = Optional.of(newTeacher);
@@ -136,7 +136,7 @@ public class LoaderMoodleFile {
                     int diagnosticQuestionnaireId = questionnaireService.getNextDiagnosticQuestionnaireId();
 
                     DiagnosticQuestionnaire newDiagnosticQuestionnaire = new DiagnosticQuestionnaire(diagnosticQuestionnaireId,
-                    loadedFileId, teacherSelected.get().getId(), diagnosticRow.getRespondentId(), diagnosticRow.getCollectorId(),
+                    loadedFileId, teacherSelected.get().getRut(), diagnosticRow.getRespondentId(), diagnosticRow.getCollectorId(),
                     diagnosticRow.getCreatedDate(), diagnosticRow.getModifiedDate(), answersJson);
 
                     int createDiagnosticResponse = questionnaireService.insertDiagnosticQuestionnaire(newDiagnosticQuestionnaire);

@@ -7,7 +7,7 @@ public class DiagnosticQuestionnaire implements Serializable {
 
     private int id;
     private int loadedFileId;
-    private int teacherId;
+    private String teacherRut;
     private long respondentId;
     private long collectorId;
     private Timestamp createdDate;
@@ -18,11 +18,11 @@ public class DiagnosticQuestionnaire implements Serializable {
         super();
     }
 
-    public DiagnosticQuestionnaire(int id, int loadedFileId, int teacherId, long respondentId, long collectorId,
+    public DiagnosticQuestionnaire(int id, int loadedFileId, String teacherRut, long respondentId, long collectorId,
                                    Timestamp createdDate, Timestamp modifiedDate, String answers) {
         this.id = id;
         this.loadedFileId = loadedFileId;
-        this.teacherId = teacherId;
+        this.teacherRut = teacherRut;
         this.respondentId = respondentId;
         this.collectorId = collectorId;
         this.createdDate = createdDate;
@@ -46,12 +46,12 @@ public class DiagnosticQuestionnaire implements Serializable {
         this.loadedFileId = loadedFileId;
     }
 
-    public int getTeacherId() {
-        return teacherId;
+    public String getTeacherRut() {
+        return teacherRut;
     }
 
-    public void setTeacherId(int teacherId) {
-        this.teacherId = teacherId;
+    public void setTeacherRut(String teacherRut) {
+        this.teacherRut = teacherRut;
     }
 
     public long getRespondentId() {
@@ -99,7 +99,7 @@ public class DiagnosticQuestionnaire implements Serializable {
         return "DiagnosticQuestionnaire{" +
                 "id=" + id +
                 ", loadedFileId=" + loadedFileId +
-                ", teacherId=" + teacherId +
+                ", teacherRut=" + teacherRut +
                 ", respondentId=" + respondentId +
                 ", collectorId=" + collectorId +
                 ", createdDate=" + createdDate +

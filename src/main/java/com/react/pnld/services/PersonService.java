@@ -33,7 +33,7 @@ public class PersonService {
 
     public Optional<Teacher> getTeacherByRut(String rut) {
         String rutCleaned = this.clearRut(rut);
-        return personRepository.getTeacherPerson(rutCleaned);
+        return personRepository.getTeacherByRut(rutCleaned);
     }
 
     public int createTeacher(Teacher teacher) {

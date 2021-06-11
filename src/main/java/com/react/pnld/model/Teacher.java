@@ -4,45 +4,37 @@ import java.io.Serializable;
 
 public class Teacher implements Serializable {
 
-    private int id;
-    private int schoolRbd;
-    private int genderId;
     private String rut;
     private String name;
-    private String email;
     private int age;
+    private int genderId;
+    private String email;
     private String department;
     private boolean participatedInPNLD;
     private String teachesInLevels;
     private boolean isTrainingApproved;
     private int trainingYear;
+    private int schoolRbd;
 
     public Teacher() {
         super();
     }
 
-    public Teacher(int id, int schoolRbd, int genderId, String rut, String name, String email, int age, String department,
-                   boolean participatedInPNLD, String teachesInLevels, boolean isTrainingApproved, int trainingYear) {
-        this.id = id;
-        this.schoolRbd = schoolRbd;
-        this.genderId = genderId;
+    public Teacher(String rut, String name, int age, int genderId, String email, String department,
+                   boolean participatedInPNLD, String teachesInLevels, boolean isTrainingApproved, int trainingYear,
+                   int schoolRbd) {
+        super();
         this.rut = rut;
         this.name = name;
-        this.email = email;
         this.age = age;
+        this.genderId = genderId;
+        this.email = email;
         this.department = department;
         this.participatedInPNLD = participatedInPNLD;
         this.teachesInLevels = teachesInLevels;
         this.isTrainingApproved = isTrainingApproved;
         this.trainingYear = trainingYear;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.schoolRbd = schoolRbd;
     }
 
     public int getSchoolRbd() {
@@ -136,8 +128,7 @@ public class Teacher implements Serializable {
     @Override
     public String toString() {
         return "Teacher{" +
-                "id=" + id +
-                ", schoolRbd=" + schoolRbd +
+                "schoolRbd=" + schoolRbd +
                 ", genderId=" + genderId +
                 ", rut='" + rut + '\'' +
                 ", name='" + name + '\'' +

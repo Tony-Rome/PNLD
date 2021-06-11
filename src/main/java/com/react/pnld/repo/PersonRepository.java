@@ -17,8 +17,8 @@ public class PersonRepository {
     @Autowired
     private PersonMapper personMapper;
 
-    public Optional<Teacher> getTeacherPerson(String rut) {
-        return Optional.ofNullable(personMapper.getTeacherPerson(rut));
+    public Optional<Teacher> getTeacherByRut(String rut) {
+        return Optional.ofNullable(personMapper.getTeacherByRut(rut));
     }
 
     public int insertTeacher(Teacher teacher) {

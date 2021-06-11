@@ -3,42 +3,32 @@
 
 <mapper namespace="com.react.pnld.mappers.PersonMapper">
     <cache/>
-    <resultMap id="getTeacherPerson" type="com.react.pnld.model.Teacher">
-        <id property="teacherId" column="id_docente"/>
-        <result property="rut" column="rut" />
+    <resultMap id="getTeacher" type="com.react.pnld.model.Teacher">
+        <id property="rut" column="rut"/>
+        <result property="name" column="nombre" />
         <result property="age" column="edad" />
+        <result property="genderId" column="id_genero"/>
+        <result property="email" column="correo"/>
         <result property="department" column="departamento" />
         <result property="participatedInPNLD" column="participo_en_PNLD" />
-        <result property="personId" column="id_persona"/>
-        <result property="name" column="nombre" />
-        <result property="paternalLastName" column="apellido_paterno" />
-        <result property="maternalLastName" column="apellido_materno" />
-        <result property="email" column="correo"/>
-        <result property="genderId" column="id_genero"/>
-        <result property="schoolId" column="id_colegio" />
+        <result property="teachesInLevels" column="dicta_en_niveles" />
+        <result property="isTrainingApproved" column="capacitacion_aprobada" />
+        <result property="trainingYear" column="anno_capacitacion" />
+        <result property="schoolRbd" column="rbd_colegio" />
     </resultMap>
-    <select id="getTeacherPerson" resultMap="getTeacherPerson" useCache="true">
-        SELECT d.id_docente, d.rut, d.edad, d.departamento, d.participo_en_PNLD,
-               p.id_persona, p.nombre, p.apellido_paterno, p.apellido_materno, p.correo, p.id_genero, p.id_colegio
-        FROM pnld.persona p INNER JOIN pnld.docente d
-        ON p.id_persona = d.id_persona
-        AND d.rut = #{rut};
+    <select id="getTeacherByRut" resultMap="getTeacher" useCache="true">
+        SELECT *
+        FROM pnld.docente
+        WHERE rut = #{rut};
     </select>
 
     <insert id="insertTeacher">
         INSERT INTO pnld.docente
-        (id_docente, id_persona, rut, edad, departamento, participo_en_PNLD, dicta_en_niveles, capacitacion_aprobada,
-         anno_capacitacion)
+        (rut, nombre, correo, id_genero, rbd_colegio, edad, departamento, participo_en_PNLD, dicta_en_niveles,
+         capacitacion_aprobada, anno_capacitacion)
         VALUES
-        (#{teacherId}, #{personId}, #{rut}, #{age}, #{department}, #{participatedInPNLD}, #{teachesInLevels},
-         #{isTrainingApproved}, #{trainingYear})
-    </insert>
-
-    <insert id="insertPerson">
-        INSERT INTO pnld.persona
-        (id_persona, nombre, apellido_paterno, apellido_materno, correo, id_genero, id_colegio)
-        VALUES
-        (#{personId}, #{name}, #{paternalLastName}, #{maternalLastName}, #{email}, #{genderId}, #{schoolId})
+        (#{rut}, #{name}, #{email}, #{genderId}, #{schoolRbd}, #{age}, #{department}, #{participatedInPNLD},
+         #{teachesInLevels}, #{isTrainingApproved}, #{trainingYear});
     </insert>
 
     <select id="getNextPersonId" resultType="int">
