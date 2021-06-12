@@ -94,64 +94,54 @@ public class LoaderMoodleFile {
         int invalidRecordCount = 0;
 
         for (DiagnosticFileDTO diagnosticRow : diagnosticRows) {
+
             int schoolRbd = schoolService.rbdToInt(diagnosticRow.getRbd());
             String schoolName = this.removeAccents(diagnosticRow.getSchoolName());
-            Optional<School> schoolSelected = schoolService.getSchoolWhereRbd(schoolRbd);
 
-            if(!schoolSelected.isPresent()){
-                School newSchool = new School(schoolRbd, schoolName, diagnosticRow.getCommune(), null,
-                        schoolService.getRegionId(diagnosticRow.getRegion()));
-                int insertNewSchoolResponse =  schoolService.createSchool(newSchool);
-                logger.info("processDiagnosticFileRows. insertNewSchoolResponse={}", insertNewSchoolResponse);
-                schoolSelected = Optional.of(newSchool);
-
-            } else {
-                schoolSelected.get().setName(schoolName);
-                schoolSelected.get().setCommune(diagnosticRow.getCommune());
-                schoolSelected.get().setRegionId(schoolService.getRegionId(diagnosticRow.getRegion()));
-                int updateSchoolResponse = schoolService.updateSchool(schoolSelected.get());
-                logger.info("processDiagnosticFileRows. updateSchoolResponse={}", updateSchoolResponse);
-            }
+            School school = schoolService.save(new School(schoolRbd, schoolName, diagnosticRow.getCommune(), null,
+                    schoolService.getRegionId(diagnosticRow.getRegion())));
 
             String teacherRut = personService.clearRut(diagnosticRow.getRut());
 
             if(!personService.rutValidator(teacherRut)){
                 invalidRecordCount++;
             } else {
-
                 Optional<Teacher> teacherSelected = personService.getTeacherByRut(teacherRut);
 
                 if (!teacherSelected.isPresent()) {
                     int teacherGender = personService.getGenderIdByType(personService.genderStandardization(diagnosticRow.getGender()));
                     Teacher newTeacher = new Teacher(teacherRut, diagnosticRow.getName(), diagnosticRow.getAge(),
-                            teacherGender, diagnosticRow.getEmail(), null, false, null, false, 0,schoolSelected.get().getRbd());
+                            teacherGender, diagnosticRow.getEmail(), null, false, null, false, 0,
+                            school.getRbd());
 
                     try {
                         int createTeacherResponse = personService.createTeacher(newTeacher);
-                        logger.info("processDiagnosticFileRows. newTeacher={}, createTeacherResponse={}", newTeacher, createTeacherResponse);
-
-                        Optional<DiagnosticQuestionnaire> diagnosticQuestionnaire = questionnaireService.getDiagnosticQuestByRut(newTeacher.getRut());
-
-                        if (!diagnosticQuestionnaire.isPresent()) {
-
-                            String answersJson = "{\"clave\":\"valor\"}";
-
-                            int diagnosticQuestionnaireId = questionnaireService.getNextDiagnosticQuestionnaireId();
-
-                            DiagnosticQuestionnaire newDiagnosticQuestionnaire = new DiagnosticQuestionnaire(diagnosticQuestionnaireId,
-                                    loadedFileId, newTeacher.getRut(), diagnosticRow.getRespondentId(), diagnosticRow.getCollectorId(),
-                                    diagnosticRow.getCreatedDate(), diagnosticRow.getModifiedDate(), answersJson);
-
-                            int createDiagnosticResponse = questionnaireService.insertDiagnosticQuestionnaire(newDiagnosticQuestionnaire);
-                            logger.info("processDiagnosticFileRows. createDiagnosticResponse={}", createDiagnosticResponse);
-
-                            newRecordCount++;
-                        } else {
-                            duplicatedRecordCount++;
-                        }
+                        logger.info("processDiagnosticFileRows. createTeacherResponse={}, newTeacher={}", createTeacherResponse,
+                                newTeacher);
                     } catch (Exception e) {
                         logger.error("processDiagnosticFileRows. e.getMessage={}", e.getMessage(), e);
+                        continue;
                     }
+                }
+
+                Optional<DiagnosticQuestionnaire> diagnosticQuestionnaire = questionnaireService.getDiagnosticQuestByRut(teacherRut);
+
+                if (!diagnosticQuestionnaire.isPresent()) {
+
+                    String answersJson = "{\"clave\":\"valor\"}";
+
+                    int diagnosticQuestionnaireId = questionnaireService.getNextDiagnosticQuestionnaireId();
+
+                    DiagnosticQuestionnaire newDiagnosticQuestionnaire = new DiagnosticQuestionnaire(diagnosticQuestionnaireId,
+                            loadedFileId, teacherRut, diagnosticRow.getRespondentId(), diagnosticRow.getCollectorId(),
+                            diagnosticRow.getCreatedDate(), diagnosticRow.getModifiedDate(), answersJson);
+
+                    int createDiagnosticResponse = questionnaireService.insertDiagnosticQuestionnaire(newDiagnosticQuestionnaire);
+                    logger.info("processDiagnosticFileRows. createDiagnosticResponse={}", createDiagnosticResponse);
+
+                    newRecordCount++;
+                } else {
+                    duplicatedRecordCount++;
                 }
             }
 
@@ -212,20 +202,10 @@ public class LoaderMoodleFile {
         for(GeneralResumeTrainingDTO generalResumeRow : generalResumeRows){
             logger.info("processGeneralResumeRows. generalResumeRow={}", generalResumeRow);
 
-            Optional<School> school = schoolService.getSchoolWhereRbd(generalResumeRow.getRbd());
+            School school = schoolService.save(new School(generalResumeRow.getRbd(), null, null, null,
+                    generalResumeRow.getRegionId()));
 
-            if(!school.isPresent()){
-                School newSchool = new School(generalResumeRow.getRbd(), null, null, null, generalResumeRow.getRegionId());
-                int createSchoolResponse = schoolService.createSchool(newSchool);
-                logger.info("processGeneralResumeRows. createSchoolResponse={}", createSchoolResponse);
-                school = Optional.of(newSchool);
-            } else {
-                school.get().setRegionId(generalResumeRow.getRegionId());
-                int updateResponse = schoolService.updateSchool(school.get());
-                logger.info("processGeneralResumeRows. updateResponse={}", updateResponse);
-            }
-
-            logger.info("processGeneralResumeRows. school={}", school.get());
+            logger.info("processGeneralResumeRows. school={}", school);
 
             String rutCleaned = personService.clearRut(generalResumeRow.getRut().toLowerCase());
             Optional<Teacher> teacher = personService.getTeacherByRut(rutCleaned);

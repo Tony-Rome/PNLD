@@ -27,6 +27,24 @@ public class SchoolService {
     @Autowired
     RegionRepository regionRepository;
 
+    public School save(School school){
+
+        if(school.getRbd() == 0){
+            return schoolRepository.getSchoolNotSpecified().get();
+        }
+
+        Optional<School> schoolSelected = schoolRepository.getSchoolWhereRbd(school.getRbd());
+
+        if(!schoolSelected.isPresent()){
+            int insertNewSchoolResponse =  this.createSchool(school);
+            logger.info("save. insertNewSchoolResponse={}", insertNewSchoolResponse);
+        } else {
+            int updateSchoolResponse = this.updateSchool(school);
+            logger.info("save. updateSchoolResponse={}", updateSchoolResponse);
+        }
+
+        return school;
+    }
 
     public Optional<School> getSchoolByName(String schoolName){
 
@@ -42,10 +60,6 @@ public class SchoolService {
         }
 
         return schoolRepository.getSchoolNotSpecified();
-    }
-
-    public Optional<School> getSchoolWhereRbd(int rbd){
-        return schoolRepository.getSchoolWhereRbd(rbd);
     }
 
     public int createSchool(School school){
