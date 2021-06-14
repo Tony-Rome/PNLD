@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.react.pnld.mappers.TrainingIndicatorMapper">
+<mapper namespace="com.react.pnld.mappers.TrainingInstitutionIndicatorMapper">
 
     <cache/>
 
@@ -18,7 +18,7 @@
         <collection property="trainingInstitutionDataByYearDTOList" resultMap="trainingInstitutionDataByYear"/>
     </resultMap>
 
-    <select id="participantInstitutionNumberPNLD" resultMap="trainingInstitution">
+    <select id="trainingInstitutionData" resultMap="trainingInstitution">
         SELECT
             d.anno_capacitacion,
             COUNT(d.rbd_colegio) AS cantidad_colegio,

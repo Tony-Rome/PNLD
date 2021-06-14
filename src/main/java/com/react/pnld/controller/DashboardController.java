@@ -2,7 +2,7 @@ package com.react.pnld.controller;
 
 import com.react.pnld.controller.response.TrainingInstitutionIndicatorResponse;
 import com.react.pnld.dto.TrainingInstitutionIndicatorDTO;
-import com.react.pnld.services.TrainingIndicatorService;
+import com.react.pnld.services.TrainingInstitutionIndicatorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class DashboardController {
     private static final Logger logger = LoggerFactory.getLogger(DashboardController.class);
 
     @Autowired
-    private TrainingIndicatorService trainingIndicatorService;
+    private TrainingInstitutionIndicatorService trainingInstitutionIndicatorService;
 
     @GetMapping(value = "/capacitaciones/establecimientos")
     public TrainingInstitutionIndicatorResponse getInfoTrainedInstitutions(@RequestParam(name = "fromYear") int fromYear,
@@ -28,7 +28,7 @@ public class DashboardController {
         logger.info("getInstitutionsTrainingInfo. fromYear={}, toYear={}", fromYear, toYear);
 
         List<TrainingInstitutionIndicatorDTO> trainingInstitutionIndicatorDTOList;
-        trainingInstitutionIndicatorDTOList = trainingIndicatorService.participantInstitutionNumberPNLD(fromYear, toYear);
+        trainingInstitutionIndicatorDTOList = trainingInstitutionIndicatorService.trainingInstitutionData(fromYear, toYear);
 
         logger.info("getInstitutionsTrainingInfo. trainingInstitutionIndicatorDTOList={}", trainingInstitutionIndicatorDTOList);
 
