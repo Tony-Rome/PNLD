@@ -50,3 +50,11 @@ export function getAllRegionsName(){
     return regionName;
 }
 
+export function SwitchGenderFilter(multiOption){ //TODO: Cambio checkbox <-> radio
+    genderList.forEach( (e,i) => {
+        e.type = (multiOption) ? 'checkbox' : 'radio';
+    });
+}
+
+
+
