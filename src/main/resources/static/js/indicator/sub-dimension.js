@@ -32,7 +32,7 @@ export function getSubDimensionSelected(){
     var selected = {};
     Object.keys(subDimensionList).forEach( (k,i) => {
         if(subDimensionList[i].checked === true) {
-            selected['name'] = subDimensionList[i].name;
+            selected['id'] = subDimensionList[i].id;
             selected['chart'] = subDimensionList[i].value;
         }
     });

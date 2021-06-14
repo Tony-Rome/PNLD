@@ -29,9 +29,9 @@ export function selectChart(){
 
     var queryParams = defineYearsQueryParams(yearsSelected);
 
-    if(subDimensionSelected['name'] === 'institution')  selectCharByInstitution(chartOption, yearsSelected, queryParams);
+    if(subDimensionSelected['id'] === 'institution')  selectCharByInstitution(chartOption, yearsSelected, queryParams);
 
-    if(subDimensionSelected['name'] === 'teacher')  selectChartByTeacher(chartOption, yearsSelected, queryParams);
+    if(subDimensionSelected['id'] === 'teacher')  selectChartByTeacher(chartOption, yearsSelected, queryParams);
 }
 
 function activeDefaultOptions(){ //TODO: Podria ser general(?)
@@ -45,7 +45,7 @@ async function selectCharByInstitution(chartOption, yearsSelected, queryParams){
     var response = await getInstitutionSubDimensionData(queryParams);
     var dataRaw = response['trainingIndicatorData'];
     var data = transformRegionName(dataRaw);
-
+    console.log(data);
     if(chartOption === PARTICIPANT_INSTITUTION_NUMBER){
         participantInstitutionNumber(data, yearsSelected, queryParams);
 

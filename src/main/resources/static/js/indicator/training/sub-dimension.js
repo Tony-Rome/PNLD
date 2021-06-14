@@ -1,7 +1,7 @@
 import {selectChart} from './chart-setup.js';
 
-const institutionList = document.getElementsByName('institution');
-const teacherList = document.getElementsByName('teacher');
+const institutionList = document.querySelectorAll('input#institution');
+const teacherList = document.querySelectorAll('input#teacher');
 
 institutionList.forEach((e,i) => {
     e.addEventListener('click', selectChart);
