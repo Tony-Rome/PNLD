@@ -1,8 +1,11 @@
 package com.react.pnld.controller;
 
 import com.react.pnld.controller.response.TrainingInstitutionIndicatorResponse;
+import com.react.pnld.controller.response.TrainingTeacherIndicatorResponse;
 import com.react.pnld.dto.TrainingInstitutionIndicatorDTO;
+import com.react.pnld.dto.TrainingTeacherIndicatorDTO;
 import com.react.pnld.services.TrainingInstitutionIndicatorService;
+import com.react.pnld.services.TrainingTeacherIndicatorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +25,11 @@ public class DashboardController {
     @Autowired
     private TrainingInstitutionIndicatorService trainingInstitutionIndicatorService;
 
+    @Autowired
+    private TrainingTeacherIndicatorService trainingTeacherIndicatorService;
+
     @GetMapping(value = "/capacitaciones/establecimientos")
-    public TrainingInstitutionIndicatorResponse getInfoTrainedInstitutions(@RequestParam(name = "fromYear") int fromYear,
+    public TrainingInstitutionIndicatorResponse getTrainingInstitutionData(@RequestParam(name = "fromYear") int fromYear,
                                                                            @RequestParam(name = "toYear") int toYear) {
         logger.info("getInstitutionsTrainingInfo. fromYear={}, toYear={}", fromYear, toYear);
 
@@ -35,10 +41,18 @@ public class DashboardController {
         return new TrainingInstitutionIndicatorResponse(fromYear, toYear, trainingInstitutionIndicatorDTOList);
     }
 
-    @GetMapping(value = "/capacitaciones/docentes")
-    public String getInfoTrainedTeacher(@RequestParam(name = "fromYear") int fromYear,
+    @GetMapping(value = "/training/teacher")
+    public TrainingTeacherIndicatorResponse getTrainingTeacherData(@RequestParam(name = "fromYear") int fromYear,
                                         @RequestParam(name = "toYear") int toYear) {
-        return "Work in progress";
+
+        logger.info("getTrainingTeacherData. fromYear={}, toYear={}", fromYear, toYear);
+
+        List<TrainingTeacherIndicatorDTO> trainingTeacherIndicatorDTOList;
+        trainingTeacherIndicatorDTOList = trainingTeacherIndicatorService.trainingTeacherData(fromYear, toYear);
+
+        logger.info("getTrainingTeacherData. trainingTeacherIndicatorDTOList={}", trainingTeacherIndicatorDTOList);
+
+        return new TrainingTeacherIndicatorResponse(fromYear, toYear, trainingTeacherIndicatorDTOList);
     }
 
     @GetMapping(value = "/test-pc/docentes")

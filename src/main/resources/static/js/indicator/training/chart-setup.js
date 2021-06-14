@@ -2,35 +2,39 @@ import {transformRegionName, getPaletteColor, defineYearsQueryParams} from '../u
 import {getYearsSelected, getRegionsSelected, getGendersSelected, getAllRegionsName, yearList} from '../filter.js';
 import {getSubDimensionSelected} from '../sub-dimension.js';
 import {selectAllRegions, allRegion} from './filter.js';
-import {getInstitutionSubDimensionData} from './api.js';
+import {getInstitutionSubDimensionData, getTeacherSubDimensionData} from './api.js';
 import {getNumberBarChart, getPercentageBarChart} from './chart.js';
 
 const PARTICIPANT_INSTITUTION_NUMBER = 0;
 const FIRST_TIME_INSTITUTION_PERCENTAGE = 1;
 const PARTICIPANT_INSTITUTION_PERCENTAGE = 2;
 
-//TODO: Agregar constantes subdimensiones con docentes
+const TRAINED_TEACHER_NUMBER = 0;
+const IN_PERSON_SESSION_PERCENTAGE= 1;
+const PRE_TEST_COMPLETED_PERCENTAGE = 2;
+const POST_TEST_COMPLETED_PERCENTAGE = 3;
+const ONLINE_COURSE_COMPETED_PERCENTAGE = 4;
+const TRAINING_COMPLETED_PERCENTAGE = 5;
+const SCORE_DIFFERENCE_PRE_POST_TEST = 6;
 
 export function selectChart(){
 
     if(this && this.type === "radio") activeDefaultOptions();
-
+    console.log(this);
     let subDimensionSelected = getSubDimensionSelected();
 
     var chartOption = parseInt(subDimensionSelected['chart'])
 
     var yearsSelected = getYearsSelected();
+
     var queryParams = defineYearsQueryParams(yearsSelected);
 
     if(subDimensionSelected['name'] === 'institution')  selectCharByInstitution(chartOption, yearsSelected, queryParams);
 
-    if(subDimensionSelected['name'] === 'teacher'){
-        //TODO: filtro según valor de chart
-        selectChartByTeacher();
-    }
+    if(subDimensionSelected['name'] === 'teacher')  selectChartByTeacher(chartOption, yearsSelected, queryParams);
 }
 
-function activeDefaultOptions(){
+function activeDefaultOptions(){ //TODO: Podria ser general(?)
     yearList[0].checked = true;
     allRegion.checked = false;
     allRegion.click();
@@ -54,8 +58,21 @@ async function selectCharByInstitution(chartOption, yearsSelected, queryParams){
     }
 }
 
-function selectChartByTeacher(){
-    //TODO: Agregar filtross segun valor de chartOption
+async function selectChartByTeacher(chartOption, yearsSelected, queryParams){
+
+    var response = await getTeacherSubDimensionData(queryParams);
+     //TODO: Ver por qué se repite dos veces la función.
+
+    if(chartOption === TRAINED_TEACHER_NUMBER){
+        console.log(response);
+        console.log('Chart option' + chartOption);
+    }
+    if(chartOption === IN_PERSON_SESSION_PERCENTAGE);
+    if(chartOption === PRE_TEST_COMPLETED_PERCENTAGE);
+    if(chartOption === POST_TEST_COMPLETED_PERCENTAGE);
+    if(chartOption === ONLINE_COURSE_COMPETED_PERCENTAGE);
+    if(chartOption === TRAINING_COMPLETED_PERCENTAGE);
+    if(chartOption === SCORE_DIFFERENCE_PRE_POST_TEST);
 }
 
 function participantInstitutionNumber(dataList, yearRange, title) {
@@ -188,3 +205,9 @@ function firstTimeInstitutionPercentage(dataList, yearRange, title){
 }
 
 function participantInstitutionPercentage(){}
+
+
+//TODO: Funciones para subdimension docentes capacitaciones:
+
+function trainedTeacherNumber(){
+}

@@ -28,7 +28,7 @@
 
                     <#assign institutionList = ["N° participantes en PNLD", "% que participan por 1ra vez", "% de participantes"]/>
                     <#list institutionList as institution>
-                        <li><input type="radio" class="subDimensionOption" value=${institution?index} name="institution">${institution}</input></li>
+                        <li><input type="radio" class="subDimensionOption" value=${institution?index} name="institution" id="institution">${institution}</input></li>
                     </#list>
 
                   </div>
@@ -42,7 +42,7 @@
                     <#assign teacherList = ["N° de capacitados", "% jornada presencial", "% pre-test completado", "% post-test completado", "% curso en línea completado", "% capacitación completada", "Diferencia puntajes pre y post-test"]/>
 
                     <#list teacherList as teacher>
-                        <li><input type="radio" class="subDimensionOption" value=${teacher?index} name="teacher" onclick="chartFunction()">${teacher}</input></li>
+                        <li><input type="radio" class="subDimensionOption" value=${teacher?index} name="teacher" id="teacher">${teacher}</input></li>
                     </#list>
 
                   </div>
