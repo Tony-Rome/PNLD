@@ -28,10 +28,10 @@
     
     <insert id="insertTrainingTest" useGeneratedKeys="true">
         INSERT INTO pnld.test_capacitacion
-            (id, tipo, id_archivo_cargado, id_docente, fecha_inicio, fecha_fin, tiempo_requerido, estado, calificacion,
+            (id, tipo, id_archivo_cargado, rut_docente, fecha_inicio, fecha_fin, tiempo_requerido, estado, calificacion,
              respuestas)
         VALUES 
-            (#{id}, #{type}, #{loadedFileId}, #{teacherId}, #{initDate}, #{endDate}, #{requiredInterval}, #{state},
-             #{score}, #{answers});
+            (#{id}, #{type}, #{loadedFileId}, #{teacherRut}, #{initDate}, #{endDate}, #{requiredInterval}, #{state},
+             #{score}, #{answers}::json);
     </insert>
 </mapper>

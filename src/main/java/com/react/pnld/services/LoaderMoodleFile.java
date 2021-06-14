@@ -28,65 +28,6 @@ public class LoaderMoodleFile {
     @Autowired
     SchoolService schoolService;
 
-    public FileResumeDTO processTrainingFileRows(List<TrainingFileDTO> trainingRows, int loadedFileId, String testType) {
-
-        logger.info("processTrainingFileRows. postTrainingRows.size()={}, loadedFileId={}, testType={}",
-                trainingRows.size(), loadedFileId, testType);
-
-        int newRecordCount = 0;
-        int duplicatedRecordCount = 0;
-        int invalidRecordCount = 0;
-
-        for (TrainingFileDTO trainingRowDTO : trainingRows) {
-            logger.info("processTrainingFileRows. trainingRow={}", trainingRowDTO);
-
-            String teacherRut = personService.clearRut(trainingRowDTO.getRut());
-
-            if(!personService.rutValidator(teacherRut)){
-                invalidRecordCount++;
-            } else {
-                Optional<Teacher> teacherSelected = personService.getTeacherByRut(teacherRut);
-
-                if (!teacherSelected.isPresent()) {
-
-                    String fullName = trainingRowDTO.getName() + " " + trainingRowDTO.getLastNames();
-
-                    Optional<School> schoolSelected = schoolService.getSchoolByName(trainingRowDTO.getSchoolName());
-
-                    Teacher newTeacher = new Teacher(teacherRut, fullName, 0, GenderProperties.GENDER_ID_NOT_SPECIFIED,
-                            trainingRowDTO.getEmail(), trainingRowDTO.getDepartment(), false, null,
-                            false, 0, schoolSelected.get().getRbd());
-                    try {
-                        int createTeacherResponse = personService.createTeacher(newTeacher);
-
-                        logger.info("processTrainingFileRows. createTeacherResponse={}, newTeacher={}", createTeacherResponse, newTeacher);
-                        Optional<TrainingTest> trainingTest = testService.getTrainingTestByTeacherRut(newTeacher.getRut(),
-                                testType);
-
-                        if (!trainingTest.isPresent()) {
-                            int testId = testService.getNextTrainingTestId();
-                            String answersJson = "{\"llave\":\"respuesta\"}"; //TODO replace to jsonb
-
-                            TrainingTest newTrainingTest = new TrainingTest(testId, testType,
-                                    loadedFileId, newTeacher.getRut(), trainingRowDTO.getStartIn(), trainingRowDTO.getFinishIn(),
-                                    trainingRowDTO.getRequiredInterval(), trainingRowDTO.getTestState(), trainingRowDTO.getScore(),
-                                    answersJson);
-
-                            int resultInsertTest = testService.saveTrainingTest(newTrainingTest);
-                            logger.info("processTrainingFileRows. resultInsertTest={}", resultInsertTest);
-                            newRecordCount++;
-                        } else {
-                            duplicatedRecordCount++;
-                        }
-                    } catch (Exception e) {
-                        logger.error("processTrainingFileRows. e.getMessage()={}", e.getMessage(), e);
-                    }
-                }
-            }
-        }
-        return new FileResumeDTO(trainingRows.size(), newRecordCount, duplicatedRecordCount, invalidRecordCount);
-    }
-
     public FileResumeDTO processDiagnosticFileRows(List<DiagnosticFileDTO> diagnosticRows, int loadedFileId) {
 
         int newRecordCount = 0;
@@ -149,6 +90,67 @@ public class LoaderMoodleFile {
 
         }
         return new FileResumeDTO(diagnosticRows.size(), newRecordCount, duplicatedRecordCount, invalidRecordCount);
+    }
+
+    public FileResumeDTO processTrainingFileRows(List<TrainingFileDTO> trainingRows, int loadedFileId, String testType) {
+
+        logger.info("processTrainingFileRows. postTrainingRows.size()={}, loadedFileId={}, testType={}",
+                trainingRows.size(), loadedFileId, testType);
+
+        int newRecordCount = 0;
+        int duplicatedRecordCount = 0;
+        int invalidRecordCount = 0;
+
+        for (TrainingFileDTO trainingRowDTO : trainingRows) {
+            logger.info("processTrainingFileRows. trainingRow={}", trainingRowDTO);
+
+            String teacherRut = personService.clearRut(trainingRowDTO.getRut());
+
+            if(!personService.rutValidator(teacherRut)){
+                invalidRecordCount++;
+            } else {
+                Optional<Teacher> teacherSelected = personService.getTeacherByRut(teacherRut);
+
+                if (!teacherSelected.isPresent()) {
+
+                    String teacherName = this.removeAccents(trainingRowDTO.getName().concat(" ").concat(trainingRowDTO.getLastNames()));
+                    Optional<School> schoolSelected = schoolService.getSchoolByName(trainingRowDTO.getSchoolName());
+
+                    Teacher newTeacher = new Teacher(teacherRut, teacherName, 0, GenderProperties.GENDER_ID_NOT_SPECIFIED,
+                            trainingRowDTO.getEmail(), trainingRowDTO.getDepartment(), false, null,
+                            false, 0, schoolSelected.get().getRbd());
+                    try {
+                        int createTeacherResponse = personService.createTeacher(newTeacher);
+                        logger.info("processTrainingFileRows. createTeacherResponse={}, newTeacher={}", createTeacherResponse, newTeacher);
+                        teacherSelected = Optional.of(newTeacher);
+                    } catch (Exception e) {
+                        logger.error("processTrainingFileRows. e.getMessage()={}", e.getMessage(), e);
+                        invalidRecordCount++;
+                        continue;
+                    }
+                }
+
+                Optional<TrainingTest> trainingTest = testService.getTrainingTestByTeacherRut(teacherSelected.get().getRut(),
+                        testType);
+
+                if (!trainingTest.isPresent()) {
+                    int testId = testService.getNextTrainingTestId();
+                    String answersJson = "{\"llave\":\"respuesta\"}"; //TODO replace to jsonb
+
+                    TrainingTest newTrainingTest = new TrainingTest(testId, testType,
+                            loadedFileId, teacherSelected.get().getRut(), trainingRowDTO.getStartIn(), trainingRowDTO.getFinishIn(),
+                            trainingRowDTO.getRequiredInterval(), trainingRowDTO.getTestState(), trainingRowDTO.getScore(),
+                            answersJson);
+
+                    int resultInsertTest = testService.saveTrainingTest(newTrainingTest);
+                    logger.info("processTrainingFileRows. resultInsertTest={}", resultInsertTest);
+                    newRecordCount++;
+                } else {
+                    duplicatedRecordCount++;
+                }
+            }
+        }
+        return new FileResumeDTO(trainingRows.size(), newRecordCount, duplicatedRecordCount, invalidRecordCount);
     }
 
     public FileResumeDTO processSatisfactionFileRows(List<SatisfactionFileDTO> satisfactionRows, int loadedFileId) {
