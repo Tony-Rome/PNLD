@@ -24,6 +24,10 @@ public class SchootServiceTest extends AbstractTestNGSpringContextTests {
         String valparaisoExpected = "valparaiso";
         Assert.assertEquals(schoolService.normalizeRegion(valparaiso), valparaisoExpected);
 
+        String a = "región de la araucanía";
+        String aExpected = "araucania";
+        Assert.assertEquals(schoolService.normalizeRegion(a),aExpected);
+
         String maule = "región del maule";
         String mauleExpected = "maule";
         Assert.assertEquals(schoolService.normalizeRegion(maule), mauleExpected);
@@ -32,9 +36,24 @@ public class SchootServiceTest extends AbstractTestNGSpringContextTests {
         String rmExpected = "metropolitana";
         Assert.assertEquals(schoolService.normalizeRegion(rm),rmExpected);
 
-        String a = "región de la araucanía";
-        String aExpected = "araucania";
-        Assert.assertEquals(schoolService.normalizeRegion(a),aExpected);
+        String rm2 = "región metropolitana de santiago";
+        //Assert.assertEquals(schoolService.normalizeRegion(rm2),rmExpected);
+
+        String arica = "region de arica y parinacota";
+        String aricaExpected = "arica y parinacota";
+        Assert.assertEquals(schoolService.normalizeRegion(arica), aricaExpected);
+
+        String biobio = "region de bio bio";
+        String biobioExpected = "bio bio";
+        Assert.assertEquals(schoolService.normalizeRegion(biobio), biobioExpected);
+
+        String losRios = "region de los rios";
+        String losRiosExpected = "los rios";
+        Assert.assertEquals(schoolService.normalizeRegion(losRios), losRiosExpected);
+
+        String losLagos = "region de los lagos";
+        String losLagosExpected = "los lagos";
+        Assert.assertEquals(schoolService.normalizeRegion(losLagos),losLagosExpected);
     }
 
     @Test

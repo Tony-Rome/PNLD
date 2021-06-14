@@ -48,4 +48,14 @@ public class FileResumeDTO {
     public void setInvalidRecords(int invalidRecords) {
         this.invalidRecords = invalidRecords;
     }
+
+    @Override
+    public String toString() {
+        return "FileResumeDTO{" +
+                "totalRecords=" + totalRecords +
+                ", newRecords=" + newRecords +
+                ", duplicatedRecords=" + duplicatedRecords +
+                ", invalidRecords=" + invalidRecords +
+                '}';
+    }
 }

@@ -97,9 +97,10 @@ public class LoaderMoodleFile {
 
             int schoolRbd = schoolService.rbdToInt(diagnosticRow.getRbd());
             String schoolName = this.removeAccents(diagnosticRow.getSchoolName());
-
-            School school = schoolService.save(new School(schoolRbd, schoolName, diagnosticRow.getCommune(), null,
-                    schoolService.getRegionId(diagnosticRow.getRegion())));
+            String schoolCommune = this.removeAccents(diagnosticRow.getCommune());
+            String schoolRegionName = this.removeAccents(diagnosticRow.getRegion());
+            School school = schoolService.save(new School(schoolRbd, schoolName, schoolCommune, null,
+                    schoolService.getRegionId(schoolRegionName)));
 
             String teacherRut = personService.clearRut(diagnosticRow.getRut());
 
@@ -110,16 +111,17 @@ public class LoaderMoodleFile {
 
                 if (!teacherSelected.isPresent()) {
                     int teacherGender = personService.getGenderIdByType(personService.genderStandardization(diagnosticRow.getGender()));
-                    Teacher newTeacher = new Teacher(teacherRut, diagnosticRow.getName(), diagnosticRow.getAge(),
-                            teacherGender, diagnosticRow.getEmail(), null, false, null, false, 0,
-                            school.getRbd());
-
+                    String teacherName = this.removeAccents(diagnosticRow.getName());
+                    Teacher newTeacher = new Teacher(teacherRut, teacherName, diagnosticRow.getAge(),
+                            teacherGender, diagnosticRow.getEmail(), null, false, null,
+                            false, 0, school.getRbd());
                     try {
                         int createTeacherResponse = personService.createTeacher(newTeacher);
                         logger.info("processDiagnosticFileRows. createTeacherResponse={}, newTeacher={}", createTeacherResponse,
                                 newTeacher);
                     } catch (Exception e) {
                         logger.error("processDiagnosticFileRows. e.getMessage={}", e.getMessage(), e);
+                        invalidRecordCount++;
                         continue;
                     }
                 }
@@ -223,6 +225,6 @@ public class LoaderMoodleFile {
 
     public String removeAccents(String toClean) {
         if (toClean == null) return new String();
-        return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+        return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
     }
 }

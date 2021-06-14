@@ -169,6 +169,7 @@ public class FileService {
             this.fileRepository.updateFileLoaded(loadedFile);
 
             FileResumeDTO resume = fileUtilService.processLoadedFile(loadedFile);
+            logger.info("executeFileLoadScheduled. resume={}", resume);
 
             loadedFile.setProcessDate(LocalDateTime.now(ZoneId.of("UTC")));
             loadedFile.setStateId(FileTypes.FILE_STATE_PROCESSED);
