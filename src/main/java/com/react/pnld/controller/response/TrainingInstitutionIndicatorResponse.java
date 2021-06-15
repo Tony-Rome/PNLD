@@ -8,7 +8,7 @@ import java.util.List;
 public class TrainingInstitutionIndicatorResponse implements Serializable {
     private int fromYear;
     private int toYear;
-    private List<TrainingInstitutionIndicatorDTO> trainingIndicatorData;
+    private List<TrainingInstitutionIndicatorDTO> trainingIndicatorData; //TODO: Cambiar anombre variable, también en js.
 
     public TrainingInstitutionIndicatorResponse() {
         super();

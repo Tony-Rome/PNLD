@@ -1,6 +1,9 @@
 const ctx = document.getElementById('myChart').getContext('2d');
 var myChart;
 
+
+//TODO: Cambiar nombre de funciones por nombre de indicadores
+
 function defineTitle(data){
     return (Object.keys(data).length === 2) ?
         data['fromYear'] + " - " + data['toYear'] : data['year'];
@@ -115,7 +118,7 @@ export function getPercentageBarChart (labels, datasets, title, dataList) {
                         let year = data.dataset.label;
                         return year + ": " + "Porcentaje " + percentage + "%";
                     },
-                    afterLabel: function(data){
+                    afterLabel: function(data){ //TODO: Arreglar, retornar nul cuando valor === 0, para todo tooltip
                       let index = data.parsed.y;
                       let regionData = dataList[index];
                       let year = parseInt(data.dataset.label);
@@ -148,4 +151,74 @@ export function getPercentageBarChart (labels, datasets, title, dataList) {
   });
 
   myChart.update();
+}
+
+export function getTrainedTeacherNumberChart(labels, datasets, title){
+    if(myChart) { myChart.destroy(); }
+
+    myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Cantidad',
+                            align: 'center',
+                            font: {
+                                size: 15,
+                            },
+                            padding: {
+                                top: 12,
+                            }
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Regiones',
+                            align: 'center',
+                            font: {
+                                size: 15,
+                            },
+                            padding: {
+                                bottom: 12,
+                            }
+                        }
+                    }
+                },
+                indexAxis: 'y',
+                plugins:{
+                  tooltip:{
+                      callbacks:{
+                        title: function(data){
+                          return data[0].label;
+                        },
+                        label: function(data){
+                            console.log(data);
+                            let value = data.formattedValue;
+                            let label = data.dataset.label;
+                            return (value != 0) ? label + ": " + "cantidad " + value : null;
+                        },
+
+                      },
+                    },
+                    title: {
+                        display: true,
+                        text: 'N° de docentes capacitados ' + defineTitle(title), //TODO: Definir titulo
+                    },
+                    legend: {
+                        display: true
+                    }
+                },
+                responsive: true,
+
+            }
+        });
+
+    myChart.update();
 }

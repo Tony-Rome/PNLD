@@ -38,3 +38,12 @@ export function getSubDimensionSelected(){
     });
     return selected;
 };
+
+export function getSubDimensionSelectedElement(){
+    Object.keys(subDimensionList).forEach( (k,i) => {
+        if(subDimensionList[i].checked === true) {
+            console.log("-> "+subDimensionList[i]);
+            return subDimensionList[i];
+        }
+    });
+}

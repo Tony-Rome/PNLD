@@ -9,6 +9,7 @@ export function transformRegionName(data){
     return new_data;
 }
 
+
 export function getPaletteColor(index){
 
     const COLOR_SOLID = 1;

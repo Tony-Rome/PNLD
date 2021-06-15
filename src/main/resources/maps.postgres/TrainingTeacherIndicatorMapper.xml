@@ -31,6 +31,7 @@
                 JOIN
             pnld.region AS r
                 ON c.id_region = r.id
+        WHERE d.anno_capacitacion BETWEEN #{fromYear} AND #{toYear}
         ORDER BY r.id asc
     </select>
 
