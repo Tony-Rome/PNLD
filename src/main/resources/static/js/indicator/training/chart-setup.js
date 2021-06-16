@@ -85,9 +85,9 @@ function participantInstitutionNumber(dataList, yearRange, title) {
 
     var datasets = [];
 
-    var dataListFully = dataListWithEmptyValues(dataList, yearRange);
+    var dataListFully = dataListWithEmptyValues(dataList, yearRange); //TODO: Hacer erste paso antes de la func
 
-    var labels = getRegionsSelected();
+    var labels = getRegionsSelected(); //TODO: Hacer erste paso antes de la func
 
     yearRange.forEach( (year, i) => {
 
@@ -125,24 +125,14 @@ function dataListWithEmptyValues(dataList, yearRange){ //TODO: Cambiar nombre a 
 
     let regionList = getAllRegionsName();
     let regionId = dataList.map(data => data.id);
-
+    dtoListKey = Object.keys(dataList[0])[2];
 
     regionList.forEach( (region,i) => {
         if(!regionId.includes(i+1)){
-            var dataDescriptionList = [];
-            yearRange.forEach( (year, index) => {
-                let dataDescription = {
-                    'institutionNumberPNLD': 0,
-                    'percentageFirstTimeInPNLD': 0.0,
-                    'percentageInstitutions': 0.0,
-                    'year': year
-                }
-                dataDescriptionList.push(dataDescription);
-            })
             let newValue = {
                 'id': i+1,
                 'regionName': region,
-                'trainingInstitutionDataByYearDTOList': dataDescriptionList,
+                'trainingInstitutionDataByYearDTOList': [],
             }
             dataList.splice(i,0,newValue);
         }
@@ -151,21 +141,25 @@ function dataListWithEmptyValues(dataList, yearRange){ //TODO: Cambiar nombre a 
     return dataList;
 }
 
-function regionFilter(data){ //TODO: Esta funcion es innecesaria. Se debe borrar
-    let regionList = getRegionsSelected();
+function trainedTeacherWithEmptyValues(dataList, yearRange){ //TODO: Se podria solo rellenar con el campo id, nombre_region y con descripcion vacía.
 
-    if(regionList.length === 0) return [];
+    let regionList = getAllRegionsName();
+    let regionId = dataList.map(data => data.id);
+    let dtoListKey = Object.keys(dataList[0])[2];
 
-    let dataFilter = []
-
-    data.filter(d => {
-        if(regionList.includes(d.regionName)) dataFilter.push(d);
+    regionList.forEach( (region,i) => {
+        if(!regionId.includes(i+1)){
+            let newValue = {
+                'id': i+1,
+                'regionName': region,
+                'trainingTeacherIndicatorDataByTeacherDTOList': [],
+            }
+            dataList.splice(i,0,newValue);
+        }
     });
-    return dataFilter;
+
+    return dataList;
 }
-
-
-function genderFilter(data){};
 
 function firstTimeInstitutionPercentage(dataList, yearRange, title){
 
@@ -210,23 +204,18 @@ function firstTimeInstitutionPercentage(dataList, yearRange, title){
 
 function participantInstitutionPercentage(){}
 
-function trainedTeacherWithEmptyValues(dataList, yearRange){ //TODO: Se podria solo rellenar con el campo id, nombre_region y con descripcion vacía.
+function teacherDecisionLoop(){
+    var gendersSelected = getGendersSelected(); //TODO: Se recorre por género.
+    var yearsSelected = getYearsSelected();
 
-    let regionList = getAllRegionsName();
-    let regionId = dataList.map(data => data.id);
-
-    regionList.forEach( (region,i) => {
-        if(!regionId.includes(i+1)){
-            let newValue = {
-                'id': i+1,
-                'regionName': region,
-                'trainingTeacherIndicatorDataByTeacherDTOList': [],
-            }
-            dataList.splice(i,0,newValue);
-        }
-    });
-
-    return dataList;
+    if(yearsSelected.length === 1){
+        SwitchGenderFilter(true);
+        return { 'list': gendersSelected, 'data': yearsSelected[0], 'filter': true };
+    }
+    if(yearsSelected.length > 1){
+        SwitchGenderFilter(false);
+        return {'list': yearsSelected, 'data': gendersSelected[0].toLowerCase(), 'filter': false};
+    }
 }
 
 //TODO: Funciones para subdimension docentes capacitaciones:
@@ -243,66 +232,39 @@ async function trainedTeacherNumber(){ //TODO: Dejar como ejeplo function para l
     //TODO: Recorre por yearRange.forEach(...), caso contrario (length === 1) recorrer por gender.forEach(...) seleccionados.
     //TODO: Tal vez necesite dos funciones más, para recorrer por año y para recorrer por género.
     var datasets = [];
-
+    var labels = getRegionsSelected();
     var dataList = trainedTeacherWithEmptyValues(data, yearsSelected);
-    if(yearsSelected.length === 1){
-        SwitchGenderFilter(true);
-        var gendersSelected = getGendersSelected(); //TODO: Se recorre por género.
-        gendersSelected.forEach( (gender, i) => {
+    console.log(dataList);
+    var gendersSelected = getGendersSelected(); //TODO: Se recorre por género.
 
-            var paletteColor = getPaletteColor(i);
-            var data = [];
+    var dataLoop = teacherDecisionLoop();
+        //TODO: Verificar si filtros funcionan.
+        //TODO: Refactorizar código.
+     dataLoop['list'].forEach( (element, i) => {
+        console.log(element);
+        console.log(dataLoop['data']);
+        var paletteColor = getPaletteColor(i);
+        var data = [];
+        var filterElement = (dataLoop['filter']) ? element.toLowerCase() : element;
+        dataList.forEach( (e,index) => {
 
-            dataList.forEach( (e,index) => {
-
+            if(labels.includes(e.regionName)){
                 let teacherData = e.trainingTeacherIndicatorDataByTeacherDTOList
-                    .filter(data => data.year === yearsSelected[0] && data.gender === gender.toLowerCase() && data.trainingState === true)
-                    .map( data => data.trainingState);
-                data.push(teacherData.length);
-
-
-            });
-            var dataFilter = regionFilter(dataList);
-
-            let dataset = {
-                'label': gender,
-                'data': data,
-                'backgroundColor': paletteColor['backgroundColor'],
-                'borderColor': paletteColor['borderColor']
-            };
-
-            datasets.push(dataset);
+                        .filter(data => data.year === (dataLoop['filter']) ? dataLoop['data'] : filterElement && data.gender === (dataLoop['filter']) ? data['data'] : filterElement && data.trainingState === true)
+                        .map( data => data.trainingState);
+                    data.push(teacherData.length);
+            }
         });
-    }
-    if(yearsSelected.length > 1){
-        SwitchGenderFilter(false);
-        console.log("largo > 1 ...");
-        var gendersSelected = getGendersSelected();
-        yearsSelected.forEach( (year, i) => {
 
-            var paletteColor = getPaletteColor(i);
-            var data = [];
+        let dataset = {
+            'label': element,
+            'data': data,
+            'backgroundColor': paletteColor['backgroundColor'],
+            'borderColor': paletteColor['borderColor']
+        };
 
-            dataList.forEach( (e,index) => {
-
-                let teacherData = e.trainingTeacherIndicatorDataByTeacherDTOList
-                    .filter(data => data.year === year && data.gender === gendersSelected[0].toLowerCase() &&  data.trainingState === true)
-                    .map( data => data.trainingState);
-                data.push(teacherData.length);
-            });
-            var dataFilter = regionFilter(dataList);
-
-            let dataset = {
-                'label': year,
-                'data': data,
-                'backgroundColor': paletteColor['backgroundColor'],
-                'borderColor': paletteColor['borderColor']
-            };
-
-            datasets.push(dataset);
-        });
-    }
-    let labels = getRegionsSelected();
+        datasets.push(dataset);
+    });
     getTrainedTeacherNumberChart(labels, datasets, yearsSelected);
 }
 
