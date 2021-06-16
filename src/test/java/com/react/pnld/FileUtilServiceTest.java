@@ -2,7 +2,6 @@ package com.react.pnld;
 
 import com.react.pnld.dto.ScheduleFileLoadDTO;
 import com.react.pnld.dto.TrainingFileDTO;
-import com.react.pnld.services.EntityAttributeUtilService;
 import com.react.pnld.services.FileUtilService;
 import org.postgresql.util.PGInterval;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,18 +28,12 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     private String studentLevelHeaderString = "teachername,teacheremail,schoolname,schoolcity,course,sectionid,organizer,students,studentswithprojects,index,avgcoursecompleted,maxcoursecompleted,medianlevelsattempted,projects";
     private String signInPerCourseHeaderString = "weekofsigninat,coursename,distinctcountofuseridcsfstarted";
     private String signInsHeaderString = "weekofsigninat,distinctcountofuserid,differenceindistinctcountofuserid";
-    private String generalResumeHeaderString = "RUT;REGIÓN;RBD;NOMBRES;ÍTEM;ASISTE JORNADA ;Año de Capacitacion;FECHA ASISTENCIA 1;FECHA ASISTENCIA 2;EVIDENCIA;ACTIVIDAD EN PLATAFORMA;REVISIÓN EVIDENCIAS ENTREGADAS;ESTADO PLATAFORMA;ESTADO FINAL;PAGO;MONTO ITEM";
+    private String generalResumeHeaderString = "RUT;REGION;RBD;NOMBRES;ASISTE JORNADA;ANNO CAPACITACION;ESTADO FINAL";
+    private String satisfactionHeaderString = "respuesta\tenviadoel\tinstitucin\tdepartamento\tcurso\tgrupo\tid\tnombrecompleto\trunej123456789\tq01utilizandounaescalade1a4meveoamimismoacomounapersonacercanaalaprogramacin\tq01utilizandounaescalade1a4esimportanteparamilaborprofesionalelaprendersobreprogramacin\tq01utilizandounaescalade1a4laenseanzadelaprogramacinesrelevanteparalaeducacindemisestudiantes\tq01utilizandounaescalade1a4laenseanzadelaprogramacinesrelevanteparaelfuturolaboraldemisestudiantes\tq01utilizandounaescalade1a4laprogramacinespropiadelasclasesdecomputacintecnologaosimilar\tq01utilizandounaescalade1a4laprogramacinpuedevincularsealasasignaturasqueimparto\tq02evalesuniveldeconocimientpensamientocomputacional\tq02evalesuniveldeconocimientprogramacin\tq03enunaescalade1a7dondeactualmentemesientocapazdeimplementarunaclaseincorporandoprogramacin\tq03enunaescalade1a7dondeactualmentemesientomotivadoparaimplementarunaclaseincorporandoprogramacin\tq04ndiquetodoslosconceptosquealgoritmo\tq04ndiquetodoslosconceptosqueabstraccin\tq04ndiquetodoslosconceptosquedescomposicin\tq04ndiquetodoslosconceptosqueiteracinciclobucleloop\tq04ndiquetodoslosconceptosquelenguajedeprogramacin\tq04ndiquetodoslosconceptosqueprograma\tq04ndiquetodoslosconceptosqueninguno\tq05sealetodoslosconceptosdealgoritmo\tq05sealetodoslosconceptosdeabstraccin\tq05sealetodoslosconceptosdedescomposicin\tq05sealetodoslosconceptosdeiteracinciclobucleloop\tq05sealetodoslosconceptosdelenguajedeprogramacin\tq05sealetodoslosconceptosdeprograma\tq05sealetodoslosconceptosdeninguno\tq06situviesequeelegirunaopci\tq07p30\tq08segnsuopininenculde\tq09quesunalgoritmo\tq10paraquseusanlosalgoritm";
 
     @Test
     void contextLoads() {
         Assert.assertNotNull(fileUtilService);
-    }
-
-    @Test
-    void removeSymbols(){
-        String input = "First Name,Pref Name,# Students in Course,Highest Unit (Students),Online CSF  Course";
-        String expected = "firstname,prefname,studentsincourse,highestunitstudents,onlinecsfcourse";
-        Assert.assertEquals(EntityAttributeUtilService.removeSymbols(input), expected);
     }
 
     @Test
@@ -192,51 +185,8 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void normalizeRegion(){
-        String valparaiso = "región de valparaíso";
-        String valparaisoExpected = "valparaiso";
-        Assert.assertEquals(EntityAttributeUtilService.normalizeRegion(valparaiso), valparaisoExpected);
-
-        String maule = "región del maule";
-        String mauleExpected = "maule";
-        Assert.assertEquals(EntityAttributeUtilService.normalizeRegion(maule), mauleExpected);
-
-        String rm = "región metropolitana";
-        String rmExpected = "metropolitana";
-        Assert.assertEquals(EntityAttributeUtilService.normalizeRegion(rm),rmExpected);
-
-        String a = "región de la araucanía";
-        String aExpected = "araucania";
-        Assert.assertEquals(EntityAttributeUtilService.normalizeRegion(a),aExpected);
-    }
-
-    @Test
-    public void validateEmail(){
-        String email1 = "correoprueba@test.es";
-        Assert.assertEquals(EntityAttributeUtilService.emailValidator(email1), true);
-        String email2 = "emai123.456@dominio";
-        Assert.assertEquals(EntityAttributeUtilService.emailValidator(email2), false);
-        String email3 = "correono@valido@";
-        Assert.assertEquals(EntityAttributeUtilService.emailValidator(email3), false);
-    }
-
-    @Test
-    public void rbdToInt(){
-        String rbdAsStr1 = "4045-9";
-        int rbdAsIntExpected1 = 40459;
-        Assert.assertEquals(EntityAttributeUtilService.rbdToInt(rbdAsStr1).intValue(), rbdAsIntExpected1);
-
-        String rbdAsStr2 = "22333-6";
-        int rbdAsIntExpected2 = 223336;
-        Assert.assertEquals(EntityAttributeUtilService.rbdToInt(rbdAsStr2).intValue(), rbdAsIntExpected2);
-
-        String rbdAsStr3 = "Municipal";
-        Assert.assertEquals(EntityAttributeUtilService.rbdToInt(rbdAsStr3), null);
-    }
-
-    @Test
     public void selectedHeaders_Equals_GeneralResumeType(){
-        String[] generalResumeHeadersMock = EntityAttributeUtilService.removeSymbols(generalResumeHeaderString).split(";");
+        String[] generalResumeHeadersMock = generalResumeHeaderString.toLowerCase().replaceAll("\t",";").replaceAll("(, |[^a-zA-Z0-9,;])", "").split(";");
         String[] generalResumeHeaders = fileUtilService.selectedHeadersArray("general-resume");
 
         Arrays.sort(generalResumeHeaders);
@@ -252,12 +202,17 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     @Test
     public void removeAccents(){
         String schoolName = "colegio ñuble del río";
-        Assert.assertEquals(EntityAttributeUtilService.removeAccents(schoolName), "colegio nuble del rio");
+        Assert.assertEquals(FileUtilService.removeAccents(schoolName), "colegio nuble del rio");
     }
 
+
     @Test
-    public void cleaningRut_Equals(){
-        String rut = "2.345.678-k";
-        Assert.assertEquals(EntityAttributeUtilService.clearRut(rut), "2345678k");
+    public void selectedHeaders_Equals_SatisfactionType(){
+        String[] satisfactionHeadersMock = satisfactionHeaderString.toLowerCase().replaceAll("(, |[^a-zA-Z0-9,;\t])", "").split("\\t");
+        String[] satisfactionHeaders = fileUtilService.selectedHeadersArray("satis");
+
+        Arrays.sort(satisfactionHeaders);
+        Arrays.sort(satisfactionHeadersMock);
+        Assert.assertEquals(satisfactionHeaders, satisfactionHeadersMock);
     }
 }

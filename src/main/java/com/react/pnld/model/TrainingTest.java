@@ -10,7 +10,7 @@ public class TrainingTest implements Serializable {
     private int id;
     private String type;
     private int loadedFileId;
-    private int teacherId;
+    private String teacherRut;
     private LocalDateTime initDate;
     private LocalDateTime endDate;
     private PGInterval requiredInterval;
@@ -22,12 +22,12 @@ public class TrainingTest implements Serializable {
         super();
     }
 
-    public TrainingTest(int id, String type, int loadedFileId, int teacherId, LocalDateTime initDate,
+    public TrainingTest(int id, String type, int loadedFileId, String teacherRut, LocalDateTime initDate,
                         LocalDateTime endDate, PGInterval requiredInterval, String state, float score, String answers) {
         this.id = id;
         this.type = type;
         this.loadedFileId = loadedFileId;
-        this.teacherId = teacherId;
+        this.teacherRut = teacherRut;
         this.initDate = initDate;
         this.endDate = endDate;
         this.requiredInterval = requiredInterval;
@@ -60,12 +60,12 @@ public class TrainingTest implements Serializable {
         this.loadedFileId = loadedFileId;
     }
 
-    public int getTeacherId() {
-        return teacherId;
+    public String getTeacherRut() {
+        return teacherRut;
     }
 
-    public void setTeacherId(int teacherId) {
-        this.teacherId = teacherId;
+    public void setTeacherRut(String teacherRut) {
+        this.teacherRut = teacherRut;
     }
 
     public LocalDateTime getInitDate() {
@@ -122,7 +122,7 @@ public class TrainingTest implements Serializable {
                 "id=" + id +
                 ", type='" + type + '\'' +
                 ", loadedFileId=" + loadedFileId +
-                ", teacherId=" + teacherId +
+                ", teacherRut=" + teacherRut +
                 ", initDate='" + initDate + '\'' +
                 ", endDate='" + endDate + '\'' +
                 ", requiredInterval=" + requiredInterval +

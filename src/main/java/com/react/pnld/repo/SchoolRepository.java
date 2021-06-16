@@ -16,16 +16,11 @@ public class SchoolRepository {
     @Autowired
     SchoolMapper schoolMapper;
 
-    public int getNextSchoolId() {
-        return schoolMapper.getNextSchoolId();
-    }
-
     public Optional<School> getSchoolWhereName(String name) {
         return Optional.ofNullable(schoolMapper.getSchoolWhereName(name));
     }
 
     public int insertSchool(School school) {
-        logger.info("insertSchool. school={}", school);
         return schoolMapper.insertSchool(school);
     }
 
@@ -36,6 +31,10 @@ public class SchoolRepository {
 
     public Optional<School> getSchoolWhereRbd(int rbd) {
         return Optional.ofNullable(schoolMapper.getSchoolWhereRbd(rbd));
+    }
+
+    public Optional<School> getSchoolNotSpecified(){
+        return this.getSchoolWhereRbd(0);
     }
 
 }

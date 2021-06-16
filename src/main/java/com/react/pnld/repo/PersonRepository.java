@@ -1,7 +1,6 @@
 package com.react.pnld.repo;
 
 import com.react.pnld.mappers.PersonMapper;
-import com.react.pnld.model.Person;
 import com.react.pnld.model.Teacher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,35 +17,16 @@ public class PersonRepository {
     @Autowired
     private PersonMapper personMapper;
 
-    public Optional<Teacher> getTeacherPerson(String rut) {
-        return Optional.ofNullable(personMapper.getTeacherPerson(rut));
+    public Optional<Teacher> getTeacherByRut(String rut) {
+        return Optional.ofNullable(personMapper.getTeacherByRut(rut));
     }
 
-    public int insertTeacher(Teacher teacher) {
+    public int insertTeacher(Teacher teacher) throws Exception {
         int resultInsertTeacher = personMapper.insertTeacher(teacher);
-        logger.info("insertTeacher. teacher={}, resultInsertTeacher={}", teacher, resultInsertTeacher);
         return resultInsertTeacher;
     }
 
-    public int insertPerson(Person person) {
-        int resultInsertPerson = personMapper.insertPerson(person);
-        logger.info("insertPerson. person={}, resultInsertPerson={}", person, resultInsertPerson);
-        return resultInsertPerson;
-    }
-
-    public int getNextTeacherId() {
-        return personMapper.getNextTeacherId();
-    }
-
-    public int getNextPersonId() {
-        return personMapper.getNextPersonId();
-    }
-
-    public boolean checkIfEmailExists(String email) {
-        return personMapper.checkIfEmailExists(email);
-    }
-
-    public int updateTeacher(Teacher teacher) {
+    public int updateTeacher(Teacher teacher){
         return personMapper.updateTeacher(teacher);
     }
 }
