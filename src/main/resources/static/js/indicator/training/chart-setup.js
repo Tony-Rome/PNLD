@@ -87,6 +87,8 @@ function participantInstitutionNumber(dataList, yearRange, title) {
 
     var dataListFully = dataListWithEmptyValues(dataList, yearRange);
 
+    var labels = getRegionsSelected();
+
     yearRange.forEach( (year, i) => {
 
         var paletteColor = getPaletteColor(i);
@@ -94,16 +96,16 @@ function participantInstitutionNumber(dataList, yearRange, title) {
 
         dataListFully.forEach( (e,index) => {
 
-            let institutionNumberData = e.trainingInstitutionDataByYearDTOList
-                .filter(data => data.year === year)
-                .map( data => data.institutionNumberPNLD);
+            if(labels.includes(e.regionName)){
+                let institutionNumberData = e.trainingInstitutionDataByYearDTOList
+                        .filter(data => data.year === year)
+                        .map( data => data.institutionNumberPNLD);
 
-            data.push(institutionNumberData[0]);
+                data.push(institutionNumberData[0]);
 
+            }
 
         });
-
-        var dataFilter = regionFilter(dataListFully);
 
         let dataset = {
             'label': year,
@@ -114,7 +116,6 @@ function participantInstitutionNumber(dataList, yearRange, title) {
 
         datasets.push(dataset);
     });
-    let labels = getRegionsSelected();
     getNumberBarChart(labels, datasets, title);
 
 }
@@ -150,7 +151,7 @@ function dataListWithEmptyValues(dataList, yearRange){ //TODO: Cambiar nombre a 
     return dataList;
 }
 
-function regionFilter(data){
+function regionFilter(data){ //TODO: Esta funcion es innecesaria. Se debe borrar
     let regionList = getRegionsSelected();
 
     if(regionList.length === 0) return [];
@@ -160,7 +161,6 @@ function regionFilter(data){
     data.filter(d => {
         if(regionList.includes(d.regionName)) dataFilter.push(d);
     });
-
     return dataFilter;
 }
 
@@ -172,6 +172,7 @@ function firstTimeInstitutionPercentage(dataList, yearRange, title){
     var datasets = [];
     const DECIMAL_NUMBER = 2;
     var dataListFully = dataListWithEmptyValues(dataList, yearRange);
+    var labels = getRegionsSelected();
 
     yearRange.forEach( (year, i) => {
 
@@ -180,21 +181,19 @@ function firstTimeInstitutionPercentage(dataList, yearRange, title){
 
         dataListFully.forEach( (e,index) => {
 
-            let percentageFirstTimeInstitution = e.trainingInstitutionDataByYearDTOList
-                .filter(data => data.year === year)
-                .map( data => {
-                    let totalInstitution = data.institutionNumberPNLD;
-                    let firstTimeNumber = data.firstTimeInstitutionNumber;
-                    let percentage = (firstTimeNumber/totalInstitution)*100;
-                    return percentage.toFixed(DECIMAL_NUMBER);
-                    });
-
-            data.push(percentageFirstTimeInstitution[0]);
-
+            if(labels.includes(e.regionName)){
+                let percentageFirstTimeInstitution = e.trainingInstitutionDataByYearDTOList
+                    .filter(data => data.year === year)
+                    .map( data => {
+                        let totalInstitution = data.institutionNumberPNLD;
+                        let firstTimeNumber = data.firstTimeInstitutionNumber;
+                        let percentage = (firstTimeNumber/totalInstitution)*100;
+                        return percentage.toFixed(DECIMAL_NUMBER);
+                        });
+                data.push(percentageFirstTimeInstitution[0]);
+            }
 
         });
-
-        var dataFilter = regionFilter(dataListFully);
 
         let dataset = {
             'label': year,
@@ -205,8 +204,6 @@ function firstTimeInstitutionPercentage(dataList, yearRange, title){
 
         datasets.push(dataset);
     });
-
-    let labels = getRegionsSelected();
 
     getPercentageBarChart(labels, datasets, title, dataListFully);
 }

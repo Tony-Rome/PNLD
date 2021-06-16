@@ -38,7 +38,7 @@
         FROM pnld.docente AS d
         JOIN pnld.colegio AS c ON d.rbd_colegio = c.rbd
         JOIN pnld.region AS r ON c.id_region = r.id
-        WHERE d.anno_capacitacion BETWEEN 2017 and 2021 GROUP BY r.id, d.anno_capacitacion ORDER BY r.id
+        WHERE d.anno_capacitacion BETWEEN #{fromYear} and #{toYear} GROUP BY r.id, d.anno_capacitacion ORDER BY r.id
     </select>
 
 </mapper>
