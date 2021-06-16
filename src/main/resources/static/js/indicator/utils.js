@@ -9,19 +9,40 @@ export function transformRegionName(data){
     return new_data;
 }
 
-export function randomColorFunction(){
-    let r = Math.floor(Math.random() * 255);
-    let g = Math.floor(Math.random() * 255);
-    let b = Math.floor(Math.random() * 255);
+export function getPaletteColor(index){
 
     const COLOR_SOLID = 1;
     const COLOR_TRANSPARENT = 0.7;
 
-    let randomColorDict = {};
-    randomColorDict['backgroundColor'] = "rgba(" + r + "," + g + "," + b + "," + COLOR_TRANSPARENT + ")"
-    randomColorDict['borderColor'] = "rgba(" + r + "," + g + "," + b + "," + COLOR_SOLID + ")"
+    const BLUE = 'rgba(0, 63, 92,';
+    const PURPLE = 'rgba(88, 80, 141,';
+    const PINK = 'rgba(188,80,144,';
+    const RED = 'rgba(255,99,97,';
+    const YELLOW = 'rgba(255,166,0,';
 
-    return randomColorDict;
+    let bgBlue =  BLUE + COLOR_TRANSPARENT + ')';
+    let bgPurple = PURPLE + COLOR_TRANSPARENT + ')';
+    let bgPink = PINK + COLOR_TRANSPARENT + ')';
+    let bgRed = RED + COLOR_TRANSPARENT + ')';
+    let bgYellow = YELLOW + COLOR_TRANSPARENT + ')';
+
+    const backgroundColors = [bgBlue, bgPurple, bgPink, bgRed, bgYellow];
+
+    let borderBlue =  BLUE + COLOR_SOLID + ')';
+    let borderPurple = PURPLE + COLOR_SOLID + ')';
+    let borderPink = PINK + COLOR_SOLID + ')';
+    let borderRed = RED + COLOR_SOLID + ')';
+    let borderYellow = YELLOW + COLOR_SOLID + ')';
+
+    const borderColors = [borderBlue, borderPurple, borderPink, borderRed, borderYellow];
+
+
+    let paletteColor = {
+        'backgroundColor': backgroundColors[index],
+        'borderColor': borderColors[index]
+    };
+
+    return paletteColor;
 };
 
 export function defineYearsQueryParams(yearsSelected){

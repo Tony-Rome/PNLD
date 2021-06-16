@@ -7,7 +7,7 @@
 
     <body>
 
-    <@hd.header title = 'Indicadores' />
+    <@hd.header title = 'Indicadores' buttonHome = true/>
 
     <#assign dimensionIndex = 0/>
 

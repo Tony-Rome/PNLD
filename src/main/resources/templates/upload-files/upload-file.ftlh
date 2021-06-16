@@ -22,7 +22,7 @@
 
         <#assign filesNumberToShow = 10 />
 
-        <@hd.header title = 'Archivos'/>
+        <@hd.header title = 'Archivos' buttonHome = true/>
 
         <@ft.filesTable filesNumberToShow = filesNumberToShow/>
 
