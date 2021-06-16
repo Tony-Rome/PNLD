@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.react.pnld.mappers.SchoolMapper">
+    <cache/>
+
+    <resultMap id="getSchoolWhereName" type="com.react.pnld.model.School">
+        <id property="id" column="id"/>
+        <result property="name" column="nombre" />
+        <result property="city" column="ciudad" />
+        <result property="regionId" column="id_region" />
+        <result property="rbd" column="rbd" />
+    </resultMap>
+    <select id="getSchoolWhereName" resultMap="getSchoolWhereName">
+        SELECT *
+        FROM pnld.colegio
+        WHERE nombre = #{name};
+    </select>
+
+    <insert id="insertSchool">
+        INSERT INTO pnld.colegio
+            (rbd, id_region, nombre, ciudad)
+        VALUES
+            (#{rbd}, #{regionId}, #{name}, #{city});
+    </insert>
+
+    <update id="updateSchool">
+        UPDATE pnld.colegio
+        SET
+        ciudad = #{city}, comuna = #{commune}, id_region = #{regionId}
+        WHERE rbd = #{rbd}
+    </update>
+
+    <select id="getSchoolWhereRbd" resultMap="getSchoolWhereName">
+        SELECT * FROM pnld.colegio
+        WHERE rbd = #{rbd};
+    </select>
+
+</mapper>

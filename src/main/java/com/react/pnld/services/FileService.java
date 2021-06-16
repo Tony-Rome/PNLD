@@ -23,7 +23,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -35,6 +34,9 @@ public class FileService {
 
     @Value("${copy.path.files}")
     private String FILE_PATH;
+
+    @Value("${csv.headers.delimiters}")
+    private String csvHeadersDelimiters;
 
     @Autowired
     private FileUtilService fileUtilService;
@@ -86,8 +88,8 @@ public class FileService {
             return false;
         }
 
-        String cleanHeaders = fileUtilService.removeSymbols(firstLine);
-        String[] headersFromFile = cleanHeaders.split(",|;");
+        String cleanHeaders = firstLine.replaceAll("(, |[^a-zA-Z0-9,;\t])", "").toLowerCase();
+        String[] headersFromFile = cleanHeaders.split(this.csvHeadersDelimiters);
         String[] selectedHeadersArray = fileUtilService.selectedHeadersArray(scheduleFileLoadDTO.getSelectedType());
         boolean isHeadersEquals = fileUtilService.isStringArraysEquals(headersFromFile, selectedHeadersArray);
 
@@ -159,8 +161,7 @@ public class FileService {
         LocalDateTime startDateTime = endDateTime.minusDays(1L);
         logger.info("executeFileLoadScheduled. startDateTime={}", startDateTime);
 
-        List<LoadedFile> filesLoadedScheduled = fileRepository.getLoadedFilesByStateAndTimestamps(FileTypes.STATE_SCHEDULED,
-                Timestamp.valueOf(startDateTime), Timestamp.valueOf(endDateTime));
+        List<LoadedFile> filesLoadedScheduled = fileRepository.getLoadedFilesNotProcessed();
         logger.info("executeFileLoadScheduled. filesLoadedScheduled={}", filesLoadedScheduled);
 
         for (LoadedFile loadedFile : filesLoadedScheduled) {
@@ -168,6 +169,7 @@ public class FileService {
             this.fileRepository.updateFileLoaded(loadedFile);
 
             FileResumeDTO resume = fileUtilService.processLoadedFile(loadedFile);
+            logger.info("executeFileLoadScheduled. resume={}", resume);
 
             loadedFile.setProcessDate(LocalDateTime.now(ZoneId.of("UTC")));
             loadedFile.setStateId(FileTypes.FILE_STATE_PROCESSED);

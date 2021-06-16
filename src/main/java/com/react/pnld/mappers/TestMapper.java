@@ -1,17 +1,11 @@
 package com.react.pnld.mappers;
 
-import com.react.pnld.model.Test;
-import com.react.pnld.model.TrainingAnswer;
+import com.react.pnld.model.TrainingTest;
 
 public interface TestMapper {
+    TrainingTest getTrainingTestByTeacherRut(String teacherRut, String testType);
 
-    Test getTeacherTest(int teacherId, String testType);
+    int getNextTrainingTestId();
 
-    int insertTest(Test test);
-
-    int getNextTestId();
-
-    int getNextTrainingAnswer();
-
-    int insertTrainingAnswer(TrainingAnswer trainingAnswer);
+    int insertTrainingTest(TrainingTest trainingTest);
 }

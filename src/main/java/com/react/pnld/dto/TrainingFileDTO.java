@@ -2,37 +2,48 @@ package com.react.pnld.dto;
 
 import com.react.pnld.services.FileUtilService;
 import com.univocity.parsers.annotations.Format;
+import com.univocity.parsers.annotations.LowerCase;
 import com.univocity.parsers.annotations.Parsed;
 import org.postgresql.util.PGInterval;
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
+import static java.lang.Math.toIntExact;
 
 public class TrainingFileDTO {
 
     @Parsed(index = 0)
+    @LowerCase
     private String lastNames;
 
     @Parsed(index = 1)
+    @LowerCase
     private String name;
 
     @Parsed(index = 2)
+    @LowerCase
     private String rut;
 
     @Parsed(index = 3)
-    private String institution;
+    @LowerCase
+    private String schoolName;
 
     @Parsed(index = 4)
+    @LowerCase
     private String department;
 
     @Parsed(index = 5)
+    @LowerCase
     private String email;
 
     @Parsed(index = 6)
+    @LowerCase
     private String testState;
 
-    @Parsed(index = 7)
-    private String startIn;
+    private LocalDateTime startIn;
 
-    @Parsed(index = 8)
-    private String finishIn;
+    private LocalDateTime finishIn;
 
     private PGInterval requiredInterval;
 
@@ -41,65 +52,47 @@ public class TrainingFileDTO {
     private float score;
 
     @Parsed(index = 11)
+    @LowerCase
     private String answerOne;
 
     @Parsed(index = 12)
+    @LowerCase
     private String answerTwo;
 
     @Parsed(index = 13)
+    @LowerCase
     private String answerThree;
 
     @Parsed(index = 14)
+    @LowerCase
     private String answerFour;
 
     @Parsed(index = 15)
+    @LowerCase
     private String answerFive;
 
     @Parsed(index = 16)
+    @LowerCase
     private String answerSix;
 
     @Parsed(index = 17)
+    @LowerCase
     private String answerSeven;
 
     @Parsed(index = 18)
+    @LowerCase
     private String answerEight;
 
     @Parsed(index = 19)
+    @LowerCase
     private String answerNine;
 
     @Parsed(index = 20)
+    @LowerCase
     private String answerTen;
 
     public TrainingFileDTO() {
         super();
-    }
-
-    public TrainingFileDTO(String lastNames, String name, String rut, String institution, String department,
-                           String email, String testState, String startIn, String finishIn, PGInterval requiredInterval, float score,
-                           String answerOne, String answerTwo, String answerThree, String answerFour, String answerFive,
-                           String answerSix, String answerSeven, String answerEight, String answerNine, String answerTen) {
-        super();
-        this.lastNames = lastNames;
-        this.name = name;
-        this.rut = rut;
-        this.institution = institution;
-        this.department = department;
-        this.email = email;
-        this.testState = testState;
-        this.startIn = startIn;
-        this.finishIn = finishIn;
-        this.requiredInterval = requiredInterval;
-        this.score = score;
-        this.answerOne = answerOne;
-        this.answerTwo = answerTwo;
-        this.answerThree = answerThree;
-        this.answerFour = answerFour;
-        this.answerFive = answerFive;
-        this.answerSix = answerSix;
-        this.answerSeven = answerSeven;
-        this.answerEight = answerEight;
-        this.answerNine = answerNine;
-        this.answerTen = answerTen;
     }
 
     public String getLastNames() {
@@ -109,6 +102,7 @@ public class TrainingFileDTO {
     public void setLastNames(String lastNames) {
         this.lastNames = lastNames;
     }
+
 
     public String getName() {
         return name;
@@ -126,12 +120,12 @@ public class TrainingFileDTO {
         this.rut = rut;
     }
 
-    public String getInstitution() {
-        return institution;
+    public String getSchoolName() {
+        return schoolName;
     }
 
-    public void setInstitution(String institution) {
-        this.institution = institution;
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
     }
 
     public String getDepartment() {
@@ -158,23 +152,36 @@ public class TrainingFileDTO {
         this.testState = testState;
     }
 
-    public String getStartIn() {
+    public LocalDateTime getStartIn() {
         return startIn;
     }
 
-    public void setStartIn(String startIn) {
+    public void setStartIn(LocalDateTime startIn) {
         this.startIn = startIn;
     }
 
-    public String getFinishIn() {
+    @Parsed(index = 7)
+    @LowerCase
+    public void setLocalDateStartIn(String startIn) {
+        this.startIn = FileUtilService.getLocalDateFrom(startIn);
+    }
+
+    public LocalDateTime getFinishIn() {
         return finishIn;
     }
 
-    public void setFinishIn(String finishIn) {
+    public void setFinishIn(LocalDateTime finishIn) {
         this.finishIn = finishIn;
     }
 
+    @Parsed(index = 8)
+    @LowerCase
+    public void setLocalDateFinishIn(String finishIn) {
+        this.finishIn = FileUtilService.getLocalDateFrom(finishIn);
+    }
+
     public PGInterval getRequiredInterval() {
+        if (requiredInterval == null) this.buildPGIntervalFrom();
         return requiredInterval;
     }
 
@@ -182,9 +189,27 @@ public class TrainingFileDTO {
         this.requiredInterval = requiredInterval;
     }
 
-    @Parsed(index = 9)
-    public void setIntervalFromString(String requiredInterval){
-        this.requiredInterval = FileUtilService.getRequiredTrainingInterval(requiredInterval);
+    private void buildPGIntervalFrom() {
+        LocalDateTime tempDateTime = LocalDateTime.from(this.startIn);
+
+        int years = toIntExact(tempDateTime.until(this.finishIn, ChronoUnit.YEARS));
+        tempDateTime = tempDateTime.plusYears(years);
+
+        int months = toIntExact(tempDateTime.until(this.finishIn, ChronoUnit.MONTHS));
+        tempDateTime = tempDateTime.plusMonths(months);
+
+        int days = toIntExact(tempDateTime.until(this.finishIn, ChronoUnit.DAYS));
+        tempDateTime = tempDateTime.plusDays(days);
+
+        int hours = toIntExact(tempDateTime.until(this.finishIn, ChronoUnit.HOURS));
+        tempDateTime = tempDateTime.plusHours(hours);
+
+        int minutes = toIntExact(tempDateTime.until(this.finishIn, ChronoUnit.MINUTES));
+        tempDateTime = tempDateTime.plusMinutes(minutes);
+
+        int seconds = toIntExact(tempDateTime.until(this.finishIn, ChronoUnit.SECONDS));
+
+        this.requiredInterval = new PGInterval(years, months, days, hours, minutes, seconds);
     }
 
     public float getScore() {
@@ -281,7 +306,7 @@ public class TrainingFileDTO {
                 "lastNames='" + lastNames + '\'' +
                 ", name='" + name + '\'' +
                 ", rut='" + rut + '\'' +
-                ", institution='" + institution + '\'' +
+                ", institution='" + schoolName + '\'' +
                 ", department='" + department + '\'' +
                 ", email='" + email + '\'' +
                 ", testState='" + testState + '\'' +

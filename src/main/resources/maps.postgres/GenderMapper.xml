@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.react.pnld.mappers.Gendermapper">
+
+    <cache/>
+
+    <select id="getGenderIdByType" resultType="int" parameterType="String">
+        SELECT id FROM pnld.genero WHERE tipo = #{type}
+    </select>
+
+</mapper>

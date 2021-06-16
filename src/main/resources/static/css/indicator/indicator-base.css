@@ -1,0 +1,56 @@
+.dimensionHeaderContainer{
+    text-align: center;
+    margin: 35px auto;
+    width: 1090px;
+    line-height: 30px;
+}
+
+.dimensionTitle {
+    background-color: #c2ffb6;
+    height: 30px;
+    width: 100%;
+    margin: auto;
+    font-size: 20px;
+}
+
+.dimensionContainer{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.dimension{
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 350px;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 1%;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+}
+
+.active {
+    background-color: #acd9f8;
+}
+
+.indicatorContainer{
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.exportData{
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 250px;
+    margin: 30px auto 20px;
+    justify-content: center;
+    display: flex;
+    line-height: 40px;
+    cursor: pointer;
+}
+
+.logoExcel{
+    width: 60px;
+}

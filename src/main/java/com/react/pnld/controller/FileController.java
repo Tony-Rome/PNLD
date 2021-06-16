@@ -39,12 +39,11 @@ public class FileController {
         model.addAttribute("filesList", fileTableResumeDTOList);
         model.addAttribute("currentPage", currentPage);
 
-        return "upload-file";
+        return "upload-files/upload-file";
     }
 
     @PostMapping(value = "/scheduleFileLoadPost")
     public ResponseEntity<String> scheduleFileLoadPost(ScheduleFileLoadDTO scheduleFileLoadDTO, Model model) {
-
 
         model.addAttribute("scheduleFileLoadDTO", scheduleFileLoadDTO);
 

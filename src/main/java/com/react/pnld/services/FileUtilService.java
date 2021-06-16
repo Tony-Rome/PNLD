@@ -1,23 +1,25 @@
 package com.react.pnld.services;
 
 import com.react.pnld.dto.*;
+import com.react.pnld.interceptor.PNLDInterceptor;
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.model.LoadedFile;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
-import org.postgresql.util.PGInterval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.text.Normalizer;
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class FileUtilService {
@@ -38,17 +40,10 @@ public class FileUtilService {
 
     private CsvParserSettings csvParserSettings;
 
-    @Value("${csv.delimiters}")
-    private String csvDelimiters;
-
     public FileUtilService() {
         csvParserSettings = new CsvParserSettings();
-        csvParserSettings.setHeaderExtractionEnabled(true);
-    }
-
-    public String removeSymbols(String strToClean) {
-        String strCleaned = strToClean.replaceAll("[^a-zA-Z0-9,;]", "");
-        return strCleaned.toLowerCase();
+        csvParserSettings.setProcessorErrorHandler(new PNLDInterceptor());
+        csvParserSettings.setLineSeparatorDetectionEnabled(true);
     }
 
     public String[] selectedHeadersArray(String selectedType) {
@@ -88,11 +83,11 @@ public class FileUtilService {
             case TEST_CT_3:
                 return csvHeadersProperties.getTestCT3();
 
-            case SALIDA:
-                return csvHeadersProperties.getSalida();
-
             case SATISFACTION:
                 return csvHeadersProperties.getSatisfaction();
+
+            case GENERAL_RESUME:
+                return csvHeadersProperties.getGeneralResumeArray();
 
             default:
                 return new String[1];
@@ -100,8 +95,8 @@ public class FileUtilService {
     }
 
     public boolean isStringArraysEquals(String[] firstArray, String[] secondArray) {
-        logger.info("isStringArraysEquals. firstArray={}", firstArray);
-        logger.info("isStringArraysEquals. secondArray={}", secondArray);
+        logger.info("isStringArraysEquals. firstArray={}", Arrays.toString(firstArray));
+        logger.info("isStringArraysEquals. secondArray={}", Arrays.toString(secondArray));
 
         String[] firstArraySorted = firstArray;
         String[] secondArraySorted = secondArray;
@@ -143,20 +138,15 @@ public class FileUtilService {
     }
 
     public <T> List<T> parseRowsToBeans(Reader reader, Class<T> clazz) {
-        csvParserSettings.detectFormatAutomatically(csvDelimiters.toCharArray());
         BeanListProcessor<T> rowProcessor = new BeanListProcessor<T>(clazz);
         csvParserSettings.setProcessor(rowProcessor);
+        csvParserSettings.setHeaderExtractionEnabled(true);
+        csvParserSettings.setDelimiterDetectionEnabled(true, csvHeadersProperties.getDelimiters().toCharArray());
 
-        try {
-            CsvParser parser = new CsvParser(csvParserSettings);
-
-            parser.parse(reader);
-            List<T> rowsLikeBeans = rowProcessor.getBeans();
-            return rowsLikeBeans;
-        } catch (Exception exception) {
-            logger.error(exception.getMessage(), exception);
-            return Collections.emptyList();
-        }
+        CsvParser parser = new CsvParser(csvParserSettings);
+        parser.parse(reader);
+        List<T> rowsLikeBeans = rowProcessor.getBeans();
+        return rowsLikeBeans;
     }
 
     public FileResumeDTO processLoadedFile(LoadedFile loadedFile) {
@@ -182,18 +172,17 @@ public class FileUtilService {
                 return this.loaderCodeFile.processSignInsFile(loadedFile);
 
             case DIAGNOSIS:
-                return this.loaderMoodleFile.diagnosticoFile(loadedFile);
+                List<DiagnosticFileDTO> diagnosticRows = parseRowsToBeans(loadedFileReader, DiagnosticFileDTO.class);
+                return this.loaderMoodleFile.processDiagnosticFileRows(diagnosticRows, loadedFile.getId());
 
             case PRE_TRAINING:
             case POST_TRAINING:
                 List<TrainingFileDTO> trainingRows = parseRowsToBeans(loadedFileReader, TrainingFileDTO.class);
                 return loaderMoodleFile.processTrainingFileRows(trainingRows, loadedFile.getId(), loadedFile.getType());
 
-            case SALIDA:
-                return this.loaderMoodleFile.salidaFile(loadedFile);
-
             case SATISFACTION:
-                return this.loaderMoodleFile.satisFile(loadedFile);
+                List<SatisfactionFileDTO> satisfactionRows = parseRowsToBeans(loadedFileReader, SatisfactionFileDTO.class);
+                return this.loaderMoodleFile.processSatisfactionFileRows(satisfactionRows, loadedFile.getId());
 
             case TEST_CT_1:
                 List<CTFileFirstGroupStudentsDTO> ctFirstGroupStudents = parseRowsToBeans(loadedFileReader,
@@ -205,48 +194,34 @@ public class FileUtilService {
 
             case TEST_CT_3:
                 return this.loaderCTFile.testPCThreeFile(loadedFile);
+                return this.loaderCTFile.testPCThreeFile(loadedFile);
+
+            case GENERAL_RESUME:
+                List<GeneralResumeTrainingDTO> generalResumeTrainingRows = parseRowsToBeans(loadedFileReader,
+                        GeneralResumeTrainingDTO.class);
+                return this.loaderMoodleFile.processGeneralResumeRows(generalResumeTrainingRows, loadedFile.getId());
 
             default:
-                return new FileResumeDTO(0, 0, 0);
+                return new FileResumeDTO(0, 0, 0, 0);
         }
     }
 
-    public static PGInterval getRequiredTrainingInterval(String requiredInterval){
-        String DAY_LABEL = "dia";
-        String HOUR_LABEL = "hora";
-        String MINUTE_LABEL = "minuto";
-        String SECOND_LABEL = "segundo";
+    public static LocalDateTime getLocalDateFrom(String stringDate) {
 
-        int yearZero = 0;
-        int monthZero = 0;
-        int days = 0;
-        int hour = 0;
-        int mins = 0;
-        int secs = 0;
-
-        String durationWithoutAccents = removeAccents(requiredInterval);
-        String onlyNumsString = durationWithoutAccents.trim().replaceAll("([ \\t\\n\\x0B\\f\\r][a-z]+)","");
-        String[] time = onlyNumsString.split("[ \\t\\n\\x0B\\f\\r]");
-
-        if(durationWithoutAccents.contains(DAY_LABEL) && durationWithoutAccents.contains(HOUR_LABEL)){
-            days = Integer.parseInt(time[0].trim());
-            hour = Integer.parseInt(time[1].trim());
+        String stringFormatted = stringDate.replaceAll(" de ", "/").replaceAll("\\s+|\\t", " ");
+        ;
+        String formatPattern = "d/MMMM/yyyy H:m";
+        try {
+            return LocalDateTime.parse(stringFormatted, DateTimeFormatter.ofPattern(formatPattern,
+                    new Locale("es", "ES")));
+        } catch (DateTimeException dateTimeException) {
+            logger.error("getLocalDateFrom.", dateTimeException.getMessage(), dateTimeException);
+            return LocalDateTime.MIN;
         }
-
-        if(durationWithoutAccents.contains(HOUR_LABEL) && durationWithoutAccents.contains(MINUTE_LABEL)){
-            hour = Integer.parseInt(time[0].trim());
-            mins = Integer.parseInt(time[1].trim());
-        }
-
-        if(durationWithoutAccents.contains(MINUTE_LABEL) && durationWithoutAccents.contains(SECOND_LABEL)) {
-            mins = Integer.parseInt(time[0].trim());
-            secs = Integer.parseInt(time[1].trim());
-        }
-
-        return new PGInterval(yearZero, monthZero, days, hour, mins, secs);
     }
 
-    public static String removeAccents(String toClean){
+    public static String removeAccents(String toClean) {
+        if(toClean == null) return new String();
         return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
     }
 }

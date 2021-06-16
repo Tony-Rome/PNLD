@@ -1,0 +1,41 @@
+body{
+    margin: 0;
+}
+.header {
+    display: flex;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.logoMineduc {
+    width: 15vw;
+    height: 12vw;
+    margin-left: 2vw;
+}
+
+.title {
+    font-size: 4vw;
+    display: flex;
+    align-items: center;
+    margin: auto;
+}
+
+.buttonHome{
+
+    color: black;
+    text-align: center;
+    text-decoration-line: none;
+    border-radius: 4px;
+    width: 100px;
+    padding: 12px;
+}
+
+.logout {
+    margin: 20px 100px auto auto;
+    background-color: #54b2d9;
+}
+
+.init {
+    margin: 20px 0 auto 30px;
+    background-color: #37cf84;
+}

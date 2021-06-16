@@ -14,7 +14,7 @@
 			#{stateId},#{processDate}, #{totalRecords},#{newRecords},#{duplicateRecords});
 	</insert>
 
-	<resultMap id="loadedFilesByStateAndTimestamps" type="com.react.pnld.model.LoadedFile">
+	<resultMap id="getLoadedFilesNotProcessed" type="com.react.pnld.model.LoadedFile">
 		<result property="id" column="id" />
 		<result property="loadedDate" column="fecha_carga" />
 		<result property="name" column="nombre" />
@@ -27,11 +27,11 @@
 		<result property="newRecords" column="registros_totales" />
 		<result property="duplicateRecords" column="registros_duplicados" />
 	</resultMap>
-
-	<select id="getLoadedFilesByStateAndTimestamps" resultMap="loadedFilesByStateAndTimestamps">
+	<select id="getLoadedFilesNotProcessed" resultMap="getLoadedFilesNotProcessed">
 		SELECT * FROM pnld.archivo_cargado
 		WHERE
-			id_estado = #{stateId} AND fecha_carga >= #{initTime} AND   #{endTime} > fecha_carga
+			id_estado != 3
+		ORDER BY fecha_carga ASC
 	</select>
 
 	<update id="updateLoadedFile">
