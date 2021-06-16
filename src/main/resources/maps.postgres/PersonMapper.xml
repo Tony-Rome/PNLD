@@ -45,9 +45,9 @@
 
     <update id="updateTeacher">
         UPDATE pnld.docente
-        SET rut = #{rut}, edad = #{age}, departamento = #{department}, participo_en_PNLD = #{participatedInPNLD},
+        SET edad = #{age}, departamento = #{department}, participo_en_PNLD = #{participatedInPNLD},
             dicta_en_niveles = #{teachesInLevels}, capacitacion_aprobada = #{isTrainingApproved}, anno_capacitacion = #{trainingYear}
-        WHERE id_docente = #{teacherId}
+        WHERE rut = #{rut}
     </update>
 
 

@@ -11,9 +11,9 @@ public interface QuestionnaireMapper {
 
     int insertDiagnosticQuestionnaire(DiagnosticQuestionnaire newDiagnosticQuestionnaire);
 
-    int getNextExitSatisfactionQuestionnaireId();
+    int getNextSatisfactionQuestionnaireId();
 
     SatisfactionQuestionnaire getSatisfactionQuestByRut(String teacherRut);
 
-    int insertExitSatisfactionQuestionnaire(SatisfactionQuestionnaire exitSatisfactionQuestionnaire);
+    int insertSatisfactionQuestionnaire(SatisfactionQuestionnaire exitSatisfactionQuestionnaire);
 }

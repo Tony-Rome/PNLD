@@ -179,7 +179,7 @@ public class LoaderMoodleFile {
                         String answersJson = "{\"llave\":\"respuesta\"}"; //TODO replace to jsonb
                         int questionnaireId = questionnaireService.getNextSatisfactionQuestionnaireId();
                         int createQuestionnaireResponse = questionnaireService.saveSatisfactionQuestionnaire(
-                                new SatisfactionQuestionnaire(questionnaireId, loadedFileId, teacherPerson.get().getRut(), satisfactionRowDTO.getResponseId(),
+                                new SatisfactionQuestionnaire(questionnaireId, loadedFileId, teacherRut, satisfactionRowDTO.getResponseId(),
                                         satisfactionRowDTO.getSendDate(), answersJson, satisfactionRowDTO.getId(), satisfactionRowDTO.getCourse(),
                                         satisfactionRowDTO.getGroup()));
 
@@ -187,6 +187,7 @@ public class LoaderMoodleFile {
                         newRecordCount++;
                     }
                 }  else {
+                    logger.error("processSatisfactionFileRows. teacher not exist, teacherRut={}", teacherRut);
                     invalidRecordCount++;
                 }
             }

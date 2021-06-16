@@ -88,7 +88,7 @@ public class FileService {
             return false;
         }
 
-        String cleanHeaders = firstLine.replaceAll("(, |[^a-zA-Z0-9,;])", "").toLowerCase();
+        String cleanHeaders = firstLine.replaceAll("(, |[^a-zA-Z0-9,;\t])", "").toLowerCase();
         String[] headersFromFile = cleanHeaders.split(this.csvHeadersDelimiters);
         String[] selectedHeadersArray = fileUtilService.selectedHeadersArray(scheduleFileLoadDTO.getSelectedType());
         boolean isHeadersEquals = fileUtilService.isStringArraysEquals(headersFromFile, selectedHeadersArray);

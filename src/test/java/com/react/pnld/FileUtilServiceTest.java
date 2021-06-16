@@ -29,6 +29,7 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     private String signInPerCourseHeaderString = "weekofsigninat,coursename,distinctcountofuseridcsfstarted";
     private String signInsHeaderString = "weekofsigninat,distinctcountofuserid,differenceindistinctcountofuserid";
     private String generalResumeHeaderString = "RUT;REGION;RBD;NOMBRES;ASISTE JORNADA;ANNO CAPACITACION;ESTADO FINAL";
+    private String satisfactionHeaderString = "respuesta\tenviadoel\tinstitucin\tdepartamento\tcurso\tgrupo\tid\tnombrecompleto\trunej123456789\tq01utilizandounaescalade1a4meveoamimismoacomounapersonacercanaalaprogramacin\tq01utilizandounaescalade1a4esimportanteparamilaborprofesionalelaprendersobreprogramacin\tq01utilizandounaescalade1a4laenseanzadelaprogramacinesrelevanteparalaeducacindemisestudiantes\tq01utilizandounaescalade1a4laenseanzadelaprogramacinesrelevanteparaelfuturolaboraldemisestudiantes\tq01utilizandounaescalade1a4laprogramacinespropiadelasclasesdecomputacintecnologaosimilar\tq01utilizandounaescalade1a4laprogramacinpuedevincularsealasasignaturasqueimparto\tq02evalesuniveldeconocimientpensamientocomputacional\tq02evalesuniveldeconocimientprogramacin\tq03enunaescalade1a7dondeactualmentemesientocapazdeimplementarunaclaseincorporandoprogramacin\tq03enunaescalade1a7dondeactualmentemesientomotivadoparaimplementarunaclaseincorporandoprogramacin\tq04ndiquetodoslosconceptosquealgoritmo\tq04ndiquetodoslosconceptosqueabstraccin\tq04ndiquetodoslosconceptosquedescomposicin\tq04ndiquetodoslosconceptosqueiteracinciclobucleloop\tq04ndiquetodoslosconceptosquelenguajedeprogramacin\tq04ndiquetodoslosconceptosqueprograma\tq04ndiquetodoslosconceptosqueninguno\tq05sealetodoslosconceptosdealgoritmo\tq05sealetodoslosconceptosdeabstraccin\tq05sealetodoslosconceptosdedescomposicin\tq05sealetodoslosconceptosdeiteracinciclobucleloop\tq05sealetodoslosconceptosdelenguajedeprogramacin\tq05sealetodoslosconceptosdeprograma\tq05sealetodoslosconceptosdeninguno\tq06situviesequeelegirunaopci\tq07p30\tq08segnsuopininenculde\tq09quesunalgoritmo\tq10paraquseusanlosalgoritm";
 
     @Test
     void contextLoads() {
@@ -183,11 +184,9 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(0, duration.getSeconds());
     }
 
-
-
     @Test
     public void selectedHeaders_Equals_GeneralResumeType(){
-        String[] generalResumeHeadersMock = generalResumeHeaderString.toLowerCase().replaceAll("(, |[^a-zA-Z0-9,;])", "").split(";");
+        String[] generalResumeHeadersMock = generalResumeHeaderString.toLowerCase().replaceAll("\t",";").replaceAll("(, |[^a-zA-Z0-9,;])", "").split(";");
         String[] generalResumeHeaders = fileUtilService.selectedHeadersArray("general-resume");
 
         Arrays.sort(generalResumeHeaders);
@@ -206,9 +205,14 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(FileUtilService.removeAccents(schoolName), "colegio nuble del rio");
     }
 
-    /*@Test
-    public void cleaningRut_Equals(){
-        String rut = "2.345.678-k";
-        Assert.assertEquals(EntityAttributeUtilService.clearRut(rut), "2345678k");
-    }*///TODO move to other FileTest
+
+    @Test
+    public void selectedHeaders_Equals_SatisfactionType(){
+        String[] satisfactionHeadersMock = satisfactionHeaderString.toLowerCase().replaceAll("(, |[^a-zA-Z0-9,;\t])", "").split("\\t");
+        String[] satisfactionHeaders = fileUtilService.selectedHeadersArray("satis");
+
+        Arrays.sort(satisfactionHeaders);
+        Arrays.sort(satisfactionHeadersMock);
+        Assert.assertEquals(satisfactionHeaders, satisfactionHeadersMock);
+    }
 }

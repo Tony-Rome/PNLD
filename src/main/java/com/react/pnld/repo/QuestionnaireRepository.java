@@ -25,7 +25,7 @@ public class QuestionnaireRepository {
     }
 
     public int getNextSatisfactionQuestionnaireId() {
-        return questionnaireMapper.getNextExitSatisfactionQuestionnaireId();
+        return questionnaireMapper.getNextSatisfactionQuestionnaireId();
     }
 
     public SatisfactionQuestionnaire getSatisfactionQuestionnaire(String teacherRut){
@@ -33,6 +33,6 @@ public class QuestionnaireRepository {
     }
 
     public int insertSatisfactionQuestionnaire(SatisfactionQuestionnaire exitSatisfactionQuestionnaire) {
-        return questionnaireMapper.insertExitSatisfactionQuestionnaire(exitSatisfactionQuestionnaire);
+        return questionnaireMapper.insertSatisfactionQuestionnaire(exitSatisfactionQuestionnaire);
     }
 }

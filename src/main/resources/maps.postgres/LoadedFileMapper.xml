@@ -31,6 +31,7 @@
 		SELECT * FROM pnld.archivo_cargado
 		WHERE
 			id_estado != 3
+		ORDER BY fecha_carga ASC
 	</select>
 
 	<update id="updateLoadedFile">
