@@ -21,7 +21,8 @@ import java.util.List;
 public class DashboardController {
 
     private static final Logger logger = LoggerFactory.getLogger(DashboardController.class);
-
+    //TODO: Juntar todos los mappers según dimension
+    //TODO: Sólo 1 mapper por dimensión.
     @Autowired
     private TrainingInstitutionIndicatorService trainingInstitutionIndicatorService;
 
