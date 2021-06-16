@@ -27,7 +27,7 @@
                 ON d.id_genero = g.id
                 JOIN
             pnld.colegio AS c
-                ON d.rbd_colegio = c.rbd_colegio
+                ON d.rbd_colegio = c.rbd
                 JOIN
             pnld.region AS r
                 ON c.id_region = r.id
