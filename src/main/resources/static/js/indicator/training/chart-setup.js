@@ -35,14 +35,14 @@ export function selectChart(){
 }
 
 function activateDefaultsFilters(option){ //TODO: Podria ser general(?)
-    allYear.checked = true;
-    allYear.click();
+    allYear.checked = false;
+    selectAllYears(allYear)
     yearList[0].checked = true;
-    allRegion.checked = false;
-    allRegion.click();
+    allRegion.checked = true;
+    selectAllRegions(allRegion);
     if(option.id === 'teacher'){ //TODO: Se podría agrega opción de estudiante
-        allGender.checked = false;
-        allGender.click();
+        allGender.checked = true;
+        selectAllGenders(allGender);
     };
 }
 
