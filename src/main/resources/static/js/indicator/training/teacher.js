@@ -45,7 +45,7 @@ export function trainedTeacherNumber(yearsSelected, gendersSelected, dataList, l
 
 function teacherDecisionLoop(gendersSelected){
 
-    var yearsSelected = getYearsSelected();
+    var yearsSelected = getYearsSelected(); //TODO: arreglar esta función, da indefinido si se quita
     console.log(yearsSelected);
     console.log(gendersSelected);
     if(yearsSelected.length === 1){
