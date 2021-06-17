@@ -204,7 +204,7 @@ function firstTimeInstitutionPercentage(dataList, yearRange, title){
 
 function participantInstitutionPercentage(){}
 
-function teacherDecisionLoop(){
+function teacherDecisionLoop(){ //TODO: Funcion propia de  indicador profesor
     var gendersSelected = getGendersSelected(); //TODO: Se recorre por género.
     var yearsSelected = getYearsSelected();
 
@@ -228,13 +228,11 @@ async function trainedTeacherNumber(){ //TODO: Dejar como ejeplo function para l
     var response = await getTeacherSubDimensionData(queryParams);
     var dataRaw = response['trainingTeacherIndicatorDTOList'];
     var data = transformRegionName(dataRaw);
-    //TODO: Obten los años seleccionados, si length > 1 entonces cambia a radio los géneros y matén true el género con menor index.
-    //TODO: Recorre por yearRange.forEach(...), caso contrario (length === 1) recorrer por gender.forEach(...) seleccionados.
-    //TODO: Tal vez necesite dos funciones más, para recorrer por año y para recorrer por género.
+
     var datasets = [];
     var labels = getRegionsSelected();
     var dataList = trainedTeacherWithEmptyValues(data, yearsSelected);
-    console.log(dataList);
+    console.log(dataList); //TODO: Eliminar
     var gendersSelected = getGendersSelected(); //TODO: Se recorre por género.
 
     var dataLoop = teacherDecisionLoop();
@@ -245,13 +243,23 @@ async function trainedTeacherNumber(){ //TODO: Dejar como ejeplo function para l
         console.log(dataLoop['data']);
         var paletteColor = getPaletteColor(i);
         var data = [];
-        var filterElement = (dataLoop['filter']) ? element.toLowerCase() : element;
+        var filterGender = (dataLoop['filter']) ? element.toLowerCase() : dataLoop['data'];
+        var filterYear = (dataLoop['filter']) ? dataLoop['data'] : element;
+        console.log(dataLoop['filter']);
+        console.log(" ----------- ");
+        console.log(" Genero " + filterGender + " anno " + filterYear);
+        console.log(" ----------- ");
         dataList.forEach( (e,index) => {
 
             if(labels.includes(e.regionName)){
                 let teacherData = e.trainingTeacherIndicatorDataByTeacherDTOList
-                        .filter(data => data.year === (dataLoop['filter']) ? dataLoop['data'] : filterElement && data.gender === (dataLoop['filter']) ? data['data'] : filterElement && data.trainingState === true)
-                        .map( data => data.trainingState);
+                        .filter(data => {
+                            if(data.year === filterYear && data.gender === filterGender && data.trainingState === true){
+                                    console.log("Dentro de if");
+                                    console.log(data);
+                                    return data.trainingState;
+                                }
+                            })
                     data.push(teacherData.length);
             }
         });
