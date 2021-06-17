@@ -4,8 +4,7 @@ import com.react.pnld.controller.response.TrainingInstitutionIndicatorResponse;
 import com.react.pnld.controller.response.TrainingTeacherIndicatorResponse;
 import com.react.pnld.dto.TrainingInstitutionIndicatorDTO;
 import com.react.pnld.dto.TrainingTeacherIndicatorDTO;
-import com.react.pnld.services.TrainingInstitutionIndicatorService;
-import com.react.pnld.services.TrainingTeacherIndicatorService;
+import com.react.pnld.services.TrainingIndicatorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,21 +20,20 @@ import java.util.List;
 public class DashboardController {
 
     private static final Logger logger = LoggerFactory.getLogger(DashboardController.class);
-    //TODO: Juntar todos los mappers según dimension
-    //TODO: Sólo 1 mapper por dimensión.
-    @Autowired
-    private TrainingInstitutionIndicatorService trainingInstitutionIndicatorService;
 
     @Autowired
-    private TrainingTeacherIndicatorService trainingTeacherIndicatorService;
+    private TrainingIndicatorService trainingIndicatorService;
 
-    @GetMapping(value = "/capacitaciones/establecimientos")
+    //TODO: Mapper code.org
+    //TODO: Mapper TPC
+
+    @GetMapping(value = "/capacitaciones/establecimientos") //TODO: Cambiar a ingles
     public TrainingInstitutionIndicatorResponse getTrainingInstitutionData(@RequestParam(name = "fromYear") int fromYear,
                                                                            @RequestParam(name = "toYear") int toYear) {
         logger.info("getInstitutionsTrainingInfo. fromYear={}, toYear={}", fromYear, toYear);
 
         List<TrainingInstitutionIndicatorDTO> trainingInstitutionIndicatorDTOList;
-        trainingInstitutionIndicatorDTOList = trainingInstitutionIndicatorService.trainingInstitutionData(fromYear, toYear);
+        trainingInstitutionIndicatorDTOList = trainingIndicatorService.trainingInstitutionData(fromYear, toYear);
 
         logger.info("getInstitutionsTrainingInfo. trainingInstitutionIndicatorDTOList={}", trainingInstitutionIndicatorDTOList);
 
@@ -49,7 +47,7 @@ public class DashboardController {
         logger.info("getTrainingTeacherData. fromYear={}, toYear={}", fromYear, toYear);
 
         List<TrainingTeacherIndicatorDTO> trainingTeacherIndicatorDTOList;
-        trainingTeacherIndicatorDTOList = trainingTeacherIndicatorService.trainingTeacherData(fromYear, toYear);
+        trainingTeacherIndicatorDTOList = trainingIndicatorService.trainingTeacherData(fromYear, toYear);
 
         logger.info("getTrainingTeacherData. trainingTeacherIndicatorDTOList={}", trainingTeacherIndicatorDTOList);
 

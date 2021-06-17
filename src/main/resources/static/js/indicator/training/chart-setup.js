@@ -125,7 +125,6 @@ function dataListWithEmptyValues(dataList, yearRange){ //TODO: Cambiar nombre a 
 
     let regionList = getAllRegionsName();
     let regionId = dataList.map(data => data.id);
-    dtoListKey = Object.keys(dataList[0])[2];
 
     regionList.forEach( (region,i) => {
         if(!regionId.includes(i+1)){
