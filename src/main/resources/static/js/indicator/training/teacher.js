@@ -8,8 +8,11 @@ export function trainedTeacherNumber(yearsSelected, gendersSelected, dataList, l
     var datasets = [];
 
     console.log(dataList); //TODO: Eliminar
-
-    var dataLoop = teacherDecisionLoop(gendersSelected); //TODO: Listo
+    console.log("Annos seleciconados");
+    console.log(yearsSelected);
+    var dataLoop = { 'list': [] };
+    if(yearsSelected.length != 0 && gendersSelected.length != 0)
+        dataLoop = teacherDecisionLoop(yearsSelected, gendersSelected);
     console.log(dataLoop);
         //TODO: Verificar si filtros funcionan.
         //TODO: Refactorizar código.
@@ -43,11 +46,8 @@ export function trainedTeacherNumber(yearsSelected, gendersSelected, dataList, l
     trainedTeacherNumberChart(labels, datasets, yearsSelected);
 }
 
-function teacherDecisionLoop(gendersSelected){
+function teacherDecisionLoop(yearsSelected, gendersSelected){
 
-    var yearsSelected = getYearsSelected(); //TODO: arreglar esta función, da indefinido si se quita
-    console.log(yearsSelected);
-    console.log(gendersSelected);
     if(yearsSelected.length === 1){
         SwitchGenderFilter(true);
         return { 'list': gendersSelected, 'data': yearsSelected[0], 'filter': true };
