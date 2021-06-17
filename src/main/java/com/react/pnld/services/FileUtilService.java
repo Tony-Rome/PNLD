@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.text.Normalizer;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -35,7 +36,7 @@ public class FileUtilService {
     private LoaderCodeFile loaderCodeFile;
 
     @Autowired
-    private LoaderCPFile loaderCPFile;
+    private LoaderCTFile loaderCTFile;
 
     private CsvParserSettings csvParserSettings;
 
@@ -172,7 +173,7 @@ public class FileUtilService {
 
             case DIAGNOSIS:
                 List<DiagnosticFileDTO> diagnosticRows = parseRowsToBeans(loadedFileReader, DiagnosticFileDTO.class);
-                return this.loaderMoodleFile.diagnosticFile(diagnosticRows, loadedFile.getId());
+                return this.loaderMoodleFile.processDiagnosticFileRows(diagnosticRows, loadedFile.getId());
 
             case PRE_TRAINING:
             case POST_TRAINING:
@@ -181,16 +182,16 @@ public class FileUtilService {
 
             case SATISFACTION:
                 List<SatisfactionFileDTO> satisfactionRows = parseRowsToBeans(loadedFileReader, SatisfactionFileDTO.class);
-                return this.loaderMoodleFile.satisfactionFile(satisfactionRows, loadedFile.getId());
+                return this.loaderMoodleFile.processSatisfactionFileRows(satisfactionRows, loadedFile.getId());
 
             case TEST_CT_1:
-                return this.loaderCPFile.testPCOneFile(loadedFile);
+                return this.loaderCTFile.testPCOneFile(loadedFile);
 
             case TEST_CT_2:
-                return this.loaderCPFile.testPCTwoFile(loadedFile);
+                return this.loaderCTFile.testPCTwoFile(loadedFile);
 
             case TEST_CT_3:
-                return this.loaderCPFile.testPCThreeFile(loadedFile);
+                return this.loaderCTFile.testPCThreeFile(loadedFile);
 
             case GENERAL_RESUME:
                 List<GeneralResumeTrainingDTO> generalResumeTrainingRows = parseRowsToBeans(loadedFileReader,
@@ -198,7 +199,7 @@ public class FileUtilService {
                 return this.loaderMoodleFile.processGeneralResumeRows(generalResumeTrainingRows, loadedFile.getId());
 
             default:
-                return new FileResumeDTO(0, 0, 0);
+                return new FileResumeDTO(0, 0, 0, 0);
         }
     }
 
@@ -214,5 +215,10 @@ public class FileUtilService {
             logger.error("getLocalDateFrom.", dateTimeException.getMessage(), dateTimeException);
             return LocalDateTime.MIN;
         }
+    }
+
+    public static String removeAccents(String toClean) {
+        if(toClean == null) return new String();
+        return Normalizer.normalize(toClean, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
     }
 }

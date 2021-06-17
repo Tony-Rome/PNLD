@@ -12,7 +12,7 @@
         <id property="id" column="id"/>
         <result property="type" column="tipo" />
         <result property="loadedFileId" column="id_archivo_cargado" />
-        <result property="teacherId" column="id_docente" />
+        <result property="teacherRut" column="rut_docente" />
         <result property="initDate" column="fecha_inicio" />
         <result property="endDate" column="fecha_fin" />
         <result property="requiredInterval" column="tiempo_requerido"  javaType="java.lang.Object"/>
@@ -20,18 +20,18 @@
         <result property="score" column="calificacion" />
         <result property="answers" column="respuestas"/>
     </resultMap>
-    <select id="getTrainingTest" resultMap="getTrainingTest">
+    <select id="getTrainingTestByTeacherRut" resultMap="getTrainingTest">
         SELECT *
         FROM pnld.test_capacitacion
-        WHERE id_docente=#{teacherId} AND tipo=#{testType}
+        WHERE rut_docente=#{teacherRut} AND tipo=#{testType}
     </select>
     
     <insert id="insertTrainingTest" useGeneratedKeys="true">
         INSERT INTO pnld.test_capacitacion
-            (id, tipo, id_archivo_cargado, id_docente, fecha_inicio, fecha_fin, tiempo_requerido, estado, calificacion,
+            (id, tipo, id_archivo_cargado, rut_docente, fecha_inicio, fecha_fin, tiempo_requerido, estado, calificacion,
              respuestas)
         VALUES 
-            (#{id}, #{type}, #{loadedFileId}, #{teacherId}, #{initDate}, #{endDate}, #{requiredInterval}, #{state},
-             #{score}, #{answers});
+            (#{id}, #{type}, #{loadedFileId}, #{teacherRut}, #{initDate}, #{endDate}, #{requiredInterval}, #{state},
+             #{score}, #{answers}::json);
     </insert>
 </mapper>

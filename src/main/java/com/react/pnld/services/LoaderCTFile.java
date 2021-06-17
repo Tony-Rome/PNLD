@@ -5,7 +5,7 @@ import com.react.pnld.model.LoadedFile;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LoaderCPFile {
+public class LoaderCTFile {
 
     public FileResumeDTO testPCOneFile(LoadedFile loadedFile) {
         //TODO validate load records by file's type

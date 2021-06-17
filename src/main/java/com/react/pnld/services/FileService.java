@@ -88,7 +88,7 @@ public class FileService {
             return false;
         }
 
-        String cleanHeaders = EntityAttributeUtilService.removeSymbols(firstLine);
+        String cleanHeaders = firstLine.replaceAll("(, |[^a-zA-Z0-9,;\t])", "").toLowerCase();
         String[] headersFromFile = cleanHeaders.split(this.csvHeadersDelimiters);
         String[] selectedHeadersArray = fileUtilService.selectedHeadersArray(scheduleFileLoadDTO.getSelectedType());
         boolean isHeadersEquals = fileUtilService.isStringArraysEquals(headersFromFile, selectedHeadersArray);
@@ -169,6 +169,7 @@ public class FileService {
             this.fileRepository.updateFileLoaded(loadedFile);
 
             FileResumeDTO resume = fileUtilService.processLoadedFile(loadedFile);
+            logger.info("executeFileLoadScheduled. resume={}", resume);
 
             loadedFile.setProcessDate(LocalDateTime.now(ZoneId.of("UTC")));
             loadedFile.setStateId(FileTypes.FILE_STATE_PROCESSED);

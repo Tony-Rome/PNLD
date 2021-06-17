@@ -5,15 +5,15 @@ import com.react.pnld.model.SatisfactionQuestionnaire;
 
 public interface QuestionnaireMapper {
 
-    int getDiagnosticQuestionnaireCount(int teacherId);
+    DiagnosticQuestionnaire getDiagnosticQuestionnaireWhereRut(String teacherRut);
 
     int getNextDiagnosticQuestionnaireId();
 
-    void insertDiagnosticQuestionnaire(DiagnosticQuestionnaire newDiagnosticQuestionnaire);
+    int insertDiagnosticQuestionnaire(DiagnosticQuestionnaire newDiagnosticQuestionnaire);
 
-    int getExitSatisfactionQuestionnaireCount(int teacherId);
+    int getNextSatisfactionQuestionnaireId();
 
-    int getNextExitSatisfactionQuestionnaireId();
+    SatisfactionQuestionnaire getSatisfactionQuestByRut(String teacherRut);
 
-    void insertExitSatisfactionQuestionnaire(SatisfactionQuestionnaire exitSatisfactionQuestionnaire);
+    int insertSatisfactionQuestionnaire(SatisfactionQuestionnaire exitSatisfactionQuestionnaire);
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.react.pnld.mappers.TrainingInstitutionIndicatorMapper">
+<mapper namespace="com.react.pnld.mappers.TrainingIndicatorMapper">
 
     <cache/>
 
@@ -18,7 +18,7 @@
         <collection property="trainingInstitutionDataByYearDTOList" resultMap="trainingInstitutionDataByYear"/>
     </resultMap>
 
-    <select id="trainingInstitutionData" resultMap="trainingInstitution">
+    <select id="participantInstitutionNumberPNLD" resultMap="trainingInstitution">
         SELECT
             d.anno_capacitacion,
             COUNT(d.rbd_colegio) AS cantidad_colegio,
@@ -27,7 +27,7 @@
                 (CASE WHEN d.rbd_colegio IN
                     (SELECT col.rbd
                         FROM pnld.colegio AS col
-                        JOIN pnld.docente AS doc
+                        JOiN pnld.docente AS doc
                         ON col.rbd = doc.rbd_colegio
                         GROUP BY col.rbd
                         HAVING COUNT(DISTINCT doc.anno_capacitacion) = 1)

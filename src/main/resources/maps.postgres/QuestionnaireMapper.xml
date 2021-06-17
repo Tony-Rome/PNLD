@@ -3,34 +3,59 @@
 
 <mapper namespace="com.react.pnld.mappers.QuestionnaireMapper">
 
-    <select id="getDiagnosticQuestionnaireCount" resultType="int" parameterType="int">
-        SELECT COUNT(id) FROM pnld.pnld.cuestionario_diagnostico WHERE id_docente = #{teacherId}
+    <resultMap id="diagnosticQuestionnaire" type="com.react.pnld.model.DiagnosticQuestionnaire">
+        <id property="id" column="id"/>
+        <result property="loadedFileId" column="id_archivo_cargado"/>
+        <result property="teacherRut" column="rut_docente"/>
+        <result property="respondentId" column="id_encuestado_moodle"/>
+        <result property="collectorId" column="id_coleccion"/>
+        <result property="createdDate" column="fecha_creacion"/>
+        <result property="modifiedDate" column="fecha_modificacion"/>
+        <result property="answers" column="respuestas"/>
+    </resultMap>
+    <select id="getDiagnosticQuestionnaireWhereRut" resultMap="diagnosticQuestionnaire">
+        SELECT *
+        FROM pnld.cuestionario_diagnostico
+        WHERE rut_docente = #{teacherRut};
     </select>
 
     <insert id="insertDiagnosticQuestionnaire">
         INSERT INTO pnld.cuestionario_diagnostico
-        (id, id_archivo_cargado, id_docente, id_respuesta, id_coleccion, fecha_creada, fecha_modificada, respuestas)
+        (id, id_archivo_cargado, rut_docente, id_encuestado_moodle, id_coleccion, fecha_creacion, fecha_modificacion, respuestas)
         VALUES
-        (#{id}, #{loadedFileId}, #{teacherId}, #{respondentId}, #{collectorId}, #{createdDate}, #{modifiedDate}, #{answers}::json)
+        (#{id}, #{loadedFileId}, #{teacherRut}, #{respondentId}, #{collectorId}, #{createdDate}, #{modifiedDate}, #{answers}::json);
     </insert>
 
     <select id="getNextDiagnosticQuestionnaireId" resultType="int">
         SELECT nextval(pg_get_serial_sequence('pnld.cuestionario_diagnostico', 'id'))
     </select>
 
-    <select id="getExitSatisfactionQuestionnaireCount" resultType="int" parameterType="int">
-        SELECT COUNT(id) FROM pnld.pnld.cuestionario_salida WHERE id_docente = #{teacherId}
+    <select id="getNextSatisfactionQuestionnaireId" resultType="int">
+        SELECT nextval(pg_get_serial_sequence('pnld.cuestionario_satisfaccion', 'id'))
     </select>
 
-    <select id="getNextExitSatisfactionQuestionnaireId" resultType="int">
-        SELECT nextval(pg_get_serial_sequence('pnld.cuestionario_salida', 'id'))
+    <resultMap id="getSatisfactionQuest" type="com.react.pnld.model.SatisfactionQuestionnaire">
+        <id property="id" column="id"/>
+        <result property="loadedFileId" column="id_archivo_cargado"/>
+        <result property="teacherRut" column="rut_docente"/>
+        <result property="responseId" column="id_respuesta"/>
+        <result property="sendDate" column="fecha_enviada"/>
+        <result property="answers" column="respuestas"/>
+        <result property="numberId" column="numero_id"/>
+        <result property="course" column="curso"/>
+        <result property="group" column="grupo"/>
+    </resultMap>
+    <select id="getSatisfactionQuestByRut" resultMap="getSatisfactionQuest">
+        SELECT *
+        FROM pnld.cuestionario_satisfaccion
+        WHERE rut_docente = #{teacherRut}
     </select>
 
-    <insert id="insertExitSatisfactionQuestionnaire">
-        INSERT INTO pnld.cuestionario_salida
-        (id, id_archivo_cargado, id_docente, id_respuesta, fecha_enviada, respuestas, numero_id, curso, grupo)
+    <insert id="insertSatisfactionQuestionnaire">
+        INSERT INTO pnld.cuestionario_satisfaccion
+        (id, id_archivo_cargado, rut_docente, id_respuesta, fecha_enviada, respuestas, numero_id, curso, grupo)
         VALUES
-        (#{id}, #{loadedFileId}, #{teacherId}, #{responseId}, #{sendDate}, #{answers}::json, #{numberId}, #{course}, #{group})
+        (#{id}, #{loadedFileId}, #{teacherRut}, #{responseId}, #{sendDate}, #{answers}::json, #{numberId}, #{course}, #{group})
     </insert>
 
 </mapper>

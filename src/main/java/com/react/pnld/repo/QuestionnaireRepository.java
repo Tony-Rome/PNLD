@@ -12,27 +12,27 @@ public class QuestionnaireRepository {
     @Autowired
     QuestionnaireMapper questionnaireMapper;
 
-    public int getDiagnosticQuestionnaireCount(int teacherId) {
-        return questionnaireMapper.getDiagnosticQuestionnaireCount(teacherId);
+    public DiagnosticQuestionnaire getDiagnosticQuestionnaireWhereRut(String teacherRut) {
+        return questionnaireMapper.getDiagnosticQuestionnaireWhereRut(teacherRut);
     }
 
     public int getNextDiagnosticQuestionnaireId() {
         return questionnaireMapper.getNextDiagnosticQuestionnaireId();
     }
 
-    public void insertDiagnosticQuestionnaire(DiagnosticQuestionnaire newDiagnosticQuestionnaire) {
-        questionnaireMapper.insertDiagnosticQuestionnaire(newDiagnosticQuestionnaire);
-    }
-
-    public int getSatisfactionQuestionnaireCount(int teacherId) {
-        return questionnaireMapper.getExitSatisfactionQuestionnaireCount(teacherId);
+    public int insertDiagnosticQuestionnaire(DiagnosticQuestionnaire newDiagnosticQuestionnaire) {
+        return questionnaireMapper.insertDiagnosticQuestionnaire(newDiagnosticQuestionnaire);
     }
 
     public int getNextSatisfactionQuestionnaireId() {
-        return questionnaireMapper.getNextExitSatisfactionQuestionnaireId();
+        return questionnaireMapper.getNextSatisfactionQuestionnaireId();
     }
 
-    public void insertSatisfactionQuestionnaire(SatisfactionQuestionnaire exitSatisfactionQuestionnaire) {
-        questionnaireMapper.insertExitSatisfactionQuestionnaire(exitSatisfactionQuestionnaire);
+    public SatisfactionQuestionnaire getSatisfactionQuestionnaire(String teacherRut){
+        return this.questionnaireMapper.getSatisfactionQuestByRut(teacherRut);
+    }
+
+    public int insertSatisfactionQuestionnaire(SatisfactionQuestionnaire exitSatisfactionQuestionnaire) {
+        return questionnaireMapper.insertSatisfactionQuestionnaire(exitSatisfactionQuestionnaire);
     }
 }
