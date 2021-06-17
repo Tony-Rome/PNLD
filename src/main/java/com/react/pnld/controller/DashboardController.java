@@ -1,7 +1,6 @@
 package com.react.pnld.controller;
 
-import com.react.pnld.controller.response.TrainingInstitutionIndicatorResponse;
-import com.react.pnld.controller.response.TrainingTeacherIndicatorResponse;
+import com.react.pnld.controller.response.TrainingIndicatorResponse;
 import com.react.pnld.dto.TrainingInstitutionIndicatorDTO;
 import com.react.pnld.dto.TrainingTeacherIndicatorDTO;
 import com.react.pnld.services.TrainingIndicatorService;
@@ -27,9 +26,9 @@ public class DashboardController {
     //TODO: Mapper code.org
     //TODO: Mapper TPC
 
-    @GetMapping(value = "/capacitaciones/establecimientos") //TODO: Cambiar a ingles
-    public TrainingInstitutionIndicatorResponse getTrainingInstitutionData(@RequestParam(name = "fromYear") int fromYear,
-                                                                           @RequestParam(name = "toYear") int toYear) {
+    @GetMapping(value = "/training/institution")
+    public TrainingIndicatorResponse getTrainingInstitutionData(@RequestParam(name = "fromYear") int fromYear,
+                                                                @RequestParam(name = "toYear") int toYear) {
         logger.info("getInstitutionsTrainingInfo. fromYear={}, toYear={}", fromYear, toYear);
 
         List<TrainingInstitutionIndicatorDTO> trainingInstitutionIndicatorDTOList;
@@ -37,11 +36,11 @@ public class DashboardController {
 
         logger.info("getInstitutionsTrainingInfo. trainingInstitutionIndicatorDTOList={}", trainingInstitutionIndicatorDTOList);
 
-        return new TrainingInstitutionIndicatorResponse(fromYear, toYear, trainingInstitutionIndicatorDTOList);
+        return new TrainingIndicatorResponse(trainingInstitutionIndicatorDTOList);
     }
 
     @GetMapping(value = "/training/teacher")
-    public TrainingTeacherIndicatorResponse getTrainingTeacherData(@RequestParam(name = "fromYear") int fromYear,
+    public TrainingIndicatorResponse getTrainingTeacherData(@RequestParam(name = "fromYear") int fromYear,
                                         @RequestParam(name = "toYear") int toYear) {
 
         logger.info("getTrainingTeacherData. fromYear={}, toYear={}", fromYear, toYear);
@@ -51,16 +50,26 @@ public class DashboardController {
 
         logger.info("getTrainingTeacherData. trainingTeacherIndicatorDTOList={}", trainingTeacherIndicatorDTOList);
 
-        return new TrainingTeacherIndicatorResponse(fromYear, toYear, trainingTeacherIndicatorDTOList);
+        return new TrainingIndicatorResponse(trainingTeacherIndicatorDTOList);
     }
 
-    @GetMapping(value = "/test-pc/docentes")
+    @GetMapping(value = "/code/teacher")
+    public String getCodeTeacherData(@RequestParam(name = "fromYear") int fromYear, @RequestParam(name = "toYear") int toYear){
+        return "Work in progress";
+    }
+
+    @GetMapping(value = "/code/student")
+    public String getCodeStudentData(@RequestParam(name = "fromYear") int fromYear, @RequestParam(name = "toYear") int toYear){
+        return "Work in progress";
+    }
+
+    @GetMapping(value = "/ct-test/teacher")
     public String getInfoTeacherCTTest(@RequestParam(name = "fromYear") int fromYear,
                                        @RequestParam(name = "toYear") int toYear) {
         return "Work in progress";
     }
 
-    @GetMapping(value = "/test-pc/estudiantes")
+    @GetMapping(value = "/ct-test/student")
     public String getInfoStudentsCTTest(@RequestParam(name = "fromYear") int fromYear,
                                         @RequestParam(name = "toYear") int toYear) {
         return "Work in progress";

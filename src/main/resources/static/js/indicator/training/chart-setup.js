@@ -60,7 +60,7 @@ async function selectChartByTeacher(chartOption){
      var queryParams = defineYearsQueryParams(yearsSelected);
      var response = await getTeacherSubDimensionData(queryParams);
 
-     var dataRaw = response['trainingTeacherIndicatorDTOList']; //TODO: Se podría refactorizar la respuesta
+     var dataRaw = response['trainingIndicatorData'];
      var data = transformRegionName(dataRaw);
      var dataList = trainedTeacherWithEmptyValues(data, yearsSelected);
 

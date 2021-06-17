@@ -1,4 +1,4 @@
-const SUB_DIMENSION_BASE_URL = '/v1/capacitaciones/establecimientos/'; //TODO: Cambiar endopint a ingles
+const SUB_DIMENSION_BASE_URL = '/v1/training/institution/'; //TODO: Cambiar endopint a ingles
 const TEACHER_BASE_URL = 'v1/training/teacher/';
 
 export function getInstitutionSubDimensionData(yearRange){
