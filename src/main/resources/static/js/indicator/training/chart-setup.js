@@ -35,7 +35,7 @@ async function selectCharByInstitution(chartOption){
     var yearsSelected = getYearsSelected();
     var queryParams = defineYearsQueryParams(yearsSelected);
     var response = await getInstitutionSubDimensionData(queryParams);
-    console.log(response);
+
     var dataRaw = response['trainingIndicatorData'];
     var data = transformRegionName(dataRaw);
     var dataList = dataListWithEmptyValues(data, yearsSelected);
@@ -62,7 +62,7 @@ async function selectChartByTeacher(chartOption){
 
      var dataRaw = response['trainingIndicatorData'];
      var data = transformRegionName(dataRaw);
-     var dataList = trainedTeacherWithEmptyValues(data, yearsSelected);
+     var dataList = dataListWithEmptyValues(data, yearsSelected);
 
      var labels = getRegionsSelected();
      var gendersSelected = getGendersSelected();
@@ -78,10 +78,7 @@ async function selectChartByTeacher(chartOption){
     if(chartOption === SCORE_DIFFERENCE_PRE_POST_TEST);
 }
 
-
-
-function dataListWithEmptyValues(dataList, yearRange){ //TODO: Cambiar nombre a sólo indicador instituciones con valores vacios
-//TODO: Se podría hacer general y dependiendo del indicador rellenar con cierto objeto
+function dataListWithEmptyValues(dataList, yearRange){
 
     let regionList = getAllRegionsName();
     let regionId = dataList.map(data => data.id);
@@ -91,27 +88,7 @@ function dataListWithEmptyValues(dataList, yearRange){ //TODO: Cambiar nombre a 
             let newValue = {
                 'id': i+1,
                 'regionName': region,
-                'trainingInstitutionDataByYearDTOList': [],
-            }
-            dataList.splice(i,0,newValue);
-        }
-    });
-
-    return dataList;
-}
-
-function trainedTeacherWithEmptyValues(dataList, yearRange){ //TODO: Se podria solo rellenar con el campo id, nombre_region y con descripcion vacía.
-
-    let regionList = getAllRegionsName();
-    let regionId = dataList.map(data => data.id);
-    let dtoListKey = Object.keys(dataList[0])[2];
-
-    regionList.forEach( (region,i) => {
-        if(!regionId.includes(i+1)){
-            let newValue = {
-                'id': i+1,
-                'regionName': region,
-                'trainingTeacherIndicatorDataByTeacherDTOList': [],
+                'trainingIndicatorDataList': [],
             }
             dataList.splice(i,0,newValue);
         }
