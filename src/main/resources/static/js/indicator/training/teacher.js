@@ -1,21 +1,15 @@
 import {trainedTeacherNumberChart} from './chart.js';
 import {getPaletteColor} from '../utils.js';
-import {allRegion, allGender, allYear, getYearsSelected,
-        getRegionsSelected, getGendersSelected, getAllRegionsName,
-         yearList, SwitchGenderFilter, selectAllRegions, selectAllYears, selectAllGenders} from '../filter.js';
+import { SwitchGenderFilter } from '../filter.js';
+
 export function trainedTeacherNumber(yearsSelected, gendersSelected, dataList, labels ){
 
     var datasets = [];
+    var dataLoop = { 'list': [] , 'data' : null};
 
-    console.log(dataList); //TODO: Eliminar
-    console.log("Annos seleciconados");
-    console.log(yearsSelected);
-    var dataLoop = { 'list': [] };
     if(yearsSelected.length != 0 && gendersSelected.length != 0)
         dataLoop = teacherDecisionLoop(yearsSelected, gendersSelected);
-    console.log(dataLoop);
-        //TODO: Verificar si filtros funcionan.
-        //TODO: Refactorizar código.
+
      dataLoop['list'].forEach( (element, i) => {
         var paletteColor = getPaletteColor(i);
         var data = [];
@@ -43,7 +37,7 @@ export function trainedTeacherNumber(yearsSelected, gendersSelected, dataList, l
 
         datasets.push(dataset);
     });
-    trainedTeacherNumberChart(labels, datasets, yearsSelected);
+    trainedTeacherNumberChart(labels, datasets, yearsSelected, dataLoop['data']);
 }
 
 function teacherDecisionLoop(yearsSelected, gendersSelected){

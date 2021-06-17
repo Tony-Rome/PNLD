@@ -1,6 +1,8 @@
 const ctx = document.getElementById('myChart').getContext('2d');
 var myChart;
 
+//TODO: Arreglar tooltip con mayor descrpicion.
+
 function defineTitle(data){
     return (data.length >= 2) ?
         data[data.length - 1] + " - " + data[0] : data[0];
@@ -46,6 +48,19 @@ export function participantInstitutionNumberChart (labels, datasets, title) {
                 },
                 indexAxis: 'y',
                 plugins:{
+                    tooltip:{
+                      callbacks:{
+                        title: function(data){
+                          return data[0].label;
+                        },
+                        label: function(data){
+                            let value = data.formattedValue;
+                            let label = data.dataset.label;
+                            return (value != 0) ? label + ": " + "cantidad " + value : null;
+                        },
+
+                      },
+                    },
                     title: {
                         display: true,
                         text: 'N° de establecimientos por región ' + defineTitle(title),
@@ -114,11 +129,11 @@ export function firstTimeInstitutionPercentageChart (labels, datasets, title, da
                         let year = data.dataset.label;
                         return year + ": " + "Porcentaje " + percentage + "%";
                     },
-                    afterLabel: function(data){ //TODO: Arreglar, retornar nul cuando valor === 0, para todo tooltip
+                    afterLabel: function(data){
                       let index = data.parsed.y;
                       let regionData = dataList[index];
                       let year = parseInt(data.dataset.label);
-                      let dataNumber = regionData.trainingInstitutionDataByYearDTOList.map(e => {
+                      let dataNumber = regionData.trainingIndicatorDataList.map(e => {
                           if (e.year === year) {
                             let dataNumber = {
                                 'total': e.institutionNumberPNLD,
@@ -129,7 +144,7 @@ export function firstTimeInstitutionPercentageChart (labels, datasets, title, da
                       }).filter(e => typeof e != 'undefined');
                       let total = (typeof dataNumber[0] != 'undefined') ? dataNumber[0].total : 0;
                       let firstTimeNumber = (typeof dataNumber[0] != 'undefined') ? dataNumber[0].firstTime : 0;
-                      return "Detalle: " + "Total "+ total + " - valor actual " + firstTimeNumber;
+                      return (total != 0) ? "Detalle: " + "Total "+ total + " - valor actual " + firstTimeNumber : null;
                     },
                   },
               },
@@ -149,7 +164,8 @@ export function firstTimeInstitutionPercentageChart (labels, datasets, title, da
   myChart.update();
 }
 
-export function trainedTeacherNumberChart(labels, datasets, title){
+export function trainedTeacherNumberChart(labels, datasets, title, keyword){
+
     if(myChart) { myChart.destroy(); }
 
     myChart = new Chart(ctx, {
@@ -195,10 +211,9 @@ export function trainedTeacherNumberChart(labels, datasets, title){
                           return data[0].label;
                         },
                         label: function(data){
-                            console.log(data);
                             let value = data.formattedValue;
                             let label = data.dataset.label;
-                            return (value != 0) ? label + ": " + "cantidad " + value : null;
+                            return (value != 0) ? label + " " + keyword + ": " + "cantidad " + value : null;
                         },
 
                       },
