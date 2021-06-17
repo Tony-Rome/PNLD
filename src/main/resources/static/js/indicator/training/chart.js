@@ -1,9 +1,6 @@
 const ctx = document.getElementById('myChart').getContext('2d');
 var myChart;
 
-
-//TODO: Cambiar nombre de funciones por nombre de indicadores
-
 function defineTitle(data){
     return (data.length >= 2) ?
         data[data.length - 1] + " - " + data[0] : data[0];

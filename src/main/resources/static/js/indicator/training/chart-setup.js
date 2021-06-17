@@ -1,7 +1,5 @@
-import {transformRegionName, getPaletteColor, defineYearsQueryParams} from '../utils.js';
-import {allRegion, allGender, allYear, getYearsSelected,
-        getRegionsSelected, getGendersSelected, getAllRegionsName,
-         yearList, SwitchGenderFilter, selectAllRegions, selectAllYears, selectAllGenders} from '../filter.js';
+import {transformRegionName, defineYearsQueryParams, activateDefaultsFilters} from '../utils.js';
+import { getYearsSelected, getRegionsSelected, getGendersSelected, getAllRegionsName } from '../filter.js';
 import {getSubDimensionSelected} from '../sub-dimension.js';
 import {getInstitutionSubDimensionData, getTeacherSubDimensionData} from './api.js';
 import {participantInstitutionNumber, firstTimeInstitutionPercentage} from './institution.js';
@@ -19,31 +17,17 @@ const ONLINE_COURSE_COMPETED_PERCENTAGE = 4;
 const TRAINING_COMPLETED_PERCENTAGE = 5;
 const SCORE_DIFFERENCE_PRE_POST_TEST = 6;
 
-//TODO: Ordenar funciones, agrupar por indicador.
-
 export function selectChart(){
 
     if(this && this.type === 'radio' && this.name === 'training') activateDefaultsFilters(this);
 
     let subDimensionSelected = getSubDimensionSelected();
 
-    var chartOption = parseInt(subDimensionSelected['chart']) //TODO: SOlo este se queda
+    var chartOption = parseInt(subDimensionSelected['chart'])
 
-    if(subDimensionSelected['id'] === 'institution')  selectCharByInstitution(chartOption); //TODO: Sacar yearSelected de acá y ponerlo en función del indicador
+    if(subDimensionSelected['id'] === 'institution')  selectCharByInstitution(chartOption);
 
     if(subDimensionSelected['id'] === 'teacher')  selectChartByTeacher(chartOption);
-}
-
-function activateDefaultsFilters(option){ //TODO: Podria ser general(?)
-    allYear.checked = false;
-    selectAllYears(allYear)
-    yearList[0].checked = true;
-    allRegion.checked = true;
-    selectAllRegions(allRegion);
-    if(option.id === 'teacher'){ //TODO: Se podría agrega opción de estudiante
-        allGender.checked = true;
-        selectAllGenders(allGender);
-    };
 }
 
 async function selectCharByInstitution(chartOption){
@@ -71,8 +55,6 @@ async function selectCharByInstitution(chartOption){
 }
 
 async function selectChartByTeacher(chartOption){
-
-     //TODO: Ver por qué se repite dos veces la función.
 
      var yearsSelected = getYearsSelected();
      var queryParams = defineYearsQueryParams(yearsSelected);

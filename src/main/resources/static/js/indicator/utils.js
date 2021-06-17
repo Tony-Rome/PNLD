@@ -1,3 +1,5 @@
+import {allRegion, allGender, allYear, selectAllRegions, selectAllYears, selectAllGenders, yearList} from './filter.js';
+
 const regionNameList = document.getElementsByName('region');
 
 export function transformRegionName(data){
@@ -8,7 +10,6 @@ export function transformRegionName(data){
 
     return new_data;
 }
-
 
 export function getPaletteColor(index){
 
@@ -65,4 +66,16 @@ export function defineYearsQueryParams(yearsSelected){
         return selected;
     }
 
+}
+
+export function activateDefaultsFilters(option){
+    allYear.checked = false;
+    selectAllYears(allYear)
+    yearList[0].checked = true;
+    allRegion.checked = true;
+    selectAllRegions(allRegion);
+    if(option.id === 'teacher' || option.id === 'student'){
+        allGender.checked = true;
+        selectAllGenders(allGender);
+    };
 }
