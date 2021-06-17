@@ -5,12 +5,11 @@ var myChart;
 //TODO: Cambiar nombre de funciones por nombre de indicadores
 
 function defineTitle(data){
-    return (Object.keys(data).length === 2) ?
-        data['fromYear'] + " - " + data['toYear'] : data['year'];
+    return (data.length >= 2) ?
+        data[data.length - 1] + " - " + data[0] : data[0];
 }
 
-export function getNumberBarChart (labels, datasets, title) {
-
+export function participantInstitutionNumberChart (labels, datasets, title) {
   if(myChart) { myChart.destroy(); }
 
     myChart = new Chart(ctx, {
@@ -66,7 +65,7 @@ export function getNumberBarChart (labels, datasets, title) {
     myChart.update();
 }
 
-export function getPercentageBarChart (labels, datasets, title, dataList) {
+export function firstTimeInstitutionPercentageChart (labels, datasets, title, dataList) {
 
   if(myChart) { myChart.destroy(); }
 
@@ -153,7 +152,7 @@ export function getPercentageBarChart (labels, datasets, title, dataList) {
   myChart.update();
 }
 
-export function getTrainedTeacherNumberChart(labels, datasets, title){
+export function trainedTeacherNumberChart(labels, datasets, title){
     if(myChart) { myChart.destroy(); }
 
     myChart = new Chart(ctx, {

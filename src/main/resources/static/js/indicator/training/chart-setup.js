@@ -4,7 +4,8 @@ import {allRegion, allGender, allYear, getYearsSelected,
          yearList, SwitchGenderFilter, selectAllRegions, selectAllYears, selectAllGenders} from '../filter.js';
 import {getSubDimensionSelected} from '../sub-dimension.js';
 import {getInstitutionSubDimensionData, getTeacherSubDimensionData} from './api.js';
-import {getNumberBarChart, getPercentageBarChart, getTrainedTeacherNumberChart} from './chart.js';
+import {participantInstitutionNumber, firstTimeInstitutionPercentage} from './institution.js';
+import {trainedTeacherNumber} from './teacher.js';
 
 const PARTICIPANT_INSTITUTION_NUMBER = 0;
 const FIRST_TIME_INSTITUTION_PERCENTAGE = 1;
@@ -26,13 +27,9 @@ export function selectChart(){
 
     let subDimensionSelected = getSubDimensionSelected();
 
-    var chartOption = parseInt(subDimensionSelected['chart'])
+    var chartOption = parseInt(subDimensionSelected['chart']) //TODO: SOlo este se queda
 
-    var yearsSelected = getYearsSelected(); //TODO: Esto se puede quitar y dejar dentro de las funciones charts
-
-    var queryParams = defineYearsQueryParams(yearsSelected); //TODO: Sacar queryparams de acá
-
-    if(subDimensionSelected['id'] === 'institution')  selectCharByInstitution(chartOption, yearsSelected, queryParams); //TODO: Sacar yearSelected de acá y ponerlo en función del indicador
+    if(subDimensionSelected['id'] === 'institution')  selectCharByInstitution(chartOption); //TODO: Sacar yearSelected de acá y ponerlo en función del indicador
 
     if(subDimensionSelected['id'] === 'teacher')  selectChartByTeacher(chartOption);
 }
@@ -49,30 +46,48 @@ function activateDefaultsFilters(option){ //TODO: Podria ser general(?)
     };
 }
 
-async function selectCharByInstitution(chartOption, yearsSelected, queryParams){
+async function selectCharByInstitution(chartOption){
 
-    var response = await getInstitutionSubDimensionData(queryParams); //TODO: sacar de aquí, colocar en función chart
-    var dataRaw = response['trainingIndicatorData']; //TODO: sacar de aquí, colocar en función chart
-    var data = transformRegionName(dataRaw); //TODO: sacar de aquí, colocar en función chart
+    var yearsSelected = getYearsSelected();
+    var queryParams = defineYearsQueryParams(yearsSelected);
+    var response = await getInstitutionSubDimensionData(queryParams);
+
+    var dataRaw = response['trainingIndicatorData'];
+    var data = transformRegionName(dataRaw);
+    var dataList = dataListWithEmptyValues(data, yearsSelected);
+
+    var labels = getRegionsSelected();
 
     if(chartOption === PARTICIPANT_INSTITUTION_NUMBER){
-        participantInstitutionNumber(data, yearsSelected, queryParams);
+        participantInstitutionNumber(yearsSelected, dataList, labels);
 
     }
     if(chartOption === FIRST_TIME_INSTITUTION_PERCENTAGE){
-       firstTimeInstitutionPercentage(data, yearsSelected, queryParams);
+       firstTimeInstitutionPercentage(yearsSelected, dataList, labels);
     }
     if(chartOption === PARTICIPANT_INSTITUTION_PERCENTAGE){
         participantInstitutionPercentage();
     }
 }
 
-function selectChartByTeacher(chartOption){
+async function selectChartByTeacher(chartOption){
 
      //TODO: Ver por qué se repite dos veces la función.
-    if(chartOption === TRAINED_TEACHER_NUMBER){
-        trainedTeacherNumber();
-    }
+
+     var yearsSelected = getYearsSelected();
+     var queryParams = defineYearsQueryParams(yearsSelected);
+     var response = await getTeacherSubDimensionData(queryParams);
+
+     var dataRaw = response['trainingTeacherIndicatorDTOList']; //TODO: Se podría refactorizar la respuesta
+     var data = transformRegionName(dataRaw);
+     var dataList = trainedTeacherWithEmptyValues(data, yearsSelected);
+
+     var labels = getRegionsSelected();
+     var gendersSelected = getGendersSelected();
+
+    if(chartOption === TRAINED_TEACHER_NUMBER)
+        trainedTeacherNumber(yearsSelected, gendersSelected, dataList, labels);
+
     if(chartOption === IN_PERSON_SESSION_PERCENTAGE);
     if(chartOption === PRE_TEST_COMPLETED_PERCENTAGE);
     if(chartOption === POST_TEST_COMPLETED_PERCENTAGE);
@@ -81,44 +96,7 @@ function selectChartByTeacher(chartOption){
     if(chartOption === SCORE_DIFFERENCE_PRE_POST_TEST);
 }
 
-function participantInstitutionNumber(dataList, yearRange, title) {
 
-    var datasets = [];
-
-    var dataListFully = dataListWithEmptyValues(dataList, yearRange); //TODO: Hacer erste paso antes de la func
-
-    var labels = getRegionsSelected(); //TODO: Hacer erste paso antes de la func
-
-    yearRange.forEach( (year, i) => {
-
-        var paletteColor = getPaletteColor(i);
-        var data = [];
-
-        dataListFully.forEach( (e,index) => {
-
-            if(labels.includes(e.regionName)){
-                let institutionNumberData = e.trainingInstitutionDataByYearDTOList
-                        .filter(data => data.year === year)
-                        .map( data => data.institutionNumberPNLD);
-
-                data.push(institutionNumberData[0]);
-
-            }
-
-        });
-
-        let dataset = {
-            'label': year,
-            'data': data,
-            'backgroundColor': paletteColor['backgroundColor'],
-            'borderColor': paletteColor['borderColor']
-        };
-
-        datasets.push(dataset);
-    });
-    getNumberBarChart(labels, datasets, title);
-
-}
 
 function dataListWithEmptyValues(dataList, yearRange){ //TODO: Cambiar nombre a sólo indicador instituciones con valores vacios
 //TODO: Se podría hacer general y dependiendo del indicador rellenar con cierto objeto
@@ -159,119 +137,3 @@ function trainedTeacherWithEmptyValues(dataList, yearRange){ //TODO: Se podria s
 
     return dataList;
 }
-
-function firstTimeInstitutionPercentage(dataList, yearRange, title){
-
-    var datasets = [];
-    const DECIMAL_NUMBER = 2;
-    var dataListFully = dataListWithEmptyValues(dataList, yearRange);
-    var labels = getRegionsSelected();
-
-    yearRange.forEach( (year, i) => {
-
-        var paletteColor = getPaletteColor(i);
-        var data = [];
-
-        dataListFully.forEach( (e,index) => {
-
-            if(labels.includes(e.regionName)){
-                let percentageFirstTimeInstitution = e.trainingInstitutionDataByYearDTOList
-                    .filter(data => data.year === year)
-                    .map( data => {
-                        let totalInstitution = data.institutionNumberPNLD;
-                        let firstTimeNumber = data.firstTimeInstitutionNumber;
-                        let percentage = (firstTimeNumber/totalInstitution)*100;
-                        return percentage.toFixed(DECIMAL_NUMBER);
-                        });
-                data.push(percentageFirstTimeInstitution[0]);
-            }
-
-        });
-
-        let dataset = {
-            'label': year,
-            'data': data,
-            'backgroundColor': paletteColor['backgroundColor'],
-            'borderColor': paletteColor['borderColor']
-        };
-
-        datasets.push(dataset);
-    });
-
-    getPercentageBarChart(labels, datasets, title, dataListFully);
-}
-
-function participantInstitutionPercentage(){}
-
-function teacherDecisionLoop(){ //TODO: Funcion propia de  indicador profesor
-    var gendersSelected = getGendersSelected(); //TODO: Se recorre por género.
-    var yearsSelected = getYearsSelected();
-
-    if(yearsSelected.length === 1){
-        SwitchGenderFilter(true);
-        return { 'list': gendersSelected, 'data': yearsSelected[0], 'filter': true };
-    }
-    if(yearsSelected.length > 1){
-        SwitchGenderFilter(false);
-        return {'list': yearsSelected, 'data': gendersSelected[0].toLowerCase(), 'filter': false};
-    }
-}
-
-//TODO: Funciones para subdimension docentes capacitaciones:
-
-async function trainedTeacherNumber(){ //TODO: Dejar como ejeplo function para las anteriores para refactorizar
-
-    var yearsSelected = getYearsSelected();
-
-    var queryParams = defineYearsQueryParams(yearsSelected);
-    var response = await getTeacherSubDimensionData(queryParams);
-    var dataRaw = response['trainingTeacherIndicatorDTOList'];
-    var data = transformRegionName(dataRaw);
-
-    var datasets = [];
-    var labels = getRegionsSelected();
-    var dataList = trainedTeacherWithEmptyValues(data, yearsSelected);
-    console.log(dataList); //TODO: Eliminar
-    var gendersSelected = getGendersSelected(); //TODO: Se recorre por género.
-
-    var dataLoop = teacherDecisionLoop();
-        //TODO: Verificar si filtros funcionan.
-        //TODO: Refactorizar código.
-     dataLoop['list'].forEach( (element, i) => {
-        console.log(element);
-        console.log(dataLoop['data']);
-        var paletteColor = getPaletteColor(i);
-        var data = [];
-        var filterGender = (dataLoop['filter']) ? element.toLowerCase() : dataLoop['data'];
-        var filterYear = (dataLoop['filter']) ? dataLoop['data'] : element;
-        console.log(dataLoop['filter']);
-        console.log(" ----------- ");
-        console.log(" Genero " + filterGender + " anno " + filterYear);
-        console.log(" ----------- ");
-        dataList.forEach( (e,index) => {
-
-            if(labels.includes(e.regionName)){
-                let teacherData = e.trainingTeacherIndicatorDataByTeacherDTOList
-                        .filter(data => {
-                            if(data.year === filterYear && data.gender === filterGender && data.trainingState === true){
-                                    console.log("Dentro de if");
-                                    console.log(data);
-                                    return data.trainingState;
-                                }
-                            })
-                    data.push(teacherData.length);
-            }
-        });
-
-        let dataset = {
-            'label': element,
-            'data': data,
-            'backgroundColor': paletteColor['backgroundColor'],
-            'borderColor': paletteColor['borderColor']
-        };
-
-        datasets.push(dataset);
-    });
-    getTrainedTeacherNumberChart(labels, datasets, yearsSelected);
-}
-
