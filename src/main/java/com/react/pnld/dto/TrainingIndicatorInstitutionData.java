@@ -2,7 +2,7 @@ package com.react.pnld.dto;
 
 import java.io.Serializable;
 
-public class TrainingInstitutionDataByYearDTO implements Serializable {
+public class TrainingIndicatorInstitutionData implements Serializable {
 
     private int year;
     private int institutionNumberPNLD;
@@ -43,7 +43,7 @@ public class TrainingInstitutionDataByYearDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "TrainingInstitutionDataByYearDTO{" +
+        return "TrainingIndicatorInstitutionData{" +
                 "year=" + year +
                 ", institutionNumberPNLD=" + institutionNumberPNLD +
                 ", percentageInstitutions=" + percentageInstitutions +

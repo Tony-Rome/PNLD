@@ -5,20 +5,20 @@
 
     <cache/>
 
-    <resultMap id="trainingInstitutionDataByYear" type="com.react.pnld.dto.TrainingInstitutionDataByYearDTO">
+    <resultMap id="trainingInstitutionData" type="com.react.pnld.dto.TrainingIndicatorInstitutionData">
         <result property="year" column="anno_capacitacion" />
         <result property="institutionNumberPNLD" column="cantidad_colegio" />
         <result property="percentageInstitutions" column="colegio_porcentaje"/>
         <result property="firstTimeInstitutionNumber" column="primera_vez_porcentaje"/>
     </resultMap>
 
-    <resultMap id="trainingInstitution" type="com.react.pnld.dto.TrainingInstitutionIndicatorDTO">
+    <resultMap id="trainingIndicatorInstitution" type="com.react.pnld.dto.TrainingIndicatorDTO">
         <id property="id" column="id_region"/>
         <result property="regionName" column="nombre_region" />
-        <collection property="trainingInstitutionDataByYearDTOList" resultMap="trainingInstitutionDataByYear"/>
+        <collection property="trainingIndicatorDataList" resultMap="trainingInstitutionData"/>
     </resultMap>
 
-    <select id="trainingInstitutionData" resultMap="trainingInstitution">
+    <select id="trainingInstitutionData" resultMap="trainingIndicatorInstitution">
         SELECT
             d.anno_capacitacion,
             COUNT(d.rbd_colegio) AS cantidad_colegio,
@@ -41,20 +41,20 @@
         WHERE d.anno_capacitacion BETWEEN #{fromYear} and #{toYear} GROUP BY r.id, d.anno_capacitacion ORDER BY r.id
     </select>
 
-    <resultMap id="trainingTeacherDataByTeacher" type="com.react.pnld.dto.TrainingTeacherIndicatorDataByTeacherDTO">
+    <resultMap id="trainingTeacherData" type="com.react.pnld.dto.TrainingIndicatorTeacherData">
         <result property="year" column="anno_capacitacion" />
         <result property="gender" column="genero" />
         <result property="trainingState" column="capacitacion_aprobada"/>
         <result property="assistanceState" column="participo_en_pnld"/>
     </resultMap>
 
-    <resultMap id="trainingTeacher" type="com.react.pnld.dto.TrainingTeacherIndicatorDTO">
+    <resultMap id="trainingIndicatorTeacher" type="com.react.pnld.dto.TrainingIndicatorDTO">
         <id property="id" column="id_region"/>
         <result property="regionName" column="nombre_region" />
-        <collection property="trainingTeacherIndicatorDataByTeacherDTOList" resultMap="trainingTeacherDataByTeacher"/>
+        <collection property="trainingIndicatorDataList" resultMap="trainingTeacherData"/>
     </resultMap>
 
-    <select id="trainingTeacherData" resultMap="trainingTeacher">
+    <select id="trainingTeacherData" resultMap="trainingIndicatorTeacher">
         SELECT d.anno_capacitacion, d.capacitacion_aprobada, d.participo_en_pnld, g.tipo AS genero, r.id AS id_region, r.nombre AS nombre_region
         FROM
             pnld.docente AS d

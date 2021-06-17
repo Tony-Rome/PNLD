@@ -2,12 +2,12 @@ package com.react.pnld.dto;
 
 import java.io.Serializable;
 
-public class TrainingTeacherIndicatorDataByTeacherDTO implements Serializable {
+public class TrainingIndicatorTeacherData implements Serializable {
 
     private int year;
     private String gender;
     private boolean trainingState; //TODO: Con este se calcula el porcentaje aprobado
-    private String assistanceState;
+    private String assistanceState; //TODO: Cambiar nombres de parametros
     private boolean preTestState;
     private boolean postTestState;
     private boolean onlineCourseState;
@@ -74,7 +74,7 @@ public class TrainingTeacherIndicatorDataByTeacherDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "TrainingTeacherIndicatorDataByTeacherDTO{" +
+        return "TrainingIndicatorTeacherData{" +
                 "year=" + year +
                 ", gender='" + gender + '\'' +
                 ", trainingState=" + trainingState +

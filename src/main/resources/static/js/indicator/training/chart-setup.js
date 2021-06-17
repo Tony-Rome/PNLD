@@ -35,7 +35,7 @@ async function selectCharByInstitution(chartOption){
     var yearsSelected = getYearsSelected();
     var queryParams = defineYearsQueryParams(yearsSelected);
     var response = await getInstitutionSubDimensionData(queryParams);
-
+    console.log(response);
     var dataRaw = response['trainingIndicatorData'];
     var data = transformRegionName(dataRaw);
     var dataList = dataListWithEmptyValues(data, yearsSelected);

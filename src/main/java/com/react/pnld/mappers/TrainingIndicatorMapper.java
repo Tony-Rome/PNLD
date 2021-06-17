@@ -1,13 +1,12 @@
 package com.react.pnld.mappers;
 
-import com.react.pnld.dto.TrainingInstitutionIndicatorDTO;
-import com.react.pnld.dto.TrainingTeacherIndicatorDTO;
+import com.react.pnld.dto.TrainingIndicatorDTO;
 
 import java.util.List;
 
 public interface TrainingIndicatorMapper {
 
-    List<TrainingInstitutionIndicatorDTO> trainingInstitutionData(int fromYear, int toYear);
+    List<TrainingIndicatorDTO> trainingInstitutionData(int fromYear, int toYear);
 
-    List<TrainingTeacherIndicatorDTO> trainingTeacherData(int fromYear, int toYear);
+    List<TrainingIndicatorDTO> trainingTeacherData(int fromYear, int toYear);
 }

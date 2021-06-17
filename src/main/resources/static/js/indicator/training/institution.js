@@ -14,7 +14,7 @@ export function participantInstitutionNumber(yearsSelected, dataList, labels) {
         dataList.forEach( (e,index) => {
 
             if(labels.includes(e.regionName)){
-                let institutionNumberData = e.trainingInstitutionDataByYearDTOList
+                let institutionNumberData = e.trainingIndicatorDataList
                         .filter(data => data.year === year)
                         .map( data => data.institutionNumberPNLD);
 
@@ -50,7 +50,7 @@ export function firstTimeInstitutionPercentage(yearsSelected, dataList, labels){
         dataList.forEach( (e,index) => {
 
             if(labels.includes(e.regionName)){
-                let percentageFirstTimeInstitution = e.trainingInstitutionDataByYearDTOList
+                let percentageFirstTimeInstitution = e.trainingIndicatorDataList
                     .filter(data => data.year === year)
                     .map( data => {
                         let totalInstitution = data.institutionNumberPNLD;

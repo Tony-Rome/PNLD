@@ -1,8 +1,7 @@
 package com.react.pnld.controller;
 
 import com.react.pnld.controller.response.TrainingIndicatorResponse;
-import com.react.pnld.dto.TrainingInstitutionIndicatorDTO;
-import com.react.pnld.dto.TrainingTeacherIndicatorDTO;
+import com.react.pnld.dto.TrainingIndicatorDTO;
 import com.react.pnld.services.TrainingIndicatorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +30,12 @@ public class DashboardController {
                                                                 @RequestParam(name = "toYear") int toYear) {
         logger.info("getInstitutionsTrainingInfo. fromYear={}, toYear={}", fromYear, toYear);
 
-        List<TrainingInstitutionIndicatorDTO> trainingInstitutionIndicatorDTOList;
-        trainingInstitutionIndicatorDTOList = trainingIndicatorService.trainingInstitutionData(fromYear, toYear);
+        List<TrainingIndicatorDTO> trainingIndicatorDTOList;
+        trainingIndicatorDTOList = trainingIndicatorService.trainingInstitutionData(fromYear, toYear);
 
-        logger.info("getInstitutionsTrainingInfo. trainingInstitutionIndicatorDTOList={}", trainingInstitutionIndicatorDTOList);
+        logger.info("getInstitutionsTrainingInfo. trainingInstitutionIndicatorDTOList={}", trainingIndicatorDTOList);
 
-        return new TrainingIndicatorResponse(trainingInstitutionIndicatorDTOList);
+        return new TrainingIndicatorResponse(trainingIndicatorDTOList);
     }
 
     @GetMapping(value = "/training/teacher")
@@ -45,12 +44,12 @@ public class DashboardController {
 
         logger.info("getTrainingTeacherData. fromYear={}, toYear={}", fromYear, toYear);
 
-        List<TrainingTeacherIndicatorDTO> trainingTeacherIndicatorDTOList;
-        trainingTeacherIndicatorDTOList = trainingIndicatorService.trainingTeacherData(fromYear, toYear);
+        List<TrainingIndicatorDTO> trainingIndicatorDTOList;
+        trainingIndicatorDTOList = trainingIndicatorService.trainingTeacherData(fromYear, toYear);
 
-        logger.info("getTrainingTeacherData. trainingTeacherIndicatorDTOList={}", trainingTeacherIndicatorDTOList);
+        logger.info("getTrainingTeacherData. trainingTeacherIndicatorDTOList={}", trainingIndicatorDTOList);
 
-        return new TrainingIndicatorResponse(trainingTeacherIndicatorDTOList);
+        return new TrainingIndicatorResponse(trainingIndicatorDTOList);
     }
 
     @GetMapping(value = "/code/teacher")

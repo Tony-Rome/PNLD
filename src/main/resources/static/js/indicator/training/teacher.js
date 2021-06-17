@@ -25,7 +25,7 @@ export function trainedTeacherNumber(yearsSelected, gendersSelected, dataList, l
         dataList.forEach( (e,index) => {
 
             if(labels.includes(e.regionName)){
-                let teacherData = e.trainingTeacherIndicatorDataByTeacherDTOList
+                let teacherData = e.trainingIndicatorDataList
                         .filter(data => {
                             if(data.year === filterYear && data.gender === filterGender && data.trainingState === true)
                                     return data.trainingState;
