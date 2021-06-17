@@ -9,9 +9,9 @@ public enum FileTypes {
     DIAGNOSIS("diagnostico"),
     PRE_TRAINING("pre-capacita"),
     POST_TRAINING("post-capacita"),
-    TEST_CT_1("test-pc-1"),
-    TEST_CT_2("test-pc-2"),
-    TEST_CT_3("test-pc-3"),
+    CT_STUDENTS_ONE("ct-students-group-one"),
+    CT_STUDENTS_TWO("ct-students-group-two"),
+    CT_TEACHERS("ct-teachers"),
     SATISFACTION("satis"),
     GENERAL_RESUME("general-resume"),
     NOT_DEFINED("");

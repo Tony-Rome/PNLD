@@ -74,13 +74,13 @@ public class FileUtilService {
             case POST_TRAINING:
                 return csvHeadersProperties.getPostTraining();
 
-            case TEST_CT_1:
+            case CT_STUDENTS_ONE:
                 return csvHeadersProperties.getTestCT1();
 
-            case TEST_CT_2:
+            case CT_STUDENTS_TWO:
                 return csvHeadersProperties.getTestCT2();
 
-            case TEST_CT_3:
+            case CT_TEACHERS:
                 return csvHeadersProperties.getTestCT3();
 
             case SATISFACTION:
@@ -195,17 +195,16 @@ public class FileUtilService {
                 closeReader(loadedFileReader);
                 return this.loaderMoodleFile.processSatisfactionFileRows(satisfactionRows, loadedFile.getId());
 
-            case TEST_CT_1:
-                List<CTFileFirstGroupStudentsDTO> ctFirstGroupStudents = parseRowsToBeans(loadedFileReader,
-                        CTFileFirstGroupStudentsDTO.class);
+            case CT_STUDENTS_ONE:
+                List<CTStudentsGroupOne> ctFirstGroupStudentsRows = parseRowsToBeans(loadedFileReader, CTStudentsGroupOne.class);
                 closeReader(loadedFileReader);
-                return this.loaderCTFile.testFirstGroupStudents(ctFirstGroupStudents);
+                return this.loaderCTFile.processStudentsGroupOneFileRows(ctFirstGroupStudentsRows);
 
-            case TEST_CT_2:
-                return this.loaderCTFile.testPCTwoFile(loadedFile);
+            case CT_STUDENTS_TWO:
+                return this.loaderCTFile.processStudentsGroupTwoFileRows(null);
 
-            case TEST_CT_3:
-                return this.loaderCTFile.testPCThreeFile(loadedFile);
+            case CT_TEACHERS:
+                return this.loaderCTFile.processTeacherFileRows(loadedFile);
 
             case GENERAL_RESUME:
                 List<GeneralResumeTrainingDTO> generalResumeTrainingRows = parseRowsToBeans(loadedFileReader,

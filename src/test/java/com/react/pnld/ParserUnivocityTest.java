@@ -1,5 +1,6 @@
 package com.react.pnld;
 
+import com.react.pnld.dto.CTStudentsGroupOne;
 import com.react.pnld.dto.TrainingFileDTO;
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.services.FileUtilService;
@@ -39,11 +40,18 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
         return postTrainingHeaders.concat("\n").concat(dummyTeacher);
     }
 
-    private String getDummyCTtestFirstGroupStudents(){
+    private String getDummyCTStudentsGroupOne(){
         //TODO fix real headers.
-        String headers = "TO_FIX";
-        String dummyResponse = "04-01-21 18:54;Jocelyn;Simmonds;Mujer;6;Mi casa;3º básico;No;Sí;6:52:00 PM;B;D;C;B;B;C;" +
-                "D;A;B;A;C;D;D;;;;C;;C;D;A;;;C;D;;;;6:53:00 PM;5;7;las lei solita :-);tengo tuto;a@aaa.com";
+        String headers = "Timestamp\tNombre\tApellidos\tSexo\tEdad\tEstablecimiento Educacional\tCurso\t¿Has ocupado la página Code.org?" +
+                "\t¿Has ocupado la plataforma Scratch?\tIndique la hora actual, en formato HH:MM\tEjemplo I\tEjemplo II\tEjemplo III" +
+                "\tPregunta 1\tPregunta 2\tPregunta 3\tPregunta 4\tPregunta 5\tPregunta 6\tPregunta 7\tPregunta 8\tPregunta 9\tPregunta 10" +
+                "\tPregunta 11\tPregunta 12\tPregunta 13\tPregunta 14\tPregunta 15\tPregunta 16\tPregunta 17\tPregunta 18\tPregunta 19\tPregunta 20" +
+                "\tPregunta 21\tPregunta 22\tPregunta 23\tPregunta 24\tPregunta 25\tIndica la hora actual, en formato HH:MM" +
+                "\tDe 1 a 7, ¿cómo consideras que te fue en el Test?\tDe 1 a 7, ¿qué tanto te interesan los computadores y la tecnología?" +
+                "\tCuéntanos sobre el apoyo que tuviste al hacer el test\tCuéntanos acerca de cualquier problema que tuviste  para completar el test" +
+                "\tCorreo electrónico para futuro contacto";
+        String dummyResponse = "04-01-21 18:54\tJocelyn\tSimmonds\tMujer\t6\tMi casa\t3º básico\tNo\tSí\t6:52:00 PM\tB\tD\tC\tB\tB\tC\tD\tA\tB\tA\tC" +
+                "\tD\tD\t\t\t\tC\t\tC\tD\tA\t\t\tC\tD\t\t\t\t6:53:00 PM\t5\t7\tlas lei solita :-)\ttengo tuto\ta@aaa.com";
         return headers.concat("\n").concat(dummyResponse);
     }
 
@@ -84,6 +92,20 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(10, dummyList.get(0).getFinishIn().getMonth().getValue());
         Assert.assertEquals(14, dummyList.get(0).getFinishIn().getHour());
         Assert.assertEquals(30, dummyList.get(0).getFinishIn().getMinute());
+    }
+
+
+    @Test
+    public void ctStudentGroupOne_when_parsingOk() throws UnsupportedEncodingException {
+        InputStream inputStream = new ByteArrayInputStream(getDummyCTStudentsGroupOne().getBytes());
+        Reader reader = new InputStreamReader(inputStream, "UTF-8");
+
+        List<CTStudentsGroupOne> ctFirstGroupStudentsRows = fileUtilService.parseRowsToBeans(reader,
+                CTStudentsGroupOne.class);
+
+        Assert.assertEquals("Jocelyn", ctFirstGroupStudentsRows.get(0).getName());
+        Assert.assertEquals("Simmonds", ctFirstGroupStudentsRows.get(0).getLastNames());
+        Assert.assertEquals("6:52:00 PM", ctFirstGroupStudentsRows.get(0).getInitTime());
     }
 
     @Test
