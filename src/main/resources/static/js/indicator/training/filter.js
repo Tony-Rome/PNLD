@@ -7,21 +7,15 @@ Object.keys(filterList).forEach( (k,i) => {
     filterList[i].addEventListener('click', selectChart);
 });
 
-function selectAllYearsByTraining() { //TODO: tal vez no son necesarios para exportar
-    selectAllYears(this);
-    selectChart();
-};
+function selectAllByFilter(){
 
-function selectAllRegionsByTraining() {
-    selectAllRegions(this);
-    selectChart();
-};
+    if(this.id === 'allYear') selectAllYears(this);
+    if(this.id === 'allRegion') selectAllRegions(this);
+    if(this.id === 'allGender') selectAllGenders(this);
 
-function selectAllGendersByTraining() {
-    selectAllGenders(this);
     selectChart();
-};
+}
 
-allYear.addEventListener('click', selectAllYearsByTraining);
-allRegion.addEventListener('click', selectAllRegionsByTraining);
-allGender.addEventListener('click', selectAllGendersByTraining);
+allYear.addEventListener('click', selectAllByFilter);
+allRegion.addEventListener('click', selectAllByFilter);
+allGender.addEventListener('click', selectAllByFilter);
