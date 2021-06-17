@@ -137,6 +137,14 @@ public class FileUtilService {
         }
     }
 
+    private void closeReader(Reader loadedFileReader){
+        try {
+            loadedFileReader.close();
+        } catch (IOException e) {
+            logger.error("closeReader. message={}", e.getMessage(), e);
+        }
+    }
+
     public <T> List<T> parseRowsToBeans(Reader reader, Class<T> clazz) {
         BeanListProcessor<T> rowProcessor = new BeanListProcessor<T>(clazz);
         csvParserSettings.setProcessor(rowProcessor);
@@ -173,20 +181,24 @@ public class FileUtilService {
 
             case DIAGNOSIS:
                 List<DiagnosticFileDTO> diagnosticRows = parseRowsToBeans(loadedFileReader, DiagnosticFileDTO.class);
+                closeReader(loadedFileReader);
                 return this.loaderMoodleFile.processDiagnosticFileRows(diagnosticRows, loadedFile.getId());
 
             case PRE_TRAINING:
             case POST_TRAINING:
                 List<TrainingFileDTO> trainingRows = parseRowsToBeans(loadedFileReader, TrainingFileDTO.class);
+                closeReader(loadedFileReader);
                 return loaderMoodleFile.processTrainingFileRows(trainingRows, loadedFile.getId(), loadedFile.getType());
 
             case SATISFACTION:
                 List<SatisfactionFileDTO> satisfactionRows = parseRowsToBeans(loadedFileReader, SatisfactionFileDTO.class);
+                closeReader(loadedFileReader);
                 return this.loaderMoodleFile.processSatisfactionFileRows(satisfactionRows, loadedFile.getId());
 
             case TEST_CT_1:
                 List<CTFileFirstGroupStudentsDTO> ctFirstGroupStudents = parseRowsToBeans(loadedFileReader,
                         CTFileFirstGroupStudentsDTO.class);
+                closeReader(loadedFileReader);
                 return this.loaderCTFile.testFirstGroupStudents(ctFirstGroupStudents);
 
             case TEST_CT_2:
@@ -194,11 +206,11 @@ public class FileUtilService {
 
             case TEST_CT_3:
                 return this.loaderCTFile.testPCThreeFile(loadedFile);
-                return this.loaderCTFile.testPCThreeFile(loadedFile);
 
             case GENERAL_RESUME:
                 List<GeneralResumeTrainingDTO> generalResumeTrainingRows = parseRowsToBeans(loadedFileReader,
                         GeneralResumeTrainingDTO.class);
+                closeReader(loadedFileReader);
                 return this.loaderMoodleFile.processGeneralResumeRows(generalResumeTrainingRows, loadedFile.getId());
 
             default:
