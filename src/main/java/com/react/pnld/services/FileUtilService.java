@@ -204,7 +204,9 @@ public class FileUtilService {
                 return this.loaderCTFiles.processStudentsGroupTwoRows(null);
 
             case CT_TEACHERS:
-                return this.loaderCTFiles.processTeacherRows(loadedFile);
+                List<CTRowTeacherDTO> ctRowsTeacher = parseRowsToBeans(loadedFileReader, CTRowTeacherDTO.class);
+                closeReader(loadedFileReader);
+                return this.loaderCTFiles.processTeacherRows(ctRowsTeacher);
 
             case GENERAL_RESUME:
                 List<GeneralResumeTrainingDTO> generalResumeTrainingRows = parseRowsToBeans(loadedFileReader,
