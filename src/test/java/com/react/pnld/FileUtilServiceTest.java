@@ -23,13 +23,13 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     @Autowired
     private FileUtilService fileUtilService;
 
-    private String teacherRosterHeaderString = "firstname,prefname,lastname,email,schoolname,schoolcity,grade,coursename,studentsincourse,highestunitstudents,onlinecsfcourse,onlinecsfhighestunit,index";
-    private String teacherOptInHeaderString = "firstname,prefname,lastname,email,altemail,gender,schoolname,schoolcity,subjectstaught,agetaught,csrescources,roboticsrescources,workshoporganizer,workshopdate,workshopfacilitator,index";
-    private String studentLevelHeaderString = "teachername,teacheremail,schoolname,schoolcity,course,sectionid,organizer,students,studentswithprojects,index,avgcoursecompleted,maxcoursecompleted,medianlevelsattempted,projects";
-    private String signInPerCourseHeaderString = "weekofsigninat,coursename,distinctcountofuseridcsfstarted";
-    private String signInsHeaderString = "weekofsigninat,distinctcountofuserid,differenceindistinctcountofuserid";
-    private String generalResumeHeaderString = "RUT;REGION;RBD;NOMBRES;ASISTE JORNADA;ANNO CAPACITACION;ESTADO FINAL";
-    private String satisfactionHeaderString = "respuesta\tenviadoel\tinstitucin\tdepartamento\tcurso\tgrupo\tid\tnombrecompleto\trunej123456789\tq01utilizandounaescalade1a4meveoamimismoacomounapersonacercanaalaprogramacin\tq01utilizandounaescalade1a4esimportanteparamilaborprofesionalelaprendersobreprogramacin\tq01utilizandounaescalade1a4laenseanzadelaprogramacinesrelevanteparalaeducacindemisestudiantes\tq01utilizandounaescalade1a4laenseanzadelaprogramacinesrelevanteparaelfuturolaboraldemisestudiantes\tq01utilizandounaescalade1a4laprogramacinespropiadelasclasesdecomputacintecnologaosimilar\tq01utilizandounaescalade1a4laprogramacinpuedevincularsealasasignaturasqueimparto\tq02evalesuniveldeconocimientpensamientocomputacional\tq02evalesuniveldeconocimientprogramacin\tq03enunaescalade1a7dondeactualmentemesientocapazdeimplementarunaclaseincorporandoprogramacin\tq03enunaescalade1a7dondeactualmentemesientomotivadoparaimplementarunaclaseincorporandoprogramacin\tq04ndiquetodoslosconceptosquealgoritmo\tq04ndiquetodoslosconceptosqueabstraccin\tq04ndiquetodoslosconceptosquedescomposicin\tq04ndiquetodoslosconceptosqueiteracinciclobucleloop\tq04ndiquetodoslosconceptosquelenguajedeprogramacin\tq04ndiquetodoslosconceptosqueprograma\tq04ndiquetodoslosconceptosqueninguno\tq05sealetodoslosconceptosdealgoritmo\tq05sealetodoslosconceptosdeabstraccin\tq05sealetodoslosconceptosdedescomposicin\tq05sealetodoslosconceptosdeiteracinciclobucleloop\tq05sealetodoslosconceptosdelenguajedeprogramacin\tq05sealetodoslosconceptosdeprograma\tq05sealetodoslosconceptosdeninguno\tq06situviesequeelegirunaopci\tq07p30\tq08segnsuopininenculde\tq09quesunalgoritmo\tq10paraquseusanlosalgoritm";
+    private final String teacherRosterHeaderString = "firstname,prefname,lastname,email,schoolname,schoolcity,grade,coursename,studentsincourse,highestunitstudents,onlinecsfcourse,onlinecsfhighestunit,index";
+    private final String teacherOptInHeaderString = "firstname,prefname,lastname,email,altemail,gender,schoolname,schoolcity,subjectstaught,agetaught,csrescources,roboticsrescources,workshoporganizer,workshopdate,workshopfacilitator,index";
+    private final String studentLevelHeaderString = "teachername,teacheremail,schoolname,schoolcity,course,sectionid,organizer,students,studentswithprojects,index,avgcoursecompleted,maxcoursecompleted,medianlevelsattempted,projects";
+    private final String signInPerCourseHeaderString = "weekofsigninat,coursename,distinctcountofuseridcsfstarted";
+    private final String signInsHeaderString = "weekofsigninat,distinctcountofuserid,differenceindistinctcountofuserid";
+    private final String generalResumeHeaderString = "RUT;REGION;RBD;NOMBRES;ASISTE JORNADA;ANNO CAPACITACION;ESTADO FINAL";
+    private final String satisfactionHeaderString = "respuesta\tenviadoel\tinstitucin\tdepartamento\tcurso\tgrupo\tid\tnombrecompleto\trunej123456789\tq01utilizandounaescalade1a4meveoamimismoacomounapersonacercanaalaprogramacin\tq01utilizandounaescalade1a4esimportanteparamilaborprofesionalelaprendersobreprogramacin\tq01utilizandounaescalade1a4laenseanzadelaprogramacinesrelevanteparalaeducacindemisestudiantes\tq01utilizandounaescalade1a4laenseanzadelaprogramacinesrelevanteparaelfuturolaboraldemisestudiantes\tq01utilizandounaescalade1a4laprogramacinespropiadelasclasesdecomputacintecnologaosimilar\tq01utilizandounaescalade1a4laprogramacinpuedevincularsealasasignaturasqueimparto\tq02evalesuniveldeconocimientpensamientocomputacional\tq02evalesuniveldeconocimientprogramacin\tq03enunaescalade1a7dondeactualmentemesientocapazdeimplementarunaclaseincorporandoprogramacin\tq03enunaescalade1a7dondeactualmentemesientomotivadoparaimplementarunaclaseincorporandoprogramacin\tq04ndiquetodoslosconceptosquealgoritmo\tq04ndiquetodoslosconceptosqueabstraccin\tq04ndiquetodoslosconceptosquedescomposicin\tq04ndiquetodoslosconceptosqueiteracinciclobucleloop\tq04ndiquetodoslosconceptosquelenguajedeprogramacin\tq04ndiquetodoslosconceptosqueprograma\tq04ndiquetodoslosconceptosqueninguno\tq05sealetodoslosconceptosdealgoritmo\tq05sealetodoslosconceptosdeabstraccin\tq05sealetodoslosconceptosdedescomposicin\tq05sealetodoslosconceptosdeiteracinciclobucleloop\tq05sealetodoslosconceptosdelenguajedeprogramacin\tq05sealetodoslosconceptosdeprograma\tq05sealetodoslosconceptosdeninguno\tq06situviesequeelegirunaopci\tq07p30\tq08segnsuopininenculde\tq09quesunalgoritmo\tq10paraquseusanlosalgoritm";
 
     @Test
     void contextLoads() {
@@ -37,7 +37,7 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    void selectedHeaders_Equals_TeacherRosterType(){
+    void selectedHeaders_Equals_TeacherRosterType() {
         String[] teacherRosterHeadersMock = teacherRosterHeaderString.split(",");
         String[] teacherRosterHeaders = fileUtilService.selectedHeadersArray("teacher-roster");
 
@@ -47,7 +47,7 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    void selectedHeaders_Equals_TeacherOptInType(){
+    void selectedHeaders_Equals_TeacherOptInType() {
         String[] teacherOptInHeadersMock = teacherOptInHeaderString.split(",");
         String[] teacherOptInHeaders = fileUtilService.selectedHeadersArray("teacher-opt-in");
 
@@ -57,7 +57,7 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    void selectedHeaders_Equals_StudentLevelType(){
+    void selectedHeaders_Equals_StudentLevelType() {
         String[] studentLevelHeadersMock = studentLevelHeaderString.split(",");
         String[] studentLevelHeaders = fileUtilService.selectedHeadersArray("student-level");
 
@@ -67,7 +67,7 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    void selectedHeaders_Equals_SignInPerCourseType(){
+    void selectedHeaders_Equals_SignInPerCourseType() {
         String[] signInPerCourseHeadersMock = signInPerCourseHeaderString.split(",");
         String[] signInPerCourseHeaders = fileUtilService.selectedHeadersArray("signin-per-course");
 
@@ -77,7 +77,7 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    void selectedHeaders_Equals_SignInsHeadersType(){
+    void selectedHeaders_Equals_SignInsHeadersType() {
         String[] signInsHeadersMock = signInsHeaderString.split(",");
         String[] signInsHeaders = fileUtilService.selectedHeadersArray("sign-ins");
 
@@ -87,52 +87,52 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    void selectHeaders_Equals_NotDefined(){
+    void selectHeaders_Equals_NotDefined() {
         String[] fooBarHeaders = fileUtilService.selectedHeadersArray("foo-bar");
         Assert.assertEquals(fooBarHeaders.length, 1);
     }
 
     @Test
-    void isStringArraysEquals_WhenFalse(){
+    void isStringArraysEquals_WhenFalse() {
         String[] first = fileUtilService.selectedHeadersArray("signin-per-course");
         String[] second = fileUtilService.selectedHeadersArray("sign-ins");
         Assert.assertFalse(fileUtilService.isStringArraysEquals(first, second));
     }
 
     @Test
-    void getFileExtension_When_CsvFile(){
+    void getFileExtension_When_CsvFile() {
         String fileCsvName = "test.csv";
-        Assert.assertEquals(fileUtilService.getExtension(fileCsvName),".csv");
+        Assert.assertEquals(fileUtilService.getExtension(fileCsvName), ".csv");
     }
 
     @Test
-    void getFileExtension_When_PdfFile(){
+    void getFileExtension_When_PdfFile() {
         String filePdfName = "test.pdf";
-        Assert.assertEquals(fileUtilService.getExtension(filePdfName),".pdf");
+        Assert.assertEquals(fileUtilService.getExtension(filePdfName), ".pdf");
     }
 
     @Test
-    void getLoadedFileName_When_Is_2021_03_01(){
+    void getLoadedFileName_When_Is_2021_03_01() {
         ScheduleFileLoadDTO fooScheduleFileLoadDTO = new ScheduleFileLoadDTO();
 
         fooScheduleFileLoadDTO.setName("name_by_user");
 
         MultipartFile multipartFile = new MockMultipartFile("foo_file", "foo_file.csv",
-                "text/plain","foo bar".getBytes());
+                "text/plain", "foo bar".getBytes());
         fooScheduleFileLoadDTO.setUploadFile(multipartFile);
 
         Instant instant = Instant.parse("2021-03-01T00:00:00.21Z");
-        fooScheduleFileLoadDTO.setLoadedOnDateTime(LocalDateTime.ofInstant(instant,ZoneId.of("UTC")));
+        fooScheduleFileLoadDTO.setLoadedOnDateTime(LocalDateTime.ofInstant(instant, ZoneId.of("UTC")));
 
         Assert.assertEquals("2021-03-01T00-00-00-name_by_user.csv",
                 fileUtilService.getLoadedFileName(fooScheduleFileLoadDTO));
     }
 
     @Test
-    public void getTrainingRequiredInterval_When_MinutesAndSeconds(){
+    public void getTrainingRequiredInterval_When_MinutesAndSeconds() {
         TrainingFileDTO trainingFileDTO = new TrainingFileDTO();
-        trainingFileDTO.setStartIn(LocalDateTime.of(2021, 5,1,16,50, 00));
-        trainingFileDTO.setFinishIn(LocalDateTime.of(2021, 5,1,17,2, 31));
+        trainingFileDTO.setStartIn(LocalDateTime.of(2021, 5, 1, 16, 50, 00));
+        trainingFileDTO.setFinishIn(LocalDateTime.of(2021, 5, 1, 17, 2, 31));
 
         PGInterval duration = trainingFileDTO.getRequiredInterval();
         Assert.assertEquals(12, duration.getMinutes());
@@ -140,10 +140,10 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void getTrainingRequiredInterval_When_HourAndMinutes(){
+    public void getTrainingRequiredInterval_When_HourAndMinutes() {
         TrainingFileDTO trainingFileDTO = new TrainingFileDTO();
-        trainingFileDTO.setStartIn(LocalDateTime.of(2021, 5,1,10,00, 00));
-        trainingFileDTO.setFinishIn(LocalDateTime.of(2021, 5,1,11,32, 00));
+        trainingFileDTO.setStartIn(LocalDateTime.of(2021, 5, 1, 10, 00, 00));
+        trainingFileDTO.setFinishIn(LocalDateTime.of(2021, 5, 1, 11, 32, 00));
 
         PGInterval duration = trainingFileDTO.getRequiredInterval();
         Assert.assertEquals(32, duration.getMinutes());
@@ -151,10 +151,10 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void getTrainingRequiredInterval_When_DaysAndHours(){
+    public void getTrainingRequiredInterval_When_DaysAndHours() {
         TrainingFileDTO trainingFileDTO = new TrainingFileDTO();
-        trainingFileDTO.setStartIn(LocalDateTime.of(2021, 5,1,1,00, 00));
-        trainingFileDTO.setFinishIn(LocalDateTime.of(2021, 5,7,20,00, 00));
+        trainingFileDTO.setStartIn(LocalDateTime.of(2021, 5, 1, 1, 00, 00));
+        trainingFileDTO.setFinishIn(LocalDateTime.of(2021, 5, 7, 20, 00, 00));
 
         PGInterval duration = trainingFileDTO.getRequiredInterval();
         Assert.assertEquals(6, duration.getDays());
@@ -162,10 +162,10 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void getTrainingRequiredInterval_When_MonthsDaysAndHours(){
+    public void getTrainingRequiredInterval_When_MonthsDaysAndHours() {
         TrainingFileDTO trainingFileDTO = new TrainingFileDTO();
-        trainingFileDTO.setStartIn(LocalDateTime.of(2021, 5,6,10,00, 00));
-        trainingFileDTO.setFinishIn(LocalDateTime.of(2021, 6,5,9,00, 00));
+        trainingFileDTO.setStartIn(LocalDateTime.of(2021, 5, 6, 10, 00, 00));
+        trainingFileDTO.setFinishIn(LocalDateTime.of(2021, 6, 5, 9, 00, 00));
 
         PGInterval duration = trainingFileDTO.getRequiredInterval();
         Assert.assertEquals(0, duration.getMonths());
@@ -174,10 +174,10 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void getTrainingRequiredInterval_When_EqualsOrNotDifferences(){
+    public void getTrainingRequiredInterval_When_EqualsOrNotDifferences() {
         TrainingFileDTO trainingFileDTO = new TrainingFileDTO();
-        trainingFileDTO.setStartIn(LocalDateTime.of(2021, 5,7,1,00, 00));
-        trainingFileDTO.setFinishIn(LocalDateTime.of(2021, 5,7,1,00, 00));
+        trainingFileDTO.setStartIn(LocalDateTime.of(2021, 5, 7, 1, 00, 00));
+        trainingFileDTO.setFinishIn(LocalDateTime.of(2021, 5, 7, 1, 00, 00));
 
         PGInterval duration = trainingFileDTO.getRequiredInterval();
         Assert.assertEquals(0, duration.getMinutes());
@@ -185,8 +185,8 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void selectedHeaders_Equals_GeneralResumeType(){
-        String[] generalResumeHeadersMock = generalResumeHeaderString.toLowerCase().replaceAll("\t",";").replaceAll("(, |[^a-zA-Z0-9,;])", "").split(";");
+    public void selectedHeaders_Equals_GeneralResumeType() {
+        String[] generalResumeHeadersMock = generalResumeHeaderString.toLowerCase().replaceAll("\t", ";").replaceAll("(, |[^a-zA-Z0-9,;])", "").split(";");
         String[] generalResumeHeaders = fileUtilService.selectedHeadersArray("general-resume");
 
         Arrays.sort(generalResumeHeaders);
@@ -195,19 +195,19 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void misc(){
+    public void misc() {
         Assert.assertEquals("1.234.567-k", "1.234.567-K".toLowerCase());
     }
 
     @Test
-    public void removeAccents(){
+    public void removeAccents() {
         String schoolName = "colegio ñuble del río";
         Assert.assertEquals(FileUtilService.removeAccents(schoolName), "colegio nuble del rio");
     }
 
 
     @Test
-    public void selectedHeaders_Equals_SatisfactionType(){
+    public void selectedHeaders_Equals_SatisfactionType() {
         String[] satisfactionHeadersMock = satisfactionHeaderString.toLowerCase().replaceAll("(, |[^a-zA-Z0-9,;\t])", "").split("\\t");
         String[] satisfactionHeaders = fileUtilService.selectedHeadersArray("satis");
 

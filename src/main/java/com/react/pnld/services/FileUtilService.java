@@ -36,7 +36,7 @@ public class FileUtilService {
     private LoaderCodeFile loaderCodeFile;
 
     @Autowired
-    private LoaderCTFile loaderCTFile;
+    private LoaderCTFiles loaderCTFiles;
 
     private CsvParserSettings csvParserSettings;
 
@@ -196,15 +196,15 @@ public class FileUtilService {
                 return this.loaderMoodleFile.processSatisfactionFileRows(satisfactionRows, loadedFile.getId());
 
             case CT_STUDENTS_ONE:
-                List<CTStudentsGroupOne> ctFirstGroupStudentsRows = parseRowsToBeans(loadedFileReader, CTStudentsGroupOne.class);
+                List<CTGroupOneRowDTO> ctFirstGroupStudentsRows = parseRowsToBeans(loadedFileReader, CTGroupOneRowDTO.class);
                 closeReader(loadedFileReader);
-                return this.loaderCTFile.processStudentsGroupOneFileRows(ctFirstGroupStudentsRows);
+                return this.loaderCTFiles.processStudentsGroupOneRows(ctFirstGroupStudentsRows);
 
             case CT_STUDENTS_TWO:
-                return this.loaderCTFile.processStudentsGroupTwoFileRows(null);
+                return this.loaderCTFiles.processStudentsGroupTwoRows(null);
 
             case CT_TEACHERS:
-                return this.loaderCTFile.processTeacherFileRows(loadedFile);
+                return this.loaderCTFiles.processTeacherRows(loadedFile);
 
             case GENERAL_RESUME:
                 List<GeneralResumeTrainingDTO> generalResumeTrainingRows = parseRowsToBeans(loadedFileReader,

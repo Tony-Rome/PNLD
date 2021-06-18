@@ -4,7 +4,7 @@ import com.univocity.parsers.annotations.Parsed;
 
 import java.util.List;
 
-public class CTTestStudentsDTO {
+public class CTTestStudentsRowDTO {
 
     @Parsed(index = 0)
     private String timeStamp;

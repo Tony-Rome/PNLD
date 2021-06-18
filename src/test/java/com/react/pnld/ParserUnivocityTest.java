@@ -1,7 +1,5 @@
 package com.react.pnld;
 
-import com.react.pnld.dto.CTStudentsGroupOne;
-import com.react.pnld.dto.TrainingFileDTO;
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.services.FileUtilService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import com.react.pnld.dto.*;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -26,9 +26,9 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
     @Autowired
     FileUtilService fileUtilService;
 
-    private String getDummyTrainingFileLikeString(){
+    private String getDummyTrainingFileLikeString() {
         String postTrainingHeaders = Arrays.toString(csvHeadersProperties.getPostTraining()).
-                replace("[","").replace("]","");
+                replace("[", "").replace("]", "");
 
         String dummyTeacher = "IBARRA UBEDA,PATRICIA,15.098.834-9,,,PATTYIBARRAUBEDA@HOTMAIL.COM,Finalizado," +
                 "\"9 de octubre de 2019  14:24\",\"9 de octubre de 2019  14:30\",\"6 minutos 24 segundos\",\"8,00\"," +
@@ -40,7 +40,7 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
         return postTrainingHeaders.concat("\n").concat(dummyTeacher);
     }
 
-    private String getDummyCTStudentsGroupOne(){
+    private String getDummyCTStudentsGroupOne() {
         //TODO fix real headers.
         String headers = "Timestamp\tNombre\tApellidos\tSexo\tEdad\tEstablecimiento Educacional\tCurso\t¿Has ocupado la página Code.org?" +
                 "\t¿Has ocupado la plataforma Scratch?\tIndique la hora actual, en formato HH:MM\tEjemplo I\tEjemplo II\tEjemplo III" +
@@ -58,7 +58,7 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
     @Test
     public void moodleTimestampFormat_parser_to_DateTime() throws UnsupportedEncodingException {
         InputStream inputStream = new ByteArrayInputStream(getDummyTrainingFileLikeString().getBytes());
-        Reader reader = new InputStreamReader(inputStream, "UTF-8");
+        Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 
         List<TrainingFileDTO> dummyList = fileUtilService.parseRowsToBeans(reader, TrainingFileDTO.class);
         Assert.assertEquals(6, dummyList.get(0).getRequiredInterval().getMinutes());
@@ -69,7 +69,7 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
     public void moodleTrainingTest_parser_StartInDateTime() throws UnsupportedEncodingException {
 
         InputStream inputStream = new ByteArrayInputStream(getDummyTrainingFileLikeString().getBytes());
-        Reader reader = new InputStreamReader(inputStream, "UTF-8");
+        Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 
         List<TrainingFileDTO> dummyList = fileUtilService.parseRowsToBeans(reader, TrainingFileDTO.class);
 
@@ -84,7 +84,7 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
     public void moodleTrainingTest_parser_FinishInDateTime() throws UnsupportedEncodingException {
 
         InputStream inputStream = new ByteArrayInputStream(getDummyTrainingFileLikeString().getBytes());
-        Reader reader = new InputStreamReader(inputStream, "UTF-8");
+        Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 
         List<TrainingFileDTO> dummyList = fileUtilService.parseRowsToBeans(reader, TrainingFileDTO.class);
 
@@ -98,10 +98,10 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
     @Test
     public void ctStudentGroupOne_when_parsingOk() throws UnsupportedEncodingException {
         InputStream inputStream = new ByteArrayInputStream(getDummyCTStudentsGroupOne().getBytes());
-        Reader reader = new InputStreamReader(inputStream, "UTF-8");
+        Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 
-        List<CTStudentsGroupOne> ctFirstGroupStudentsRows = fileUtilService.parseRowsToBeans(reader,
-                CTStudentsGroupOne.class);
+        List<CTGroupOneRowDTO> ctFirstGroupStudentsRows = fileUtilService.parseRowsToBeans(reader,
+                CTGroupOneRowDTO.class);
 
         Assert.assertEquals("Jocelyn", ctFirstGroupStudentsRows.get(0).getName());
         Assert.assertEquals("Simmonds", ctFirstGroupStudentsRows.get(0).getLastNames());
