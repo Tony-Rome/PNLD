@@ -1,5 +1,6 @@
 package com.react.pnld.dto;
 
+import com.univocity.parsers.annotations.LowerCase;
 import com.univocity.parsers.annotations.Parsed;
 
 import java.util.List;
@@ -10,42 +11,54 @@ public class CTRowTeacherDTO {
     private String timeStamp;
 
     @Parsed(index = 1)
+    @LowerCase
     private String rut;
 
     @Parsed(index = 2)
+    @LowerCase
     private String name;
 
     @Parsed(index = 3)
+    @LowerCase
     private String lastNames;
 
     @Parsed(index = 4)
+    @LowerCase
     private String email;
 
     @Parsed(index = 5)
+    @LowerCase
     private String gender;
 
     @Parsed(index = 6)
-    private String age;
+    private int age;
 
     @Parsed(index = 7)
+    @LowerCase
     private String educationalInstitution;
 
     @Parsed(index = 8)
+    @LowerCase
     private String teachesInLevels;
 
     @Parsed(index = 9)
+    @LowerCase
     private String participatedInPNLD;
 
     @Parsed(index = 10)
+    @LowerCase
     private String youKnowCode;
 
     @Parsed(index = 11)
+    @LowerCase
     private String youKnowScratch;
 
     @Parsed(index = 27)
+    @LowerCase
     private int howDoYouThinkYouDidInTheTest;
 
     @Parsed(index = 28)
+    @LowerCase
     private int howInterestedAreYouInComputers;
 
     @Parsed(index = 29)
@@ -101,11 +114,11 @@ public class CTRowTeacherDTO {
         this.gender = gender;
     }
 
-    public String getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
