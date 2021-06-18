@@ -4,10 +4,11 @@ import java.io.Serializable;
 
 public class TrainingIndicatorTeacherData implements Serializable {
 
+    private String rut;
     private int year;
     private String gender;
-    private boolean trainingState; //TODO: Con este se calcula el porcentaje aprobado
-    private String assistanceState; //TODO: Cambiar nombres de parametros
+    private boolean trainingState;
+    private String assistanceState; 
     private boolean preTestState;
     private boolean postTestState;
     private boolean onlineCourseState;
@@ -15,6 +16,14 @@ public class TrainingIndicatorTeacherData implements Serializable {
     //TODO: agregar puntajes pre y post-test
     //TODO: Por definir si es el total de test o por pregunta
 
+
+    public String getRut() {
+        return rut;
+    }
+
+    public void setRut(String rut) {
+        this.rut = rut;
+    }
 
     public int getYear() {
         return year;
@@ -40,7 +49,7 @@ public class TrainingIndicatorTeacherData implements Serializable {
         this.trainingState = trainingState;
     }
 
-    public String isAssistanceState() {
+    public String getAssistanceState() {
         return assistanceState;
     }
 
@@ -75,10 +84,11 @@ public class TrainingIndicatorTeacherData implements Serializable {
     @Override
     public String toString() {
         return "TrainingIndicatorTeacherData{" +
-                "year=" + year +
+                "rut='" + rut + '\'' +
+                ", year=" + year +
                 ", gender='" + gender + '\'' +
                 ", trainingState=" + trainingState +
-                ", assistanceState=" + assistanceState +
+                ", assistanceState='" + assistanceState + '\'' +
                 ", preTestState=" + preTestState +
                 ", postTestState=" + postTestState +
                 ", onlineCourseState=" + onlineCourseState +

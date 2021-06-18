@@ -42,6 +42,7 @@
     </select>
 
     <resultMap id="trainingTeacherData" type="com.react.pnld.dto.TrainingIndicatorTeacherData">
+        <id property="rut" column="rut"/>
         <result property="year" column="anno_capacitacion" />
         <result property="gender" column="genero" />
         <result property="trainingState" column="capacitacion_aprobada"/>
@@ -51,7 +52,7 @@
     <resultMap id="trainingIndicatorTeacher" type="com.react.pnld.dto.TrainingIndicatorDTO">
         <id property="id" column="id_region"/>
         <result property="regionName" column="nombre_region" />
-        <collection property="trainingIndicatorDataList" resultMap="trainingTeacherData"/>
+        <collection property="trainingIndicatorDataList" resultMap="trainingTeacherData" javaType="List"/>
     </resultMap>
 
     <select id="trainingTeacherData" resultMap="trainingIndicatorTeacher">

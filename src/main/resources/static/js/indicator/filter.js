@@ -80,14 +80,11 @@ export function selectAllGenders(element) {
 };
 
 export function SwitchGenderFilter(multiOption){
-    //TODO: Ver cómo poder mantener un estado de los géneros seleccionados (checkbox)
-    //TODO: y al mismo tiempo, poder seleccionar a gusto los géneros.
-    //TODO: Código anterior, se podía mantener estado, pero no dejaba deseleccionar géneros.
 
-    var allChecked = 0;
     for(var i = genderList.length - 1; i >=0 ; i-- ){
      genderList[i].type = (multiOption) ? 'checkbox' : 'radio';
     }
+
    if(!multiOption) allGender.checked = false;
 
     allGender.parentElement.style.display = (multiOption) ? 'initial' : 'none';
