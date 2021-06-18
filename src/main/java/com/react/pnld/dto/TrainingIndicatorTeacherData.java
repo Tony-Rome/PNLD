@@ -8,7 +8,7 @@ public class TrainingIndicatorTeacherData implements Serializable {
     private int year;
     private String gender;
     private boolean trainingState;
-    private String assistanceState; 
+    private String assistanceState;
     private boolean preTestState;
     private boolean postTestState;
     private boolean onlineCourseState;

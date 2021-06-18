@@ -35,7 +35,7 @@ public class DashboardController {
 
         logger.info("getInstitutionsTrainingInfo. trainingInstitutionIndicatorDTOList={}", trainingIndicatorDTOList);
 
-        return new TrainingIndicatorResponse(trainingIndicatorDTOList);
+        return new TrainingIndicatorResponse(fromYear, toYear, trainingIndicatorDTOList);
     }
 
     @GetMapping(value = "/training/teacher")
@@ -49,7 +49,7 @@ public class DashboardController {
 
         logger.info("getTrainingTeacherData. trainingTeacherIndicatorDTOList={}", trainingIndicatorDTOList);
 
-        return new TrainingIndicatorResponse(trainingIndicatorDTOList);
+        return new TrainingIndicatorResponse(fromYear, toYear, trainingIndicatorDTOList);
     }
 
     @GetMapping(value = "/code/teacher")
