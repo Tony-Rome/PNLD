@@ -105,7 +105,7 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
 
         Assert.assertEquals("Jocelyn", ctFirstGroupStudentsRows.get(0).getName());
         Assert.assertEquals("Simmonds", ctFirstGroupStudentsRows.get(0).getLastNames());
-        Assert.assertEquals("6:52:00 PM", ctFirstGroupStudentsRows.get(0).getInitTime());
+        Assert.assertEquals("6:53:00 PM", ctFirstGroupStudentsRows.get(0).getFinishTime());
     }
 
     @Test
