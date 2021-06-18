@@ -4,8 +4,8 @@ const filterBock = document.querySelectorAll('.filterBlock');
 const filterTitle = document.querySelectorAll('.filterTitle');
 
 export const yearList = document.getElementsByName('year');
-const regionList = document.getElementsByName('region');
-const genderList = document.getElementsByName('gender');
+export const regionList = document.getElementsByName('region');
+export const genderList = document.getElementsByName('gender');
 
 export const allYear = document.getElementById('allYear');
 export const allRegion = document.getElementById('allRegion');
@@ -89,7 +89,3 @@ export function SwitchGenderFilter(multiOption){
 
     allGender.parentElement.style.display = (multiOption) ? 'initial' : 'none';
 }
-
-
-
-

@@ -36,7 +36,7 @@ async function selectCharByInstitution(chartOption){
     var queryParams = defineYearsQueryParams(yearsSelected);
     var response = await getInstitutionSubDimensionData(queryParams);
 
-    var dataRaw = response['trainingIndicatorData'];
+    var dataRaw = response['trainingIndicatorDTOList'];
     var data = transformRegionName(dataRaw);
     var dataList = dataListWithEmptyValues(data, yearsSelected);
 
@@ -60,7 +60,7 @@ async function selectChartByTeacher(chartOption){
      var queryParams = defineYearsQueryParams(yearsSelected);
      var response = await getTeacherSubDimensionData(queryParams);
 
-     var dataRaw = response['trainingIndicatorData'];
+     var dataRaw = response['trainingIndicatorDTOList'];
      var data = transformRegionName(dataRaw);
      var dataList = dataListWithEmptyValues(data, yearsSelected);
 
