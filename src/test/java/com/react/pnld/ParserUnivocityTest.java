@@ -73,17 +73,19 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void moodleTimestampFormat_parser_to_DateTime() throws UnsupportedEncodingException {
+    public void moodleTimestampFormat_parser_to_DateTime() throws IOException {
         InputStream inputStream = new ByteArrayInputStream(getDummyTrainingFileLikeString().getBytes());
         Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 
         List<TrainingFileDTO> dummyList = fileUtilService.parseRowsToBeans(reader, TrainingFileDTO.class);
         Assert.assertEquals(6, dummyList.get(0).getRequiredInterval().getMinutes());
         Assert.assertEquals(0, dummyList.get(0).getRequiredInterval().getSeconds());
+
+        reader.close();
     }
 
     @Test
-    public void moodleTrainingTest_parser_StartInDateTime() throws UnsupportedEncodingException {
+    public void moodleTrainingTest_parser_StartInDateTime() throws IOException {
 
         InputStream inputStream = new ByteArrayInputStream(getDummyTrainingFileLikeString().getBytes());
         Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
@@ -94,11 +96,13 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(10, dummyList.get(0).getStartIn().getMonth().getValue());
         Assert.assertEquals(14, dummyList.get(0).getStartIn().getHour());
         Assert.assertEquals(24, dummyList.get(0).getStartIn().getMinute());
+
+        reader.close();
     }
 
 
     @Test
-    public void moodleTrainingTest_parser_FinishInDateTime() throws UnsupportedEncodingException {
+    public void moodleTrainingTest_parser_FinishInDateTime() throws IOException {
 
         InputStream inputStream = new ByteArrayInputStream(getDummyTrainingFileLikeString().getBytes());
         Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
@@ -109,6 +113,8 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(10, dummyList.get(0).getFinishIn().getMonth().getValue());
         Assert.assertEquals(14, dummyList.get(0).getFinishIn().getHour());
         Assert.assertEquals(30, dummyList.get(0).getFinishIn().getMinute());
+
+        reader.close();
     }
 
 
