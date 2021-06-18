@@ -196,7 +196,7 @@ public class FileUtilService {
                 return this.loaderMoodleFile.processSatisfactionFileRows(satisfactionRows, loadedFile.getId());
 
             case CT_STUDENTS_ONE:
-                List<CTGroupOneRowDTO> ctFirstGroupStudentsRows = parseRowsToBeans(loadedFileReader, CTGroupOneRowDTO.class);
+                List<CTRowGroupOneStudentsDTO> ctFirstGroupStudentsRows = parseRowsToBeans(loadedFileReader, CTRowGroupOneStudentsDTO.class);
                 closeReader(loadedFileReader);
                 return this.loaderCTFiles.processStudentsGroupOneRows(ctFirstGroupStudentsRows);
 

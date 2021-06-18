@@ -100,8 +100,8 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
         InputStream inputStream = new ByteArrayInputStream(getDummyCTStudentsGroupOne().getBytes());
         Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 
-        List<CTGroupOneRowDTO> ctFirstGroupStudentsRows = fileUtilService.parseRowsToBeans(reader,
-                CTGroupOneRowDTO.class);
+        List<CTRowGroupOneStudentsDTO> ctFirstGroupStudentsRows = fileUtilService.parseRowsToBeans(reader,
+                CTRowGroupOneStudentsDTO.class);
 
         Assert.assertEquals("Jocelyn", ctFirstGroupStudentsRows.get(0).getName());
         Assert.assertEquals("Simmonds", ctFirstGroupStudentsRows.get(0).getLastNames());

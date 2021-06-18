@@ -2,7 +2,7 @@ package com.react.pnld.dto;
 
 import com.univocity.parsers.annotations.Parsed;
 
-public class CTGroupOneRowDTO extends CTTestStudentsRowDTO {
+public class CTRowGroupOneStudentsDTO extends CTRowStudentsDTO {
 
     @Parsed(index = 38)
     private String finishTime;

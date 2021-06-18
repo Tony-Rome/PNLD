@@ -4,7 +4,7 @@ import com.univocity.parsers.annotations.Parsed;
 
 import java.util.List;
 
-public class CTTeacherDTO {
+public class CTRowTeacherDTO {
 
     @Parsed(index = 0)
     private String timeStamp;
@@ -40,7 +40,7 @@ public class CTTeacherDTO {
     private String youKnowCode;
 
     @Parsed(index = 11)
-    private String younKnowScratch;
+    private String youKnowScratch;
 
     @Parsed(index = 27)
     private int howDoYouThinkYouDidInTheTest;
@@ -141,12 +141,12 @@ public class CTTeacherDTO {
         this.youKnowCode = youKnowCode;
     }
 
-    public String getYounKnowScratch() {
-        return younKnowScratch;
+    public String getYouKnowScratch() {
+        return youKnowScratch;
     }
 
-    public void setYounKnowScratch(String younKnowScratch) {
-        this.younKnowScratch = younKnowScratch;
+    public void setYouKnowScratch(String youKnowScratch) {
+        this.youKnowScratch = youKnowScratch;
     }
 
     public int getHowDoYouThinkYouDidInTheTest() {
@@ -195,7 +195,7 @@ public class CTTeacherDTO {
                 ", teachesInLevels='" + teachesInLevels + '\'' +
                 ", participatedInPNLD='" + participatedInPNLD + '\'' +
                 ", youKnowCode='" + youKnowCode + '\'' +
-                ", younKnowScratch='" + younKnowScratch + '\'' +
+                ", youKnowScratch='" + youKnowScratch + '\'' +
                 ", howDoYouThinkYouDidInTheTest=" + howDoYouThinkYouDidInTheTest +
                 ", howInterestedAreYouInComputers=" + howInterestedAreYouInComputers +
                 ", finishTime='" + finishTime + '\'' +

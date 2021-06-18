@@ -1,7 +1,7 @@
 package com.react.pnld.services;
 
-import com.react.pnld.dto.CTGroupOneRowDTO;
-import com.react.pnld.dto.CTTestStudentsRowDTO;
+import com.react.pnld.dto.CTRowGroupOneStudentsDTO;
+import com.react.pnld.dto.CTRowStudentsDTO;
 import com.react.pnld.dto.FileResumeDTO;
 import com.react.pnld.model.LoadedFile;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ public class LoaderCTFiles {
 
     private static final Logger logger = LoggerFactory.getLogger(LoaderCTFiles.class);
 
-    public FileResumeDTO processStudentsGroupOneRows(List<CTGroupOneRowDTO> studentsGroupOneRows) {
+    public FileResumeDTO processStudentsGroupOneRows(List<CTRowGroupOneStudentsDTO> studentsGroupOneRows) {
         logger.info("testFirstGroupStudents. ctFirstGroupStudents.size()={}", studentsGroupOneRows.size());
         //TODO validate load records by file's type
 
@@ -23,7 +23,7 @@ public class LoaderCTFiles {
         return new FileResumeDTO();
     }
 
-    public FileResumeDTO processStudentsGroupTwoRows(List<CTTestStudentsRowDTO> ctFirstGroupStudents) {
+    public FileResumeDTO processStudentsGroupTwoRows(List<CTRowStudentsDTO> ctFirstGroupStudents) {
         logger.info("testFirstGroupStudents. ctFirstGroupStudents.size()={}", ctFirstGroupStudents.size());
         //TODO validate load records by file's type
 
