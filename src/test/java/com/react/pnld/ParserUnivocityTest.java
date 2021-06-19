@@ -64,7 +64,7 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
                 "\tDe 1 a 7, ¿qué tan cercano o cercana se siente a los computadores y la tecnología?" +
                 "\tIndique la hora actual, en formato HH:MM\tIndique la hora actual, en formato HH:MM";
 
-        String dummyResponse = "04-01-21 19:01\t1234567-8\tPedro\tRivas Perez\tsasa@edwd.com\tHombre\t45\tel colegio" +
+        String dummyResponse = "10-01-21 19:01\t1234567-8\tPedro\tRivas Perez\tsasa@edwd.com\tHombre\t45\tel colegio" +
                 "\t2º básico, 4º básico, 6º básico\tNo\tLa conozco, pero no la he ocupado en clases\tNo la conozco\t3" +
                 "\t135\t75\t5\tNinguno de los anteriores\tSW (Sur-Oeste)\taykR\t24\tNinguno de los anteriores\tQCPGVR" +
                 "\tTUB\t10\tE\tNinguna de las anteriores\t108\t5\t3\t7:00:00 PM\t7:01:00 PM";
@@ -151,7 +151,7 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals("1234567-8", ctRowsTeacher.get(0).getRut());
         Assert.assertEquals("pedro", ctRowsTeacher.get(0).getName());
         Assert.assertEquals(45, ctRowsTeacher.get(0).getAge());
-        Assert.assertEquals("04-01-21 19:01", ctRowsTeacher.get(0).getTimeStamp());
+        Assert.assertEquals(10, ctRowsTeacher.get(0).getTimeStamp().toLocalDateTime().getMonth().getValue());
 
         reader.close();
     }

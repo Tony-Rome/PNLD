@@ -1,14 +1,17 @@
 package com.react.pnld.dto;
 
+import com.univocity.parsers.annotations.Format;
 import com.univocity.parsers.annotations.LowerCase;
 import com.univocity.parsers.annotations.Parsed;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 public class CTRowTeacherDTO {
 
-    @Parsed(index = 0)
-    private String timeStamp;
+
+    private Timestamp timeStamp;
 
     @Parsed(index = 1)
     @LowerCase
@@ -66,12 +69,14 @@ public class CTRowTeacherDTO {
 
     private List<String> answers;
 
-    public String getTimeStamp() {
+    public Timestamp getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
+    @Parsed(index = 0)
+    @Format(formats = {"M-dd-yy HH:mm"}, options = "locale=en;lenient=false")
+    public void setTimeStamp(Date timeStampString) {
+        this.timeStamp = new Timestamp(timeStampString.getTime());
     }
 
     public String getRut() {
