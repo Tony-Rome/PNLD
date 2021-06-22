@@ -58,7 +58,7 @@
 
             <#assign regionList = ["Tarapacá", "Antofagasta", "Atacama", "Coquimbo", "Valparaíso", "O'Higgins",
                 "Maule", "BioBío", "Araucanía", "Los Lagos", "Aysén", "Magallanes", "Metropolitana", "Los Ríos",
-                 "Arica y Parinacota", "Ñuble", "Otra"] />
+                 "Arica y Parinacota", "Ñuble", "No especificada"] />
 
             <div class="filterBlock filterInactive">
               <h3 class="filterTitle">Región</h3>

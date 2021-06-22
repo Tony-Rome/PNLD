@@ -1,7 +1,7 @@
 package com.react.pnld.controller;
 
 import com.react.pnld.controller.response.TrainingIndicatorResponse;
-import com.react.pnld.dto.TrainingIndicatorDTO;
+import com.react.pnld.dto.indicator.TrainingIndicatorDTO;
 import com.react.pnld.services.TrainingIndicatorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

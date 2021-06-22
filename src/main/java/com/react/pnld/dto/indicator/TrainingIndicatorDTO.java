@@ -1,4 +1,4 @@
-package com.react.pnld.dto;
+package com.react.pnld.dto.indicator;
 
 import java.io.Serializable;
 import java.util.List;

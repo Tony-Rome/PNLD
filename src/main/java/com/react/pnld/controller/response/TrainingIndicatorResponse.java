@@ -1,6 +1,6 @@
 package com.react.pnld.controller.response;
 
-import com.react.pnld.dto.TrainingIndicatorDTO;
+import com.react.pnld.dto.indicator.TrainingIndicatorDTO;
 
 import java.io.Serializable;
 import java.util.List;

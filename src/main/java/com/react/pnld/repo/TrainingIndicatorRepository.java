@@ -1,6 +1,6 @@
 package com.react.pnld.repo;
 
-import com.react.pnld.dto.TrainingIndicatorDTO;
+import com.react.pnld.dto.indicator.TrainingIndicatorDTO;
 import com.react.pnld.mappers.TrainingIndicatorMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -17,7 +17,7 @@ public class TrainingIndicatorRepository {
         return trainingIndicatorMapper.trainingInstitutionData(fromYear, toYear);
     }
 
-    public List<TrainingIndicatorDTO> trainingTeacherData(int fromYear, int toYear) {
-        return trainingIndicatorMapper.trainingTeacherData(fromYear, toYear);
+    public TrainingIndicatorDTO trainingTeacherData(int fromYear, int toYear, int regionId) {
+        return trainingIndicatorMapper.trainingTeacherData(fromYear, toYear, regionId);
     }
 }
