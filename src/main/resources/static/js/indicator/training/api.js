@@ -1,4 +1,4 @@
-const SUB_DIMENSION_BASE_URL = '/v1/training/institution/'; //TODO: Cambiar endopint a ingles
+const SUB_DIMENSION_BASE_URL = '/v1/training/institution/';
 const TEACHER_BASE_URL = 'v1/training/teacher/';
 
 export function getInstitutionSubDimensionData(yearRange){
@@ -18,7 +18,7 @@ export function getTeacherSubDimensionData(yearRange){
 
     var queryParams = getQueryParams(yearRange);
 
-    const url = TEACHER_BASE_URL + queryParams; //TODO: Se puede crear funcion para conectar con API
+    const url = TEACHER_BASE_URL + queryParams; 
     const response = fetch(url, {method: 'GET'})
         .then( (resp) => resp.json() )
         .then( (data) => {

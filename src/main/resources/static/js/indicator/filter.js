@@ -99,7 +99,8 @@ export function SwitchGenderFilter(multiOption){
 
         for(var i = 0; i <= genderList.length - 1; i++){
          genderList[i].type = 'radio';
-         genderList[i].checked = (i === index) ? true : false;
+         genderList[i].checked = false;
         }
+        genderList[index].checked = true;
     }
 }

@@ -1,8 +1,6 @@
 const ctx = document.getElementById('myChart').getContext('2d');
 var myChart;
 
-//TODO: Arreglar tooltip con mayor descrpicion.
-
 function defineTitle(data){
     return (data.length >= 2) ?
         data[data.length - 1] + " - " + data[0] : data[0];
@@ -220,7 +218,7 @@ export function trainedTeacherNumberChart(labels, datasets, title, keyword){
                     },
                     title: {
                         display: true,
-                        text: 'N° de docentes capacitados ' + defineTitle(title), //TODO: Definir titulo
+                        text: 'N° de docentes capacitados ' + defineTitle(title),
                     },
                     legend: {
                         display: true
