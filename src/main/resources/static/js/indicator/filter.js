@@ -81,11 +81,25 @@ export function selectAllGenders(element) {
 
 export function SwitchGenderFilter(multiOption){
 
-    for(var i = genderList.length - 1; i >=0 ; i-- ){
-     genderList[i].type = (multiOption) ? 'checkbox' : 'radio';
+
+    if(multiOption === true){
+
+        allGender.parentElement.style.display = 'initial';
+        for(var i = 0; i <= genderList.length - 1 ; i++){
+         genderList[i].type = 'checkbox';
+        }
     }
+    if(multiOption === false){
 
-   if(!multiOption) allGender.checked = false;
+        const array = Array.from(genderList);
+        const index = array.findIndex(element => element.checked === true);
 
-    allGender.parentElement.style.display = (multiOption) ? 'initial' : 'none';
+        allGender.parentElement.style.display = 'none';
+        allGender.checked = false;
+
+        for(var i = 0; i <= genderList.length - 1; i++){
+         genderList[i].type = 'radio';
+         genderList[i].checked = (i === index) ? true : false;
+        }
+    }
 }

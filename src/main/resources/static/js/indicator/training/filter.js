@@ -9,7 +9,6 @@ Object.keys(filterList).forEach( (k,i) => {
 });
 
 function checkFilters(){
-    console.log(this);
     if(this.name === 'year'){
         let years = getYearsSelected().length;
         allYear.checked = (yearList.length != years) ? false : true;

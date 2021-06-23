@@ -3,7 +3,7 @@ import {getPaletteColor} from '../utils.js';
 import { SwitchGenderFilter } from '../filter.js';
 
 export function trainedTeacherNumber(yearsSelected, gendersSelected, dataList, labels ){
-    console.log(dataList);
+
     var datasets = [];
     var dataLoop = { 'list': [] , 'data' : null};
 
