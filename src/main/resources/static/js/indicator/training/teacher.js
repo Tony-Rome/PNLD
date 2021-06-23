@@ -17,14 +17,12 @@ export function trainedTeacherNumber(yearsSelected, gendersSelected, dataList, l
         var filterYear = (dataLoop['filter']) ? dataLoop['data'] : element;
 
         dataList.forEach( (e,index) => {
-
             if(labels.includes(e.regionName)){
-                let teacherData = e.trainingIndicatorDataList
-                        .filter(data => {
-                            if(data.year === filterYear && data.gender === filterGender && data.trainingState === true)
-                                    return data.trainingState;
-                            })
-                data.push(teacherData.length);
+                let trainingIndicatorDataList = e.trainingIndicatorDataList.filter(data => data.year === filterYear);
+                let approvedTrainingNumber = trainingIndicatorDataList[0].dataByGenderList.map(data => {
+                    if(data.gender === filterGender) return data.approvedTrainingNumber;
+                }).filter(Boolean);
+                data.push(approvedTrainingNumber[0]);
             }
         });
 

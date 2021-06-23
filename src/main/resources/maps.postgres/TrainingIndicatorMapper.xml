@@ -62,7 +62,8 @@
     </resultMap>
 
     <select id="trainingTeacherData" resultMap="trainingIndicatorTeacher">
-        SELECT d.anno_capacitacion, g.tipo AS genero,
+        SELECT
+            d.anno_capacitacion, g.tipo AS genero,
             COUNT(d.asiste_jornada) FILTER(WHERE d.asiste_jornada = true) as asiste_jornada,
             COUNT(d.asiste_jornada) FILTER(WHERE d.asiste_jornada = false) as no_asiste_jornada,
             COUNT(d.capacitacion_aprobada) FILTER(WHERE d.capacitacion_aprobada = true) AS capacitacion_aprobada,
