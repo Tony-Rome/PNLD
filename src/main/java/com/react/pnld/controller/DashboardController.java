@@ -30,12 +30,12 @@ public class DashboardController {
                                                                 @RequestParam(name = "toYear") int toYear) {
         logger.info("getInstitutionsTrainingInfo. fromYear={}, toYear={}", fromYear, toYear);
 
-        List<TrainingIndicatorDTO> trainingIndicatorDTOList;
-        trainingIndicatorDTOList = trainingIndicatorService.trainingInstitutionData(fromYear, toYear);
+        List<TrainingIndicatorDTO> trainingInstitutionIndicatorDTOList;
+        trainingInstitutionIndicatorDTOList = trainingIndicatorService.trainingInstitutionData(fromYear, toYear);
 
-        logger.info("getInstitutionsTrainingInfo. trainingInstitutionIndicatorDTOList={}", trainingIndicatorDTOList);
+        logger.info("getInstitutionsTrainingInfo. trainingInstitutionIndicatorDTOList={}", trainingInstitutionIndicatorDTOList);
 
-        return new TrainingIndicatorResponse(fromYear, toYear, trainingIndicatorDTOList);
+        return new TrainingIndicatorResponse(fromYear, toYear, trainingInstitutionIndicatorDTOList);
     }
 
     @GetMapping(value = "/training/teacher")
@@ -44,12 +44,12 @@ public class DashboardController {
 
         logger.info("getTrainingTeacherData. fromYear={}, toYear={}", fromYear, toYear);
 
-        List<TrainingIndicatorDTO> trainingIndicatorDTOList;
-        trainingIndicatorDTOList = trainingIndicatorService.trainingTeacherData(fromYear, toYear);
+        List<TrainingIndicatorDTO> trainingTeacherIndicatorDTOList;
+        trainingTeacherIndicatorDTOList = trainingIndicatorService.trainingTeacherData(fromYear, toYear);
 
-        logger.info("getTrainingTeacherData. trainingTeacherIndicatorDTOList={}", trainingIndicatorDTOList);
+        logger.info("getTrainingTeacherData. trainingTeacherIndicatorDTOList={}", trainingTeacherIndicatorDTOList);
 
-        return new TrainingIndicatorResponse(fromYear, toYear, trainingIndicatorDTOList);
+        return new TrainingIndicatorResponse(fromYear, toYear, trainingTeacherIndicatorDTOList);
     }
 
     @GetMapping(value = "/code/teacher")

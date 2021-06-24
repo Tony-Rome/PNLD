@@ -18,7 +18,7 @@ export function getTeacherSubDimensionData(yearRange){
 
     var queryParams = getQueryParams(yearRange);
 
-    const url = TEACHER_BASE_URL + queryParams; 
+    const url = TEACHER_BASE_URL + queryParams;
     const response = fetch(url, {method: 'GET'})
         .then( (resp) => resp.json() )
         .then( (data) => {
