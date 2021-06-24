@@ -5,14 +5,14 @@ import java.io.Serializable;
 public class TrainingIndicatorTeacherDataByGender implements Serializable {
 
     private String gender;
-    private int approvedTrainingNumber;
-    private int notApprovedTrainingNumber;
-    private int assistanceNumber;
-    private int notAssistanceNumber;
-    private int preTestCompletedNumber;
-    private int preTestNotCompletedNumber;
-    private int postTestCompletedNumber;
-    private int postTestNotCompletedNumber;
+    private int approvedTrainingCounter;
+    private int notApprovedTrainingCounter;
+    private int assistanceCounter;
+    private int notAssistanceCounter;
+    private int preTestCompletedCounter;
+    private int preTestNotCompletedCounter;
+    private int postTestCompletedCounter;
+    private int postTestNotCompletedCounter;
 
     public String getGender() {
         return gender;
@@ -22,82 +22,82 @@ public class TrainingIndicatorTeacherDataByGender implements Serializable {
         this.gender = gender;
     }
 
-    public int getApprovedTrainingNumber() {
-        return approvedTrainingNumber;
+    public int getApprovedTrainingCounter() {
+        return approvedTrainingCounter;
     }
 
-    public void setApprovedTrainingNumber(int approvedTrainingNumber) {
-        this.approvedTrainingNumber = approvedTrainingNumber;
+    public void setApprovedTrainingCounter(int approvedTrainingCounter) {
+        this.approvedTrainingCounter = approvedTrainingCounter;
     }
 
-    public int getNotApprovedTrainingNumber() {
-        return notApprovedTrainingNumber;
+    public int getNotApprovedTrainingCounter() {
+        return notApprovedTrainingCounter;
     }
 
-    public void setNotApprovedTrainingNumber(int notApprovedTrainingNumber) {
-        this.notApprovedTrainingNumber = notApprovedTrainingNumber;
+    public void setNotApprovedTrainingCounter(int notApprovedTrainingCounter) {
+        this.notApprovedTrainingCounter = notApprovedTrainingCounter;
     }
 
-    public int getAssistanceNumber() {
-        return assistanceNumber;
+    public int getAssistanceCounter() {
+        return assistanceCounter;
     }
 
-    public void setAssistanceNumber(int assistanceNumber) {
-        this.assistanceNumber = assistanceNumber;
+    public void setAssistanceCounter(int assistanceCounter) {
+        this.assistanceCounter = assistanceCounter;
     }
 
-    public int getNotAssistanceNumber() {
-        return notAssistanceNumber;
+    public int getNotAssistanceCounter() {
+        return notAssistanceCounter;
     }
 
-    public void setNotAssistanceNumber(int notAssistanceNumber) {
-        this.notAssistanceNumber = notAssistanceNumber;
+    public void setNotAssistanceCounter(int notAssistanceCounter) {
+        this.notAssistanceCounter = notAssistanceCounter;
     }
 
-    public int getPreTestCompletedNumber() {
-        return preTestCompletedNumber;
+    public int getPreTestCompletedCounter() {
+        return preTestCompletedCounter;
     }
 
-    public void setPreTestCompletedNumber(int preTestCompletedNumber) {
-        this.preTestCompletedNumber = preTestCompletedNumber;
+    public void setPreTestCompletedCounter(int preTestCompletedCounter) {
+        this.preTestCompletedCounter = preTestCompletedCounter;
     }
 
-    public int getPreTestNotCompletedNumber() {
-        return preTestNotCompletedNumber;
+    public int getPreTestNotCompletedCounter() {
+        return preTestNotCompletedCounter;
     }
 
-    public void setPreTestNotCompletedNumber(int preTestNotCompletedNumber) {
-        this.preTestNotCompletedNumber = preTestNotCompletedNumber;
+    public void setPreTestNotCompletedCounter(int preTestNotCompletedCounter) {
+        this.preTestNotCompletedCounter = preTestNotCompletedCounter;
     }
 
-    public int getPostTestCompletedNumber() {
-        return postTestCompletedNumber;
+    public int getPostTestCompletedCounter() {
+        return postTestCompletedCounter;
     }
 
-    public void setPostTestCompletedNumber(int postTestCompletedNumber) {
-        this.postTestCompletedNumber = postTestCompletedNumber;
+    public void setPostTestCompletedCounter(int postTestCompletedCounter) {
+        this.postTestCompletedCounter = postTestCompletedCounter;
     }
 
-    public int getPostTestNotCompletedNumber() {
-        return postTestNotCompletedNumber;
+    public int getPostTestNotCompletedCounter() {
+        return postTestNotCompletedCounter;
     }
 
-    public void setPostTestNotCompletedNumber(int postTestNotCompletedNumber) {
-        this.postTestNotCompletedNumber = postTestNotCompletedNumber;
+    public void setPostTestNotCompletedCounter(int postTestNotCompletedCounter) {
+        this.postTestNotCompletedCounter = postTestNotCompletedCounter;
     }
 
     @Override
     public String toString() {
         return "TrainingIndicatorTeacherDataByGender{" +
                 "gender='" + gender + '\'' +
-                ", approvedTrainingNumber=" + approvedTrainingNumber +
-                ", notApprovedTrainingNumber=" + notApprovedTrainingNumber +
-                ", assistanceNumber=" + assistanceNumber +
-                ", notAssistanceNumber=" + notAssistanceNumber +
-                ", preTestCompletedNumber=" + preTestCompletedNumber +
-                ", preTestNotCompletedNumber=" + preTestNotCompletedNumber +
-                ", postTestCompletedNumber=" + postTestCompletedNumber +
-                ", postTestNotCompletedNumber=" + postTestNotCompletedNumber +
+                ", approvedTrainingCounter=" + approvedTrainingCounter +
+                ", notApprovedTrainingCounter=" + notApprovedTrainingCounter +
+                ", assistanceCounter=" + assistanceCounter +
+                ", notAssistanceCounter=" + notAssistanceCounter +
+                ", preTestCompletedCounter=" + preTestCompletedCounter +
+                ", preTestNotCompletedCounter=" + preTestNotCompletedCounter +
+                ", postTestCompletedCounter=" + postTestCompletedCounter +
+                ", postTestNotCompletedCounter=" + postTestNotCompletedCounter +
                 '}';
     }
 }

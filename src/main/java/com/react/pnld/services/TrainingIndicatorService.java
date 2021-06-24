@@ -22,15 +22,14 @@ public class TrainingIndicatorService {
         int FIRST_REGION_ID = 1;
         int LAST_REGION_ID = 17;
 
-        List<TrainingIndicatorDTO> trainingIndicatorDTOList = new ArrayList<>();
+        List<TrainingIndicatorDTO> trainingTeacherIndicatorDTOList = new ArrayList<>();
 
         for(int i = FIRST_REGION_ID; i <= LAST_REGION_ID; i++){
 
-            TrainingIndicatorDTO trainingIndicatorDTO;
-            trainingIndicatorDTO = trainingIndicatorRepository.trainingTeacherData(fromYear, toYear, i);
-            trainingIndicatorDTOList.add(trainingIndicatorDTO);
+            TrainingIndicatorDTO trainingTeacherIndicatorDTO = trainingIndicatorRepository.trainingTeacherData(fromYear, toYear, i);
+            trainingTeacherIndicatorDTOList.add(trainingTeacherIndicatorDTO);
         }
 
-        return trainingIndicatorDTOList;
+        return trainingTeacherIndicatorDTOList;
     }
 }

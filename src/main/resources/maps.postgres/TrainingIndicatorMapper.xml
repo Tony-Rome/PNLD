@@ -43,10 +43,10 @@
 
     <resultMap id="trainingTeacherDataByGender" type="com.react.pnld.dto.indicator.training.TrainingIndicatorTeacherDataByGender">
         <id property="gender" column="genero"/>
-        <result property="approvedTrainingNumber" column="capacitacion_aprobada" />
-        <result property="notApprovedTrainingNumber" column="capacitacion_reprobada" />
-        <result property="assistanceNumber" column="asiste_jornada"/>
-        <result property="notAssistanceNumber" column="no_asiste_jornada"/>
+        <result property="approvedTrainingCounter" column="capacitacion_aprobada" />
+        <result property="notApprovedTrainingCounter" column="capacitacion_reprobada" />
+        <result property="assistanceCounter" column="asiste_jornada"/>
+        <result property="notAssistanceCounter" column="no_asiste_jornada"/>
 
     </resultMap>
 

@@ -19,10 +19,10 @@ export function trainedTeacherNumber(yearsSelected, gendersSelected, dataList, l
         dataList.forEach( (e,index) => {
             if(labels.includes(e.regionName)){
                 let trainingIndicatorDataList = e.trainingIndicatorDataList.filter(data => data.year === filterYear);
-                let approvedTrainingNumber = trainingIndicatorDataList[0].dataByGenderList.map(data => {
-                    if(data.gender === filterGender) return data.approvedTrainingNumber;
+                let approvedTrainingCounter = trainingIndicatorDataList[0].dataByGenderList.map(data => {
+                    if(data.gender === filterGender) return data.approvedTrainingCounter;
                 }).filter(Boolean);
-                data.push(approvedTrainingNumber[0]);
+                data.push(approvedTrainingCounter[0]);
             }
         });
 
