@@ -1,4 +1,5 @@
-import {allRegion, allGender, allYear, selectAllRegions, selectAllYears, selectAllGenders, yearList} from './filter.js';
+import {allRegion, allGender, allYear, selectAllRegions, selectAllYears,
+        selectAllGenders, yearList, getYearsSelected, getGendersSelected, SwitchGenderFilter} from './filter.js';
 
 const regionNameList = document.getElementsByName('region');
 
@@ -78,4 +79,27 @@ export function activateDefaultsFilters(option){
         allGender.checked = true;
         selectAllGenders(allGender);
     };
+}
+
+function getDataByLoop(option, yearsSelected, gendersSelected){
+    if(option === true){
+        return { 'list': gendersSelected, 'data': yearsSelected[0], 'filter': true };
+    }
+    if(option === false){
+        return {'list': yearsSelected, 'data': gendersSelected[0].toLowerCase(), 'filter': false};
+    }
+}
+
+export function teacherDecisionLoop(yearsSelected){
+
+    var dataLoop = { 'list': [] , 'data' : null};
+
+    if(yearsSelected.length!= 0){
+        var option = (yearsSelected.length === 1) ? true : false;
+        SwitchGenderFilter(option);
+
+        var gendersSelected = getGendersSelected();
+        if(gendersSelected != 0) dataLoop = getDataByLoop(option, yearsSelected, gendersSelected);
+    }
+    return dataLoop;
 }

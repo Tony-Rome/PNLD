@@ -1,5 +1,5 @@
 import {transformRegionName, defineYearsQueryParams, activateDefaultsFilters} from '../utils.js';
-import { getYearsSelected, getRegionsSelected, getGendersSelected, getAllRegionsName } from '../filter.js';
+import { getYearsSelected, getRegionsSelected, getAllRegionsName } from '../filter.js';
 import {getSubDimensionSelected} from '../sub-dimension.js';
 import {getInstitutionSubDimensionData, getTeacherSubDimensionData} from './api.js';
 import {participantInstitutionCounter, firstTimeInstitutionPercentage} from './institution.js';
@@ -65,10 +65,9 @@ async function selectChartByTeacher(chartOption){
      var data = transformRegionName(dataRaw);
      var dataList = dataListWithEmptyValues(data, yearsSelected);
      var labels = getRegionsSelected();
-     var gendersSelected = getGendersSelected();
 
     if(chartOption === TRAINED_TEACHER_NUMBER)
-        trainedTeacherCounter(yearsSelected, gendersSelected, dataList, labels);
+        trainedTeacherCounter(yearsSelected, dataList, labels);
 
     if(chartOption === IN_PERSON_SESSION_PERCENTAGE);
     if(chartOption === PRE_TEST_COMPLETED_PERCENTAGE);

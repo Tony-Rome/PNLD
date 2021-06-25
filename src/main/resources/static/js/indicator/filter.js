@@ -86,8 +86,11 @@ export function SwitchGenderFilter(multiOption){
 
         allGender.parentElement.style.display = 'initial';
         for(var i = 0; i <= genderList.length - 1 ; i++){
-         genderList[i].type = 'checkbox';
+            genderList[i].type = 'checkbox';
+
+
         }
+        if(allGender.checked === true) selectAllGenders(allGender);
     }
     if(multiOption === false){
 

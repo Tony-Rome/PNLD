@@ -1,16 +1,12 @@
 import {trainedTeacherCounterChart} from './chart.js';
-import {getPaletteColor} from '../utils.js';
-import { SwitchGenderFilter } from '../filter.js';
+import {getPaletteColor, teacherDecisionLoop} from '../utils.js';
 
-export function trainedTeacherCounter(yearsSelected, gendersSelected, dataList, labels ){
+export function trainedTeacherCounter(yearsSelected, dataList, labels ){
 
     var datasets = [];
-    var dataLoop = { 'list': [] , 'data' : null};
+    var dataLoop = teacherDecisionLoop(yearsSelected);
 
-    if(yearsSelected.length != 0 && gendersSelected.length != 0)
-        dataLoop = teacherDecisionLoop(yearsSelected, gendersSelected);
-
-     dataLoop['list'].forEach( (element, i) => {
+    dataLoop['list'].forEach( (element, i) => {
         var paletteColor = getPaletteColor(i);
         var data = [];
         var filterGender = (dataLoop['filter']) ? element.toLowerCase() : dataLoop['data'];
@@ -40,16 +36,4 @@ export function trainedTeacherCounter(yearsSelected, gendersSelected, dataList, 
         datasets.push(dataset);
     });
     trainedTeacherCounterChart(labels, datasets, yearsSelected, dataLoop['data']);
-}
-
-function teacherDecisionLoop(yearsSelected, gendersSelected){
-
-    if(yearsSelected.length === 1){
-        SwitchGenderFilter(true);
-        return { 'list': gendersSelected, 'data': yearsSelected[0], 'filter': true };
-    }
-    if(yearsSelected.length > 1){
-        SwitchGenderFilter(false);
-        return {'list': yearsSelected, 'data': gendersSelected[0].toLowerCase(), 'filter': false};
-    }
 }
