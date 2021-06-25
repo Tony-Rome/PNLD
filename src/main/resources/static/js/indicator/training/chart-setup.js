@@ -2,8 +2,8 @@ import {transformRegionName, defineYearsQueryParams, activateDefaultsFilters} fr
 import { getYearsSelected, getRegionsSelected, getGendersSelected, getAllRegionsName } from '../filter.js';
 import {getSubDimensionSelected} from '../sub-dimension.js';
 import {getInstitutionSubDimensionData, getTeacherSubDimensionData} from './api.js';
-import {participantInstitutionNumber, firstTimeInstitutionPercentage} from './institution.js';
-import {trainedTeacherNumber} from './teacher.js';
+import {participantInstitutionCounter, firstTimeInstitutionPercentage} from './institution.js';
+import {trainedTeacherCounter} from './teacher.js';
 
 const PARTICIPANT_INSTITUTION_NUMBER = 0;
 const FIRST_TIME_INSTITUTION_PERCENTAGE = 1;
@@ -44,7 +44,7 @@ async function selectCharByInstitution(chartOption){
     var labels = getRegionsSelected();
 
     if(chartOption === PARTICIPANT_INSTITUTION_NUMBER){
-        participantInstitutionNumber(yearsSelected, dataList, labels);
+        participantInstitutionCounter(yearsSelected, dataList, labels);
 
     }
     if(chartOption === FIRST_TIME_INSTITUTION_PERCENTAGE){
@@ -68,7 +68,7 @@ async function selectChartByTeacher(chartOption){
      var gendersSelected = getGendersSelected();
 
     if(chartOption === TRAINED_TEACHER_NUMBER)
-        trainedTeacherNumber(yearsSelected, gendersSelected, dataList, labels);
+        trainedTeacherCounter(yearsSelected, gendersSelected, dataList, labels);
 
     if(chartOption === IN_PERSON_SESSION_PERCENTAGE);
     if(chartOption === PRE_TEST_COMPLETED_PERCENTAGE);

@@ -6,7 +6,7 @@ function defineTitle(data){
         data[data.length - 1] + " - " + data[0] : data[0];
 }
 
-export function participantInstitutionNumberChart (labels, datasets, title) {
+export function participantInstitutionCounterChart (labels, datasets, title) {
   if(myChart) { myChart.destroy(); }
 
     myChart = new Chart(ctx, {
@@ -131,18 +131,18 @@ export function firstTimeInstitutionPercentageChart (labels, datasets, title, da
                       let index = data.parsed.y;
                       let regionData = dataList[index];
                       let year = parseInt(data.dataset.label);
-                      let dataNumber = regionData.trainingIndicatorDataList.map(e => {
+                      let dataCounter = regionData.trainingIndicatorDataList.map(e => {
                           if (e.year === year) {
-                            let dataNumber = {
-                                'total': e.institutionNumberPNLD,
-                                'firstTime': e.firstTimeInstitutionNumber,
+                            let dataCounter = {
+                                'total': e.institutionCounterPNLD,
+                                'firstTime': e.firstTimeInstitutionCounter,
                             };
-                            return dataNumber;
+                            return dataCounter;
                           };
                       }).filter(e => typeof e != 'undefined');
-                      let total = (typeof dataNumber[0] != 'undefined') ? dataNumber[0].total : 0;
-                      let firstTimeNumber = (typeof dataNumber[0] != 'undefined') ? dataNumber[0].firstTime : 0;
-                      return (total != 0) ? "Detalle: " + "Total "+ total + " - valor actual " + firstTimeNumber : null;
+                      let total = (typeof dataCounter[0] != 'undefined') ? dataCounter[0].total : 0;
+                      let firstTimeCounter = (typeof dataCounter[0] != 'undefined') ? dataCounter[0].firstTime : 0;
+                      return (total != 0) ? "Detalle: " + "Total "+ total + " - valor actual " + firstTimeCounter : null;
                     },
                   },
               },
@@ -162,7 +162,7 @@ export function firstTimeInstitutionPercentageChart (labels, datasets, title, da
   myChart.update();
 }
 
-export function trainedTeacherNumberChart(labels, datasets, title, keyword){
+export function trainedTeacherCounterChart(labels, datasets, title, keyword){
 
     if(myChart) { myChart.destroy(); }
 

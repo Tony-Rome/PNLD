@@ -5,9 +5,9 @@ import java.io.Serializable;
 public class TrainingIndicatorInstitutionData implements Serializable {
 
     private int year;
-    private int institutionNumberPNLD;
+    private int institutionCounterPNLD;
     private float percentageInstitutions;
-    private int firstTimeInstitutionNumber;
+    private int firstTimeInstitutionCounter;
 
     public int getYear() {
         return year;
@@ -17,12 +17,12 @@ public class TrainingIndicatorInstitutionData implements Serializable {
         this.year = year;
     }
 
-    public int getInstitutionNumberPNLD() {
-        return institutionNumberPNLD;
+    public int getInstitutionCounterPNLD() {
+        return institutionCounterPNLD;
     }
 
-    public void setInstitutionNumberPNLD(int institutionNumberPNLD) {
-        this.institutionNumberPNLD = institutionNumberPNLD;
+    public void setInstitutionCounterPNLD(int institutionCounterPNLD) {
+        this.institutionCounterPNLD = institutionCounterPNLD;
     }
 
     public float getPercentageInstitutions() {
@@ -33,21 +33,21 @@ public class TrainingIndicatorInstitutionData implements Serializable {
         this.percentageInstitutions = percentageInstitutions;
     }
 
-    public int getFirstTimeInstitutionNumber() {
-        return firstTimeInstitutionNumber;
+    public int getFirstTimeInstitutionCounter() {
+        return firstTimeInstitutionCounter;
     }
 
-    public void setFirstTimeInstitutionNumber(int firstTimeInstitutionNumber) {
-        this.firstTimeInstitutionNumber = firstTimeInstitutionNumber;
+    public void setFirstTimeInstitutionCounter(int firstTimeInstitutionCounter) {
+        this.firstTimeInstitutionCounter = firstTimeInstitutionCounter;
     }
 
     @Override
     public String toString() {
         return "TrainingIndicatorInstitutionData{" +
                 "year=" + year +
-                ", institutionNumberPNLD=" + institutionNumberPNLD +
+                ", institutionCounterPNLD=" + institutionCounterPNLD +
                 ", percentageInstitutions=" + percentageInstitutions +
-                ", firstTimeInstitutionNumber=" + firstTimeInstitutionNumber +
+                ", firstTimeInstitutionCounter=" + firstTimeInstitutionCounter +
                 '}';
     }
 }

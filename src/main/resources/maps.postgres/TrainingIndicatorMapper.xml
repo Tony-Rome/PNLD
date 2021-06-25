@@ -7,9 +7,9 @@
 
     <resultMap id="trainingInstitutionData" type="com.react.pnld.dto.indicator.training.TrainingIndicatorInstitutionData">
         <result property="year" column="anno_capacitacion" />
-        <result property="institutionNumberPNLD" column="cantidad_colegio" />
+        <result property="institutionCounterPNLD" column="cantidad_colegio" />
         <result property="percentageInstitutions" column="colegio_porcentaje"/>
-        <result property="firstTimeInstitutionNumber" column="primera_vez_porcentaje"/>
+        <result property="firstTimeInstitutionCounter" column="primera_vez_porcentaje"/>
     </resultMap>
 
     <resultMap id="trainingInstitutionIndicator" type="com.react.pnld.dto.indicator.TrainingIndicatorDTO">

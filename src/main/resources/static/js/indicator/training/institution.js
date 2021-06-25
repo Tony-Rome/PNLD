@@ -1,8 +1,8 @@
-import {participantInstitutionNumberChart, firstTimeInstitutionPercentageChart} from './chart.js';
+import {participantInstitutionCounterChart, firstTimeInstitutionPercentageChart} from './chart.js';
 import {getPaletteColor} from '../utils.js';
 
 
-export function participantInstitutionNumber(yearsSelected, dataList, labels) {
+export function participantInstitutionCounter(yearsSelected, dataList, labels) {
 
     var datasets = [];
 
@@ -14,13 +14,13 @@ export function participantInstitutionNumber(yearsSelected, dataList, labels) {
         dataList.forEach( (e,index) => {
 
             if(labels.includes(e.regionName)){
-                var institutionNumberData = [0];
+                var institutionCounterData = [0];
                 if(e.trainingIndicatorDataList != undefined && e.trainingIndicatorDataList.length != 0){
-                    institutionNumberData = e.trainingIndicatorDataList
+                    institutionCounterData = e.trainingIndicatorDataList
                         .filter(data => data.year === year)
-                        .map( data => data.institutionNumberPNLD);
+                        .map( data => data.institutionCounterPNLD);
                 }
-                data.push(institutionNumberData[0]);
+                data.push(institutionCounterData[0]);
 
             }
 
@@ -35,7 +35,7 @@ export function participantInstitutionNumber(yearsSelected, dataList, labels) {
 
         datasets.push(dataset);
     });
-    participantInstitutionNumberChart(labels, datasets, yearsSelected);
+    participantInstitutionCounterChart(labels, datasets, yearsSelected);
 
 }
 
@@ -57,9 +57,9 @@ export function firstTimeInstitutionPercentage(yearsSelected, dataList, labels){
                     percentageFirstTimeInstitution = e.trainingIndicatorDataList
                         .filter(data => data.year === year)
                         .map( data => {
-                            let totalInstitution = data.institutionNumberPNLD;
-                            let firstTimeNumber = data.firstTimeInstitutionNumber;
-                            let percentage = (firstTimeNumber/totalInstitution)*100;
+                            let totalInstitution = data.institutionCounterPNLD;
+                            let firstTimeCounter = data.firstTimeInstitutionCounter;
+                            let percentage = (firstTimeCounter/totalInstitution)*100;
                             return percentage.toFixed(DECIMAL_NUMBER);
                             });
                 }

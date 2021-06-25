@@ -1,8 +1,8 @@
-import {trainedTeacherNumberChart} from './chart.js';
+import {trainedTeacherCounterChart} from './chart.js';
 import {getPaletteColor} from '../utils.js';
 import { SwitchGenderFilter } from '../filter.js';
 
-export function trainedTeacherNumber(yearsSelected, gendersSelected, dataList, labels ){
+export function trainedTeacherCounter(yearsSelected, gendersSelected, dataList, labels ){
 
     var datasets = [];
     var dataLoop = { 'list': [] , 'data' : null};
@@ -39,8 +39,7 @@ export function trainedTeacherNumber(yearsSelected, gendersSelected, dataList, l
 
         datasets.push(dataset);
     });
-    console.log(datasets);
-    trainedTeacherNumberChart(labels, datasets, yearsSelected, dataLoop['data']);
+    trainedTeacherCounterChart(labels, datasets, yearsSelected, dataLoop['data']);
 }
 
 function teacherDecisionLoop(yearsSelected, gendersSelected){
