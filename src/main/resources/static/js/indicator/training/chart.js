@@ -76,7 +76,7 @@ export function participantInstitutionCounterChart (labels, datasets, title) {
 }
 
 export function firstTimeInstitutionPercentageChart (labels, datasets, title, dataList) {
-
+    console.log(dataList);
   if(myChart) { myChart.destroy(); }
 
   myChart = new Chart(ctx, {
@@ -128,8 +128,8 @@ export function firstTimeInstitutionPercentageChart (labels, datasets, title, da
                         return year + ": " + "Porcentaje " + percentage + "%";
                     },
                     afterLabel: function(data){
-                      let index = data.parsed.y;
-                      let regionData = dataList[index];
+                      let label = data.label;
+                      let regionData = dataList.find(element => element.regionName === label);
                       let year = parseInt(data.dataset.label);
                       let dataCounter = regionData.trainingIndicatorDataList.map(e => {
                           if (e.year === year) {

@@ -76,6 +76,6 @@ export function firstTimeInstitutionPercentage(yearsSelected, dataList, labels){
 
         datasets.push(dataset);
     });
-
+    console.log(datasets);
     firstTimeInstitutionPercentageChart(labels, datasets, yearsSelected, dataList);
 }
