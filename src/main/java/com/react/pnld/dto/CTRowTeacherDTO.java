@@ -5,11 +5,11 @@ import com.univocity.parsers.annotations.LowerCase;
 import com.univocity.parsers.annotations.Parsed;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 public class CTRowTeacherDTO {
-
 
     private Timestamp timeStamp;
 
@@ -40,9 +40,7 @@ public class CTRowTeacherDTO {
     @LowerCase
     private String educationalInstitution;
 
-    @Parsed(index = 8)
-    @LowerCase
-    private String teachesInLevels;
+    private int[] teachesInLevels;
 
     @Parsed(index = 9)
     @LowerCase
@@ -135,12 +133,20 @@ public class CTRowTeacherDTO {
         this.educationalInstitution = educationalInstitution;
     }
 
-    public String getTeachesInLevels() {
+    public int[] getTeachesInLevels() {
         return teachesInLevels;
     }
 
-    public void setTeachesInLevels(String teachesInLevels) {
+    public void setTeachesInLevels(int[] teachesInLevels) {
         this.teachesInLevels = teachesInLevels;
+    }
+
+    @Parsed(index = 8)
+    @LowerCase
+    private void buildTeachesInLevels(String levels){
+        String onlyNumberLevels = levels.replaceAll("[^0-9,]","");
+        int levelsArray[] = Arrays.stream(onlyNumberLevels.split(",")).mapToInt(Integer::parseInt).toArray();
+        this.setTeachesInLevels(levelsArray);
     }
 
     public String getParticipatedInPNLD() {

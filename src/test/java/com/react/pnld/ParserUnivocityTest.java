@@ -73,6 +73,11 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
+    void contextLoads() {
+        Assert.assertNotNull(fileUtilService);
+    }
+
+    @Test
     public void moodleTimestampFormat_parser_to_DateTime() throws IOException {
         InputStream inputStream = new ByteArrayInputStream(getDummyTrainingFileLikeString().getBytes());
         Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
@@ -100,7 +105,6 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
         reader.close();
     }
 
-
     @Test
     public void moodleTrainingTest_parser_FinishInDateTime() throws IOException {
 
@@ -116,7 +120,6 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
 
         reader.close();
     }
-
 
     @Test
     public void ctStudentGroupOne_when_parsingOk() throws UnsupportedEncodingException {
@@ -148,11 +151,17 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
         Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 
         List<CTRowTeacherDTO> ctRowsTeacher = fileUtilService.parseRowsToBeans(reader, CTRowTeacherDTO.class);
-        Assert.assertEquals("1234567-8", ctRowsTeacher.get(0).getRut());
-        Assert.assertEquals("pedro", ctRowsTeacher.get(0).getName());
-        Assert.assertEquals(45, ctRowsTeacher.get(0).getAge());
-        Assert.assertEquals(10, ctRowsTeacher.get(0).getTimeStamp().toLocalDateTime().getMonth().getValue());
+        CTRowTeacherDTO teacher = ctRowsTeacher.get(0);
 
+        Assert.assertEquals("1234567-8", teacher.getRut());
+        Assert.assertEquals("pedro", teacher.getName());
+        Assert.assertEquals(45, teacher.getAge());
+        Assert.assertEquals(10, teacher.getTimeStamp().toLocalDateTime().getMonth().getValue());
+
+        int levelsCleanArray[] = {2,4,6};
+        Assert.assertTrue(Arrays.equals(teacher.getTeachesInLevels(), levelsCleanArray));
+
+        //TODO check duration, timestamp init and finish
         reader.close();
     }
 }
