@@ -37,9 +37,10 @@ async function selectCharByInstitution(chartOption){
     var response = await getInstitutionSubDimensionData(queryParams);
 
     var dataRaw = response['trainingIndicatorDTOList'];
+    console.log(dataRaw);
     var data = transformRegionName(dataRaw);
     var dataList = dataListWithEmptyValues(data, yearsSelected);
-
+    console.log(dataList);
     var labels = getRegionsSelected();
 
     if(chartOption === PARTICIPANT_INSTITUTION_NUMBER){
@@ -63,7 +64,6 @@ async function selectChartByTeacher(chartOption){
      var dataRaw = response['trainingIndicatorDTOList'];
      var data = transformRegionName(dataRaw);
      var dataList = dataListWithEmptyValues(data, yearsSelected);
-
      var labels = getRegionsSelected();
      var gendersSelected = getGendersSelected();
 

@@ -12,13 +12,13 @@
         <result property="firstTimeInstitutionNumber" column="primera_vez_porcentaje"/>
     </resultMap>
 
-    <resultMap id="trainingIndicatorInstitution" type="com.react.pnld.dto.indicator.TrainingIndicatorDTO">
+    <resultMap id="trainingInstitutionIndicator" type="com.react.pnld.dto.indicator.TrainingIndicatorDTO">
         <id property="id" column="id_region"/>
         <result property="regionName" column="nombre_region" />
         <collection property="trainingIndicatorDataList" resultMap="trainingInstitutionData"/>
     </resultMap>
 
-    <select id="trainingInstitutionData" resultMap="trainingIndicatorInstitution">
+    <select id="trainingInstitutionData" resultMap="trainingInstitutionIndicator">
         SELECT
             d.anno_capacitacion,
             COUNT(d.rbd_colegio) AS cantidad_colegio,
@@ -38,7 +38,9 @@
         FROM pnld.docente AS d
         JOIN pnld.colegio AS c ON d.rbd_colegio = c.rbd
         JOIN pnld.region AS r ON c.id_region = r.id
-        WHERE d.anno_capacitacion BETWEEN #{fromYear} and #{toYear} GROUP BY r.id, d.anno_capacitacion ORDER BY r.id
+        WHERE d.anno_capacitacion BETWEEN #{fromYear} AND #{toYear}
+            AND r.id = #{regionId}
+        GROUP BY r.id, d.anno_capacitacion
     </select>
 
     <resultMap id="trainingTeacherDataByGender" type="com.react.pnld.dto.indicator.training.TrainingIndicatorTeacherDataByGender">

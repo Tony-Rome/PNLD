@@ -13,21 +13,28 @@ public class TrainingIndicatorService {
 
     @Autowired
     private TrainingIndicatorRepository trainingIndicatorRepository;
+    private static final int FIRST_REGION_ID = 1;
+    private static final int LAST_REGION_ID = 17;
 
     public List<TrainingIndicatorDTO> trainingInstitutionData(int fromYear, int toYear) {
-        return trainingIndicatorRepository.trainingInstitutionData(fromYear, toYear);
+
+        List<TrainingIndicatorDTO> trainingInstitutionIndicatorDTOList = new ArrayList<>();
+
+        for(int i = FIRST_REGION_ID; i <= LAST_REGION_ID; i++){
+            TrainingIndicatorDTO trainingInstitutionIndicatorDTO = trainingIndicatorRepository.trainingInstitutionData(fromYear, toYear, i);
+            if(trainingInstitutionIndicatorDTO != null) trainingInstitutionIndicatorDTOList.add(trainingInstitutionIndicatorDTO);
+        }
+
+        return trainingInstitutionIndicatorDTOList;
     }
 
     public List<TrainingIndicatorDTO> trainingTeacherData(int fromYear, int toYear){
-        int FIRST_REGION_ID = 1;
-        int LAST_REGION_ID = 17;
 
         List<TrainingIndicatorDTO> trainingTeacherIndicatorDTOList = new ArrayList<>();
 
         for(int i = FIRST_REGION_ID; i <= LAST_REGION_ID; i++){
-
             TrainingIndicatorDTO trainingTeacherIndicatorDTO = trainingIndicatorRepository.trainingTeacherData(fromYear, toYear, i);
-            trainingTeacherIndicatorDTOList.add(trainingTeacherIndicatorDTO);
+            if(trainingTeacherIndicatorDTO != null) trainingTeacherIndicatorDTOList.add(trainingTeacherIndicatorDTO);
         }
 
         return trainingTeacherIndicatorDTOList;

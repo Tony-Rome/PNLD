@@ -18,12 +18,16 @@ export function trainedTeacherNumber(yearsSelected, gendersSelected, dataList, l
 
         dataList.forEach( (e,index) => {
             if(labels.includes(e.regionName)){
-                let trainingIndicatorDataList = e.trainingIndicatorDataList.filter(data => data.year === filterYear);
-                let approvedTrainingCounter = trainingIndicatorDataList[0].dataByGenderList.map(data => {
-                    if(data.gender === filterGender) return data.approvedTrainingCounter;
-                }).filter(Boolean);
+                var approvedTrainingCounter = [0];
+                if(e.trainingIndicatorDataList != undefined && e.trainingIndicatorDataList.length != 0){
+                    let trainingIndicatorDataList = e.trainingIndicatorDataList.filter(data => data.year === filterYear);
+                    approvedTrainingCounter = trainingIndicatorDataList[0].dataByGenderList.map(data => {
+                            if(data.gender === filterGender) return data.approvedTrainingCounter;
+                        }).filter(Boolean);
+                }
                 data.push(approvedTrainingCounter[0]);
             }
+
         });
 
         let dataset = {
@@ -35,6 +39,7 @@ export function trainedTeacherNumber(yearsSelected, gendersSelected, dataList, l
 
         datasets.push(dataset);
     });
+    console.log(datasets);
     trainedTeacherNumberChart(labels, datasets, yearsSelected, dataLoop['data']);
 }
 

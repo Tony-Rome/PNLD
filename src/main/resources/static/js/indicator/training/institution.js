@@ -14,10 +14,12 @@ export function participantInstitutionNumber(yearsSelected, dataList, labels) {
         dataList.forEach( (e,index) => {
 
             if(labels.includes(e.regionName)){
-                let institutionNumberData = e.trainingIndicatorDataList
+                var institutionNumberData = [0];
+                if(e.trainingIndicatorDataList != undefined && e.trainingIndicatorDataList.length != 0){
+                    institutionNumberData = e.trainingIndicatorDataList
                         .filter(data => data.year === year)
                         .map( data => data.institutionNumberPNLD);
-
+                }
                 data.push(institutionNumberData[0]);
 
             }
@@ -50,17 +52,19 @@ export function firstTimeInstitutionPercentage(yearsSelected, dataList, labels){
         dataList.forEach( (e,index) => {
 
             if(labels.includes(e.regionName)){
-                let percentageFirstTimeInstitution = e.trainingIndicatorDataList
-                    .filter(data => data.year === year)
-                    .map( data => {
-                        let totalInstitution = data.institutionNumberPNLD;
-                        let firstTimeNumber = data.firstTimeInstitutionNumber;
-                        let percentage = (firstTimeNumber/totalInstitution)*100;
-                        return percentage.toFixed(DECIMAL_NUMBER);
-                        });
+                var percentageFirstTimeInstitution = [0];
+                if(e.trainingIndicatorDataList != undefined && e.trainingIndicatorDataList.length != 0){
+                    percentageFirstTimeInstitution = e.trainingIndicatorDataList
+                        .filter(data => data.year === year)
+                        .map( data => {
+                            let totalInstitution = data.institutionNumberPNLD;
+                            let firstTimeNumber = data.firstTimeInstitutionNumber;
+                            let percentage = (firstTimeNumber/totalInstitution)*100;
+                            return percentage.toFixed(DECIMAL_NUMBER);
+                            });
+                }
                 data.push(percentageFirstTimeInstitution[0]);
             }
-
         });
 
         let dataset = {

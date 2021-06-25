@@ -13,8 +13,8 @@ public class TrainingIndicatorRepository {
     @Autowired
     private TrainingIndicatorMapper trainingIndicatorMapper;
 
-    public List<TrainingIndicatorDTO> trainingInstitutionData(int fromYear, int toYear) {
-        return trainingIndicatorMapper.trainingInstitutionData(fromYear, toYear);
+    public TrainingIndicatorDTO trainingInstitutionData(int fromYear, int toYear, int regionId) {
+        return trainingIndicatorMapper.trainingInstitutionData(fromYear, toYear, regionId);
     }
 
     public TrainingIndicatorDTO trainingTeacherData(int fromYear, int toYear, int regionId) {
