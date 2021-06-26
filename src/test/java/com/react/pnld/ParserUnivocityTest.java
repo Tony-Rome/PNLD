@@ -160,8 +160,9 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
 
         int levelsCleanArray[] = {2,4,6};
         Assert.assertTrue(Arrays.equals(teacher.getTeachesInLevels(), levelsCleanArray));
+        Assert.assertEquals(19, teacher.getInitTime().getHour());
+        Assert.assertEquals(1, teacher.getFinishTime().getMinute());
 
-        //TODO check duration, timestamp init and finish
         reader.close();
     }
 }

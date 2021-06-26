@@ -5,6 +5,8 @@ import com.univocity.parsers.annotations.LowerCase;
 import com.univocity.parsers.annotations.Parsed;
 
 import java.sql.Timestamp;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -62,8 +64,9 @@ public class CTRowTeacherDTO {
     @LowerCase
     private int howInterestedAreYouInComputers;
 
-    @Parsed(index = 29)
-    private String finishTime;
+    private LocalTime initTime;
+
+    private LocalTime finishTime;
 
     private List<String> answers;
 
@@ -189,12 +192,28 @@ public class CTRowTeacherDTO {
         this.howInterestedAreYouInComputers = howInterestedAreYouInComputers;
     }
 
-    public String getFinishTime() {
+    public LocalTime getInitTime() {
+        return initTime;
+    }
+    @Parsed(index = 29)
+    public void setInitTime(String initTime) {
+
+        if(initTime != null){
+            LocalTime localTime = LocalTime.parse(initTime,  DateTimeFormatter.ofPattern("h:mm:ss a"));
+            this.initTime = localTime;
+        }
+    }
+
+    public LocalTime getFinishTime() {
         return finishTime;
     }
 
+    @Parsed(index = 30)
     public void setFinishTime(String finishTime) {
-        this.finishTime = finishTime;
+        if(finishTime != null){
+            LocalTime localTime = LocalTime.parse(finishTime,  DateTimeFormatter.ofPattern("h:mm:ss a"));
+            this.finishTime = localTime;
+        }
     }
 
     public List<String> getAnswers() {
@@ -205,25 +224,4 @@ public class CTRowTeacherDTO {
         this.answers = answers;
     }
 
-    @Override
-    public String toString() {
-        return "CTTeacherDTO{" +
-                "timeStamp='" + timeStamp + '\'' +
-                ", rut='" + rut + '\'' +
-                ", name='" + name + '\'' +
-                ", lastNames='" + lastNames + '\'' +
-                ", email='" + email + '\'' +
-                ", gender='" + gender + '\'' +
-                ", age='" + age + '\'' +
-                ", educationalInstitution='" + educationalInstitution + '\'' +
-                ", teachesInLevels='" + teachesInLevels + '\'' +
-                ", participatedInPNLD='" + participatedInPNLD + '\'' +
-                ", youKnowCode='" + youKnowCode + '\'' +
-                ", youKnowScratch='" + youKnowScratch + '\'' +
-                ", howDoYouThinkYouDidInTheTest=" + howDoYouThinkYouDidInTheTest +
-                ", howInterestedAreYouInComputers=" + howInterestedAreYouInComputers +
-                ", finishTime='" + finishTime + '\'' +
-                ", answers=" + answers +
-                '}';
-    }
 }
