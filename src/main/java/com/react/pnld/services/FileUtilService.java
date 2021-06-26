@@ -14,12 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.text.Normalizer;
-import java.time.DateTimeException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class FileUtilService {
@@ -216,20 +212,6 @@ public class FileUtilService {
 
             default:
                 return new FileResumeDTO(0, 0, 0, 0);
-        }
-    }
-
-    public static LocalDateTime getLocalDateFrom(String stringDate) {
-
-        String stringFormatted = stringDate.replaceAll(" de ", "/").replaceAll("\\s+|\\t", " ");
-        ;
-        String formatPattern = "d/MMMM/yyyy H:m";
-        try {
-            return LocalDateTime.parse(stringFormatted, DateTimeFormatter.ofPattern(formatPattern,
-                    new Locale("es", "ES")));
-        } catch (DateTimeException dateTimeException) {
-            logger.error("getLocalDateFrom.", dateTimeException.getMessage(), dateTimeException);
-            return LocalDateTime.MIN;
         }
     }
 
