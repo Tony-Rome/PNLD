@@ -1,13 +1,15 @@
 package com.react.pnld;
 
+import com.react.pnld.dto.CTRowGroupOneStudentsDTO;
+import com.react.pnld.dto.CTRowTeacherDTO;
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.services.FileUtilService;
+import com.react.pnld.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import com.react.pnld.dto.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -18,13 +20,13 @@ import java.util.List;
 import java.util.Locale;
 
 @SpringBootTest
-public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
-
-    @Autowired
-    CSVHeadersProperties csvHeadersProperties;
+public class UnivocityParserTest extends AbstractTestNGSpringContextTests {
 
     @Autowired
     FileUtilService fileUtilService;
+
+    @Autowired
+    CSVHeadersProperties csvHeadersProperties;
 
     private String getDummyTrainingFileLikeString() {
         String postTrainingHeaders = Arrays.toString(csvHeadersProperties.getPostTraining()).
@@ -41,17 +43,21 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
     }
 
     private String getDummyCTStudentsGroupOne() {
-        //TODO fix real headers.
-        String headers = "Timestamp\tNombre\tApellidos\tSexo\tEdad\tEstablecimiento Educacional\tCurso\t¿Has ocupado la página Code.org?" +
-                "\t¿Has ocupado la plataforma Scratch?\tIndique la hora actual, en formato HH:MM\tEjemplo I\tEjemplo II\tEjemplo III" +
-                "\tPregunta 1\tPregunta 2\tPregunta 3\tPregunta 4\tPregunta 5\tPregunta 6\tPregunta 7\tPregunta 8\tPregunta 9\tPregunta 10" +
-                "\tPregunta 11\tPregunta 12\tPregunta 13\tPregunta 14\tPregunta 15\tPregunta 16\tPregunta 17\tPregunta 18\tPregunta 19\tPregunta 20" +
-                "\tPregunta 21\tPregunta 22\tPregunta 23\tPregunta 24\tPregunta 25\tIndica la hora actual, en formato HH:MM" +
-                "\tDe 1 a 7, ¿cómo consideras que te fue en el Test?\tDe 1 a 7, ¿qué tanto te interesan los computadores y la tecnología?" +
-                "\tCuéntanos sobre el apoyo que tuviste al hacer el test\tCuéntanos acerca de cualquier problema que tuviste  para completar el test" +
+
+        String headers = "Timestamp\tNombre\tApellidos\tSexo\tEdad\tEstablecimiento Educacional\tCurso" +
+                "\t¿Has ocupado la página Code.org?\t¿Has ocupado la plataforma Scratch?" +
+                "\tIndique la hora actual, en formato HH:MM\tEjemplo I\tEjemplo II\tEjemplo III\tPregunta 1\tPregunta 2" +
+                "\tPregunta 3\tPregunta 4\tPregunta 5\tPregunta 6\tPregunta 7\tPregunta 8\tPregunta 9\tPregunta 10" +
+                "\tPregunta 11\tPregunta 12\tPregunta 13\tPregunta 14\tPregunta 15\tPregunta 16\tPregunta 17\tPregunta 18" +
+                "\tPregunta 19\tPregunta 20\tPregunta 21\tPregunta 22\tPregunta 23\tPregunta 24\tPregunta 25" +
+                "\tIndica la hora actual, en formato HH:MM\tDe 1 a 7, ¿cómo consideras que te fue en el Test?" +
+                "\tDe 1 a 7, ¿qué tanto te interesan los computadores y la tecnología?\tCuéntanos sobre el apoyo que " +
+                "tuviste al hacer el test\tCuéntanos acerca de cualquier problema que tuviste  para completar el test" +
                 "\tCorreo electrónico para futuro contacto";
-        String dummyResponse = "04-01-21 18:54\tJocelyn\tSimmonds\tMujer\t6\tMi casa\t3º básico\tNo\tSí\t6:52:00 PM\tB\tD\tC\tB\tB\tC\tD\tA\tB\tA\tC" +
-                "\tD\tD\t\t\t\tC\t\tC\tD\tA\t\t\tC\tD\t\t\t\t6:53:00 PM\t5\t7\tlas lei solita :-)\ttengo tuto\ta@aaa.com";
+        String dummyResponse = "5-10-2021 14:41:59\tRafaela\tCerda Elgueta\tMujer\t7\tColegio Concepción de Chillán\t2º básico" +
+                "\tNo\tNo\t2:11:00 PM\tB\tD\tC\tA\tD\tC\tB\tB\tD\tB\tA\tD\tC\tB\tA\tC\tA\t\tD\tA\tC\tA\tA\t\t\t\tB\t" +
+                "\t2:40:00 PM\t6\t7\tMi apoderado me leyó las preguntas\ten la página 7 estaban difíciles" +
+                "\trafaelacerdaelgueta@alumnos.cocochi.cl";
         return headers.concat("\n").concat(dummyResponse);
     }
 
@@ -83,8 +89,9 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
         Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 
         List<TrainingFileDTO> dummyList = fileUtilService.parseRowsToBeans(reader, TrainingFileDTO.class);
-        Assert.assertEquals(6, dummyList.get(0).getRequiredInterval().getMinutes());
-        Assert.assertEquals(0, dummyList.get(0).getRequiredInterval().getSeconds());
+        TrainingFileDTO trainingFileRow = dummyList.get(0);
+        Assert.assertEquals(6, trainingFileRow.getRequiredInterval().getMinutes());
+        Assert.assertEquals(0, trainingFileRow.getRequiredInterval().getSeconds());
 
         reader.close();
     }
@@ -96,11 +103,11 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
         Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 
         List<TrainingFileDTO> dummyList = fileUtilService.parseRowsToBeans(reader, TrainingFileDTO.class);
-
-        Assert.assertEquals(9, dummyList.get(0).getStartIn().getDayOfMonth());
-        Assert.assertEquals(10, dummyList.get(0).getStartIn().getMonth().getValue());
-        Assert.assertEquals(14, dummyList.get(0).getStartIn().getHour());
-        Assert.assertEquals(24, dummyList.get(0).getStartIn().getMinute());
+        TrainingFileDTO trainingFileRow = dummyList.get(0);
+        Assert.assertEquals(9, trainingFileRow.getStartIn().getDayOfMonth());
+        Assert.assertEquals(10, trainingFileRow.getStartIn().getMonth().getValue());
+        Assert.assertEquals(14, trainingFileRow.getStartIn().getHour());
+        Assert.assertEquals(24, trainingFileRow.getStartIn().getMinute());
 
         reader.close();
     }
@@ -112,11 +119,11 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
         Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 
         List<TrainingFileDTO> dummyList = fileUtilService.parseRowsToBeans(reader, TrainingFileDTO.class);
-
-        Assert.assertEquals(9, dummyList.get(0).getFinishIn().getDayOfMonth());
-        Assert.assertEquals(10, dummyList.get(0).getFinishIn().getMonth().getValue());
-        Assert.assertEquals(14, dummyList.get(0).getFinishIn().getHour());
-        Assert.assertEquals(30, dummyList.get(0).getFinishIn().getMinute());
+        TrainingFileDTO trainingFileRow = dummyList.get(0);
+        Assert.assertEquals(9, trainingFileRow.getFinishIn().getDayOfMonth());
+        Assert.assertEquals(10, trainingFileRow.getFinishIn().getMonth().getValue());
+        Assert.assertEquals(14, trainingFileRow.getFinishIn().getHour());
+        Assert.assertEquals(30, trainingFileRow.getFinishIn().getMinute());
 
         reader.close();
     }
@@ -129,9 +136,9 @@ public class ParserUnivocityTest extends AbstractTestNGSpringContextTests {
         List<CTRowGroupOneStudentsDTO> ctFirstGroupStudentsRows = fileUtilService.parseRowsToBeans(reader,
                 CTRowGroupOneStudentsDTO.class);
 
-        Assert.assertEquals("Jocelyn", ctFirstGroupStudentsRows.get(0).getName());
-        Assert.assertEquals("Simmonds", ctFirstGroupStudentsRows.get(0).getLastNames());
-        Assert.assertEquals("6:53:00 PM", ctFirstGroupStudentsRows.get(0).getFinishTime());
+        Assert.assertEquals("Rafaela", ctFirstGroupStudentsRows.get(0).getName());
+        Assert.assertEquals("Cerda Elgueta", ctFirstGroupStudentsRows.get(0).getLastNames());
+        Assert.assertEquals("2:40:00 PM", ctFirstGroupStudentsRows.get(0).getFinishTime());
     }
 
     @Test
