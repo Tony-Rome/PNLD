@@ -1,7 +1,7 @@
 package com.react.pnld;
 
 import com.react.pnld.dto.ScheduleFileLoadDTO;
-import com.react.pnld.dto.TrainingFileDTO;
+import com.react.pnld.dto.*;
 import com.react.pnld.services.FileUtilService;
 import org.postgresql.util.PGInterval;
 import org.springframework.beans.factory.annotation.Autowired;
