@@ -8,7 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 @SpringBootTest
-public class SchootServiceTest extends AbstractTestNGSpringContextTests {
+public class SchoolServiceTest extends AbstractTestNGSpringContextTests {
 
     @Autowired
     SchoolService schoolService;
