@@ -76,7 +76,6 @@ export function participantInstitutionCounterChart (labels, datasets, title) {
 }
 
 export function firstTimeInstitutionPercentageChart (labels, datasets, title, dataList) {
-    console.log(dataList);
   if(myChart) { myChart.destroy(); }
 
   myChart = new Chart(ctx, {
