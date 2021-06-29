@@ -3,7 +3,6 @@ import {getPaletteColor} from '../utils.js';
 
 
 export function participantInstitutionCounter(yearsSelected, dataList, labels) {
-
     var datasets = [];
 
     yearsSelected.forEach( (year, i) => {
