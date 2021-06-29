@@ -1,39 +1,38 @@
+import {allRegion, allGender, allYear, regionList, genderList, yearList, selectAllRegions, selectAllYears, selectAllGenders,
+        getYearsSelected, getRegionsSelected, getGendersSelected} from '../filter.js';
 import {selectChart} from './chart-setup.js';
 
 const filterList = document.getElementsByClassName('filterOption');
 
-const allYear = document.getElementById('allYear');
-export const allRegion = document.getElementById('allRegion');
-const allGender = document.getElementById('allGender');
-
-function selectAllYears() {
-    var yearList = document.getElementsByName('year');
-    yearList.forEach( (e, i) => {
-        e.checked = this.checked;
-    });
-    selectChart();
-};
-
-export function selectAllRegions() {
-    var regionList = document.getElementsByName('region');
-    regionList.forEach( (e, i) => {
-        e.checked = this.checked;
-    });
-    selectChart();
-};
-
-function selectAllGenders() {
-    var genderList = document.getElementsByName('gender');
-    genderList.forEach( (e,i) => {
-        e.checked = this.checked;
-    });
-    selectChart();
-};
-
 Object.keys(filterList).forEach( (k,i) => {
-    filterList[i].addEventListener('click', selectChart);
+    filterList[i].addEventListener('click', checkFilters);
 });
 
-allYear.addEventListener('click', selectAllYears);
-allRegion.addEventListener('click', selectAllRegions);
-allGender.addEventListener('click', selectAllGenders);
+function checkFilters(){
+    if(this.name === 'year'){
+        let years = getYearsSelected().length;
+        allYear.checked = (yearList.length != years) ? false : true;
+    }
+    if(this.name === 'region'){
+        let regions = getRegionsSelected().length;
+        allRegion.checked = (regionList.length != regions) ? false : true;
+    }
+    if(this.name === 'gender'){
+        let genders = getGendersSelected().length;
+        allGender.checked = (genderList.length != genders) ? false : true;
+    }
+    selectChart();
+}
+
+function selectAllByFilter(){
+
+    if(this.id === 'allYear') selectAllYears(this);
+    if(this.id === 'allRegion') selectAllRegions(this);
+    if(this.id === 'allGender') selectAllGenders(this);
+
+    selectChart();
+}
+
+allYear.addEventListener('click', selectAllByFilter);
+allRegion.addEventListener('click', selectAllByFilter);
+allGender.addEventListener('click', selectAllByFilter);
