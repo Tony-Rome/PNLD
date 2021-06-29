@@ -2,7 +2,6 @@ import {trainedTeacherCounterChart} from './chart.js';
 import {getPaletteColor, teacherDecisionLoop} from '../utils.js';
 
 export function trainedTeacherCounter(yearsSelected, dataList, labels ){
-
     var datasets = [];
     var dataLoop = teacherDecisionLoop(yearsSelected);
 
@@ -17,9 +16,11 @@ export function trainedTeacherCounter(yearsSelected, dataList, labels ){
                 var approvedTrainingCounter = [0];
                 if(e.trainingIndicatorDataList != undefined && e.trainingIndicatorDataList.length != 0){
                     let trainingIndicatorDataList = e.trainingIndicatorDataList.filter(data => data.year === filterYear);
-                    approvedTrainingCounter = trainingIndicatorDataList[0].dataByGenderList.map(data => {
-                            if(data.gender === filterGender) return data.approvedTrainingCounter;
-                        }).filter(Boolean);
+                    if(trainingIndicatorDataList != undefined && trainingIndicatorDataList.length != 0){
+                        approvedTrainingCounter = trainingIndicatorDataList[0].dataByGenderList.map(data => {
+                                if(data.gender === filterGender) return data.approvedTrainingCounter;
+                            }).filter(Boolean);
+                    }
                 }
                 data.push(approvedTrainingCounter[0]);
             }
