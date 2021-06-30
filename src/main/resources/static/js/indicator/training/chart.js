@@ -289,27 +289,15 @@ export function teacherInPersonSessionPercentageChart(labels, datasets, title, k
                       let datasetLabel = data.dataset.label;
                       let regionData = dataList.find(element => element.regionName === label);
                       let filterByYear = (typeof(keyword) === 'string') ? datasetLabel : keyword;
-                      console.log("filterbyyear: ");
-                      console.log(filterByYear);
+                      let filterByGender = (typeof(keyword) === 'string') ? keyword : datasetLabel;
+
                       let dataByYear = regionData.trainingIndicatorDataList.find(element => element.year === filterByYear);
                       if(dataByYear === undefined) return "Detalle: " + "Total "+ 0 + " - " + "Valor actual " + formattedValue;;
-                      let filterByGender = (typeof(keyword) === 'string') ? keyword : datasetLabel;
-                      console.log("filterbygender: ");
-                      console.log(filterByGender);
-                      console.log("keyword: ");
-                      console.log(keyword);
-                      console.log("datasetlabel: ");
-                      console.log(datasetLabel);
-                      console.log("databyyear: ");
-                      console.log(dataByYear);
-                      console.log("formatedvalue: ");
-                      console.log(formattedValue);
+
                       let dataByGender = dataByYear.dataByGenderList.find(element => element.gender === filterByGender.toLowerCase());
                       if(dataByGender === undefined) return "Detalle: " + "Total "+ 0 + " - " + "Valor actual " + formattedValue;;
-                      console.log("databygender: ");
-                      console.log(dataByGender);
-                      let totalAssistance = dataByGender.assistanceCounter + dataByGender.notAssistanceCounter;
 
+                      let totalAssistance = dataByGender.assistanceCounter + dataByGender.notAssistanceCounter;
                       return "Detalle: " + "Total "+ totalAssistance + " - " + "Valor actual " + dataByGender.assistanceCounter;
                     },
                   },

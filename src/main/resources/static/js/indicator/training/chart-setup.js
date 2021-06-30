@@ -57,15 +57,15 @@ async function selectCharByInstitution(chartOption){
 
 async function selectChartByTeacher(chartOption){
 
-     var yearsSelected = getYearsSelected();
-     var queryParams = defineYearsQueryParams(yearsSelected);
-     var response = await getTeacherSubDimensionData(queryParams);
+    var yearsSelected = getYearsSelected();
+    var queryParams = defineYearsQueryParams(yearsSelected);
+    var response = await getTeacherSubDimensionData(queryParams);
 
-     var dataRaw = response['trainingIndicatorDTOList'];
-     var data = transformRegionName(dataRaw);
-     var dataList = dataListWithEmptyValues(data, yearsSelected);
-     var labels = getRegionsSelected();
-    console.log(chartOption);
+    var dataRaw = response['trainingIndicatorDTOList'];
+    var data = transformRegionName(dataRaw);
+    var dataList = dataListWithEmptyValues(data, yearsSelected);
+    var labels = getRegionsSelected();
+
     if(chartOption === TRAINED_TEACHER_NUMBER)
         trainedTeacherCounter(yearsSelected, dataList, labels);
 

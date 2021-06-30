@@ -42,7 +42,6 @@ export function trainedTeacherCounter(yearsSelected, dataList, labels ){
 }
 
 export function teacherInPersonSessionPercentage(yearsSelected, dataList, labels){
-    console.log(dataList);
     var datasets = [];
     var dataLoop = teacherDecisionLoop(yearsSelected);
 
