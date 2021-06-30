@@ -230,3 +230,102 @@ export function trainedTeacherCounterChart(labels, datasets, title, keyword){
 
     myChart.update();
 }
+
+export function teacherInPersonSessionPercentageChart(labels, datasets, title, keyword, dataList){
+
+  if(myChart) { myChart.destroy(); }
+
+  myChart = new Chart(ctx, {
+      type: 'bar',
+      data: { labels: labels, datasets: datasets },
+      options: {
+          scales: {
+              x: {
+                  min: 0,
+                  max: 100,
+                  ticks:{
+                    callback: function(value, index, values){
+                        return value+"%";
+                    }
+                  },
+                  title: {
+                      display: true,
+                      text: 'Porcentaje de docentes que asisten a jornada presencial',
+                      align: 'center',
+                      font: {
+                          size: 15,
+                      },
+                      padding: {
+                          top: 12,
+                      }
+                  }
+              },
+              y: {
+                  title: {
+                      display: true,
+                      text: 'Regiones',
+                      align: 'center',
+                      font: {
+                          size: 15,
+                      }
+                  }
+              }
+          },
+          indexAxis: 'y',
+          plugins:{
+              tooltip:{
+                  callbacks:{
+                    title: function(data){
+                      return data[0].label;
+                    },
+                    label: function(data){
+                        let percentage = data.formattedValue;
+                        let label = data.dataset.label;
+                        return (percentage != 0) ? label + " " + keyword + ": " + "Porcentaje " + percentage + "%" : null;
+                    },
+                    afterLabel: function(data){
+                      let formattedValue = parseInt(data.formattedValue);
+                      let label = data.label;
+                      let datasetLabel = data.dataset.label;
+                      let regionData = dataList.find(element => element.regionName === label);
+                      let filterByYear = (typeof(keyword) === 'string') ? datasetLabel : keyword;
+                      console.log("filterbyyear: ");
+                      console.log(filterByYear);
+                      let dataByYear = regionData.trainingIndicatorDataList.find(element => element.year === filterByYear);
+                      if(dataByYear === undefined) return null;
+                      let filterByGender = (typeof(keyword) === 'string') ? keyword : datasetLabel;
+                      console.log("filterbygender: ");
+                      console.log(filterByGender);
+                      console.log("keyword: ");
+                      console.log(keyword);
+                      console.log("datasetlabel: ");
+                      console.log(datasetLabel);
+                      console.log("databyyear: ");
+                      console.log(dataByYear);
+                      console.log("formatedvalue: ");
+                      console.log(formattedValue);
+                      let dataByGender = dataByYear.dataByGenderList.find(element => element.gender === filterByGender.toLowerCase());
+                      if(dataByGender === undefined) return null;
+                      console.log("databygender: ");
+                      console.log(dataByGender);
+                      let totalAssistance = dataByGender.assistanceCounter + dataByGender.notAssistanceCounter;
+
+                      return (formattedValue != 0) ? "Detalle: " + "Total "+ totalAssistance + " - " + "Valor actual " + dataByGender.assistanceCounter : null;
+                    },
+                  },
+              },
+              title: {
+                  display: true,
+                  text: '% de docentes que asisten a jornada presencial ' + defineTitle(title),
+              },
+              legend: {
+                  display: true
+              }
+          },
+          responsive: true,
+
+      }
+  });
+
+  myChart.update();
+}
