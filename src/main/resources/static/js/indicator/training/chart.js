@@ -250,7 +250,7 @@ export function teacherInPersonSessionPercentageChart(labels, datasets, title, k
                   },
                   title: {
                       display: true,
-                      text: 'Porcentaje de docentes que asisten a jornada presencial',
+                      text: 'Porcentaje asistencia jornada presencial',
                       align: 'center',
                       font: {
                           size: 15,
@@ -304,7 +304,7 @@ export function teacherInPersonSessionPercentageChart(labels, datasets, title, k
               },
               title: {
                   display: true,
-                  text: '% de docentes que asisten a jornada presencial ' + defineTitle(title),
+                  text: 'Porcentaje de docentes que asisten a jornada presencial ' + defineTitle(title),
               },
               legend: {
                   display: true
