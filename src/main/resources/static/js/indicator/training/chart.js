@@ -281,7 +281,7 @@ export function teacherInPersonSessionPercentageChart(labels, datasets, title, k
                     label: function(data){
                         let percentage = data.formattedValue;
                         let label = data.dataset.label;
-                        return (percentage != 0) ? label + " " + keyword + ": " + "Porcentaje " + percentage + "%" : null;
+                        return label + " " + keyword + ": " + "Porcentaje " + percentage + "%" ;
                     },
                     afterLabel: function(data){
                       let formattedValue = parseInt(data.formattedValue);
@@ -292,7 +292,7 @@ export function teacherInPersonSessionPercentageChart(labels, datasets, title, k
                       console.log("filterbyyear: ");
                       console.log(filterByYear);
                       let dataByYear = regionData.trainingIndicatorDataList.find(element => element.year === filterByYear);
-                      if(dataByYear === undefined) return null;
+                      if(dataByYear === undefined) return "Detalle: " + "Total "+ 0 + " - " + "Valor actual " + formattedValue;;
                       let filterByGender = (typeof(keyword) === 'string') ? keyword : datasetLabel;
                       console.log("filterbygender: ");
                       console.log(filterByGender);
@@ -305,12 +305,12 @@ export function teacherInPersonSessionPercentageChart(labels, datasets, title, k
                       console.log("formatedvalue: ");
                       console.log(formattedValue);
                       let dataByGender = dataByYear.dataByGenderList.find(element => element.gender === filterByGender.toLowerCase());
-                      if(dataByGender === undefined) return null;
+                      if(dataByGender === undefined) return "Detalle: " + "Total "+ 0 + " - " + "Valor actual " + formattedValue;;
                       console.log("databygender: ");
                       console.log(dataByGender);
                       let totalAssistance = dataByGender.assistanceCounter + dataByGender.notAssistanceCounter;
 
-                      return (formattedValue != 0) ? "Detalle: " + "Total "+ totalAssistance + " - " + "Valor actual " + dataByGender.assistanceCounter : null;
+                      return "Detalle: " + "Total "+ totalAssistance + " - " + "Valor actual " + dataByGender.assistanceCounter;
                     },
                   },
               },
