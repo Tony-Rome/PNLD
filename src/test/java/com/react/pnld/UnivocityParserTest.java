@@ -118,8 +118,8 @@ public class UnivocityParserTest extends AbstractTestNGSpringContextTests {
         InputStream inputStream = new ByteArrayInputStream(getDummyTrainingFileLikeString().getBytes());
         Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 
-        List<TrainingFileDTO> dummyList = fileUtilService.parseRowsToBeans(reader, TrainingFileDTO.class);
-        TrainingFileDTO trainingFileRow = dummyList.get(0);
+        TrainingFileDTO trainingFileRow = fileUtilService.parseRowsToBeans(reader, TrainingFileDTO.class).get(0);
+
         Assert.assertEquals(9, trainingFileRow.getFinishIn().getDayOfMonth());
         Assert.assertEquals(10, trainingFileRow.getFinishIn().getMonth().getValue());
         Assert.assertEquals(14, trainingFileRow.getFinishIn().getHour());

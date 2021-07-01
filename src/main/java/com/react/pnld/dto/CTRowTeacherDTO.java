@@ -44,10 +44,6 @@ public class CTRowTeacherDTO {
 
     private int[] teachesInLevels;
 
-    @Parsed(index = 9)
-    @LowerCase
-    private String participatedInPNLD;
-
     @Parsed(index = 10)
     @LowerCase
     private String youKnowCode;
@@ -152,14 +148,6 @@ public class CTRowTeacherDTO {
         this.setTeachesInLevels(levelsArray);
     }
 
-    public String getParticipatedInPNLD() {
-        return participatedInPNLD;
-    }
-
-    public void setParticipatedInPNLD(String participatedInPNLD) {
-        this.participatedInPNLD = participatedInPNLD;
-    }
-
     public String getYouKnowCode() {
         return youKnowCode;
     }
@@ -224,4 +212,25 @@ public class CTRowTeacherDTO {
         this.answers = answers;
     }
 
+    @Override
+    public String toString() {
+        return "CTRowTeacherDTO{" +
+                "timeStamp=" + timeStamp +
+                ", rut='" + rut + '\'' +
+                ", name='" + name + '\'' +
+                ", lastNames='" + lastNames + '\'' +
+                ", email='" + email + '\'' +
+                ", gender='" + gender + '\'' +
+                ", age=" + age +
+                ", educationalInstitution='" + educationalInstitution + '\'' +
+                ", teachesInLevels=" + Arrays.toString(teachesInLevels) +
+                ", youKnowCode='" + youKnowCode + '\'' +
+                ", youKnowScratch='" + youKnowScratch + '\'' +
+                ", howDoYouThinkYouDidInTheTest=" + howDoYouThinkYouDidInTheTest +
+                ", howInterestedAreYouInComputers=" + howInterestedAreYouInComputers +
+                ", initTime=" + initTime +
+                ", finishTime=" + finishTime +
+                ", answers=" + answers +
+                '}';
+    }
 }
