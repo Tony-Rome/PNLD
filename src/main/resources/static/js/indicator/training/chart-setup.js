@@ -3,7 +3,8 @@ import { getYearsSelected, getRegionsSelected, getAllRegionsName } from '../filt
 import {getSubDimensionSelected} from '../sub-dimension.js';
 import {getInstitutionSubDimensionData, getTeacherSubDimensionData} from './api.js';
 import {participantInstitutionCounter, firstTimeInstitutionPercentage} from './institution.js';
-import {trainedTeacherCounter, teacherInPersonSessionPercentage} from './teacher.js';
+import {trainedTeacherCounter, teacherInPersonSessionPercentage,
+        teacherPretestCompletedPercentage} from './teacher.js';
 
 const PARTICIPANT_INSTITUTION_NUMBER = 0;
 const FIRST_TIME_INSTITUTION_PERCENTAGE = 1;
@@ -72,9 +73,11 @@ async function selectChartByTeacher(chartOption){
     if(chartOption === IN_PERSON_SESSION_PERCENTAGE)
         teacherInPersonSessionPercentage(yearsSelected, dataList, labels);
 
-    if(chartOption === PRE_TEST_COMPLETED_PERCENTAGE);
+    if(chartOption === PRE_TEST_COMPLETED_PERCENTAGE)
+        teacherPretestCompletedPercentage(yearsSelected, dataList, labels);
+
     if(chartOption === POST_TEST_COMPLETED_PERCENTAGE);
-    if(chartOption === ONLINE_COURSE_COMPETED_PERCENTAGE);
+    if(chartOption === ONLINE_COURSE_COMPETED_PERCENTAGE);  // TODO: Por definir si se agrega o no en prox reu
     if(chartOption === TRAINING_COMPLETED_PERCENTAGE);
     if(chartOption === SCORE_DIFFERENCE_PRE_POST_TEST);
 }
