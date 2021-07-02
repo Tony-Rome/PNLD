@@ -78,6 +78,13 @@ public class UnivocityParserTest extends AbstractTestNGSpringContextTests {
         return headers.concat("\n").concat(dummyResponse);
     }
 
+
+    private String getDummyGeneralResumeRow(){
+        String headers = "RUT\tREGION\tRBD\tNOMBRES\tASISTE JORNADA\tANNO CAPACITACION\tESTADO FINAL";
+        String dummyRow = "10.106.593-6\t13\t24721\tEDITH DEL CARMEN CUBILLOS CERDA\tSI\t2019\tAprobado";
+        return headers.concat("\n").concat(dummyRow);
+    }
+
     @Test
     void contextLoads() {
         Assert.assertNotNull(fileUtilService);
@@ -171,5 +178,22 @@ public class UnivocityParserTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(1, teacher.getFinishTime().getMinute());
 
         reader.close();
+    }
+
+    @Test
+    public void parseGeneralResumeRow_when_valuesOk(){
+        InputStream inputStream = new ByteArrayInputStream(getDummyGeneralResumeRow().getBytes());
+        Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+
+        List<GeneralResumeTrainingDTO> generalResumeRows = fileUtilService.parseRowsToBeans(reader, GeneralResumeTrainingDTO.class);
+        GeneralResumeTrainingDTO generalResumeRow = generalResumeRows.get(0);
+
+        Assert.assertEquals(generalResumeRow.getRut(), "10.106.593-6");
+        Assert.assertEquals(generalResumeRow.getRegionId(), 13);
+        Assert.assertEquals(generalResumeRow.getRbd(), 24721);
+        Assert.assertEquals(generalResumeRow.getFullName(), "edith del carmen cubillos cerda");
+        Assert.assertTrue(generalResumeRow.isAttendsInPerson());
+        Assert.assertEquals(generalResumeRow.getTrainingYear(), 2019);
+        Assert.assertTrue(generalResumeRow.isApproved());
     }
 }
