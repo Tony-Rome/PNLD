@@ -10,10 +10,10 @@
         <result property="genderId" column="id_genero"/>
         <result property="email" column="correo"/>
         <result property="department" column="departamento" />
-        <result property="participatedInPNLD" column="participo_en_PNLD" />
         <result property="teachesInLevels" column="dicta_en_niveles" />
         <result property="isTrainingApproved" column="capacitacion_aprobada" />
         <result property="trainingYear" column="anno_capacitacion" />
+        <result property="attendsInPerson" column="asiste_jornada" />
         <result property="schoolRbd" column="rbd_colegio" />
     </resultMap>
     <select id="getTeacherByRut" resultMap="getTeacher" useCache="true">
@@ -24,11 +24,11 @@
 
     <insert id="insertTeacher">
         INSERT INTO pnld.docente
-        (rut, nombre, correo, id_genero, rbd_colegio, edad, departamento, participo_en_PNLD, dicta_en_niveles,
-         capacitacion_aprobada, anno_capacitacion)
+        (rut, nombre, correo, id_genero, rbd_colegio, edad, departamento, dicta_en_niveles, capacitacion_aprobada,
+         asiste_jornada, anno_capacitacion)
         VALUES
-        (#{rut}, #{name}, #{email}, #{genderId}, #{schoolRbd}, #{age}, #{department}, #{participatedInPNLD},
-         #{teachesInLevels}, #{isTrainingApproved}, #{trainingYear});
+        (#{rut}, #{name}, #{email}, #{genderId}, #{schoolRbd}, #{age}, #{department}, #{teachesInLevels}, #{isTrainingApproved},
+         #{attendsInPerson}, #{trainingYear});
     </insert>
 
     <select id="getNextPersonId" resultType="int">
@@ -45,8 +45,8 @@
 
     <update id="updateTeacher">
         UPDATE pnld.docente
-        SET edad = #{age}, departamento = #{department}, participo_en_PNLD = #{participatedInPNLD},
-            dicta_en_niveles = #{teachesInLevels}, capacitacion_aprobada = #{isTrainingApproved}, anno_capacitacion = #{trainingYear}
+        SET edad = #{age}, departamento = #{department}, dicta_en_niveles = #{teachesInLevels},
+            capacitacion_aprobada = #{isTrainingApproved}, anno_capacitacion = #{trainingYear}, asiste_jornada = #{attendsInPerson}
         WHERE rut = #{rut}
     </update>
 
