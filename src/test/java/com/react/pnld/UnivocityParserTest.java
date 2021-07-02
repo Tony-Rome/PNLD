@@ -171,6 +171,5 @@ public class UnivocityParserTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(1, teacher.getFinishTime().getMinute());
 
         reader.close();
-
     }
 }
