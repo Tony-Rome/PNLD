@@ -61,7 +61,7 @@ export function participantInstitutionCounterChart (labels, datasets, title) {
                     },
                     title: {
                         display: true,
-                        text: 'Número de establecimientos por región ' + defineTitle(title),
+                        text: 'Número de establecimientos que participan en PNLD ' + defineTitle(title),
                     },
                     legend: {
                         display: true
@@ -147,7 +147,7 @@ export function firstTimeInstitutionPercentageChart (labels, datasets, title, da
               },
               title: {
                   display: true,
-                  text: 'Porcentaje de instituciones que participan por primera vez ' + defineTitle(title),
+                  text: 'Porcentaje de establecimientos que participan por primera vez ' + defineTitle(title),
               },
               legend: {
                   display: true

@@ -59,7 +59,7 @@ export function teacherInPersonSessionPercentage(yearsSelected, dataList, labels
                 if(e.trainingIndicatorDataList != undefined && e.trainingIndicatorDataList.length != 0){
                     let trainingIndicatorDataList = e.trainingIndicatorDataList.filter(data => data.year === filterYear);
                     if(trainingIndicatorDataList != undefined && trainingIndicatorDataList.length != 0){
-                        inPersonSessionPercentage = trainingIndicatorDataList[0].dataByGenderList.map(data => { //TODO. Cambiar nombre variable a correspondiente
+                        inPersonSessionPercentage = trainingIndicatorDataList[0].dataByGenderList.map(data => {
                                 if(data.gender === filterGender){
                                     let totalAssistance = data.notAssistanceCounter + data.assistanceCounter;
                                     let assistancePercentage = (data.assistanceCounter / totalAssistance) * 100;

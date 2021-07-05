@@ -77,7 +77,7 @@ async function selectChartByTeacher(chartOption){
         teacherPretestCompletedPercentage(yearsSelected, dataList, labels);
 
     if(chartOption === POST_TEST_COMPLETED_PERCENTAGE);
-    if(chartOption === ONLINE_COURSE_COMPETED_PERCENTAGE);  // TODO: Por definir si se agrega o no en prox reu
+    if(chartOption === ONLINE_COURSE_COMPETED_PERCENTAGE);
     if(chartOption === TRAINING_COMPLETED_PERCENTAGE);
     if(chartOption === SCORE_DIFFERENCE_PRE_POST_TEST);
 }
