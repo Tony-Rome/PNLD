@@ -54,12 +54,12 @@ export function teacherInPersonSessionPercentage(yearsSelected, dataList, labels
 
         dataList.forEach( (e,index) => {
             if(labels.includes(e.regionName)){
-                var approvedTrainingCounter = [0];
+                var inPersonSessionPercentage = [0];
                 var dataByGender = [];
                 if(e.trainingIndicatorDataList != undefined && e.trainingIndicatorDataList.length != 0){
                     let trainingIndicatorDataList = e.trainingIndicatorDataList.filter(data => data.year === filterYear);
                     if(trainingIndicatorDataList != undefined && trainingIndicatorDataList.length != 0){
-                        approvedTrainingCounter = trainingIndicatorDataList[0].dataByGenderList.map(data => { //TODO. Cambiar nombre variable a correspondiente
+                        inPersonSessionPercentage = trainingIndicatorDataList[0].dataByGenderList.map(data => { //TODO. Cambiar nombre variable a correspondiente
                                 if(data.gender === filterGender){
                                     let totalAssistance = data.notAssistanceCounter + data.assistanceCounter;
                                     let assistancePercentage = (data.assistanceCounter / totalAssistance) * 100;
@@ -69,7 +69,7 @@ export function teacherInPersonSessionPercentage(yearsSelected, dataList, labels
                     }
                 }
 
-                data.push(approvedTrainingCounter[0]);
+                data.push(inPersonSessionPercentage[0]);
             }
 
         });

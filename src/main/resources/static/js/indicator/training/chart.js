@@ -20,7 +20,7 @@ export function participantInstitutionCounterChart (labels, datasets, title) {
                     x: {
                         title: {
                             display: true,
-                            text: 'Cantidad',
+                            text: 'Cantidad por región',
                             align: 'center',
                             font: {
                                 size: 15,
@@ -61,7 +61,7 @@ export function participantInstitutionCounterChart (labels, datasets, title) {
                     },
                     title: {
                         display: true,
-                        text: 'N° de establecimientos por región ' + defineTitle(title),
+                        text: 'Número de establecimientos por región ' + defineTitle(title),
                     },
                     legend: {
                         display: true
@@ -93,7 +93,7 @@ export function firstTimeInstitutionPercentageChart (labels, datasets, title, da
                   },
                   title: {
                       display: true,
-                      text: '% de instituciones que participan por primera vez',
+                      text: 'Porcentaje participación por primera vez',
                       align: 'center',
                       font: {
                           size: 15,
@@ -147,7 +147,7 @@ export function firstTimeInstitutionPercentageChart (labels, datasets, title, da
               },
               title: {
                   display: true,
-                  text: '% de establecimientos que participan por primera vez ' + defineTitle(title),
+                  text: 'Porcentaje de instituciones que participan por primera vez ' + defineTitle(title),
               },
               legend: {
                   display: true
@@ -176,7 +176,7 @@ export function trainedTeacherCounterChart(labels, datasets, title, keyword){
                     x: {
                         title: {
                             display: true,
-                            text: 'Cantidad',
+                            text: 'Cantidad capacitados',
                             align: 'center',
                             font: {
                                 size: 15,
@@ -217,7 +217,7 @@ export function trainedTeacherCounterChart(labels, datasets, title, keyword){
                     },
                     title: {
                         display: true,
-                        text: 'N° de docentes capacitados ' + defineTitle(title),
+                        text: 'Número de docentes capacitados ' + defineTitle(title),
                     },
                     legend: {
                         display: true
