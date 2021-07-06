@@ -1,5 +1,5 @@
 import {trainedTeacherCounterChart, teacherInPersonSessionPercentageChart,
-        teacherPretestCompletedPercentageChart} from './chart.js';
+        teacherPretestCompletedPercentageChart, teacherPostTestCompletedPercentageChart} from './chart.js';
 import {getPaletteColor, teacherDecisionLoop} from '../utils.js';
 
 const DECIMAL_NUMBER = 2;
@@ -117,6 +117,40 @@ export function teacherPretestCompletedPercentage(yearsSelected, dataList, label
     teacherPretestCompletedPercentageChart(labels, datasets, yearsSelected, dataLoop['data'], dataList);
 }
 
+export function teacherPostTestCompletedPercentage(yearsSelected, dataList, labels){
+    var datasets = [];
+    var dataLoop = teacherDecisionLoop(yearsSelected);
+    console.log(dataList);
+    dataLoop['list'].forEach( (element, i) => {
+        var paletteColor = getPaletteColor(i);
+        var data = [];
+        var filterGender = (dataLoop['filter']) ? element.toLowerCase() : dataLoop['data'];
+        var filterYear = (dataLoop['filter']) ? dataLoop['data'] : element;
+
+        dataList.forEach( (e,index) => {
+            if(labels.includes(e.regionName)){
+                var trainingIndicatorDataList = getDataByParameter(e.trainingIndicatorDataList, filterYear);
+                var dataByGender = getDataByParameter(trainingIndicatorDataList.dataByGenderList, filterGender);
+                var completedPercentage = calculatePercentage(dataByGender.postTestCompletedCounter, dataByGender.postTestNotCompletedCounter);
+                console.log(completedPercentage);
+                data.push(completedPercentage);
+            }
+
+        });
+
+        let dataset = {
+            'label': element,
+            'data': data,
+            'backgroundColor': paletteColor['backgroundColor'],
+            'borderColor': paletteColor['borderColor']
+        };
+        datasets.push(dataset);
+    });
+    teacherPostTestCompletedPercentageChart(labels, datasets, yearsSelected, dataLoop['data'], dataList);
+}
+
+
+//TODO: funcion general de porcentaje podria estar en otro arcvhio(?)
 function getDataByParameter(list, filterParameter){
     if(list === undefined) return {};
 
@@ -128,9 +162,12 @@ function getDataByParameter(list, filterParameter){
     return (data != undefined) ? data : {};
 }
 
+//TODO: funcion general de porcentaje podria estar en otro arcvhio(?)
 function calculatePercentage(favourableCase, notFavourableCase){
     if(favourableCase === undefined || notFavourableCase === undefined) return 0;
 
     var total = favourableCase + notFavourableCase;
+    if(total === 0) return total.toFixed(DECIMAL_NUMBER);
+
     return ((favourableCase / total) * 100).toFixed(DECIMAL_NUMBER);
 }

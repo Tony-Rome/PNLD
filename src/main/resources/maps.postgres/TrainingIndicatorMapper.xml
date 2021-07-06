@@ -51,6 +51,8 @@
         <result property="notAssistanceCounter" column="no_asiste_jornada"/>
         <result property="preTestCompletedCounter" column="pre_test_completado"/>
         <result property="preTestNotCompletedCounter" column="pre_test_no_completado"/>
+        <result property="postTestCompletedCounter" column="post_test_completado"/>
+        <result property="postTestNotCompletedCounter" column="post_test_no_completado"/>
 
     </resultMap>
 
@@ -74,6 +76,8 @@
             COUNT(d.capacitacion_aprobada) FILTER(WHERE d.capacitacion_aprobada = false) AS capacitacion_reprobada,
             COUNT(tc.estado) FILTER(WHERE tc.estado = 'finalizado' AND tc.tipo = 'pre-capacita') AS pre_test_completado,
             COUNT(tc.estado) FILTER(WHERE tc.estado != 'finalizado' AND tc.tipo = 'pre-capacita') AS pre_test_no_completado,
+            COUNT(tc.estado) FILTER(WHERE tc.estado = 'finalizado' AND tc.tipo = 'post-capacita') AS post_test_completado,
+            COUNT(tc.estado) FILTER(WHERE tc.estado != 'finalizado' AND tc.tipo = 'post-capacita') AS post_test_completado,
             r.id AS id_region, r.nombre AS nombre_region
         FROM
             pnld.docente AS d

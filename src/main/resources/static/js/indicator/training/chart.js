@@ -403,3 +403,91 @@ export function teacherPretestCompletedPercentageChart(labels, datasets, title, 
 
   myChart.update();
 }
+
+
+//TODO: Este se modifica
+export function teacherPostTestCompletedPercentageChart(labels, datasets, title, keyword, dataList){
+  if(myChart) { myChart.destroy(); }
+
+  myChart = new Chart(ctx, {
+      type: 'bar',
+      data: { labels: labels, datasets: datasets },
+      options: {
+          scales: {
+              x: {
+                  min: 0,
+                  max: 100,
+                  ticks:{
+                    callback: function(value, index, values){
+                        return value+"%";
+                    }
+                  },
+                  title: {
+                      display: true,
+                      text: 'Porcentaje post-test completado',
+                      align: 'center',
+                      font: {
+                          size: 15,
+                      },
+                      padding: {
+                          top: 12,
+                      }
+                  }
+              },
+              y: {
+                  title: {
+                      display: true,
+                      text: 'Regiones',
+                      align: 'center',
+                      font: {
+                          size: 15,
+                      }
+                  }
+              }
+          },
+          indexAxis: 'y',
+          plugins:{
+              tooltip:{
+                  callbacks:{
+                    title: function(data){
+                      return data[0].label;
+                    },
+                    label: function(data){
+                        let percentage = data.formattedValue;
+                        let label = data.dataset.label;
+                        return label + " " + keyword + ": " + "Porcentaje " + percentage + "%" ;
+                    },
+                    afterLabel: function(data){
+                      let formattedValue = parseInt(data.formattedValue);
+                      let label = data.label;
+                      let datasetLabel = data.dataset.label;
+                      let regionData = dataList.find(element => element.regionName === label);
+                      let filterByYear = (typeof(keyword) === 'string') ? datasetLabel : keyword;
+                      let filterByGender = (typeof(keyword) === 'string') ? keyword : datasetLabel;
+
+                      let dataByYear = regionData.trainingIndicatorDataList.find(element => element.year === filterByYear);
+                      if(dataByYear === undefined) return "Detalle: " + "Total "+ 0 + " - " + "Valor actual " + formattedValue;;
+
+                      let dataByGender = dataByYear.dataByGenderList.find(element => element.gender === filterByGender.toLowerCase());
+                      if(dataByGender === undefined) return "Detalle: " + "Total "+ 0 + " - " + "Valor actual " + formattedValue;;
+
+                      let totalCompleted = dataByGender.postTestCompletedCounter + dataByGender.postTestNotCompletedCounter;
+                      return "Detalle: " + "Total "+ totalCompleted + " - " + "Valor actual " + dataByGender.postTestCompletedCounter;
+                    },
+                  },
+              },
+              title: {
+                  display: true,
+                  text: 'Porcentaje de docentes que completan post-test ' + defineTitle(title),
+              },
+              legend: {
+                  display: true
+              }
+          },
+          responsive: true,
+
+      }
+  });
+
+  myChart.update();
+}
