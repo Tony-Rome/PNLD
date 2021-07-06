@@ -98,22 +98,16 @@ export function teacherPretestCompletedPercentage(yearsSelected, dataList, label
 
         dataList.forEach( (e,index) => {
             if(labels.includes(e.regionName)){
-                var preTestCompletedCounter = [0];
-                var dataByGender = [];
-                if(e.trainingIndicatorDataList != undefined && e.trainingIndicatorDataList.length != 0){
-                    let trainingIndicatorDataList = e.trainingIndicatorDataList.filter(data => data.year === filterYear);
-                    if(trainingIndicatorDataList != undefined && trainingIndicatorDataList.length != 0){
-                        preTestCompletedCounter = trainingIndicatorDataList[0].dataByGenderList.map(data => {
-                                if(data.gender === filterGender){
-                                    let totalCompleted = data.preTestCompletedCounter + data.preTestNotCompletedCounter;
-                                    let completedPercentage = (data.preTestCompletedCounter / totalCompleted) * 100;
-                                    return completedPercentage.toFixed(DECIMAL_NUMBER);
-                                }
-                            }).filter(Boolean);
-                    }
+                try{
+                    var trainingIndicatorDataList = e.trainingIndicatorDataList.find(data => data.year === filterYear);
+                    var dataByGender = trainingIndicatorDataList.dataByGenderList.find(data => data.gender === filterGender);
+                    var totalCompleted = dataByGender.preTestCompletedCounter + dataByGender.preTestNotCompletedCounter;
+                    var completedPercentage = ((dataByGender.preTestCompletedCounter / totalCompleted) * 100).toFixed(DECIMAL_NUMBER);
+                    data.push(completedPercentage);
+                }catch (error){
+                    console.error(error);
+                    data.push(0);
                 }
-
-                data.push(preTestCompletedCounter[0]);
             }
 
         });
@@ -126,6 +120,5 @@ export function teacherPretestCompletedPercentage(yearsSelected, dataList, label
         };
         datasets.push(dataset);
     });
-
     teacherPretestCompletedPercentageChart(labels, datasets, yearsSelected, dataLoop['data'], dataList);
 }
