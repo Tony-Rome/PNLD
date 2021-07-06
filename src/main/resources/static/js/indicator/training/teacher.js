@@ -98,16 +98,10 @@ export function teacherPretestCompletedPercentage(yearsSelected, dataList, label
 
         dataList.forEach( (e,index) => {
             if(labels.includes(e.regionName)){
-                try{
-                    var trainingIndicatorDataList = e.trainingIndicatorDataList.find(data => data.year === filterYear);
-                    var dataByGender = trainingIndicatorDataList.dataByGenderList.find(data => data.gender === filterGender);
-                    var totalCompleted = dataByGender.preTestCompletedCounter + dataByGender.preTestNotCompletedCounter;
-                    var completedPercentage = ((dataByGender.preTestCompletedCounter / totalCompleted) * 100).toFixed(DECIMAL_NUMBER);
-                    data.push(completedPercentage);
-                }catch (error){
-                    console.error(error);
-                    data.push(0);
-                }
+                var trainingIndicatorDataList = getDataByParameter(e.trainingIndicatorDataList, filterYear);
+                var dataByGender = getDataByParameter(trainingIndicatorDataList.dataByGenderList, filterGender);
+                var completedPercentage = calculatePercentage(dataByGender.preTestCompletedCounter, dataByGender.preTestNotCompletedCounter);
+                data.push(completedPercentage);
             }
 
         });
@@ -121,4 +115,22 @@ export function teacherPretestCompletedPercentage(yearsSelected, dataList, label
         datasets.push(dataset);
     });
     teacherPretestCompletedPercentageChart(labels, datasets, yearsSelected, dataLoop['data'], dataList);
+}
+
+function getDataByParameter(list, filterParameter){
+    if(list === undefined) return {};
+
+    var data = list.find(data =>{
+            if('year' in data) return data.year === filterParameter
+            if('gender' in data) return data.gender === filterParameter;
+        });
+
+    return (data != undefined) ? data : {};
+}
+
+function calculatePercentage(favourableCase, notFavourableCase){
+    if(favourableCase === undefined || notFavourableCase === undefined) return 0;
+
+    var total = favourableCase + notFavourableCase;
+    return ((favourableCase / total) * 100).toFixed(DECIMAL_NUMBER);
 }
