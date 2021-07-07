@@ -54,7 +54,7 @@ export function participantInstitutionCounterChart (labels, datasets, title) {
                         label: function(data){
                             let value = data.formattedValue;
                             let label = data.dataset.label;
-                            return (value != 0) ? label + ": " + "cantidad " + value : null;
+                            return label + ": " + "cantidad " + value;
                         },
 
                       },
@@ -141,7 +141,7 @@ export function firstTimeInstitutionPercentageChart (labels, datasets, title, da
                       }).filter(e => typeof e != 'undefined');
                       let total = (typeof dataCounter[0] != 'undefined') ? dataCounter[0].total : 0;
                       let firstTimeCounter = (typeof dataCounter[0] != 'undefined') ? dataCounter[0].firstTime : 0;
-                      return (total != 0) ? "Detalle: " + "Total "+ total + " - valor actual " + firstTimeCounter : null;
+                      return "Detalle: " + "Total "+ total + " - valor actual " + firstTimeCounter;
                     },
                   },
               },
@@ -210,7 +210,7 @@ export function trainedTeacherCounterChart(labels, datasets, title, keyword){
                         label: function(data){
                             let value = data.formattedValue;
                             let label = data.dataset.label;
-                            return (value != 0) ? label + " " + keyword + ": " + "cantidad " + value : null;
+                            return label + " " + keyword + ": " + "cantidad " + value;
                         },
 
                       },
