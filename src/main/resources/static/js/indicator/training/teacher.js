@@ -16,16 +16,10 @@ export function trainedTeacherCounter(yearsSelected, dataList, labels ){
 
         dataList.forEach( (e,index) => {
             if(labels.includes(e.regionName)){
-                var approvedTrainingCounter = [0];
-                if(e.trainingIndicatorDataList != undefined && e.trainingIndicatorDataList.length != 0){
-                    let trainingIndicatorDataList = e.trainingIndicatorDataList.filter(data => data.year === filterYear);
-                    if(trainingIndicatorDataList != undefined && trainingIndicatorDataList.length != 0){
-                        approvedTrainingCounter = trainingIndicatorDataList[0].dataByGenderList.map(data => {
-                                if(data.gender === filterGender) return data.approvedTrainingCounter;
-                            }).filter(Boolean);
-                    }
-                }
-                data.push(approvedTrainingCounter[0]);
+                var trainingIndicatorDataList = getDataByParameter(e.trainingIndicatorDataList, filterYear);
+                var dataByGender = getDataByParameter(trainingIndicatorDataList.dataByGenderList, filterGender);
+                var approvedTrainingCounter = dataByGender.approvedTrainingCounter || 0;
+                data.push(approvedTrainingCounter);
             }
 
         });
@@ -54,24 +48,11 @@ export function teacherInPersonSessionPercentage(yearsSelected, dataList, labels
 
         dataList.forEach( (e,index) => {
             if(labels.includes(e.regionName)){
-                var inPersonSessionPercentage = [0];
-                var dataByGender = [];
-                if(e.trainingIndicatorDataList != undefined && e.trainingIndicatorDataList.length != 0){
-                    let trainingIndicatorDataList = e.trainingIndicatorDataList.filter(data => data.year === filterYear);
-                    if(trainingIndicatorDataList != undefined && trainingIndicatorDataList.length != 0){
-                        inPersonSessionPercentage = trainingIndicatorDataList[0].dataByGenderList.map(data => {
-                                if(data.gender === filterGender){
-                                    let totalAssistance = data.notAssistanceCounter + data.assistanceCounter;
-                                    let assistancePercentage = (data.assistanceCounter / totalAssistance) * 100;
-                                    return assistancePercentage.toFixed(DECIMAL_NUMBER);
-                                }
-                            }).filter(Boolean);
-                    }
-                }
-
-                data.push(inPersonSessionPercentage[0]);
+                var trainingIndicatorDataList = getDataByParameter(e.trainingIndicatorDataList, filterYear);
+                var dataByGender = getDataByParameter(trainingIndicatorDataList.dataByGenderList, filterGender);
+                var inPersonSessionPercentage = calculatePercentage(dataByGender.notAssistanceCounter, dataByGender.assistanceCounter);
+                data.push(inPersonSessionPercentage);
             }
-
         });
 
         let dataset = {
@@ -151,6 +132,7 @@ export function teacherPostTestCompletedPercentage(yearsSelected, dataList, labe
 
 
 //TODO: funcion general de porcentaje podria estar en otro arcvhio(?)
+//TODO: Se podría refactorizar con -> var1 || var2 las dos funciones de filtro
 function getDataByParameter(list, filterParameter){
     if(list === undefined) return {};
 
@@ -164,7 +146,8 @@ function getDataByParameter(list, filterParameter){
 
 //TODO: funcion general de porcentaje podria estar en otro arcvhio(?)
 function calculatePercentage(favourableCase, notFavourableCase){
-    if(favourableCase === undefined || notFavourableCase === undefined) return 0;
+    var notValue = 0;
+    if(favourableCase === undefined || notFavourableCase === undefined) return notValue.toFixed(DECIMAL_NUMBER);
 
     var total = favourableCase + notFavourableCase;
     if(total === 0) return total.toFixed(DECIMAL_NUMBER);
