@@ -10,7 +10,6 @@ Chart.defaults.plugins.legend.position = 'right';
 Chart.defaults.plugins.legend.display = true;
 Chart.defaults.plugins.title.font.size = 25;
 Chart.defaults.plugins.title.display = true;
-Chart.defaults.plugins.tooltip.position = 'average';
 Chart.defaults.responsive = true;
 
 function defineTitle(data){
