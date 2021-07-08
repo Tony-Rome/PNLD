@@ -26,7 +26,7 @@
 .subDimensionAccordion .subDimensionContent li{
     list-style: none;
     padding-top: 12px;
-
+    font-size: 14px;
 }
 
 .subDimensionAccordion .subDimensionContent li a {

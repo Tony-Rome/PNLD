@@ -1,6 +1,9 @@
 const ctx = document.getElementById('myChart').getContext('2d');
 var myChart;
 
+Chart.defaults.color = 'black';
+Chart.defaults.font.family = 'Arial';
+
 function defineTitle(data){
     return (data.length >= 2) ?
         data[data.length - 1] + " - " + data[0] : data[0];
@@ -164,6 +167,7 @@ export function firstTimeInstitutionPercentageChart (labels, datasets, title, da
 export function trainedTeacherCounterChart(labels, datasets, title, keyword){
 
     if(myChart) { myChart.destroy(); }
+//TOdO: Afecta a todos los gráficos
 
     myChart = new Chart(ctx, {
             type: 'bar',
@@ -174,6 +178,7 @@ export function trainedTeacherCounterChart(labels, datasets, title, keyword){
             options: {
                 scales: {
                     x: {
+                        position: 'top',
                         title: {
                             display: true,
                             text: 'Cantidad capacitados',
@@ -182,7 +187,8 @@ export function trainedTeacherCounterChart(labels, datasets, title, keyword){
                                 size: 15,
                             },
                             padding: {
-                                top: 12,
+                                top: 50,
+                                bottom: 50,
                             }
                         }
                     },
@@ -216,11 +222,16 @@ export function trainedTeacherCounterChart(labels, datasets, title, keyword){
                       },
                     },
                     title: {
+                        font:{
+                            size: 20,
+                            family: 'Arial',
+                        },
                         display: true,
                         text: 'Número de docentes capacitados ' + defineTitle(title),
+                        padding: 50,
                     },
                     legend: {
-                        display: true
+                        display: true,
                     }
                 },
                 responsive: true,

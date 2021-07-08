@@ -101,7 +101,7 @@ export function teacherPretestCompletedPercentage(yearsSelected, dataList, label
 export function teacherPostTestCompletedPercentage(yearsSelected, dataList, labels){
     var datasets = [];
     var dataLoop = teacherDecisionLoop(yearsSelected);
-    console.log(dataList);
+
     dataLoop['list'].forEach( (element, i) => {
         var paletteColor = getPaletteColor(i);
         var data = [];
@@ -113,7 +113,6 @@ export function teacherPostTestCompletedPercentage(yearsSelected, dataList, labe
                 var trainingIndicatorDataList = getDataByParameter(e.trainingIndicatorDataList, filterYear);
                 var dataByGender = getDataByParameter(trainingIndicatorDataList.dataByGenderList, filterGender);
                 var completedPercentage = calculatePercentage(dataByGender.postTestCompletedCounter, dataByGender.postTestNotCompletedCounter);
-                console.log(completedPercentage);
                 data.push(completedPercentage);
             }
 
@@ -130,9 +129,7 @@ export function teacherPostTestCompletedPercentage(yearsSelected, dataList, labe
     teacherPostTestCompletedPercentageChart(labels, datasets, yearsSelected, dataLoop['data'], dataList);
 }
 
-
 //TODO: funcion general de porcentaje podria estar en otro arcvhio(?)
-//TODO: Se podría refactorizar con -> var1 || var2 las dos funciones de filtro
 function getDataByParameter(list, filterParameter){
     if(list === undefined) return {};
 
@@ -140,8 +137,7 @@ function getDataByParameter(list, filterParameter){
             if('year' in data) return data.year === filterParameter
             if('gender' in data) return data.gender === filterParameter;
         });
-
-    return (data != undefined) ? data : {};
+    return data || {};
 }
 
 //TODO: funcion general de porcentaje podria estar en otro arcvhio(?)
