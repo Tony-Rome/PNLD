@@ -126,10 +126,9 @@ export function teacherPostTestCompletedPercentage(yearsSelected, dataList, labe
         };
         datasets.push(dataset);
     });
-    teacherPostTestCompletedPercentageChart(labels, datasets, yearsSelected, dataLoop['data'], dataList);
+    teacherPostTestCompletedPercentageChart(labels, datasets, dataLoop['title'], dataLoop['data'], dataList);
 }
 
-//TODO: funcion general de porcentaje podria estar en otro arcvhio(?)
 function getDataByParameter(list, filterParameter){
     if(list === undefined) return {};
 
@@ -140,7 +139,6 @@ function getDataByParameter(list, filterParameter){
     return data || {};
 }
 
-//TODO: funcion general de porcentaje podria estar en otro arcvhio(?)
 function calculatePercentage(favourableCase, notFavourableCase){
     var notValue = 0;
     if(favourableCase === undefined || notFavourableCase === undefined) return notValue.toFixed(DECIMAL_NUMBER);

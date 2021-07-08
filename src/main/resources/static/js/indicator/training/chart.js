@@ -14,8 +14,10 @@ Chart.defaults.plugins.tooltip.position = 'average';
 Chart.defaults.responsive = true;
 
 function defineTitle(data){
-    return (data.length >= 2) ?
-        data[data.length - 1] + " - " + data[0] : data[0];
+    if(data === undefined) return '';
+
+    var titleSuffix = (data.length >= 2) ? data[data.length - 1] + " - " + data[0] : data[0];
+    return titleSuffix || '';
 }
 
 export function participantInstitutionCounterChart (labels, datasets, title) {
