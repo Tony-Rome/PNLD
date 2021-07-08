@@ -83,10 +83,10 @@ export function activateDefaultsFilters(option){
 
 function getDataByLoop(option, yearsSelected, gendersSelected){
     if(option === true){
-        return { 'list': gendersSelected, 'data': yearsSelected[0], 'filter': true };
+        return { 'list': gendersSelected, 'data': yearsSelected[0], 'filter': true, title: yearsSelected};
     }
     if(option === false){
-        return {'list': yearsSelected, 'data': gendersSelected[0].toLowerCase(), 'filter': false};
+        return {'list': yearsSelected, 'data': gendersSelected[0].toLowerCase(), 'filter': false, title: gendersSelected};
     }
 }
 

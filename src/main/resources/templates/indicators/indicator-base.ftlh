@@ -28,7 +28,7 @@
 
 <#macro chart >
     <div class=chartContainer id=chartContainer>
-        <canvas id="myChart" width="700" height="700"></canvas>
+        <canvas id="myChart" width="740" height="720"></canvas>
     </div>
 </#macro>
 

@@ -4,7 +4,7 @@ import {getSubDimensionSelected} from '../sub-dimension.js';
 import {getInstitutionSubDimensionData, getTeacherSubDimensionData} from './api.js';
 import {participantInstitutionCounter, firstTimeInstitutionPercentage} from './institution.js';
 import {trainedTeacherCounter, teacherInPersonSessionPercentage,
-        teacherPretestCompletedPercentage} from './teacher.js';
+        teacherPretestCompletedPercentage, teacherPostTestCompletedPercentage} from './teacher.js';
 
 const PARTICIPANT_INSTITUTION_NUMBER = 0;
 const FIRST_TIME_INSTITUTION_PERCENTAGE = 1;
@@ -76,7 +76,9 @@ async function selectChartByTeacher(chartOption){
     if(chartOption === PRE_TEST_COMPLETED_PERCENTAGE)
         teacherPretestCompletedPercentage(yearsSelected, dataList, labels);
 
-    if(chartOption === POST_TEST_COMPLETED_PERCENTAGE);
+    if(chartOption === POST_TEST_COMPLETED_PERCENTAGE)
+        teacherPostTestCompletedPercentage(yearsSelected, dataList, labels);
+
     if(chartOption === ONLINE_COURSE_COMPETED_PERCENTAGE);
     if(chartOption === TRAINING_COMPLETED_PERCENTAGE);
     if(chartOption === SCORE_DIFFERENCE_PRE_POST_TEST);
