@@ -3,7 +3,8 @@ import { getYearsSelected, getRegionsSelected, getAllRegionsName } from '../filt
 import {getSubDimensionSelected} from '../sub-dimension.js';
 import {getInstitutionSubDimensionData, getTeacherSubDimensionData} from './api.js';
 import {participantInstitutionCounter, firstTimeInstitutionPercentage} from './institution.js';
-import {trainedTeacherCounter} from './teacher.js';
+import {trainedTeacherCounter, teacherInPersonSessionPercentage,
+        teacherPretestCompletedPercentage, teacherPostTestCompletedPercentage} from './teacher.js';
 
 const PARTICIPANT_INSTITUTION_NUMBER = 0;
 const FIRST_TIME_INSTITUTION_PERCENTAGE = 1;
@@ -57,21 +58,27 @@ async function selectCharByInstitution(chartOption){
 
 async function selectChartByTeacher(chartOption){
 
-     var yearsSelected = getYearsSelected();
-     var queryParams = defineYearsQueryParams(yearsSelected);
-     var response = await getTeacherSubDimensionData(queryParams);
+    var yearsSelected = getYearsSelected();
+    var queryParams = defineYearsQueryParams(yearsSelected);
+    var response = await getTeacherSubDimensionData(queryParams);
 
-     var dataRaw = response['trainingIndicatorDTOList'];
-     var data = transformRegionName(dataRaw);
-     var dataList = dataListWithEmptyValues(data, yearsSelected);
-     var labels = getRegionsSelected();
+    var dataRaw = response['trainingIndicatorDTOList'];
+    var data = transformRegionName(dataRaw);
+    var dataList = dataListWithEmptyValues(data, yearsSelected);
+    var labels = getRegionsSelected();
 
     if(chartOption === TRAINED_TEACHER_NUMBER)
         trainedTeacherCounter(yearsSelected, dataList, labels);
 
-    if(chartOption === IN_PERSON_SESSION_PERCENTAGE);
-    if(chartOption === PRE_TEST_COMPLETED_PERCENTAGE);
-    if(chartOption === POST_TEST_COMPLETED_PERCENTAGE);
+    if(chartOption === IN_PERSON_SESSION_PERCENTAGE)
+        teacherInPersonSessionPercentage(yearsSelected, dataList, labels);
+
+    if(chartOption === PRE_TEST_COMPLETED_PERCENTAGE)
+        teacherPretestCompletedPercentage(yearsSelected, dataList, labels);
+
+    if(chartOption === POST_TEST_COMPLETED_PERCENTAGE)
+        teacherPostTestCompletedPercentage(yearsSelected, dataList, labels);
+
     if(chartOption === ONLINE_COURSE_COMPETED_PERCENTAGE);
     if(chartOption === TRAINING_COMPLETED_PERCENTAGE);
     if(chartOption === SCORE_DIFFERENCE_PRE_POST_TEST);

@@ -28,7 +28,7 @@
 
 <#macro chart >
     <div class=chartContainer id=chartContainer>
-        <canvas id="myChart" width="700" height="700"></canvas>
+        <canvas id="myChart" width="740" height="720"></canvas>
     </div>
 </#macro>
 
@@ -70,7 +70,7 @@
               </div>
             </div>
 
-            <#assign genderList = ["Femenino", "Masculino", "No especificado", "Otro"]/>
+            <#assign genderList = ["Femenino", "Masculino", "Otro", "No especificado"]/>
 
             <div class="filterBlock filterInactive" id="genderFilter">
                 <h3 class="filterTitle">Género</h3>
