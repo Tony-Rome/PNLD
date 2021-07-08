@@ -1,10 +1,17 @@
 const ctx = document.getElementById('myChart').getContext('2d');
 var myChart;
 
+const PADDING_AXIS_TITLE = 12;
 const FONT_SIZE_AXIS_TITLE = 15;
 
 Chart.defaults.color = 'black';
 Chart.defaults.font.family = 'Arial';
+Chart.defaults.plugins.legend.position = 'right';
+Chart.defaults.plugins.legend.display = true;
+Chart.defaults.plugins.title.font.size = 25;
+Chart.defaults.plugins.title.display = true;
+Chart.defaults.plugins.tooltip.position = 'average';
+Chart.defaults.responsive = true;
 
 function defineTitle(data){
     return (data.length >= 2) ?
@@ -23,16 +30,13 @@ export function participantInstitutionCounterChart (labels, datasets, title) {
             options: {
                 scales: {
                     x: {
+                        position: 'top',
                         title: {
                             display: true,
                             text: 'Cantidad por región',
                             align: 'center',
-                            font: {
-                                size: 15,
-                            },
-                            padding: {
-                                top: 12,
-                            }
+                            font: { size: FONT_SIZE_AXIS_TITLE },
+                            padding: { bottom: PADDING_AXIS_TITLE }
                         }
                     },
                     y: {
@@ -40,12 +44,8 @@ export function participantInstitutionCounterChart (labels, datasets, title) {
                             display: true,
                             text: 'Regiones',
                             align: 'center',
-                            font: {
-                                size: 15,
-                            },
-                            padding: {
-                                bottom: 12,
-                            }
+                            font: { size: FONT_SIZE_AXIS_TITLE },
+                            padding: { bottom: PADDING_AXIS_TITLE }
                         }
                     }
                 },
@@ -65,15 +65,9 @@ export function participantInstitutionCounterChart (labels, datasets, title) {
                       },
                     },
                     title: {
-                        display: true,
                         text: 'Número de establecimientos que participan en PNLD ' + defineTitle(title),
-                    },
-                    legend: {
-                        display: true
                     }
-                },
-                responsive: true,
-
+                }
             }
         });
 
@@ -89,6 +83,7 @@ export function firstTimeInstitutionPercentageChart (labels, datasets, title, da
       options: {
           scales: {
               x: {
+                  position: 'top',
                   min: 0,
                   max: 100,
                   ticks:{
@@ -100,12 +95,8 @@ export function firstTimeInstitutionPercentageChart (labels, datasets, title, da
                       display: true,
                       text: 'Porcentaje participación por primera vez',
                       align: 'center',
-                      font: {
-                          size: 15,
-                      },
-                      padding: {
-                          top: 12,
-                      }
+                      font: { size: FONT_SIZE_AXIS_TITLE },
+                      padding: { bottom: PADDING_AXIS_TITLE },
                   }
               },
               y: {
@@ -113,9 +104,8 @@ export function firstTimeInstitutionPercentageChart (labels, datasets, title, da
                       display: true,
                       text: 'Regiones',
                       align: 'center',
-                      font: {
-                          size: 15,
-                      }
+                      font: { size: FONT_SIZE_AXIS_TITLE },
+                      padding: { bottom : PADDING_AXIS_TITLE }
                   }
               }
           },
@@ -151,15 +141,9 @@ export function firstTimeInstitutionPercentageChart (labels, datasets, title, da
                   },
               },
               title: {
-                  display: true,
                   text: 'Porcentaje de establecimientos que participan por primera vez ' + defineTitle(title),
-              },
-              legend: {
-                  display: true
               }
-          },
-          responsive: true,
-
+          }
       }
   });
 
@@ -169,7 +153,6 @@ export function firstTimeInstitutionPercentageChart (labels, datasets, title, da
 export function trainedTeacherCounterChart(labels, datasets, title, keyword){
 
     if(myChart) { myChart.destroy(); }
-//TOdO: Afecta a todos los gráficos
 
     myChart = new Chart(ctx, {
             type: 'bar',
@@ -185,13 +168,8 @@ export function trainedTeacherCounterChart(labels, datasets, title, keyword){
                             display: true,
                             text: 'Cantidad capacitados',
                             align: 'center',
-                            font: {
-                                size: FONT_SIZE_AXIS_TITLE,
-                            },
-                            padding: {
-                                top: 30,
-                                bottom: 12
-                            }
+                            font: { size: FONT_SIZE_AXIS_TITLE },
+                            padding: { bottom: PADDING_AXIS_TITLE },
                         }
                     },
                     y: {
@@ -199,12 +177,8 @@ export function trainedTeacherCounterChart(labels, datasets, title, keyword){
                             display: true,
                             text: 'Regiones',
                             align: 'center',
-                            font: {
-                                size: FONT_SIZE_AXIS_TITLE,
-                            },
-                            padding: {
-                                bottom: 12,
-                            }
+                            font: { size: FONT_SIZE_AXIS_TITLE },
+                            padding: { bottom: PADDING_AXIS_TITLE }
                         }
                     }
                 },
@@ -224,20 +198,9 @@ export function trainedTeacherCounterChart(labels, datasets, title, keyword){
                       },
                     },
                     title: {
-                        font:{
-                            size: 30,
-                            family: 'Arial',
-                        },
-                        display: true,
                         text: 'Número de docentes capacitados ' + defineTitle(title),
-                        padding: 20,
-                    },
-                    legend: {
-                        display: true,
                     }
                 },
-                responsive: true,
-
             }
         });
 
@@ -254,6 +217,7 @@ export function teacherInPersonSessionPercentageChart(labels, datasets, title, k
       options: {
           scales: {
               x: {
+                  position: 'top',
                   min: 0,
                   max: 100,
                   ticks:{
@@ -265,12 +229,8 @@ export function teacherInPersonSessionPercentageChart(labels, datasets, title, k
                       display: true,
                       text: 'Porcentaje asistencia jornada presencial',
                       align: 'center',
-                      font: {
-                          size: 15,
-                      },
-                      padding: {
-                          top: 12,
-                      }
+                      font: { size: FONT_SIZE_AXIS_TITLE },
+                      padding: { bottom: PADDING_AXIS_TITLE }
                   }
               },
               y: {
@@ -278,9 +238,8 @@ export function teacherInPersonSessionPercentageChart(labels, datasets, title, k
                       display: true,
                       text: 'Regiones',
                       align: 'center',
-                      font: {
-                          size: 15,
-                      }
+                      font: { size: FONT_SIZE_AXIS_TITLE },
+                      padding: { bottom: PADDING_AXIS_TITLE },
                   }
               }
           },
@@ -316,15 +275,9 @@ export function teacherInPersonSessionPercentageChart(labels, datasets, title, k
                   },
               },
               title: {
-                  display: true,
                   text: 'Porcentaje de docentes que asisten a jornada presencial ' + defineTitle(title),
-              },
-              legend: {
-                  display: true
               }
           },
-          responsive: true,
-
       }
   });
 
@@ -340,6 +293,7 @@ export function teacherPretestCompletedPercentageChart(labels, datasets, title, 
       options: {
           scales: {
               x: {
+                  position: 'top',
                   min: 0,
                   max: 100,
                   ticks:{
@@ -351,12 +305,8 @@ export function teacherPretestCompletedPercentageChart(labels, datasets, title, 
                       display: true,
                       text: 'Porcentaje pre-test completado',
                       align: 'center',
-                      font: {
-                          size: 15,
-                      },
-                      padding: {
-                          top: 12,
-                      }
+                      font: { size: FONT_SIZE_AXIS_TITLE },
+                      padding: { bottom: PADDING_AXIS_TITLE }
                   }
               },
               y: {
@@ -364,9 +314,8 @@ export function teacherPretestCompletedPercentageChart(labels, datasets, title, 
                       display: true,
                       text: 'Regiones',
                       align: 'center',
-                      font: {
-                          size: 15,
-                      }
+                      font: { size: FONT_SIZE_AXIS_TITLE },
+                      padding: { bottom: PADDING_AXIS_TITLE },
                   }
               }
           },
@@ -402,23 +351,15 @@ export function teacherPretestCompletedPercentageChart(labels, datasets, title, 
                   },
               },
               title: {
-                  display: true,
                   text: 'Porcentaje de docentes que completan pre-test ' + defineTitle(title),
-              },
-              legend: {
-                  display: true
               }
           },
-          responsive: true,
-
       }
   });
 
   myChart.update();
 }
 
-
-//TODO: Este se modifica
 export function teacherPostTestCompletedPercentageChart(labels, datasets, title, keyword, dataList){
   if(myChart) { myChart.destroy(); }
 
@@ -428,6 +369,7 @@ export function teacherPostTestCompletedPercentageChart(labels, datasets, title,
       options: {
           scales: {
               x: {
+                  position: 'top',
                   min: 0,
                   max: 100,
                   ticks:{
@@ -439,12 +381,8 @@ export function teacherPostTestCompletedPercentageChart(labels, datasets, title,
                       display: true,
                       text: 'Porcentaje post-test completado',
                       align: 'center',
-                      font: {
-                          size: FONT_SIZE_AXIS_TITLE, //TODO: ESTO PUEDE SER VARIABLE GLOBAL
-                      },
-                      padding: {
-                          top: 12, //TODO: ESTO PUEDE SER VARIABLE GLOBAL
-                      }
+                      font: { size: FONT_SIZE_AXIS_TITLE },
+                      padding: { bottom: PADDING_AXIS_TITLE },
                   }
               },
               y: {
@@ -452,9 +390,8 @@ export function teacherPostTestCompletedPercentageChart(labels, datasets, title,
                       display: true,
                       text: 'Regiones',
                       align: 'center',
-                      font: {
-                          size: FONT_SIZE_AXIS_TITLE,
-                      }
+                      font: { size: FONT_SIZE_AXIS_TITLE },
+                      padding: { bottom: PADDING_AXIS_TITLE },
                   }
               }
           },
@@ -490,12 +427,9 @@ export function teacherPostTestCompletedPercentageChart(labels, datasets, title,
                   },
               },
               title: {
-                  display: true,
                   text: 'Porcentaje de docentes que completan post-test ' + defineTitle(title),
               },
-              legend: { display: true }
           },
-          responsive: true,
       }
   });
 
