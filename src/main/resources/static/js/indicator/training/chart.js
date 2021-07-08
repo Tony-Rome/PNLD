@@ -1,6 +1,8 @@
 const ctx = document.getElementById('myChart').getContext('2d');
 var myChart;
 
+const FONT_SIZE_AXIS_TITLE = 15;
+
 Chart.defaults.color = 'black';
 Chart.defaults.font.family = 'Arial';
 
@@ -184,11 +186,11 @@ export function trainedTeacherCounterChart(labels, datasets, title, keyword){
                             text: 'Cantidad capacitados',
                             align: 'center',
                             font: {
-                                size: 15,
+                                size: FONT_SIZE_AXIS_TITLE,
                             },
                             padding: {
-                                top: 50,
-                                bottom: 50,
+                                top: 30,
+                                bottom: 12
                             }
                         }
                     },
@@ -198,7 +200,7 @@ export function trainedTeacherCounterChart(labels, datasets, title, keyword){
                             text: 'Regiones',
                             align: 'center',
                             font: {
-                                size: 15,
+                                size: FONT_SIZE_AXIS_TITLE,
                             },
                             padding: {
                                 bottom: 12,
@@ -223,12 +225,12 @@ export function trainedTeacherCounterChart(labels, datasets, title, keyword){
                     },
                     title: {
                         font:{
-                            size: 20,
+                            size: 30,
                             family: 'Arial',
                         },
                         display: true,
                         text: 'Número de docentes capacitados ' + defineTitle(title),
-                        padding: 50,
+                        padding: 20,
                     },
                     legend: {
                         display: true,
@@ -438,10 +440,10 @@ export function teacherPostTestCompletedPercentageChart(labels, datasets, title,
                       text: 'Porcentaje post-test completado',
                       align: 'center',
                       font: {
-                          size: 15,
+                          size: FONT_SIZE_AXIS_TITLE, //TODO: ESTO PUEDE SER VARIABLE GLOBAL
                       },
                       padding: {
-                          top: 12,
+                          top: 12, //TODO: ESTO PUEDE SER VARIABLE GLOBAL
                       }
                   }
               },
@@ -451,7 +453,7 @@ export function teacherPostTestCompletedPercentageChart(labels, datasets, title,
                       text: 'Regiones',
                       align: 'center',
                       font: {
-                          size: 15,
+                          size: FONT_SIZE_AXIS_TITLE,
                       }
                   }
               }
@@ -491,12 +493,9 @@ export function teacherPostTestCompletedPercentageChart(labels, datasets, title,
                   display: true,
                   text: 'Porcentaje de docentes que completan post-test ' + defineTitle(title),
               },
-              legend: {
-                  display: true
-              }
+              legend: { display: true }
           },
           responsive: true,
-
       }
   });
 

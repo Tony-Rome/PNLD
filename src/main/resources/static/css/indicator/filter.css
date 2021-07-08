@@ -2,7 +2,7 @@
     border: 1px solid black;
     border-bottom: none;
     border-radius: 5px;
-    width: 240px;
+    width: 190px;
     overflow:hidden;
 }
 
@@ -19,7 +19,7 @@
     padding: 0em;
     overflow: hidden;
     transition: all .5s ease;
-    padding: 0 0 0 25px;
+    padding: 0 0 0 12px;
     text-align: initial;
 }
 
