@@ -1,6 +1,6 @@
 import {trainedTeacherCounterChart, teacherInPersonSessionPercentageChart,
         teacherPretestCompletedPercentageChart, teacherPostTestCompletedPercentageChart,
-        teacherTrainingCompletedPercentageChart} from './chart.js';
+        teacherTrainingCompletedPercentageChart} from './chart-teacher.js';
 import {getPaletteColor, teacherDecisionLoop} from '../utils.js';
 
 const DECIMAL_NUMBER = 2;

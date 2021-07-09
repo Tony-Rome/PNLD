@@ -1,6 +1,5 @@
-import {participantInstitutionCounterChart, firstTimeInstitutionPercentageChart} from './chart.js';
+import {participantInstitutionCounterChart, firstTimeInstitutionPercentageChart} from './chart-institution.js';
 import {getPaletteColor} from '../utils.js';
-
 
 export function participantInstitutionCounter(yearsSelected, dataList, labels) {
     var datasets = [];

@@ -32,7 +32,6 @@ export function selectChart(){
 }
 
 async function selectCharByInstitution(chartOption){
-
     var yearsSelected = getYearsSelected();
     var queryParams = defineYearsQueryParams(yearsSelected);
     var response = await getInstitutionSubDimensionData(queryParams);
@@ -81,7 +80,7 @@ async function selectChartByTeacher(chartOption){
 
     if(chartOption === TRAINING_COMPLETED_PERCENTAGE)
         teacherTrainingCompletedPercentage(yearsSelected, dataList, labels);
-    if(chartOption === SCORE_DIFFERENCE_PRE_POST_TEST); //TODO: Averiwar gráficos
+    if(chartOption === SCORE_DIFFERENCE_PRE_POST_TEST);
 }
 
 function dataListWithEmptyValues(dataList, yearRange){
