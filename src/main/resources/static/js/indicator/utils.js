@@ -103,3 +103,23 @@ export function teacherDecisionLoop(yearsSelected){
     }
     return dataLoop;
 }
+
+export function defineTitle(data){
+    if(data === undefined) return '';
+
+    var titleSuffix = (data.length >= 2) ? data[data.length - 1] + " - " + data[0] : data[0];
+    return titleSuffix || '';
+}
+
+export function getNewContext(){
+    var container = document.getElementById('chartContainer');
+    const ctx = document.getElementById('myChart')
+    ctx.remove();
+    var canvas = document.createElement('canvas');
+    canvas.id = 'myChart';
+    canvas.width = 740;
+    canvas.height = 720;
+    container.appendChild(canvas)
+    var newCtx = document.getElementById('myChart').getContext('2d');
+    return newCtx;
+}

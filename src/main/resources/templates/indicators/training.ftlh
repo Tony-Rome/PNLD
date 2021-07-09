@@ -39,7 +39,7 @@
                   <h3 class="subDimensionTitle" id="teacher">Docentes</h3>
                   <div class="subDimensionContent scrollable">
 
-                    <#assign teacherList = ["N° de capacitados", "% jornada presencial", "% pre-test completado", "% post-test completado", "% curso en línea completado", "% capacitación completada", "Diferencia puntajes pre y post-test"]/>
+                    <#assign teacherList = ["N° de capacitados", "% jornada presencial", "% pre-test completado", "% post-test completado", "% capacitación completada", "Diferencia puntajes pre y post-test"]/>
 
                     <#list teacherList as teacher>
                         <li><input type="radio" class="subDimensionOption" value=${teacher?index} name="training" id="teacher">${teacher}</input></li>

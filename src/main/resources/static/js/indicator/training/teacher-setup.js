@@ -1,5 +1,6 @@
 import {trainedTeacherCounterChart, teacherInPersonSessionPercentageChart,
-        teacherPretestCompletedPercentageChart, teacherPostTestCompletedPercentageChart} from './chart.js';
+        teacherPretestCompletedPercentageChart, teacherPostTestCompletedPercentageChart,
+        teacherTrainingCompletedPercentageChart} from './chart-teacher.js';
 import {getPaletteColor, teacherDecisionLoop} from '../utils.js';
 
 const DECIMAL_NUMBER = 2;
@@ -33,7 +34,7 @@ export function trainedTeacherCounter(yearsSelected, dataList, labels ){
 
         datasets.push(dataset);
     });
-    trainedTeacherCounterChart(labels, datasets, yearsSelected, dataLoop['data']);
+    trainedTeacherCounterChart(labels, datasets, dataLoop['title'], dataLoop['data']);
 }
 
 export function teacherInPersonSessionPercentage(yearsSelected, dataList, labels){
@@ -64,7 +65,7 @@ export function teacherInPersonSessionPercentage(yearsSelected, dataList, labels
         datasets.push(dataset);
     });
 
-    teacherInPersonSessionPercentageChart(labels, datasets, yearsSelected, dataLoop['data'], dataList);
+    teacherInPersonSessionPercentageChart(labels, datasets, dataLoop['title'], dataLoop['data'], dataList);
 }
 
 export function teacherPretestCompletedPercentage(yearsSelected, dataList, labels){
@@ -95,7 +96,7 @@ export function teacherPretestCompletedPercentage(yearsSelected, dataList, label
         };
         datasets.push(dataset);
     });
-    teacherPretestCompletedPercentageChart(labels, datasets, yearsSelected, dataLoop['data'], dataList);
+    teacherPretestCompletedPercentageChart(labels, datasets, dataLoop['title'], dataLoop['data'], dataList);
 }
 
 export function teacherPostTestCompletedPercentage(yearsSelected, dataList, labels){
@@ -127,6 +128,37 @@ export function teacherPostTestCompletedPercentage(yearsSelected, dataList, labe
         datasets.push(dataset);
     });
     teacherPostTestCompletedPercentageChart(labels, datasets, dataLoop['title'], dataLoop['data'], dataList);
+}
+
+export function teacherTrainingCompletedPercentage(yearsSelected, dataList, labels){
+    var datasets = [];
+    var dataLoop = teacherDecisionLoop(yearsSelected);
+
+    dataLoop['list'].forEach( (element, i) => {
+        var paletteColor = getPaletteColor(i);
+        var data = [];
+        var filterGender = (dataLoop['filter']) ? element.toLowerCase() : dataLoop['data'];
+        var filterYear = (dataLoop['filter']) ? dataLoop['data'] : element;
+
+        dataList.forEach( (e,index) => {
+            if(labels.includes(e.regionName)){
+                var trainingIndicatorDataList = getDataByParameter(e.trainingIndicatorDataList, filterYear);
+                var dataByGender = getDataByParameter(trainingIndicatorDataList.dataByGenderList, filterGender);
+                var completedPercentage = calculatePercentage(dataByGender.approvedTrainingCounter, dataByGender.notApprovedTrainingCounter);
+                data.push(completedPercentage);
+            }
+
+        });
+
+        let dataset = {
+            'label': element,
+            'data': data,
+            'backgroundColor': paletteColor['backgroundColor'],
+            'borderColor': paletteColor['borderColor']
+        };
+        datasets.push(dataset);
+    });
+    teacherTrainingCompletedPercentageChart(labels, datasets, dataLoop['title'], dataLoop['data'], dataList);
 }
 
 function getDataByParameter(list, filterParameter){
