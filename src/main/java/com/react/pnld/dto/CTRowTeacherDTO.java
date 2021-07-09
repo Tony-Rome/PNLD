@@ -22,52 +22,56 @@ public class CTRowTeacherDTO {
     @LowerCase
     private String rut;
 
-    @Parsed(index = 2)
+    @Parsed(index = 3)
     @LowerCase
     private String name;
 
-    @Parsed(index = 3)
+    @Parsed(index = 4)
     @LowerCase
     private String lastNames;
 
-    @Parsed(index = 4)
+    @Parsed(index = 5)
     @LowerCase
     private String email;
 
-    @Parsed(index = 5)
+    @Parsed(index = 6)
     @LowerCase
     private String gender;
 
-    @Parsed(index = 6)
+    @Parsed(index = 7)
     private int age;
 
-    @Parsed(index = 7)
+    @Parsed(index = 8)
     @LowerCase
     private String educationalInstitution;
 
     private int[] teachesInLevels;
 
     @Parsed(index = 10)
-    @LowerCase
-    private String youKnowCode;
+    private String participatedInPNLD;
 
     @Parsed(index = 11)
     @LowerCase
+    private String youKnowCode;
+
+    @Parsed(index = 12)
+    @LowerCase
     private String youKnowScratch;
-
-    @Parsed(index = 27)
-    @LowerCase
-    private int howDoYouThinkYouDidInTheTest;
-
-    @Parsed(index = 28)
-    @LowerCase
-    private int howInterestedAreYouInComputers;
 
     private LocalTime initTime;
 
+    private List<String> answers;
+
     private LocalTime finishTime;
 
-    private List<String> answers;
+    @Parsed(index = 30)
+    @LowerCase
+    private int howDoYouThinkYouDidInTheTest;
+
+    @Parsed(index = 31)
+    @LowerCase
+    private int howInterestedAreYouInComputers;
+
 
     public Timestamp getTimeStamp() {
         return timeStamp;
@@ -151,12 +155,20 @@ public class CTRowTeacherDTO {
         this.teachesInLevels = teachesInLevels;
     }
 
-    @Parsed(index = 8)
+    @Parsed(index = 9)
     @LowerCase
     private void buildTeachesInLevels(String levels){
         String onlyNumberLevels = levels.replaceAll("[^0-9,]","");
         int levelsArray[] = Arrays.stream(onlyNumberLevels.split(",")).mapToInt(Integer::parseInt).toArray();
         this.setTeachesInLevels(levelsArray);
+    }
+
+    public String getParticipatedInPNLD() {
+        return participatedInPNLD;
+    }
+
+    public void setParticipatedInPNLD(String participatedInPNLD) {
+        this.participatedInPNLD = participatedInPNLD;
     }
 
     public String getYouKnowCode() {
@@ -194,9 +206,9 @@ public class CTRowTeacherDTO {
     public LocalTime getInitTime() {
         return initTime;
     }
-    @Parsed(index = 29)
-    public void setInitTime(String initTime) {
 
+    @Parsed(index = 13)
+    public void setInitTime(String initTime) {
         if(initTime != null){
             LocalTime localTime = LocalTime.parse(initTime,  DateTimeFormatter.ofPattern("h:mm:ss a"));
             this.initTime = localTime;
@@ -207,7 +219,7 @@ public class CTRowTeacherDTO {
         return finishTime;
     }
 
-    @Parsed(index = 30)
+    @Parsed(index = 29)
     public void setFinishTime(String finishTime) {
         if(finishTime != null){
             LocalTime localTime = LocalTime.parse(finishTime,  DateTimeFormatter.ofPattern("h:mm:ss a"));
@@ -236,13 +248,14 @@ public class CTRowTeacherDTO {
                 ", age=" + age +
                 ", educationalInstitution='" + educationalInstitution + '\'' +
                 ", teachesInLevels=" + Arrays.toString(teachesInLevels) +
+                ", participatedInPNLD='" + participatedInPNLD + '\'' +
                 ", youKnowCode='" + youKnowCode + '\'' +
                 ", youKnowScratch='" + youKnowScratch + '\'' +
+                ", initTime=" + initTime +
+                ", answers=" + answers +
+                ", finishTime=" + finishTime +
                 ", howDoYouThinkYouDidInTheTest=" + howDoYouThinkYouDidInTheTest +
                 ", howInterestedAreYouInComputers=" + howInterestedAreYouInComputers +
-                ", initTime=" + initTime +
-                ", finishTime=" + finishTime +
-                ", answers=" + answers +
                 '}';
     }
 }
