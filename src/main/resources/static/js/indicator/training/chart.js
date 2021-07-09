@@ -12,6 +12,9 @@ Chart.defaults.plugins.title.font.size = 25;
 Chart.defaults.plugins.title.display = true;
 Chart.defaults.responsive = true;
 
+//TODO: Descomponer este archivo
+//TODO: Actualizar titulos genero - año en indicadore srestantes de docentes
+
 function defineTitle(data){
     if(data === undefined) return '';
 
@@ -429,6 +432,82 @@ export function teacherPostTestCompletedPercentageChart(labels, datasets, title,
               },
               title: {
                   text: 'Porcentaje de docentes que completan post-test ' + defineTitle(title),
+              },
+          },
+      }
+  });
+
+  myChart.update();
+}
+
+export function teacherTrainingCompletedPercentageChart(labels, datasets, title, keyword, dataList){
+  if(myChart) { myChart.destroy(); }
+
+  myChart = new Chart(ctx, {
+      type: 'bar',
+      data: { labels: labels, datasets: datasets },
+      options: {
+          scales: {
+              x: {
+                  position: 'top',
+                  min: 0,
+                  max: 100,
+                  ticks:{
+                    callback: function(value, index, values){
+                        return value+"%";
+                    }
+                  },
+                  title: {
+                      display: true,
+                      text: 'Porcentaje de aprobación',
+                      align: 'center',
+                      font: { size: FONT_SIZE_AXIS_TITLE },
+                      padding: { bottom: PADDING_AXIS_TITLE },
+                  }
+              },
+              y: {
+                  title: {
+                      display: true,
+                      text: 'Regiones',
+                      align: 'center',
+                      font: { size: FONT_SIZE_AXIS_TITLE },
+                      padding: { bottom: PADDING_AXIS_TITLE },
+                  }
+              }
+          },
+          indexAxis: 'y',
+          plugins:{
+              tooltip:{
+                  callbacks:{
+                    title: function(data){
+                      return data[0].label;
+                    },
+                    label: function(data){
+                        let percentage = data.formattedValue;
+                        let label = data.dataset.label;
+                        return label + " " + keyword + ": " + "Porcentaje " + percentage + "%" ;
+                    },
+                    afterLabel: function(data){
+                      let formattedValue = parseInt(data.formattedValue);
+                      let label = data.label;
+                      let datasetLabel = data.dataset.label;
+                      let regionData = dataList.find(element => element.regionName === label);
+                      let filterByYear = (typeof(keyword) === 'string') ? datasetLabel : keyword;
+                      let filterByGender = (typeof(keyword) === 'string') ? keyword : datasetLabel;
+
+                      let dataByYear = regionData.trainingIndicatorDataList.find(element => element.year === filterByYear);
+                      if(dataByYear === undefined) return "Detalle: " + "Total "+ 0 + " - " + "Valor actual " + formattedValue;;
+
+                      let dataByGender = dataByYear.dataByGenderList.find(element => element.gender === filterByGender.toLowerCase());
+                      if(dataByGender === undefined) return "Detalle: " + "Total "+ 0 + " - " + "Valor actual " + formattedValue;;
+
+                      let totalCompleted = dataByGender.postTestCompletedCounter + dataByGender.postTestNotCompletedCounter;
+                      return "Detalle: " + "Total "+ totalCompleted + " - " + "Valor actual " + dataByGender.postTestCompletedCounter;
+                    },
+                  },
+              },
+              title: {
+                  text: 'Porcentaje de docentes que aprueban capacitación ' + defineTitle(title),
               },
           },
       }

@@ -4,7 +4,8 @@ import {getSubDimensionSelected} from '../sub-dimension.js';
 import {getInstitutionSubDimensionData, getTeacherSubDimensionData} from './api.js';
 import {participantInstitutionCounter, firstTimeInstitutionPercentage} from './institution.js';
 import {trainedTeacherCounter, teacherInPersonSessionPercentage,
-        teacherPretestCompletedPercentage, teacherPostTestCompletedPercentage} from './teacher.js';
+        teacherPretestCompletedPercentage, teacherPostTestCompletedPercentage,
+        teacherTrainingCompletedPercentage} from './teacher.js';
 
 const PARTICIPANT_INSTITUTION_NUMBER = 0;
 const FIRST_TIME_INSTITUTION_PERCENTAGE = 1;
@@ -14,9 +15,8 @@ const TRAINED_TEACHER_NUMBER = 0;
 const IN_PERSON_SESSION_PERCENTAGE= 1;
 const PRE_TEST_COMPLETED_PERCENTAGE = 2;
 const POST_TEST_COMPLETED_PERCENTAGE = 3;
-const ONLINE_COURSE_COMPETED_PERCENTAGE = 4;
-const TRAINING_COMPLETED_PERCENTAGE = 5;
-const SCORE_DIFFERENCE_PRE_POST_TEST = 6;
+const TRAINING_COMPLETED_PERCENTAGE = 4;
+const SCORE_DIFFERENCE_PRE_POST_TEST = 5;
 
 export function selectChart(){
 
@@ -79,9 +79,9 @@ async function selectChartByTeacher(chartOption){
     if(chartOption === POST_TEST_COMPLETED_PERCENTAGE)
         teacherPostTestCompletedPercentage(yearsSelected, dataList, labels);
 
-    if(chartOption === ONLINE_COURSE_COMPETED_PERCENTAGE);
-    if(chartOption === TRAINING_COMPLETED_PERCENTAGE);
-    if(chartOption === SCORE_DIFFERENCE_PRE_POST_TEST);
+    if(chartOption === TRAINING_COMPLETED_PERCENTAGE)
+        teacherTrainingCompletedPercentage(yearsSelected, dataList, labels);
+    if(chartOption === SCORE_DIFFERENCE_PRE_POST_TEST); //TODO: Averiwar gráficos
 }
 
 function dataListWithEmptyValues(dataList, yearRange){
