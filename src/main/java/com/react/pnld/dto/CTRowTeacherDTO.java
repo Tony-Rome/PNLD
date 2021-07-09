@@ -16,6 +16,9 @@ public class CTRowTeacherDTO {
     private Timestamp timeStamp;
 
     @Parsed(index = 1)
+    private int score;
+
+    @Parsed(index = 2)
     @LowerCase
     private String rut;
 
@@ -74,6 +77,14 @@ public class CTRowTeacherDTO {
     @Format(formats = {"M-dd-yy HH:mm"}, options = "locale=en;lenient=false")
     public void setTimeStamp(Date timeStampString) {
         this.timeStamp = new Timestamp(timeStampString.getTime());
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public String getRut() {
@@ -216,6 +227,7 @@ public class CTRowTeacherDTO {
     public String toString() {
         return "CTRowTeacherDTO{" +
                 "timeStamp=" + timeStamp +
+                ", score=" + score +
                 ", rut='" + rut + '\'' +
                 ", name='" + name + '\'' +
                 ", lastNames='" + lastNames + '\'' +

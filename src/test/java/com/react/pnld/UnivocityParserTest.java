@@ -62,18 +62,17 @@ public class UnivocityParserTest extends AbstractTestNGSpringContextTests {
     }
 
     private String getDummyCTRowTeacherTest(){
-        String headers = "Timestamp\tRUT\tNombre\tApellidos\tCorreo electrónico\tSexo\tEdad\tEstablecimiento Educacional" +
+        String headers = "Timestamp\tScore\tRUT\tNombre\tApellidos\tCorreo electrónico\tSexo\tEdad\tEstablecimiento Educacional" +
                 "\tNiveles en que enseña o hace clases\t¿Participó en el Plan Nacional de Lenguajes Digitales?" +
-                "\t¿Conoce u ocupa la página Code.org?\t¿Conoces o ocupa la plataforma Scratch?\tPregunta 1\tPregunta 2" +
-                "\tPregunta 3\tPregunta 4\tPregunta 5\tPregunta 6\tPregunta 7\tPregunta 8\tPregunta 9\tPregunta 10" +
-                "\tPregunta 11\tPregunta 12\tPregunta 13\tPregunta 14\tPregunta 15\tDe 1 a 7, ¿cómo considera que le fue en el Test?" +
-                "\tDe 1 a 7, ¿qué tan cercano o cercana se siente a los computadores y la tecnología?" +
-                "\tIndique la hora actual, en formato HH:MM\tIndique la hora actual, en formato HH:MM";
+                "\t¿Conoce u ocupa la página Code.org?\t¿Conoces o ocupa la plataforma Scratch?\tIndique la hora actual, en formato HH:MM" +
+                "\tPregunta 1\tPregunta 2\tPregunta 3\tPregunta 4\tPregunta 5\tPregunta 6\tPregunta 7\tPregunta 8\tPregunta 9" +
+                "\tPregunta 10\tPregunta 11\tPregunta 12\tPregunta 13\tPregunta 14\tPregunta 15\tIndique la hora actual, en formato HH:MM" +
+                "\tDe 1 a 7, ¿cómo considera que le fue en el Test?\tDe 1 a 7, ¿qué tan cercano o cercana se siente a los computadores y la tecnología?";
 
-        String dummyResponse = "10-01-21 19:01\t1234567-8\tPedro\tRivas Perez\tsasa@edwd.com\tHombre\t45\tel colegio" +
-                "\t2º básico, 4º básico, 6º básico\tNo\tLa conozco, pero no la he ocupado en clases\tNo la conozco\t3" +
-                "\t135\t75\t5\tNinguno de los anteriores\tSW (Sur-Oeste)\taykR\t24\tNinguno de los anteriores\tQCPGVR" +
-                "\tTUB\t10\tE\tNinguna de las anteriores\t108\t5\t3\t7:00:00 PM\t7:01:00 PM";
+        String dummyResponse = "04-01-21 19:01\t1\t1234567-8\tPedro\tRivas Perez\tsasa@edwd.com\tHombre\t45\tel colegio" +
+                "\t2º básico, 4º básico, 6º básico\tNo\tLa conozco, pero no la he ocupado en clases\tNo la conozco" +
+                "\t7:00:00 PM\t3\t135\t75\t5\tNinguno de los anteriores\tSW (Sur-Oeste)\taykR\t24\tNinguno de los anteriores" +
+                "\tQCPGVR\tTUB\t10\tE\tNinguna de las anteriores\t108\t7:01:00 PM\t5\t3";
 
         return headers.concat("\n").concat(dummyResponse);
     }
@@ -170,10 +169,10 @@ public class UnivocityParserTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals("1234567-8", teacher.getRut());
         Assert.assertEquals("pedro", teacher.getName());
         Assert.assertEquals(45, teacher.getAge());
-        Assert.assertEquals(10, teacher.getTimeStamp().toLocalDateTime().getMonth().getValue());
+        Assert.assertEquals(4, teacher.getTimeStamp().toLocalDateTime().getMonth().getValue());
 
         int levelsCleanArray[] = {2,4,6};
-        Assert.assertTrue(Arrays.equals(teacher.getTeachesInLevels(), levelsCleanArray));
+        Assert.assertTrue(Arrays.equals(levelsCleanArray, teacher.getTeachesInLevels()));
         Assert.assertEquals(19, teacher.getInitTime().getHour());
         Assert.assertEquals(1, teacher.getFinishTime().getMinute());
 
