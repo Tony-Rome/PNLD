@@ -2,10 +2,10 @@ import {transformRegionName, defineYearsQueryParams, activateDefaultsFilters} fr
 import { getYearsSelected, getRegionsSelected, getAllRegionsName } from '../filter.js';
 import {getSubDimensionSelected} from '../sub-dimension.js';
 import {getInstitutionSubDimensionData, getTeacherSubDimensionData} from './api.js';
-import {participantInstitutionCounter, firstTimeInstitutionPercentage} from './institution.js';
+import {participantInstitutionCounter, firstTimeInstitutionPercentage} from './institution-setup.js';
 import {trainedTeacherCounter, teacherInPersonSessionPercentage,
         teacherPretestCompletedPercentage, teacherPostTestCompletedPercentage,
-        teacherTrainingCompletedPercentage} from './teacher.js';
+        teacherTrainingCompletedPercentage} from './teacher-setup.js';
 
 const PARTICIPANT_INSTITUTION_NUMBER = 0;
 const FIRST_TIME_INSTITUTION_PERCENTAGE = 1;
