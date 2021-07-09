@@ -34,7 +34,7 @@ export function trainedTeacherCounter(yearsSelected, dataList, labels ){
 
         datasets.push(dataset);
     });
-    trainedTeacherCounterChart(labels, datasets, yearsSelected, dataLoop['data']);
+    trainedTeacherCounterChart(labels, datasets, dataLoop['title'], dataLoop['data']);
 }
 
 export function teacherInPersonSessionPercentage(yearsSelected, dataList, labels){
@@ -65,7 +65,7 @@ export function teacherInPersonSessionPercentage(yearsSelected, dataList, labels
         datasets.push(dataset);
     });
 
-    teacherInPersonSessionPercentageChart(labels, datasets, yearsSelected, dataLoop['data'], dataList);
+    teacherInPersonSessionPercentageChart(labels, datasets, dataLoop['title'], dataLoop['data'], dataList);
 }
 
 export function teacherPretestCompletedPercentage(yearsSelected, dataList, labels){
@@ -96,7 +96,7 @@ export function teacherPretestCompletedPercentage(yearsSelected, dataList, label
         };
         datasets.push(dataset);
     });
-    teacherPretestCompletedPercentageChart(labels, datasets, yearsSelected, dataLoop['data'], dataList);
+    teacherPretestCompletedPercentageChart(labels, datasets, dataLoop['title'], dataLoop['data'], dataList);
 }
 
 export function teacherPostTestCompletedPercentage(yearsSelected, dataList, labels){
