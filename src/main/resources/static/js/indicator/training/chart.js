@@ -501,14 +501,15 @@ export function teacherTrainingCompletedPercentageChart(labels, datasets, title,
                       let dataByGender = dataByYear.dataByGenderList.find(element => element.gender === filterByGender.toLowerCase());
                       if(dataByGender === undefined) return "Detalle: " + "Total "+ 0 + " - " + "Valor actual " + formattedValue;;
 
-                      let totalCompleted = dataByGender.postTestCompletedCounter + dataByGender.postTestNotCompletedCounter;
-                      return "Detalle: " + "Total "+ totalCompleted + " - " + "Valor actual " + dataByGender.postTestCompletedCounter;
+                      let totalCompleted = dataByGender.approvedTrainingCounter + dataByGender.notApprovedTrainingCounter;
+                      return "Detalle: " + "Total "+ totalCompleted + " - " + "Valor actual " + dataByGender.approvedTrainingCounter;
                     },
                   },
               },
               title: {
                   text: 'Porcentaje de docentes que aprueban capacitación ' + defineTitle(title),
               },
+
           },
       }
   });

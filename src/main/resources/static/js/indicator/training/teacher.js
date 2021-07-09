@@ -144,7 +144,7 @@ export function teacherTrainingCompletedPercentage(yearsSelected, dataList, labe
             if(labels.includes(e.regionName)){
                 var trainingIndicatorDataList = getDataByParameter(e.trainingIndicatorDataList, filterYear);
                 var dataByGender = getDataByParameter(trainingIndicatorDataList.dataByGenderList, filterGender);
-                var completedPercentage = calculatePercentage(dataByGender.postTestCompletedCounter, dataByGender.postTestNotCompletedCounter);
+                var completedPercentage = calculatePercentage(dataByGender.approvedTrainingCounter, dataByGender.notApprovedTrainingCounter);
                 data.push(completedPercentage);
             }
 
