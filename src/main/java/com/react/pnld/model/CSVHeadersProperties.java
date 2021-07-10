@@ -15,7 +15,7 @@ public class CSVHeadersProperties {
     private String[] postTraining;
     private String[] testCT1;
     private String[] testCT2;
-    private String[] testCT3;
+    private String[] ctTestTeacher;
     private String[] satisfaction;
     private String generalResume;
     private String delimiters;
@@ -100,12 +100,12 @@ public class CSVHeadersProperties {
         this.testCT2 = testCT2;
     }
 
-    public String[] getTestCT3() {
-        return testCT3;
+    public String[] getCTTestTeacher() {
+        return ctTestTeacher;
     }
 
-    public void setTestCT3(String[] testCT3) {
-        this.testCT3 = testCT3;
+    public void setCTTestTeacher(String[] testCT3) {
+        this.ctTestTeacher = testCT3;
     }
 
     public String[] getSatisfaction() {

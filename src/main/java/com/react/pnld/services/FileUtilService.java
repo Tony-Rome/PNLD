@@ -77,7 +77,7 @@ public class FileUtilService {
                 return csvHeadersProperties.getTestCT2();
 
             case CT_TEACHERS:
-                return csvHeadersProperties.getTestCT3();
+                return csvHeadersProperties.getCTTestTeacher();
 
             case SATISFACTION:
                 return csvHeadersProperties.getSatisfaction();

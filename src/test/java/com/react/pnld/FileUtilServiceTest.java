@@ -29,8 +29,18 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     private final String signInPerCourseHeaderString = "weekofsigninat,coursename,distinctcountofuseridcsfstarted";
     private final String signInsHeaderString = "weekofsigninat,distinctcountofuserid,differenceindistinctcountofuserid";
     private final String generalResumeHeaderString = "RUT;REGION;RBD;NOMBRES;ASISTE JORNADA;ANNO CAPACITACION;ESTADO FINAL";
-    private final String satisfactionHeaderString = "respuesta\tenviadoel\tinstitucin\tdepartamento\tcurso\tgrupo\tid\tnombrecompleto\trunej123456789\tq01utilizandounaescalade1a4meveoamimismoacomounapersonacercanaalaprogramacin\tq01utilizandounaescalade1a4esimportanteparamilaborprofesionalelaprendersobreprogramacin\tq01utilizandounaescalade1a4laenseanzadelaprogramacinesrelevanteparalaeducacindemisestudiantes\tq01utilizandounaescalade1a4laenseanzadelaprogramacinesrelevanteparaelfuturolaboraldemisestudiantes\tq01utilizandounaescalade1a4laprogramacinespropiadelasclasesdecomputacintecnologaosimilar\tq01utilizandounaescalade1a4laprogramacinpuedevincularsealasasignaturasqueimparto\tq02evalesuniveldeconocimientpensamientocomputacional\tq02evalesuniveldeconocimientprogramacin\tq03enunaescalade1a7dondeactualmentemesientocapazdeimplementarunaclaseincorporandoprogramacin\tq03enunaescalade1a7dondeactualmentemesientomotivadoparaimplementarunaclaseincorporandoprogramacin\tq04ndiquetodoslosconceptosquealgoritmo\tq04ndiquetodoslosconceptosqueabstraccin\tq04ndiquetodoslosconceptosquedescomposicin\tq04ndiquetodoslosconceptosqueiteracinciclobucleloop\tq04ndiquetodoslosconceptosquelenguajedeprogramacin\tq04ndiquetodoslosconceptosqueprograma\tq04ndiquetodoslosconceptosqueninguno\tq05sealetodoslosconceptosdealgoritmo\tq05sealetodoslosconceptosdeabstraccin\tq05sealetodoslosconceptosdedescomposicin\tq05sealetodoslosconceptosdeiteracinciclobucleloop\tq05sealetodoslosconceptosdelenguajedeprogramacin\tq05sealetodoslosconceptosdeprograma\tq05sealetodoslosconceptosdeninguno\tq06situviesequeelegirunaopci\tq07p30\tq08segnsuopininenculde\tq09quesunalgoritmo\tq10paraquseusanlosalgoritm";
-
+    private final String satisfactionHeaderString = "respuesta\tenviadoel\tinstitucin\tdepartamento\tcurso\tgrupo\tid\tnombrecompleto\trunej123456789\tq01utilizandounaescalade1a4meveoamimismoacomounapersonacercanaalaprogramacin" +
+            "\tq01utilizandounaescalade1a4esimportanteparamilaborprofesionalelaprendersobreprogramacin\tq01utilizandounaescalade1a4laenseanzadelaprogramacinesrelevanteparalaeducacindemisestudiantes" +
+            "\tq01utilizandounaescalade1a4laenseanzadelaprogramacinesrelevanteparaelfuturolaboraldemisestudiantes\tq01utilizandounaescalade1a4laprogramacinespropiadelasclasesdecomputacintecnologaosimilar" +
+            "\tq01utilizandounaescalade1a4laprogramacinpuedevincularsealasasignaturasqueimparto\tq02evalesuniveldeconocimientpensamientocomputacional\tq02evalesuniveldeconocimientprogramacin" +
+            "\tq03enunaescalade1a7dondeactualmentemesientocapazdeimplementarunaclaseincorporandoprogramacin\tq03enunaescalade1a7dondeactualmentemesientomotivadoparaimplementarunaclaseincorporandoprogramacin" +
+            "\tq04ndiquetodoslosconceptosquealgoritmo\tq04ndiquetodoslosconceptosqueabstraccin\tq04ndiquetodoslosconceptosquedescomposicin\tq04ndiquetodoslosconceptosqueiteracinciclobucleloop" +
+            "\tq04ndiquetodoslosconceptosquelenguajedeprogramacin\tq04ndiquetodoslosconceptosqueprograma\tq04ndiquetodoslosconceptosqueninguno\tq05sealetodoslosconceptosdealgoritmo\tq05sealetodoslosconceptosdeabstraccin" +
+            "\tq05sealetodoslosconceptosdedescomposicin\tq05sealetodoslosconceptosdeiteracinciclobucleloop\tq05sealetodoslosconceptosdelenguajedeprogramacin\tq05sealetodoslosconceptosdeprograma\tq05sealetodoslosconceptosdeninguno" +
+            "\tq06situviesequeelegirunaopci\tq07p30\tq08segnsuopininenculde\tq09quesunalgoritmo\tq10paraquseusanlosalgoritm";
+    private final String ctTestTeacher = "timestamp,score,rut,nombre,apellidos,correoelectrnico,sexo,edad,establecimientoeducacional,nivelesenqueenseaohaceclases,participenelplannacionaldelenguajesdigitales,conoceuocupalapginacodeorg," +
+            "conocesoocupalaplataformascratch,indiquelahoraactualenformatohhmm,pregunta1,pregunta2,pregunta3,pregunta4,pregunta5,pregunta6,pregunta7,pregunta8,pregunta9,pregunta10,pregunta11,pregunta12,pregunta13,pregunta14,pregunta15," +
+            "indiquelahoraactualenformatohhmm,de1a7cmoconsideraquelefueeneltest,de1a7qutancercanoocercanasesientealoscomputadoresylatecnologa";
     @Test
     void contextLoads() {
         Assert.assertNotNull(fileUtilService);
@@ -215,4 +225,14 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
         Arrays.sort(satisfactionHeadersMock);
         Assert.assertEquals(satisfactionHeaders, satisfactionHeadersMock);
     }
+
+    @Test void selectHeaders_Equals_CTTestTeacher(){
+        String[] ctTestTeacherHeadersMock = ctTestTeacher.toLowerCase().replaceAll("(, |[^a-zA-Z0-9,;\t])", "").split(",");
+        String[] ctTestTeacherHeaders = fileUtilService.selectedHeadersArray("ct-teachers");
+
+        Arrays.sort(ctTestTeacherHeaders);
+        Arrays.sort(ctTestTeacherHeadersMock);
+        Assert.assertEquals(ctTestTeacherHeaders, ctTestTeacherHeadersMock);
+    }
+
 }
