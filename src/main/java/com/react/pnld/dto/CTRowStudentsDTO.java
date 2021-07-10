@@ -10,30 +10,33 @@ public class CTRowStudentsDTO {
     private String timeStamp;
 
     @Parsed(index = 1)
-    private String name;
+    private int score;
 
     @Parsed(index = 2)
-    private String lastNames;
+    private String name;
 
     @Parsed(index = 3)
-    private String gender;
+    private String lastNames;
 
     @Parsed(index = 4)
-    private String age;
+    private String gender;
 
     @Parsed(index = 5)
-    private String educationalInstitution;
+    private String age;
 
     @Parsed(index = 6)
-    private String level;
+    private String educationalInstitution;
 
     @Parsed(index = 7)
-    private String useCodeOrgPage;//TODO a boolean
+    private String level;
 
     @Parsed(index = 8)
-    private String useScratch; //TODO a boolean
+    private String useCodeOrgPage;//TODO a boolean
 
     @Parsed(index = 9)
+    private String useScratch; //TODO a boolean
+
+    @Parsed(index = 10)
     private String initTime;
 
     private List<String> examples;

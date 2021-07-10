@@ -1,6 +1,6 @@
 package com.react.pnld.services;
 
-import com.react.pnld.dto.CTRowGroupOneStudentsDTO;
+import com.react.pnld.dto.CTRowGroupADTO;
 import com.react.pnld.dto.CTRowStudentsDTO;
 import com.react.pnld.dto.CTRowTeacherDTO;
 import com.react.pnld.dto.FileResumeDTO;
@@ -25,7 +25,7 @@ public class LoaderCTFiles {
     @Autowired
     private TestService testService;
 
-    public FileResumeDTO processStudentsGroupOneRows(List<CTRowGroupOneStudentsDTO> studentsGroupOneRows) {
+    public FileResumeDTO processStudentsGroupOneRows(List<CTRowGroupADTO> studentsGroupOneRows) {
         logger.info("testFirstGroupStudents. ctFirstGroupStudents.size()={}", studentsGroupOneRows.size());
         //TODO validate load records by file's type
 

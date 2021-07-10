@@ -1,6 +1,6 @@
 package com.react.pnld;
 
-import com.react.pnld.dto.CTRowGroupOneStudentsDTO;
+import com.react.pnld.dto.CTRowGroupADTO;
 import com.react.pnld.dto.CTRowTeacherDTO;
 import com.react.pnld.model.CSVHeadersProperties;
 import com.react.pnld.services.FileUtilService;
@@ -77,6 +77,22 @@ public class UnivocityParserTest extends AbstractTestNGSpringContextTests {
         return headers.concat("\n").concat(dummyResponse);
     }
 
+    private String getDummyCTRowGroupATest(){
+        String headers = "Timestamp\tScore\tNombre\tApellidos\tSexo\tEdad\tEstablecimiento Educacional\tCurso\t¿Has ocupado la página Code.org?" +
+                "\t¿Has ocupado la plataforma Scratch?\tIndique la hora actual, en formato HH:MM\tEjemplo I\tEjemplo II\tEjemplo III\tPregunta 1" +
+                "\tPregunta 2\tPregunta 3\tPregunta 4\tPregunta 5\tPregunta 6\tPregunta 7\tPregunta 8\tPregunta 9\tPregunta 10\tPregunta 11" +
+                "\tPregunta 12\tPregunta 13\tPregunta 14\tPregunta 15\tPregunta 16\tPregunta 17\tPregunta 18\tPregunta 19\tPregunta 20" +
+                "\tPregunta 21\tPregunta 22\tPregunta 23\tPregunta 24\tPregunta 25\tIndica la hora actual, en formato HH:MM" +
+                "\tDe 1 a 7, ¿cómo consideras que te fue en el Test?\tDe 1 a 7, ¿qué tanto te interesan los computadores y la tecnología?" +
+                "\tCuéntanos sobre el apoyo que tuviste al hacer el test\tCuéntanos acerca de cualquier problema que tuviste  para completar el test" +
+                "\tCorreo electrónico para futuro contacto";
+
+        String dummyResponse = "5-10-2021 14:42:06\t3\tFlorencia Celeste\tCarrasco Sandoval\tMujer\t7\tColegio Concepción Chillán\t2º básico\tNo\tNo" +
+                "\t2:08:00 PM\tB\tD\tC\tA\tD\tC\tB\tB\tD\tB\tA\tD\tC\tB\tA\tC\tB\tC\tD\tA\tC\tA\tC\tD\t\tA\tB\tC\t2:40:00 PM\t4\t7" +
+                "\tMi apoderado me explicó los ejemplos, Mi apoderado me leyó las preguntas\talgunas preguntas estaban difíciles y enredadas \tmjsandovalrc@gmail.com";
+
+        return headers.concat("\n").concat(dummyResponse);
+    }
 
     private String getDummyGeneralResumeRow(){
         String headers = "RUT\tREGION\tRBD\tNOMBRES\tASISTE JORNADA\tANNO CAPACITACION\tESTADO FINAL";
@@ -139,8 +155,8 @@ public class UnivocityParserTest extends AbstractTestNGSpringContextTests {
         InputStream inputStream = new ByteArrayInputStream(getDummyCTStudentsGroupOne().getBytes());
         Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 
-        List<CTRowGroupOneStudentsDTO> ctFirstGroupStudentsRows = fileUtilService.parseRowsToBeans(reader,
-                CTRowGroupOneStudentsDTO.class);
+        List<CTRowGroupADTO> ctFirstGroupStudentsRows = fileUtilService.parseRowsToBeans(reader,
+                CTRowGroupADTO.class);
 
         Assert.assertEquals("Rafaela", ctFirstGroupStudentsRows.get(0).getName());
         Assert.assertEquals("Cerda Elgueta", ctFirstGroupStudentsRows.get(0).getLastNames());
@@ -178,6 +194,16 @@ public class UnivocityParserTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(5, teacher.getHowDidInTheTest());
 
         reader.close();
+    }
+
+    @Test
+    public void ctRowGroupATest_when_parsing_ok(){
+        InputStream inputStream = new ByteArrayInputStream(getDummyCTRowGroupATest().getBytes());
+        Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+
+        List<CTRowGroupADTO> ctRowsGroupA = fileUtilService.parseRowsToBeans(reader, CTRowGroupADTO.class);
+        CTRowGroupADTO teacher = ctRowsGroupA.get(0);
+
     }
 
     @Test

@@ -2,24 +2,24 @@ package com.react.pnld.dto;
 
 import com.univocity.parsers.annotations.Parsed;
 
-public class CTRowGroupOneStudentsDTO extends CTRowStudentsDTO {
-
-    @Parsed(index = 38)
-    private String finishTime;
+public class CTRowGroupADTO extends CTRowStudentsDTO {
 
     @Parsed(index = 39)
-    private int howDoYouThinkYouDidInTheTest;
+    private String finishTime;
 
     @Parsed(index = 40)
-    private int howInterestedAreYouInComputers;
+    private int howDoYouThinkYouDidInTheTest;
 
     @Parsed(index = 41)
-    private String aboutSupportYouReceived;
+    private int howInterestedAreYouInComputers;
 
     @Parsed(index = 42)
-    private String aboutProblemsYouHadCompletingTest;
+    private String aboutSupportYouReceived;
 
     @Parsed(index = 43)
+    private String aboutProblemsYouHadCompletingTest;
+
+    @Parsed(index = 44)
     private String email;
 
     public String getFinishTime() {
