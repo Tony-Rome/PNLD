@@ -71,10 +71,10 @@ public class FileUtilService {
                 return csvHeadersProperties.getPostTraining();
 
             case CT_STUDENTS_ONE:
-                return csvHeadersProperties.getTestCT1();
+                return csvHeadersProperties.getCTTestGroupA();
 
             case CT_STUDENTS_TWO:
-                return csvHeadersProperties.getTestCT2();
+                return csvHeadersProperties.getCTTestGroupB();
 
             case CT_TEACHERS:
                 return csvHeadersProperties.getCTTestTeacher();

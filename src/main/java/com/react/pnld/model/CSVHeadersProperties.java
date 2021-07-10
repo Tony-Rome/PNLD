@@ -13,8 +13,8 @@ public class CSVHeadersProperties {
     private String[] diagnosis;
     private String[] preTraining;
     private String[] postTraining;
-    private String[] testCT1;
-    private String[] testCT2;
+    private String[] ctTestGroupA;
+    private String[] ctTestGroupB;
     private String[] ctTestTeacher;
     private String[] satisfaction;
     private String generalResume;
@@ -84,20 +84,20 @@ public class CSVHeadersProperties {
         this.postTraining = postTraining;
     }
 
-    public String[] getTestCT1() {
-        return testCT1;
+    public String[] getCTTestGroupA() {
+        return ctTestGroupA;
     }
 
-    public void setTestCT1(String[] testCT1) {
-        this.testCT1 = testCT1;
+    public void setCTTestGroupA(String[] ctTestGroupA) {
+        this.ctTestGroupA = ctTestGroupA;
     }
 
-    public String[] getTestCT2() {
-        return testCT2;
+    public String[] getCTTestGroupB() {
+        return ctTestGroupB;
     }
 
-    public void setTestCT2(String[] testCT2) {
-        this.testCT2 = testCT2;
+    public void setCTTestGroupB(String[] ctTestGroupB) {
+        this.ctTestGroupB = ctTestGroupB;
     }
 
     public String[] getCTTestTeacher() {

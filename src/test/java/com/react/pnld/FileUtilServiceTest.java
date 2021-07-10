@@ -41,6 +41,12 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
     private final String ctTestTeacher = "timestamp,score,rut,nombre,apellidos,correoelectrnico,sexo,edad,establecimientoeducacional,nivelesenqueenseaohaceclases,participenelplannacionaldelenguajesdigitales,conoceuocupalapginacodeorg," +
             "conocesoocupalaplataformascratch,indiquelahoraactualenformatohhmm,pregunta1,pregunta2,pregunta3,pregunta4,pregunta5,pregunta6,pregunta7,pregunta8,pregunta9,pregunta10,pregunta11,pregunta12,pregunta13,pregunta14,pregunta15," +
             "indiquelahoraactualenformatohhmm,de1a7cmoconsideraquelefueeneltest,de1a7qutancercanoocercanasesientealoscomputadoresylatecnologa";
+
+    private final String ctTestGroupA = "timestamp,score,nombre,apellidos,sexo,edad,establecimientoeducacional,curso,hasocupadolapginacodeorg,hasocupadolaplataformascratch,indiquelahoraactual,enformatohhmm,ejemploi,ejemploii,ejemploiii," +
+            "pregunta1,pregunta2,pregunta3,pregunta4,pregunta5,pregunta6,pregunta7,pregunta8,pregunta9,pregunta10,pregunta11,pregunta12,pregunta13,pregunta14,pregunta15,pregunta16,pregunta17,pregunta18,pregunta19,pregunta20,pregunta21," +
+            "pregunta22,pregunta23,pregunta24,pregunta25,indicalahoraactual,enformatohhmm,de1a7,cmoconsiderasquetefueeneltest,de1a7,qutantoteinteresanloscomputadoresylatecnologa,cuntanossobreelapoyoquetuvistealhacereltest," +
+            "cuntanosacercadecualquierproblemaquetuvisteparacompletareltest,correoelectrnicoparafuturocontacto";
+
     @Test
     void contextLoads() {
         Assert.assertNotNull(fileUtilService);
@@ -226,13 +232,24 @@ public class FileUtilServiceTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(satisfactionHeaders, satisfactionHeadersMock);
     }
 
-    @Test void selectHeaders_Equals_CTTestTeacher(){
+    @Test
+    void selectHeaders_Equals_CTTestTeacher(){
         String[] ctTestTeacherHeadersMock = ctTestTeacher.toLowerCase().replaceAll("(, |[^a-zA-Z0-9,;\t])", "").split(",");
         String[] ctTestTeacherHeaders = fileUtilService.selectedHeadersArray("ct-teachers");
 
         Arrays.sort(ctTestTeacherHeaders);
         Arrays.sort(ctTestTeacherHeadersMock);
         Assert.assertEquals(ctTestTeacherHeaders, ctTestTeacherHeadersMock);
+    }
+
+    @Test
+    void selectHeaders_Equals_CTTestGroupA(){
+        String[] ctTestGroupOneHeadersMock = ctTestGroupA.toLowerCase().replaceAll("(, |[^a-zA-Z0-9,;\t])", "").split(",");
+        String[] ctTestGroupOneHeaders = fileUtilService.selectedHeadersArray("ct-students-group-one");
+
+        Arrays.sort(ctTestGroupOneHeaders);
+        Arrays.sort(ctTestGroupOneHeadersMock);
+        Assert.assertEquals(ctTestGroupOneHeaders, ctTestGroupOneHeadersMock);
     }
 
 }
