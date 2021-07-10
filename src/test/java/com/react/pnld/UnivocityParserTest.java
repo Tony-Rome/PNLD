@@ -175,7 +175,7 @@ public class UnivocityParserTest extends AbstractTestNGSpringContextTests {
         Assert.assertTrue(Arrays.equals(levelsCleanArray, teacher.getTeachesInLevels()));
         Assert.assertEquals(19, teacher.getInitTime().getHour());
         Assert.assertEquals(1, teacher.getFinishTime().getMinute());
-        Assert.assertEquals(5, teacher.getHowDoYouThinkYouDidInTheTest());
+        Assert.assertEquals(5, teacher.getHowDidInTheTest());
 
         reader.close();
     }

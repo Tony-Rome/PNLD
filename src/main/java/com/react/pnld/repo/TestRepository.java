@@ -1,6 +1,7 @@
 package com.react.pnld.repo;
 
 import com.react.pnld.mappers.TestMapper;
+import com.react.pnld.model.CTTest;
 import com.react.pnld.model.TrainingTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,4 +30,9 @@ public class TestRepository {
         logger.info("insertTest. test={}", trainingTest);
         return testMapper.insertTrainingTest(trainingTest);
     }
+
+    public Optional<CTTest> getTeacherCTTestByRut(String teacherRut){
+        return Optional.ofNullable(testMapper.getTeacherCTTestByRut(teacherRut));
+    }
+
 }

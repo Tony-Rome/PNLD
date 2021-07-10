@@ -4,6 +4,7 @@ import com.react.pnld.dto.CTRowGroupOneStudentsDTO;
 import com.react.pnld.dto.CTRowStudentsDTO;
 import com.react.pnld.dto.CTRowTeacherDTO;
 import com.react.pnld.dto.FileResumeDTO;
+import com.react.pnld.model.CTTest;
 import com.react.pnld.model.Teacher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,9 @@ public class LoaderCTFiles {
 
     @Autowired
     private PersonService personService;
+
+    @Autowired
+    private TestService testService;
 
     public FileResumeDTO processStudentsGroupOneRows(List<CTRowGroupOneStudentsDTO> studentsGroupOneRows) {
         logger.info("testFirstGroupStudents. ctFirstGroupStudents.size()={}", studentsGroupOneRows.size());
@@ -43,16 +47,22 @@ public class LoaderCTFiles {
         int duplicatedRecordsCount = 0;
         int invalidRecordsCount = 0;
 
-        for(CTRowTeacherDTO ctRowTeacherDTO : ctRowsTeacher){
+        for (CTRowTeacherDTO ctRowTeacherDTO : ctRowsTeacher) {
             String teacherRut = personService.clearRut(ctRowTeacherDTO.getRut());
             if(!personService.rutValidator(teacherRut)){
                 invalidRecordsCount++;
             } else {
                 Optional<Teacher> teacherSelected = personService.getTeacherByRut(teacherRut);
-                if(teacherSelected.isPresent()){
+                if (teacherSelected.isPresent()) {
+                    //TODO select test
+                    Optional<CTTest> teacherCTTest = testService.getTeacherCTTestByRut(teacherRut);
 
-                    //TODO select test.
-
+                    if(teacherCTTest.isPresent()){
+                        duplicatedRecordsCount++;
+                    } else {
+                        //if not exist insert, else count duplicated
+                        newRecordsCount++;
+                    }
 
                 } else {
                     logger.info("processTeacherRows. no exist teacherRut={}", teacherRut);

@@ -66,11 +66,11 @@ public class CTRowTeacherDTO {
 
     @Parsed(index = 30)
     @LowerCase
-    private int howDoYouThinkYouDidInTheTest;
+    private int howDidInTheTest;
 
     @Parsed(index = 31)
     @LowerCase
-    private int howInterestedAreYouInComputers;
+    private int howInterestedInTech;
 
 
     public Timestamp getTimeStamp() {
@@ -187,20 +187,20 @@ public class CTRowTeacherDTO {
         this.youKnowScratch = youKnowScratch;
     }
 
-    public int getHowDoYouThinkYouDidInTheTest() {
-        return howDoYouThinkYouDidInTheTest;
+    public int getHowDidInTheTest() {
+        return howDidInTheTest;
     }
 
-    public void setHowDoYouThinkYouDidInTheTest(int howDoYouThinkYouDidInTheTest) {
-        this.howDoYouThinkYouDidInTheTest = howDoYouThinkYouDidInTheTest;
+    public void setHowDidInTheTest(int howDidInTheTest) {
+        this.howDidInTheTest = howDidInTheTest;
     }
 
-    public int getHowInterestedAreYouInComputers() {
-        return howInterestedAreYouInComputers;
+    public int getHowInterestedInTech() {
+        return howInterestedInTech;
     }
 
-    public void setHowInterestedAreYouInComputers(int howInterestedAreYouInComputers) {
-        this.howInterestedAreYouInComputers = howInterestedAreYouInComputers;
+    public void setHowInterestedInTech(int howInterestedInTech) {
+        this.howInterestedInTech = howInterestedInTech;
     }
 
     public LocalTime getInitTime() {
@@ -254,8 +254,8 @@ public class CTRowTeacherDTO {
                 ", initTime=" + initTime +
                 ", answers=" + answers +
                 ", finishTime=" + finishTime +
-                ", howDoYouThinkYouDidInTheTest=" + howDoYouThinkYouDidInTheTest +
-                ", howInterestedAreYouInComputers=" + howInterestedAreYouInComputers +
+                ", howDidInTheTest=" + howDidInTheTest +
+                ", howInterestedInTech=" + howInterestedInTech +
                 '}';
     }
 }
