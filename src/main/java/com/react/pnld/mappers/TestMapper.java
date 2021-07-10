@@ -12,4 +12,8 @@ public interface TestMapper {
     int insertTrainingTest(TrainingTest trainingTest);
 
     CTTest getTeacherCTTestByRut(String teacherRut);
+
+    int getNextCTTestId();
+
+    int insertCTTest(CTTest newCTTest);
 }

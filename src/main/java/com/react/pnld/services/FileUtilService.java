@@ -202,7 +202,7 @@ public class FileUtilService {
             case CT_TEACHERS:
                 List<CTRowTeacherDTO> ctRowsTeacher = parseRowsToBeans(loadedFileReader, CTRowTeacherDTO.class);
                 closeReader(loadedFileReader);
-                return this.loaderCTFiles.processTeacherRows(ctRowsTeacher);
+                return this.loaderCTFiles.processTeacherRows(ctRowsTeacher, loadedFile.getId());
 
             case GENERAL_RESUME:
                 List<GeneralResumeTrainingDTO> generalResumeTrainingRows = parseRowsToBeans(loadedFileReader,

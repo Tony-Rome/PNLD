@@ -55,5 +55,17 @@
         WHERE rut_docente = #{teacherRut};
     </select>
 
+    <select id="getNextCTTestId" resultType="int">
+        SELECT nextval(pg_get_serial_sequence('pnld.test_pc_docente', 'id'));
+    </select>
+
+    <insert id="insertCTTest">
+        INSERT INTO pnld.test_pc_docente
+        (id, id_archivo_cargado, fecha_test, calificacion, rut_docente, conoce_code, conoce_scratch, hora_inicio, hora_fin,
+         como_le_fue, que_tan_cercano_a_tecnologia, respuestas)
+        VALUES
+        (#{id}, #{idLoadedFile}, #{testDate}, #{score}, #{teacherRut}, #{youKnowCode}, #{youKnowScratch}, #{initTime}, #{finishTime},
+         #{howDidInTheTest}, #{howInterestedInTech}, #{answers}::json);
+    </insert>
 
 </mapper>

@@ -9,8 +9,8 @@ public class CTTest {
     private Timestamp testDate;
     private int score;
     private String teacherRut;
-    private boolean youKnowCode;
-    private boolean youKnowScratch;
+    private String youKnowCode;
+    private String youKnowScratch;
     private LocalTime initTime;
     private LocalTime finishTime;
     private int howDidInTheTest;
@@ -21,8 +21,8 @@ public class CTTest {
         super();
     }
 
-    public CTTest(int id, int idLoadedFile, Timestamp testDate, int score, String teacherRut, boolean youKnowCode,
-                  boolean youKnowScratch, LocalTime initTime, LocalTime finishTime, int howDidInTheTest,
+    public CTTest(int id, int idLoadedFile, Timestamp testDate, int score, String teacherRut, String youKnowCode,
+                  String youKnowScratch, LocalTime initTime, LocalTime finishTime, int howDidInTheTest,
                   int howInterestedInTech, String answers) {
         super();
         this.id = id;
@@ -79,19 +79,19 @@ public class CTTest {
         this.teacherRut = teacherRut;
     }
 
-    public boolean isYouKnowCode() {
+    public String isYouKnowCode() {
         return youKnowCode;
     }
 
-    public void setYouKnowCode(boolean youKnowCode) {
+    public void setYouKnowCode(String youKnowCode) {
         this.youKnowCode = youKnowCode;
     }
 
-    public boolean isYouKnowScratch() {
+    public String isYouKnowScratch() {
         return youKnowScratch;
     }
 
-    public void setYouKnowScratch(boolean youKnowScratch) {
+    public void setYouKnowScratch(String youKnowScratch) {
         this.youKnowScratch = youKnowScratch;
     }
 

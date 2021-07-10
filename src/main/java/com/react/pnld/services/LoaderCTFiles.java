@@ -41,7 +41,7 @@ public class LoaderCTFiles {
         return new FileResumeDTO();
     }
 
-    public FileResumeDTO processTeacherRows(List<CTRowTeacherDTO> ctRowsTeacher) {
+    public FileResumeDTO processTeacherRows(List<CTRowTeacherDTO> ctRowsTeacher, int idLoadedFile) {
 
         int newRecordsCount = 0;
         int duplicatedRecordsCount = 0;
@@ -53,14 +53,24 @@ public class LoaderCTFiles {
                 invalidRecordsCount++;
             } else {
                 Optional<Teacher> teacherSelected = personService.getTeacherByRut(teacherRut);
+
                 if (teacherSelected.isPresent()) {
-                    //TODO select test
                     Optional<CTTest> teacherCTTest = testService.getTeacherCTTestByRut(teacherRut);
 
                     if(teacherCTTest.isPresent()){
                         duplicatedRecordsCount++;
                     } else {
-                        //if not exist insert, else count duplicated
+
+                        int newIdCTTest = testService.getNextCTTestId();
+                        String answers = "{\"llave\":\"respuesta\"}";
+                        CTTest newCTTest = new CTTest(newIdCTTest, idLoadedFile, ctRowTeacherDTO.getTimeStamp(), ctRowTeacherDTO.getScore(),
+                                teacherRut, ctRowTeacherDTO.getYouKnowCode(), ctRowTeacherDTO.getYouKnowScratch(),
+                                ctRowTeacherDTO.getInitTime(), ctRowTeacherDTO.getFinishTime(), ctRowTeacherDTO.getHowDidInTheTest(),
+                                ctRowTeacherDTO.getHowInterestedInTech(), answers);
+
+                        int resultInsertTest = testService.saveCTTest(newCTTest);
+                        logger.info("processTeacherRows. resultInsertTest={}, newCTTest={}", resultInsertTest, newCTTest);
+
                         newRecordsCount++;
                     }
 

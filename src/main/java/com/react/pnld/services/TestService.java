@@ -29,4 +29,12 @@ public class TestService {
     public Optional<CTTest> getTeacherCTTestByRut(String teacherRut){
         return testRepository.getTeacherCTTestByRut(teacherRut);
     }
+
+    public int getNextCTTestId(){
+        return testRepository.getNextCTTestId();
+    }
+
+    public int saveCTTest(CTTest newCTtest){
+        return testRepository.insertCTTest(newCTtest);
+    }
 }

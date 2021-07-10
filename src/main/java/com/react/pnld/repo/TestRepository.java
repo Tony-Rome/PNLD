@@ -35,4 +35,11 @@ public class TestRepository {
         return Optional.ofNullable(testMapper.getTeacherCTTestByRut(teacherRut));
     }
 
+    public int getNextCTTestId(){
+        return testMapper.getNextCTTestId();
+    }
+
+    public int insertCTTest(CTTest newCTTest){
+        return testMapper.insertCTTest(newCTTest);
+    }
 }
