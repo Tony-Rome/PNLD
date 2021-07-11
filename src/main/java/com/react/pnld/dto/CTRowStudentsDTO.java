@@ -1,30 +1,37 @@
 package com.react.pnld.dto;
 
+import com.univocity.parsers.annotations.Format;
+import com.univocity.parsers.annotations.LowerCase;
 import com.univocity.parsers.annotations.Parsed;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 public class CTRowStudentsDTO {
 
-    @Parsed(index = 0)
-    private String timeStamp;
+    private Timestamp timeStamp;
 
     @Parsed(index = 1)
     private int score;
 
     @Parsed(index = 2)
+    @LowerCase
     private String name;
 
     @Parsed(index = 3)
+    @LowerCase
     private String lastNames;
 
     @Parsed(index = 4)
+    @LowerCase
     private String gender;
 
     @Parsed(index = 5)
-    private String age;
+    private int age;
 
     @Parsed(index = 6)
+    @LowerCase
     private String educationalInstitution;
 
     @Parsed(index = 7)
@@ -43,12 +50,21 @@ public class CTRowStudentsDTO {
 
     private List<String> answers;
 
-    public String getTimeStamp() {
+    public Timestamp getTimeStamp() {
         return timeStamp;
     }
+    @Parsed(index = 0)
+    @Format(formats = {"M-dd-yy HH:mm"}, options = "locale=en;lenient=false")
+    public void setTimeStamp(Date timeStampString) {
+        this.timeStamp = new Timestamp(timeStampString.getTime());
+    }
 
-    public void setTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public String getName() {
@@ -67,6 +83,10 @@ public class CTRowStudentsDTO {
         this.lastNames = lastNames;
     }
 
+    public String getFullName() {
+        return this.name.concat(" ").concat(this.lastNames);
+    }
+
     public String getGender() {
         return gender;
     }
@@ -75,11 +95,11 @@ public class CTRowStudentsDTO {
         this.gender = gender;
     }
 
-    public String getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
@@ -139,21 +159,4 @@ public class CTRowStudentsDTO {
         this.answers = answers;
     }
 
-    @Override
-    public String toString() {
-        return "CTTestStudentsDTO{" +
-                "timeStamp='" + timeStamp + '\'' +
-                ", name='" + name + '\'' +
-                ", lastNames='" + lastNames + '\'' +
-                ", gender='" + gender + '\'' +
-                ", age='" + age + '\'' +
-                ", educationalInstitution='" + educationalInstitution + '\'' +
-                ", level='" + level + '\'' +
-                ", useCodeOrgPage='" + useCodeOrgPage + '\'' +
-                ", useScratch='" + useScratch + '\'' +
-                ", initTime='" + initTime + '\'' +
-                ", examples=" + examples +
-                ", answers=" + answers +
-                '}';
-    }
 }

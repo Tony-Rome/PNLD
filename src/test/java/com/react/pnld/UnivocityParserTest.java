@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -202,7 +203,16 @@ public class UnivocityParserTest extends AbstractTestNGSpringContextTests {
         Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 
         List<CTRowGroupADTO> ctRowsGroupA = fileUtilService.parseRowsToBeans(reader, CTRowGroupADTO.class);
-        CTRowGroupADTO teacher = ctRowsGroupA.get(0);
+        CTRowGroupADTO student = ctRowsGroupA.get(0);
+
+        //TODO unit test for curso, uso de scratch y code, hora inicio y fin
+
+        Assert.assertEquals(5, student.getTimeStamp().toLocalDateTime().getMonth().getValue());
+        Assert.assertEquals(3 ,student.getScore());
+        Assert.assertEquals("florencia celeste carrasco sandoval", student.getFullName());
+        Assert.assertEquals("mujer", student.getGender());
+        Assert.assertEquals(7, student.getAge());
+        Assert.assertEquals("colegio concepción chillán", student.getEducationalInstitution());
 
     }
 
