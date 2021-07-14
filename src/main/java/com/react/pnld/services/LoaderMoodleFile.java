@@ -54,8 +54,8 @@ public class LoaderMoodleFile {
                     int teacherGender = personService.getGenderIdByType(personService.genderStandardization(diagnosticRow.getGender()));
                     String teacherName = this.removeAccents(diagnosticRow.getName());
                     Teacher newTeacher = new Teacher(teacherRut, teacherName, diagnosticRow.getAge(),
-                            teacherGender, diagnosticRow.getEmail(), null, false, null,
-                            false, 0, school.getRbd());
+                            teacherGender, diagnosticRow.getEmail(), null, null,
+                            false, 0, false, school.getRbd());
                     try {
                         int createTeacherResponse = personService.createTeacher(newTeacher);
                         logger.info("processDiagnosticFileRows. createTeacherResponse={}, newTeacher={}", createTeacherResponse,
@@ -117,8 +117,8 @@ public class LoaderMoodleFile {
                     Optional<School> schoolSelected = schoolService.getSchoolByName(trainingRowDTO.getSchoolName());
 
                     Teacher newTeacher = new Teacher(teacherRut, teacherName, 0, GenderProperties.GENDER_ID_NOT_SPECIFIED,
-                            trainingRowDTO.getEmail(), trainingRowDTO.getDepartment(), false, null,
-                            false, 0, schoolSelected.get().getRbd());
+                            trainingRowDTO.getEmail(), trainingRowDTO.getDepartment(), null, false,
+                            0, false, schoolSelected.get().getRbd());
                     try {
                         int createTeacherResponse = personService.createTeacher(newTeacher);
                         logger.info("processTrainingFileRows. createTeacherResponse={}, newTeacher={}", createTeacherResponse, newTeacher);
@@ -218,6 +218,7 @@ public class LoaderMoodleFile {
             if (teacher.isPresent()) {
                 teacher.get().setTrainingApproved(generalResumeRow.isApproved());
                 teacher.get().setTrainingYear(generalResumeRow.getTrainingYear());
+                teacher.get().setAttendsInPerson(generalResumeRow.isAttendsInPerson());
                 personService.updateTeacher(teacher.get());
                 newRecordCount++;
             } //create teacher is not possible because data necessary are in other files

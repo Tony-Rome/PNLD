@@ -14,12 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.text.Normalizer;
-import java.time.DateTimeException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class FileUtilService {
@@ -36,7 +32,7 @@ public class FileUtilService {
     private LoaderCodeFile loaderCodeFile;
 
     @Autowired
-    private LoaderCTFile loaderCTFile;
+    private LoaderCTFiles loaderCTFiles;
 
     private CsvParserSettings csvParserSettings;
 
@@ -74,14 +70,14 @@ public class FileUtilService {
             case POST_TRAINING:
                 return csvHeadersProperties.getPostTraining();
 
-            case TEST_CT_1:
-                return csvHeadersProperties.getTestCT1();
+            case CT_STUDENTS_ONE:
+                return csvHeadersProperties.getCTTestGroupA();
 
-            case TEST_CT_2:
-                return csvHeadersProperties.getTestCT2();
+            case CT_STUDENTS_TWO:
+                return csvHeadersProperties.getCTTestGroupB();
 
-            case TEST_CT_3:
-                return csvHeadersProperties.getTestCT3();
+            case CT_TEACHERS:
+                return csvHeadersProperties.getCTTestTeacher();
 
             case SATISFACTION:
                 return csvHeadersProperties.getSatisfaction();
@@ -137,6 +133,14 @@ public class FileUtilService {
         }
     }
 
+    private void closeReader(Reader loadedFileReader){
+        try {
+            loadedFileReader.close();
+        } catch (IOException e) {
+            logger.error("closeReader. message={}", e.getMessage(), e);
+        }
+    }
+
     public <T> List<T> parseRowsToBeans(Reader reader, Class<T> clazz) {
         BeanListProcessor<T> rowProcessor = new BeanListProcessor<T>(clazz);
         csvParserSettings.setProcessor(rowProcessor);
@@ -173,47 +177,41 @@ public class FileUtilService {
 
             case DIAGNOSIS:
                 List<DiagnosticFileDTO> diagnosticRows = parseRowsToBeans(loadedFileReader, DiagnosticFileDTO.class);
+                closeReader(loadedFileReader);
                 return this.loaderMoodleFile.processDiagnosticFileRows(diagnosticRows, loadedFile.getId());
 
             case PRE_TRAINING:
             case POST_TRAINING:
                 List<TrainingFileDTO> trainingRows = parseRowsToBeans(loadedFileReader, TrainingFileDTO.class);
+                closeReader(loadedFileReader);
                 return loaderMoodleFile.processTrainingFileRows(trainingRows, loadedFile.getId(), loadedFile.getType());
 
             case SATISFACTION:
                 List<SatisfactionFileDTO> satisfactionRows = parseRowsToBeans(loadedFileReader, SatisfactionFileDTO.class);
+                closeReader(loadedFileReader);
                 return this.loaderMoodleFile.processSatisfactionFileRows(satisfactionRows, loadedFile.getId());
 
-            case TEST_CT_1:
-                return this.loaderCTFile.testPCOneFile(loadedFile);
+            case CT_STUDENTS_ONE:
+                List<CTRowGroupADTO> ctFirstGroupStudentsRows = parseRowsToBeans(loadedFileReader, CTRowGroupADTO.class);
+                closeReader(loadedFileReader);
+                return this.loaderCTFiles.processStudentsGroupOneRows(ctFirstGroupStudentsRows);
 
-            case TEST_CT_2:
-                return this.loaderCTFile.testPCTwoFile(loadedFile);
+            case CT_STUDENTS_TWO:
+                return this.loaderCTFiles.processStudentsGroupTwoRows(null);
 
-            case TEST_CT_3:
-                return this.loaderCTFile.testPCThreeFile(loadedFile);
+            case CT_TEACHERS:
+                List<CTRowTeacherDTO> ctRowsTeacher = parseRowsToBeans(loadedFileReader, CTRowTeacherDTO.class);
+                closeReader(loadedFileReader);
+                return this.loaderCTFiles.processTeacherRows(ctRowsTeacher, loadedFile.getId());
 
             case GENERAL_RESUME:
                 List<GeneralResumeTrainingDTO> generalResumeTrainingRows = parseRowsToBeans(loadedFileReader,
                         GeneralResumeTrainingDTO.class);
+                closeReader(loadedFileReader);
                 return this.loaderMoodleFile.processGeneralResumeRows(generalResumeTrainingRows, loadedFile.getId());
 
             default:
                 return new FileResumeDTO(0, 0, 0, 0);
-        }
-    }
-
-    public static LocalDateTime getLocalDateFrom(String stringDate) {
-
-        String stringFormatted = stringDate.replaceAll(" de ", "/").replaceAll("\\s+|\\t", " ");
-        ;
-        String formatPattern = "d/MMMM/yyyy H:m";
-        try {
-            return LocalDateTime.parse(stringFormatted, DateTimeFormatter.ofPattern(formatPattern,
-                    new Locale("es", "ES")));
-        } catch (DateTimeException dateTimeException) {
-            logger.error("getLocalDateFrom.", dateTimeException.getMessage(), dateTimeException);
-            return LocalDateTime.MIN;
         }
     }
 

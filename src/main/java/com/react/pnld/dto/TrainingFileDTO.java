@@ -1,13 +1,15 @@
 package com.react.pnld.dto;
 
-import com.react.pnld.services.FileUtilService;
 import com.univocity.parsers.annotations.Format;
 import com.univocity.parsers.annotations.LowerCase;
 import com.univocity.parsers.annotations.Parsed;
 import org.postgresql.util.PGInterval;
 
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Locale;
 
 import static java.lang.Math.toIntExact;
 
@@ -160,10 +162,22 @@ public class TrainingFileDTO {
         this.startIn = startIn;
     }
 
+    private LocalDateTime getLocalDateFrom(String stringDate) {
+
+        String stringFormatted = stringDate.replaceAll(" de ", "/").replaceAll("\\s+|\\t", " ");
+        String formatPattern = "d/MMMM/yyyy H:m";
+        try {
+            return LocalDateTime.parse(stringFormatted, DateTimeFormatter.ofPattern(formatPattern,
+                    new Locale("es", "ES")));
+        } catch (DateTimeException dateTimeException) {
+            return LocalDateTime.MIN;
+        }
+    }
+
     @Parsed(index = 7)
     @LowerCase
     public void setLocalDateStartIn(String startIn) {
-        this.startIn = FileUtilService.getLocalDateFrom(startIn);
+        this.startIn = this.getLocalDateFrom(startIn);
     }
 
     public LocalDateTime getFinishIn() {
@@ -177,7 +191,7 @@ public class TrainingFileDTO {
     @Parsed(index = 8)
     @LowerCase
     public void setLocalDateFinishIn(String finishIn) {
-        this.finishIn = FileUtilService.getLocalDateFrom(finishIn);
+        this.finishIn = this.getLocalDateFrom(finishIn);
     }
 
     public PGInterval getRequiredInterval() {

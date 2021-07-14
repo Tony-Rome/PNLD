@@ -18,9 +18,9 @@
                           <option value="diagnostico">diagnostico</option>
                           <option value="pre-capacita">pre-capacitacion</option>
                           <option value="post-capacita">post-capacitacion</option>
-                          <option value="test-pc-1">test PC (1 - 4 año)</option>
-                          <option value="test-pc-2">test PC (5 - 8 año)</option>
-                          <option value="test-pc-3">Test PC docentes</option>
+                          <option value="ct-students-group-one">Test PC Estudiantes (1 - 4 año)</option>
+                          <option value="ct-students-group-two">Test PC Estudiantes (5 - 8 año)</option>
+                          <option value="ct-teachers">Test PC Docentes</option>
                           <option value="satis">satisfaccion</option>
                           <option value="general-resume">resumen general</option>
                     </select>

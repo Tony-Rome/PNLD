@@ -34,4 +34,38 @@
             (#{id}, #{type}, #{loadedFileId}, #{teacherRut}, #{initDate}, #{endDate}, #{requiredInterval}, #{state},
              #{score}, #{answers}::json);
     </insert>
+
+    <resultMap id="getTeacherCTTestByRut" type="com.react.pnld.model.CTTest">
+        <id property="id" column="id"/>
+        <result property="idLoadedFile" column="id_archivo_cargado" />
+        <result property="testDate" column="fecha_test" />
+        <result property="score" column="calificacion" />
+        <result property="teacherRut" column="rut_docente" />
+        <result property="youKnowCode" column="conoce_code" />
+        <result property="youKnowScratch" column="conoce_scratch" />
+        <result property="initTime" column="hora_inicio" />
+        <result property="finishTime" column="hora_fin" />
+        <result property="howDidInTheTest" column="como_le_fue" />
+        <result property="howInterestedInTech" column="que_tan_cercano_a_tecnologia" />
+        <result property="answers" column="respuestas" />
+    </resultMap>
+    <select id="getTeacherCTTestByRut" resultMap="getTeacherCTTestByRut">
+        SELECT *
+        FROM pnld.test_pc_docente
+        WHERE rut_docente = #{teacherRut};
+    </select>
+
+    <select id="getNextCTTestId" resultType="int">
+        SELECT nextval(pg_get_serial_sequence('pnld.test_pc_docente', 'id'));
+    </select>
+
+    <insert id="insertCTTest">
+        INSERT INTO pnld.test_pc_docente
+        (id, id_archivo_cargado, fecha_test, calificacion, rut_docente, conoce_code, conoce_scratch, hora_inicio, hora_fin,
+         como_le_fue, que_tan_cercano_a_tecnologia, respuestas)
+        VALUES
+        (#{id}, #{idLoadedFile}, #{testDate}, #{score}, #{teacherRut}, #{youKnowCode}, #{youKnowScratch}, #{initTime}, #{finishTime},
+         #{howDidInTheTest}, #{howInterestedInTech}, #{answers}::json);
+    </insert>
+
 </mapper>

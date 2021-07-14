@@ -10,19 +10,18 @@ public class Teacher implements Serializable {
     private int genderId;
     private String email;
     private String department;
-    private boolean participatedInPNLD;
     private String teachesInLevels;
     private boolean isTrainingApproved;
     private int trainingYear;
+    private boolean attendsInPerson;
     private int schoolRbd;
 
     public Teacher() {
         super();
     }
 
-    public Teacher(String rut, String name, int age, int genderId, String email, String department,
-                   boolean participatedInPNLD, String teachesInLevels, boolean isTrainingApproved, int trainingYear,
-                   int schoolRbd) {
+    public Teacher(String rut, String name, int age, int genderId, String email, String department, String teachesInLevels,
+                   boolean isTrainingApproved, int trainingYear, boolean attendsInPerson, int schoolRbd) {
         super();
         this.rut = rut;
         this.name = name;
@@ -30,10 +29,10 @@ public class Teacher implements Serializable {
         this.genderId = genderId;
         this.email = email;
         this.department = department;
-        this.participatedInPNLD = participatedInPNLD;
         this.teachesInLevels = teachesInLevels;
         this.isTrainingApproved = isTrainingApproved;
         this.trainingYear = trainingYear;
+        this.attendsInPerson = attendsInPerson;
         this.schoolRbd = schoolRbd;
     }
 
@@ -93,14 +92,6 @@ public class Teacher implements Serializable {
         this.department = department;
     }
 
-    public boolean isParticipatedInPNLD() {
-        return participatedInPNLD;
-    }
-
-    public void setParticipatedInPNLD(boolean participatedInPNLD) {
-        this.participatedInPNLD = participatedInPNLD;
-    }
-
     public String getTeachesInLevels() {
         return teachesInLevels;
     }
@@ -125,20 +116,28 @@ public class Teacher implements Serializable {
         this.trainingYear = trainingYear;
     }
 
+    public boolean isAttendsInPerson() {
+        return attendsInPerson;
+    }
+
+    public void setAttendsInPerson(boolean attendsInPerson) {
+        this.attendsInPerson = attendsInPerson;
+    }
+
     @Override
     public String toString() {
         return "Teacher{" +
-                "schoolRbd=" + schoolRbd +
-                ", genderId=" + genderId +
-                ", rut='" + rut + '\'' +
+                "rut='" + rut + '\'' +
                 ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
                 ", age=" + age +
+                ", genderId=" + genderId +
+                ", email='" + email + '\'' +
                 ", department='" + department + '\'' +
-                ", participatedInPNLD=" + participatedInPNLD +
                 ", teachesInLevels='" + teachesInLevels + '\'' +
                 ", isTrainingApproved=" + isTrainingApproved +
                 ", trainingYear=" + trainingYear +
+                ", attendsInPerson=" + attendsInPerson +
+                ", schoolRbd=" + schoolRbd +
                 '}';
     }
 }

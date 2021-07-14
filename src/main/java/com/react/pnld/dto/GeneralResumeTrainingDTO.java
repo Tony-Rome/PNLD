@@ -1,11 +1,13 @@
 package com.react.pnld.dto;
 
 import com.univocity.parsers.annotations.BooleanString;
+import com.univocity.parsers.annotations.LowerCase;
 import com.univocity.parsers.annotations.Parsed;
 
 public class GeneralResumeTrainingDTO {
 
     @Parsed(field = {"Rut", "RUT"})
+    @LowerCase
     private String rut;
 
     @Parsed(field = {"Region", "REGION"})
@@ -15,7 +17,8 @@ public class GeneralResumeTrainingDTO {
     private int rbd;
 
     @Parsed(field = {"Nombres", "NOMBRES"})
-    private String names;
+    @LowerCase
+    private String fullName;
 
     @Parsed(field = {"Asiste Jornada", "ASISTE JORNADA"})
     @BooleanString(trueStrings = {"si", "SI"}, falseStrings = {"no", "NO"})
@@ -32,12 +35,12 @@ public class GeneralResumeTrainingDTO {
         super();
     }
 
-    public GeneralResumeTrainingDTO(String rut, int regionId, int rbd, String names, boolean attendsInPerson,
+    public GeneralResumeTrainingDTO(String rut, int regionId, int rbd, String fullName, boolean attendsInPerson,
                                     int trainingYear, boolean isApproved) {
         this.rut = rut;
         this.regionId = regionId;
         this.rbd = rbd;
-        this.names = names;
+        this.fullName = fullName;
         this.attendsInPerson = attendsInPerson;
         this.trainingYear = trainingYear;
         this.isApproved = isApproved;
@@ -67,12 +70,12 @@ public class GeneralResumeTrainingDTO {
         this.rbd = rbd;
     }
 
-    public String getNames() {
-        return names;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setNames(String names) {
-        this.names = names;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public boolean isAttendsInPerson() {
@@ -105,7 +108,7 @@ public class GeneralResumeTrainingDTO {
                 "rut='" + rut + '\'' +
                 ", regionId=" + regionId +
                 ", rbd='" + rbd + '\'' +
-                ", names='" + names + '\'' +
+                ", fullName='" + fullName + '\'' +
                 ", attendsInPerson=" + attendsInPerson +
                 ", trainingYear=" + trainingYear +
                 ", isApproved=" + isApproved +

@@ -1,5 +1,6 @@
 package com.react.pnld.services;
 
+import com.react.pnld.model.CTTest;
 import com.react.pnld.model.TrainingTest;
 import com.react.pnld.repo.TestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import java.util.Optional;
 public class TestService {
 
     @Autowired
-    TestRepository testRepository;
+    private TestRepository testRepository;
 
     public int getNextTrainingTestId(){
         return testRepository.getNextTrainingTestId();
@@ -23,5 +24,17 @@ public class TestService {
 
     public int saveTrainingTest(TrainingTest trainingTest){
         return testRepository.insertTrainingTest(trainingTest);
+    }
+
+    public Optional<CTTest> getTeacherCTTestByRut(String teacherRut){
+        return testRepository.getTeacherCTTestByRut(teacherRut);
+    }
+
+    public int getNextCTTestId(){
+        return testRepository.getNextCTTestId();
+    }
+
+    public int saveCTTest(CTTest newCTtest){
+        return testRepository.insertCTTest(newCTtest);
     }
 }
