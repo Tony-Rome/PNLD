@@ -1,9 +1,10 @@
 package com.react.pnld.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalTime;
 
-public class CTTest {
+public class CTTest implements Serializable {
     private int id;
     private int idLoadedFile;
     private Timestamp testDate;
